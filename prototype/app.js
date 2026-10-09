@@ -33,7 +33,7 @@ const INITIAL_PRODUCTS = [
     care: 'Dry clean khusus spesialis adibusana dan bordir tangan. Simpan digantung pada hanger berbalut katun organik ZAFIRA.',
     measurements: { 'FR 36': 'Dada 84cm · Pinggang 66cm · Pinggul 92cm', 'FR 38': 'Dada 88cm · Pinggang 70cm · Pinggul 96cm', 'FR 40': 'Dada 92cm · Pinggang 74cm · Pinggul 100cm', 'FR 42': 'Dada 96cm · Pinggang 78cm · Pinggul 104cm' },
     images: [
-      'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=1400&q=90',
+      'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=1400&q=90',
       'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=1200&q=90',
       'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=1200&q=90'
     ]
@@ -1290,7 +1290,7 @@ function openAuthenticityModal(orderId) {
 function switchView(viewName) {
   store.currentView = viewName;
   document.querySelectorAll('.view-container').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.proto-btn').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.dock-btn, .proto-btn').forEach(el => el.classList.remove('active'));
 
   if (viewName === 'storefront') {
     document.getElementById('storefront-view')?.classList.add('active');
