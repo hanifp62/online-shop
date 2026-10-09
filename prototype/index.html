@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZAFIRA: La Maison de Lumière — Interactive Prototype</title>
+  <link rel="icon" href="../public/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+  <!-- TOP PROTOTYPE GOVERNANCE BAR -->
+  <header class="proto-banner">
+    <div style="display:flex; align-items:center;">
+      <span class="proto-badge">Interactive Prototype v1.0</span>
+      <span style="color:#94a3b8;">ZAFIRA E-Commerce & Atelier Admin Platform</span>
+    </div>
+    <div class="proto-controls">
+      <span style="font-size:10px; color:#94a3b8; text-transform:uppercase; margin-right:4px;">Ganti Mode Tampilan:</span>
+      <button class="proto-btn active" id="btn-view-storefront" onclick="switchView('storefront')">
+        <span>✦</span> Storefront Pelanggan
+      </button>
+      <button class="proto-btn" id="btn-view-account" onclick="switchView('account')">
+        <span>👤</span> Portal Akun (/akun)
+      </button>
+      <button class="proto-btn" id="btn-view-admin" onclick="switchView('admin')">
+        <span>⚙️</span> Atelier Admin Workspace
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================== -->
+  <!-- 1. STOREFRONT VIEW (CUSTOMER EXPERIENCE)   -->
+  <!-- ========================================== -->
+  <main class="view-container active" id="storefront-view">
+    
+    <!-- Announcement Bar -->
+    <div class="announcement">
+      <span>Complimentary signature wrapping & pengiriman terlindungi ke seluruh Nusantara</span>
+      <a onclick="openConciergeModal()">Rendez-vous Privat Atelier</a>
+    </div>
+
+    <!-- Storefront Header -->
+    <header class="sf-header">
+      <nav class="sf-nav">
+        <a onclick="filterCategory('all')">Koleksi</a>
+        <a onclick="filterCategory(8)">Warisan Nusantara</a>
+        <a onclick="filterCategory(9)">Koleksi Kapsul</a>
+        <a onclick="openConciergeModal()">Concierge</a>
+      </nav>
+
+      <a class="sf-brand" href="#storefront">
+        ZAFIRA
+        <span>La Maison de Lumière</span>
+      </a>
+
+      <div class="sf-actions">
+        <div style="position:relative; display:inline-block;">
+          <input type="search" id="sf-search-input" placeholder="Cari sutra, batik, gaun…" style="padding:6px 12px; font-size:12px; border:1px solid var(--line); border-radius:20px; width:180px; background:var(--white);">
+        </div>
+        <button class="action-btn" onclick="switchView('account')" title="Portal Akun Klien">
+          <span>Profil / Akun</span>
+        </button>
+        <button class="action-btn" onclick="openCartDrawer()" title="Tas Belanja">
+          <span>Tas</span>
+          <span class="badge-count cart-count-badge">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Editorial Hero -->
+    <section class="sf-hero">
+      <div class="hero-content">
+        <span class="hero-eyebrow">Haute Couture & Kriya Nusantara</span>
+        <h1 class="hero-title">Siluet Paris, Keahlian Italia, Jiwa Nusantara.</h1>
+        <p class="hero-desc">Setiap helai kreasi dirajut dengan transparansi asal material, penghormatan mendalam pada tradisi kriya tangan, dan kemurnian desain abadi.</p>
+        <div>
+          <a class="btn-gold" href="#katalog-section">Jelajahi Koleksi</a>
+          <button class="btn-outline" onclick="openConciergeModal()">Jadwalkan Konsultasi</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Catalog Section with Dynamic Filter Pills -->
+    <section class="section-pad" id="katalog-section">
+      <div class="sec-header">
+        <span class="sec-eyebrow">Les Créations ZAFIRA</span>
+        <h2 class="sec-title">Koleksi Adibusana & Kriya Pilihan</h2>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="category-pills" id="category-pills">
+        <!-- Rendered by app.js -->
+      </div>
+
+      <!-- Dynamic Product Grid -->
+      <div class="product-grid" id="product-grid">
+        <!-- Rendered by app.js -->
+      </div>
+    </section>
+
+    <!-- Heritage & Savoir-Faire Section -->
+    <section style="background:var(--white); border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:70px 48px;">
+      <div style="max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;">
+        <div>
+          <span style="color:var(--gold); font-size:11px; letter-spacing:0.2em; text-transform:uppercase; font-weight:600;">Savoir-Faire & Provenance</span>
+          <h2 style="font-family:var(--serif); font-size:36px; margin:8px 0 16px; color:var(--sapphire-deep);">Keaslian Tanpa Kompromi</h2>
+          <p style="color:var(--muted); line-height:1.8; margin-bottom:20px;">Kami mencantumkan atelier asal bahan pada setiap kreasi: sutra murni Lyon, wol Biella Italia, hingga canting malam batik Laweyan Solo dan tenun ikat Maumere Flores. Setiap jahitan mencerminkan puluhan jam kesabaran para empu kriya.</p>
+          <div style="display:flex; gap:32px; border-top:1px solid var(--line); padding-top:20px;">
+            <div>
+              <strong style="font-family:var(--serif); font-size:32px; color:var(--sapphire-deep); display:block;">60+</strong>
+              <span style="font-size:11px; color:var(--muted); text-transform:uppercase;">Jam Bordir Tangan / Helai</span>
+            </div>
+            <div>
+              <strong style="font-family:var(--serif); font-size:32px; color:var(--sapphire-deep); display:block;">100%</strong>
+              <span style="font-size:11px; color:var(--muted); text-transform:uppercase;">Pewarna Alam & Sutra Asli</span>
+            </div>
+            <div>
+              <strong style="font-family:var(--serif); font-size:32px; color:var(--sapphire-deep); display:block;">Atelier</strong>
+              <span style="font-size:11px; color:var(--muted); text-transform:uppercase;">Paris · Milan · Jakarta</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=1200&q=88" alt="Kriya ZAFIRA" style="border-radius:4px; box-shadow:var(--shadow-lg);">
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background:var(--sapphire-deep); color:#fff; padding:60px 48px 30px;">
+      <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr; gap:40px; margin-bottom:40px;">
+        <div>
+          <h3 style="font-family:var(--serif); font-size:24px; letter-spacing:0.15em; margin-bottom:12px;">ZAFIRA</h3>
+          <p style="font-size:12px; color:rgba(255,255,255,0.7); max-width:340px; line-height:1.7;">La Maison de Lumière — Rumah mode adibusana Paris-Italia-Indonesia. Jakarta Atelier: Kebayoran Baru, Jakarta Selatan.</p>
+        </div>
+        <div>
+          <h4 style="font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold-light); margin-bottom:12px;">Layanan Maison</h4>
+          <ul style="list-style:none; font-size:12px; line-height:2.2; color:rgba(255,255,255,0.8);">
+            <li><a onclick="openConciergeModal()" style="cursor:pointer;">Rendez-vous Privat</a></li>
+            <li><a onclick="switchView('account')" style="cursor:pointer;">Portal Akun Klien</a></li>
+            <li><a onclick="openCartDrawer()" style="cursor:pointer;">Tas Belanja</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold-light); margin-bottom:12px;">La Lettre ZAFIRA</h4>
+          <p style="font-size:12px; color:rgba(255,255,255,0.7); margin-bottom:12px;">Dapatkan warta eksklusif peluncuran koleksi kapsul.</p>
+          <form onsubmit="event.preventDefault(); showToast('Terima kasih telah bergabung di La Lettre ZAFIRA.'); this.reset();" style="display:flex;">
+            <input type="email" placeholder="Email Anda" required style="padding:8px 12px; font-size:12px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; border-radius:3px 0 0 3px; flex-grow:1;">
+            <button type="submit" class="btn-gold" style="padding:8px 16px; border-radius:0 3px 3px 0;">Daftar</button>
+          </form>
+        </div>
+      </div>
+      <div style="text-align:center; font-size:11px; color:rgba(255,255,255,0.5); border-top:1px solid rgba(255,255,255,0.1); padding-top:20px;">
+        © 2026 ZAFIRA Maison de Lumière. All rights reserved.
+      </div>
+    </footer>
+  </main>
+
+  <!-- ========================================== -->
+  <!-- 2. CUSTOMER ACCOUNT VIEW (/akun SIMULATION) -->
+  <!-- ========================================== -->
+  <main class="view-container" id="account-view">
+    <div style="max-width:880px; margin:40px auto; padding:0 24px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:28px;">
+        <div>
+          <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.18em; color:var(--taupe);">Espace Klien ZAFIRA</span>
+          <h1 style="font-family:var(--serif); font-size:36px; margin:4px 0 0; color:var(--sapphire-deep);">Bonjour, Madame Aurelia Tan</h1>
+        </div>
+        <button class="proto-btn" style="background:var(--sapphire-deep); color:#fff;" onclick="switchView('storefront')">← Kembali ke Toko</button>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 2fr; gap:28px;">
+        <!-- Profil Pelanggan -->
+        <div style="background:#fff; border:1px solid var(--line); padding:24px; border-radius:4px; height:fit-content;">
+          <h3 style="font-family:var(--serif); font-size:20px; margin-bottom:16px; border-bottom:1px solid var(--line); padding-bottom:8px;">Profil Klien</h3>
+          <div class="form-group">
+            <label class="form-label">Nama Lengkap</label>
+            <input type="text" class="form-input" value="Aurelia Tan" readonly>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Terdaftar</label>
+            <input type="email" class="form-input" value="aurelia@tanholdings.id" readonly>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nomor WhatsApp</label>
+            <input type="text" class="form-input" value="+62 811 8899 771" readonly>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Alamat Pengiriman</label>
+            <textarea class="form-textarea" rows="2" readonly>Jl. Kartika Pinang No. 18, Pondok Indah, Jakarta Selatan</textarea>
+          </div>
+        </div>
+
+        <!-- Riwayat Pesanan & Concierge -->
+        <div>
+          <h3 style="font-family:var(--serif); font-size:22px; margin-bottom:16px; color:var(--sapphire-deep);">Riwayat Janji Temu & Pesanan</h3>
+          <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">Setiap pembaruan status oleh Client Advisor di admin atelier akan langsung tersinkronisasi di kartu bawah ini.</p>
+          <div id="account-history-list">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================== -->
+  <!-- 3. ATELIER ADMIN WORKSPACE VIEW            -->
+  <!-- ========================================== -->
+  <main class="view-container" id="admin-view">
+    <div class="admin-workspace">
+      <!-- Sidebar -->
+      <aside class="admin-sidebar">
+        <div class="admin-brand-card">
+          <div class="admin-brand-title">ZAFIRA</div>
+          <div class="admin-brand-sub">Atelier Administration</div>
+        </div>
+
+        <ul class="admin-menu">
+          <li><a class="admin-nav-item active" onclick="switchAdminTab('overview')"><span>📊</span> Overview & KPI</a></li>
+          <li><a class="admin-nav-item" onclick="switchAdminTab('products')"><span>👗</span> Katalog Kreasi</a></li>
+          <li><a class="admin-nav-item" onclick="switchAdminTab('categories')"><span>🏷️</span> Kategori Koleksi</a></li>
+          <li><a class="admin-nav-item" onclick="switchAdminTab('orders')"><span>📋</span> Pesanan & Concierge</a></li>
+          <li><a class="admin-nav-item" onclick="switchAdminTab('clients')"><span>👥</span> Data Klien</a></li>
+          <li><a class="admin-nav-item" onclick="switchAdminTab('audit')"><span>🛡️</span> Arsip Audit Log</a></li>
+        </ul>
+
+        <div class="admin-footer-status">
+          <p><span class="status-indicator"></span> Database: <strong>ecommerce</strong></p>
+          <p style="margin-top:4px;">Port: 3306 · Cache: Auto-Sync</p>
+        </div>
+      </aside>
+
+      <!-- Main Workspace -->
+      <section class="admin-main">
+        <div class="admin-topbar">
+          <div class="admin-title-area">
+            <span class="admin-breadcrumbs">Administration / ZAFIRA Atelier Workspace</span>
+            <h2 id="admin-section-heading">Overview & Analitik Atelier</h2>
+          </div>
+          <div>
+            <button class="btn-gold" style="padding:8px 18px; font-size:11px;" onclick="openAddProductModal()">+ Tambah Kreasi Baru</button>
+            <button class="proto-btn" style="background:#fff; color:var(--ink); border:1px solid #cbd5e1; margin-left:8px;" onclick="switchView('storefront')">Lihat Storefront ↗</button>
+          </div>
+        </div>
+
+        <!-- KPI Cards Grid -->
+        <div class="stat-cards-grid">
+          <div class="stat-box">
+            <span class="stat-label">Total Kreasi Produk</span>
+            <div class="stat-value" id="admin-kpi-products">12</div>
+            <div class="stat-sub"><span>✦</span> Aktif di Storefront</div>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">Kategori Koleksi</span>
+            <div class="stat-value" id="admin-kpi-categories">8</div>
+            <div class="stat-sub"><span>✦</span> Terhubung ke Filter Pill</div>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">Permintaan Pesanan / Concierge</span>
+            <div class="stat-value" id="admin-kpi-orders">3</div>
+            <div class="stat-sub"><span>✦</span> Sinkron ke Akun Klien</div>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">Total Klien Terdaftar</span>
+            <div class="stat-value" id="admin-kpi-users">8</div>
+            <div class="stat-sub"><span>✦</span> Multi-Guard User</div>
+          </div>
+        </div>
+
+        <!-- TAB CONTENT: OVERVIEW -->
+        <div id="tab-overview" class="admin-tab-content active">
+          <!-- Recent Orders in Admin -->
+          <div class="admin-card">
+            <div class="card-header">
+              <h3 class="card-title">Permintaan Pesanan & Konsultasi Terbaru</h3>
+              <span style="font-size:12px; color:var(--muted);">Ubah status untuk menguji sinkronisasi ke /akun pelanggan</span>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nama Klien & Kontak</th>
+                    <th>Detail Pesanan / Catatan</th>
+                    <th>Aksi Ganti Status</th>
+                    <th>Status Saat Ini</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-concierge-tbody">
+                  <!-- Rendered by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Quick Catalog Table in Admin -->
+          <div class="admin-card">
+            <div class="card-header">
+              <h3 class="card-title">Katalog Kreasi Terbaru</h3>
+              <button class="proto-btn" style="background:var(--sapphire-deep); color:#fff;" onclick="openAddProductModal()">+ Tambah Produk</button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Foto</th>
+                    <th>Kreasi</th>
+                    <th>Kategori</th>
+                    <th>Harga</th>
+                    <th>Badge</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-products-tbody">
+                  <!-- Rendered by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB CONTENT: CATEGORIES -->
+        <div id="tab-categories" class="admin-tab-content" style="display:none;">
+          <div class="admin-card">
+            <div class="card-header">
+              <h3 class="card-title">Kelola Kategori Koleksi</h3>
+            </div>
+            <div style="padding:20px; border-bottom:1px solid #e2e8f0; background:#fafafa;">
+              <form onsubmit="adminAddCategorySubmit(event)" style="display:flex; gap:12px; max-width:480px;">
+                <input type="text" id="new-cat-title" class="form-input" placeholder="Nama Kategori Baru (misal: Aksesoris Sutra)" required>
+                <button type="submit" class="btn-gold" style="white-space:nowrap;">+ Tambah Kategori</button>
+              </form>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nama Kategori</th>
+                    <th>Jumlah Produk Terkait</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-categories-tbody">
+                  <!-- Rendered by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- ========================================== -->
+  <!-- DRAWERS & MODALS                           -->
+  <!-- ========================================== -->
+
+  <!-- Drawer Backdrop -->
+  <div class="drawer-backdrop" id="drawer-backdrop" onclick="closeAllModals()"></div>
+
+  <!-- Cart Drawer -->
+  <aside class="cart-drawer" id="cart-drawer">
+    <div class="drawer-header">
+      <h3>Tas Belanja Maison</h3>
+      <button class="btn-close" onclick="closeCartDrawer()">&times;</button>
+    </div>
+    <div class="drawer-body" id="cart-items-container">
+      <!-- Rendered by app.js -->
+    </div>
+    <div class="drawer-footer">
+      <div class="subtotal-row">
+        <span>Subtotal Pesanan</span>
+        <strong id="cart-subtotal">Rp0</strong>
+      </div>
+      <button class="btn-gold" style="width:100%; text-align:center; padding:14px;" onclick="closeCartDrawer(); openConciergeModal();">
+        Lanjut bersama Client Advisor ⟶
+      </button>
+      <p style="text-align:center; font-size:11px; color:var(--muted); margin-top:10px;">
+        Pesanan akan dikonfirmasi secara personal oleh penasihat butik ZAFIRA.
+      </p>
+    </div>
+  </aside>
+
+  <!-- Quick View Modal -->
+  <div class="modal-window" id="quickview-modal">
+    <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
+      <span style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); font-weight:600;">Detail Kriya & Provenance</span>
+      <button class="btn-close" onclick="closeAllModals()">&times;</button>
+    </div>
+    <div id="quickview-content">
+      <!-- Rendered by app.js -->
+    </div>
+  </div>
+
+  <!-- Concierge / Checkout Modal -->
+  <div class="modal-window" id="concierge-modal">
+    <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+      <h3 style="font-family:var(--serif); font-size:22px;" id="concierge-title">Rendez-vous Privat Atelier ZAFIRA</h3>
+      <button class="btn-close" onclick="closeAllModals()">&times;</button>
+    </div>
+    <form onsubmit="submitConciergeOrder(event)">
+      <div class="form-group">
+        <label class="form-label">Nama Lengkap</label>
+        <input type="text" id="c-name" class="form-input" required value="Madame Aurelia Tan">
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" id="c-email" class="form-input" required value="aurelia@tanholdings.id">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nomor WhatsApp</label>
+          <input type="tel" id="c-phone" class="form-input" required value="+62 811 8899 771">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Layanan Dipilih</label>
+        <select id="c-service" class="form-select">
+          <option value="private-styling">Private Styling Consultation</option>
+          <option value="atelier">Fitting Langsung di Atelier</option>
+          <option value="virtual-consultation">Virtual Video Styling</option>
+          <option value="gifting">Bespoke Gift Service</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ringkasan Pesanan & Catatan</label>
+        <textarea id="concierge-order-summary" class="form-textarea" rows="4" readonly style="background:#f8fafc; font-family:monospace; font-size:11px;"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Catatan Tambahan (Ukuran / Jadwal Preferensi)</label>
+        <input type="text" id="c-notes" class="form-input" placeholder="Contoh: Mohon siapkan ukuran S untuk kebaya...">
+      </div>
+      <button type="submit" class="btn-gold" style="width:100%; padding:12px; margin-top:8px;">Kirim Permintaan ke Client Advisor</button>
+    </form>
+  </div>
+
+  <!-- Admin Add Product Modal -->
+  <div class="modal-window" id="add-product-modal" style="width:680px;">
+    <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
+      <h3 style="font-family:var(--serif); font-size:22px; color:var(--sapphire-deep);">Tambah Kreasi Baru ke Katalog</h3>
+      <button class="btn-close" onclick="closeAllModals()">&times;</button>
+    </div>
+    <form onsubmit="adminAddProductSubmit(event)">
+      <div style="display:grid; grid-template-columns:2fr 1fr; gap:12px;">
+        <div class="form-group">
+          <label class="form-label">Nama Kreasi</label>
+          <input type="text" id="new-p-title" class="form-input" placeholder="Contoh: Robe Céleste" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Kategori</label>
+          <select id="new-product-cat" class="form-select" required></select>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <div class="form-group">
+          <label class="form-label">Harga (Rp)</label>
+          <input type="number" id="new-p-price" class="form-input" placeholder="18500000" min="0" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Badge Label</label>
+          <input type="text" id="new-p-badge" class="form-input" placeholder="Contoh: Edisi Terbatas">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">URL Foto (Unsplash)</label>
+        <input type="url" id="new-p-image" class="form-input" placeholder="https://images.unsplash.com/photo-...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Warna Kreasi</label>
+        <input type="text" id="new-p-color" class="form-input" placeholder="Contoh: Bleu Nocturne">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Narasi Kreasi</label>
+        <textarea id="new-p-desc" class="form-textarea" rows="2" placeholder="Deskripsi puitis busana..."></textarea>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <div class="form-group">
+          <label class="form-label">Material Utama</label>
+          <input type="text" id="new-p-mat" class="form-input" placeholder="Contoh: 100% Sutra Organza">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Asal / Provenance</label>
+          <input type="text" id="new-p-origin" class="form-input" placeholder="Kain: Lyon · Jahit: Jakarta">
+        </div>
+      </div>
+      <button type="submit" class="btn-gold" style="width:100%; padding:12px; margin-top:8px;">Terbitkan Kreasi ke Katalog</button>
+    </form>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+  <script>
+    function openAddProductModal() {
+      document.getElementById('add-product-modal')?.classList.add('open');
+      document.getElementById('drawer-backdrop')?.classList.add('open');
+    }
+    function switchAdminTab(tabName) {
+      document.querySelectorAll('.admin-nav-item').forEach(el => el.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      if (tabName === 'categories') {
+        document.getElementById('tab-overview').style.display = 'none';
+        document.getElementById('tab-categories').style.display = 'block';
+        document.getElementById('admin-section-heading').textContent = 'Kelola Kategori Koleksi';
+      } else {
+        document.getElementById('tab-overview').style.display = 'block';
+        document.getElementById('tab-categories').style.display = 'none';
+        document.getElementById('admin-section-heading').textContent = 'Overview & Analitik Atelier';
+      }
+    }
+  </script>
+</body>
+</html>

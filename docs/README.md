@@ -28,7 +28,7 @@ docs/
 ├── 03-architecture/
 │   ├── TARGET_ARCHITECTURE.md                # Arsitektur sistem target & struktur modul Laravel
 │   ├── DATABASE_DESIGN.md                    # Desain database terpadu, ERD, & kamus data
-│   ├── ARCHITECTURE_DECISIONS.md             # Architecture Decision Records (ADR)
+│   ├── ARCHITECTURE_DECISIONS.md             # Architecture Decision Records (ADR-001 s/d ADR-005)
 │   └── ENVIRONMENT_AND_RUNTIME.md            # Konfigurasi runtime & panduan deployment lokal
 ├── 04-implementation/
 │   ├── IMPLEMENTATION_PLAN.md                # Rencana implementasi komprehensif & pentahapan
@@ -52,10 +52,10 @@ docs/
 | Fase | Dokumen Utama | Status | Bukti Verifikasi |
 |---|---|---|---|
 | **Fase 0** | `ENVIRONMENT_BASELINE.md`, `AGENTS.md` | **Selesai** | Git repo initialized, commit baseline aman |
-| **Fase 1** | `PROJECT_INSPECTION.md`, `FEATURE_INVENTORY.md`, dll. | **Sedang Berjalan** | Audit file aktual & matrix inventarisasi |
-| **Fase 2** | `PROJECT_CONTEXT.md` | **Menunggu** | Disusun setelah Fase 1 |
-| **Fase 3** | `COMPATIBILITY_REPORT.md`, `FOUNDATION_CHANGELOG.md` | **Menunggu** | Perbaikan izin binary & uji build |
-| **Fase 4** | `PRODUCT_BRIEF.md`, `PRD.md`, `USER_JOURNEYS.md` | **Menunggu** | Riset & penomoran FR/NFR |
-| **Fase 5** | `TARGET_ARCHITECTURE.md`, `DATABASE_DESIGN.md` | **Menunggu** | ERD & task backlog terinci |
-| **Fase 6** | `PROTOTYPE_GUIDE.md`, Prototype Code | **Menunggu** | Pengujian browser interaktif |
-| **Fase 7** | `QUALITY_REVIEW.md`, `PROJECT_READINESS_REPORT.md` | **Menunggu** | Verifikasi test akhir & handoff |
+| **Fase 1** | `PROJECT_INSPECTION.md`, `FEATURE_INVENTORY.md`, dll. | **Selesai** | 5 laporan audit tuntas berbasis bukti kode nyata |
+| **Fase 2** | `PROJECT_CONTEXT.md` | **Selesai** | Identitas brand ZAFIRA & pemetaan gap produk |
+| **Fase 3** | `COMPATIBILITY_REPORT.md`, `FOUNDATION_CHANGELOG.md` | **Selesai** | Izin binary `+x`, `npm run build` OK, MariaDB aktif |
+| **Fase 4** | `PRODUCT_BRIEF.md`, `PRD.md`, `USER_JOURNEYS.md` | **Selesai** | PRD lengkap (FR/NFR/US), Traceability Matrix |
+| **Fase 5** | `TARGET_ARCHITECTURE.md`, `DATABASE_DESIGN.md` | **Selesai** | Target architecture, ERD database, backlog task |
+| **Fase 6** | `PROTOTYPE_GUIDE.md`, Source Code `prototype/` | **Selesai** | Prototype interaktif melayani HTTP 200 di port 8000 |
+| **Fase 7** | `QUALITY_REVIEW.md`, `PROJECT_READINESS_REPORT.md` | **Selesai** | 49 test passing, laporan kesiapan proyek lengkap |

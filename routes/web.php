@@ -17,6 +17,7 @@ RateLimiter::for('concierge', fn ($job) => Limit::perHour(3)->by($job->ip()));
 RateLimiter::for('newsletter', fn ($job) => Limit::perDay(5)->by($job->ip()));
 
 Route::get('/', [StorefrontController::class, 'index'])->name('home');
+Route::get('/prototype', fn () => response()->file(base_path('prototype/index.html')))->name('prototype');
 Route::get('/produk/{product:product_slug}', [StorefrontController::class, 'show'])->name('products.show');
 Route::get('/sitemap.xml', [StorefrontController::class, 'sitemap'])->name('sitemap');
 Route::post('/concierge', [StorefrontController::class, 'bookConcierge'])
