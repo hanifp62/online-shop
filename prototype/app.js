@@ -184,6 +184,28 @@ const INITIAL_PRODUCTS = [
   }
 ];
 
+const INITIAL_MATERIALS = [
+  { id: 'mat-1', code: 'MAT-CALAIS-01', name: 'Brokat Prancis Calais (Noir & Or)', origin: 'Dentelles de Calais (Prancis)', stock: 18.5, unit: 'meter', safetyStock: 10, status: 'safe' },
+  { id: 'mat-2', code: 'MAT-LYON-02', name: 'Sutra Murbei Murni Lyon 22 Momme', origin: 'Soieries de Lyon (Prancis)', stock: 8.2, unit: 'meter', safetyStock: 15, status: 'warn' },
+  { id: 'mat-3', code: 'MAT-PLB-03', name: 'Benang Emas Songket Palembang (ATBM)', origin: 'Sentra Tenun Ilir, Palembang', stock: 5.5, unit: 'spul', safetyStock: 3, status: 'safe' },
+  { id: 'mat-4', code: 'MAT-INDIGO-04', name: 'Pasta Indigofera Alami Celupan Dingin', origin: 'Kampung Batik Laweyan, Solo', stock: 14.0, unit: 'kg', safetyStock: 6, status: 'safe' },
+  { id: 'mat-5', code: 'MAT-TUSCAN-05', name: 'Kulit Anak Sapi Sol Nabati Marche', origin: 'Tuscan Leather Guild, Italia', stock: 12.0, unit: 'lembar', safetyStock: 5, status: 'safe' }
+];
+
+const INITIAL_WIP_STATIONS = [
+  { id: 'wip-1', name: 'Konsultasi & Analisis Pola', current: 1, limit: 5, status: 'safe' },
+  { id: 'wip-2', name: 'Pemotongan Presisi & Drape Bias', current: 2, limit: 3, status: 'optimal' },
+  { id: 'wip-3', name: 'Bordir Tambal-Tangan & Jahit Kriya', current: 3, limit: 4, status: 'warn' },
+  { id: 'wip-4', name: 'Inspeksi QC Ganda & Segel Lilin', current: 1, limit: 2, status: 'safe' }
+];
+
+const INITIAL_AUDIT_LOGS = [
+  { timestamp: '2026-10-10 03:45:12 WIB', actor: 'Client Advisor (Aurelia)', role: 'advisor', module: 'TPS_INTAKE', action: 'Pesanan #101 Kebaya Lumière diverifikasi', hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' },
+  { timestamp: '2026-10-10 03:12:05 WIB', actor: 'Atelier Master (Hélène)', role: 'artisan', module: 'TPS_WORK_ORDER', action: 'Pemotongan drape bias Robe Élan dimulai', hash: 'a1b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef0' },
+  { timestamp: '2026-10-09 18:22:40 WIB', actor: 'Atelier Manager (Budi)', role: 'manager', module: 'MIS_INVENTORY', action: 'Pasokan 10m Sutra Lyon diterima dari Lyon', hash: '9f8e7d6c5b4a3928172635445362718293049586718293049586718293049586' },
+  { timestamp: '2026-10-09 14:10:19 WIB', actor: 'Maison Director (Zafira)', role: 'director', module: 'EIS_STRATEGY', action: 'Kapasitas janji temu privat Q4 2026 disetujui', hash: 'bca8210382947192847192847192847192847192847192847192847192847192' }
+];
+
 const INITIAL_CONCIERGE = [
   {
     id: 101,
@@ -192,6 +214,9 @@ const INITIAL_CONCIERGE = [
     phone: '+62 811 8899 771',
     service: 'Private Fitting Jakarta',
     status: 'confirmed',
+    artisan: 'Ibu Siti Khodijah',
+    serial: 'ZFR-2026-0101',
+    totalPrice: 14900000,
     date: '2026-10-15 14:00',
     notes: '[Pesanan Adibusana]\n• Kebaya Lumière (1x) FR 38 · Monogram: AT\n• Kemasan Kado: Kotak Safir & Pita Emas\nTotal: Rp14.900.000\n\nCatatan: Fitting privat di Salon Kebayoran Baru.'
   },
@@ -202,6 +227,9 @@ const INITIAL_CONCIERGE = [
     phone: '+62 812 3456 7890',
     service: 'Bespoke Consultation',
     status: 'contacted',
+    artisan: 'Madame Hélène',
+    serial: 'ZFR-2026-0102',
+    totalPrice: 33500000,
     date: '2026-10-16 16:30',
     notes: '[Pesanan Adibusana]\n• Manteau Firenze (1x) FR 50\n• Chemise Rivière (2x) FR 40\nTotal: Rp33.500.000'
   },
@@ -212,6 +240,9 @@ const INITIAL_CONCIERGE = [
     phone: '+62 878 9900 1122',
     service: 'Virtual Styling Monaco',
     status: 'new',
+    artisan: 'Belum Ditugaskan',
+    serial: 'ZFR-2026-0103',
+    totalPrice: 15900000,
     date: '2026-10-18 11:00',
     notes: 'Konsultasi gaun malam gala dinner di Monte Carlo untuk bulan November.'
   },
@@ -222,6 +253,9 @@ const INITIAL_CONCIERGE = [
     phone: '+60 12 345 6789',
     service: 'Private Gifting Delivery',
     status: 'completed',
+    artisan: 'Bapak Nyoman Sujana',
+    serial: 'ZFR-2026-0104',
+    totalPrice: 8900000,
     date: '2026-10-09 10:00',
     notes: 'Pengiriman Écharpe Éclat kado ulang tahun diplomatik. Selesai diantar via courier diplomatik.'
   }
@@ -236,6 +270,13 @@ class PrototypeStore {
     this.cart = this.load('zafira_v3_cart', [
       { productId: 9, qty: 1, size: 'FR 38', monogram: 'AT', packaging: 'gift-box' }
     ]);
+
+    // MSI (Management Information System) States
+    this.currentMsiTab = 'tps'; // 'tps' | 'mis' | 'eis' | 'gov'
+    this.currentRbacRole = 'director'; // 'director' | 'manager' | 'advisor' | 'artisan'
+    this.rawMaterials = this.load('zafira_v3_materials', INITIAL_MATERIALS);
+    this.wipStations = this.load('zafira_v3_wip', INITIAL_WIP_STATIONS);
+    this.auditLogs = this.load('zafira_v3_audit_logs', INITIAL_AUDIT_LOGS);
 
     this.currentView = 'storefront'; // 'storefront' | 'studio' | 'account' | 'admin'
     this.viewMode = 'editorial'; // 'editorial' (living magazine) | 'gallery' (museum grid)
@@ -333,11 +374,52 @@ class PrototypeStore {
     return newOrder;
   }
 
+  addAuditLog(actor, role, module, action) {
+    const now = new Date();
+    const timestamp = now.getFullYear() + '-' + 
+      String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+      String(now.getDate()).padStart(2, '0') + ' ' + 
+      String(now.getHours()).padStart(2, '0') + ':' + 
+      String(now.getMinutes()).padStart(2, '0') + ':' + 
+      String(now.getSeconds()).padStart(2, '0') + ' WIB';
+    
+    const hexChars = '0123456789abcdef';
+    let hash = '';
+    for (let i = 0; i < 64; i++) hash += hexChars[Math.floor(Math.random() * 16)];
+    
+    const entry = { timestamp, actor, role, module, action, hash };
+    this.auditLogs.unshift(entry);
+    if (this.auditLogs.length > 40) this.auditLogs.pop();
+    this.save('zafira_v3_audit_logs', this.auditLogs);
+    return entry;
+  }
+
+  assignArtisan(orderId, artisanName) {
+    const item = this.concierge.find(c => c.id === orderId);
+    if (item) {
+      item.artisan = artisanName;
+      this.save('zafira_v3_concierge', this.concierge);
+      this.addAuditLog('Atelier Manager', this.currentRbacRole, 'TPS_ASSIGNMENT', `Pesanan #${orderId} ditugaskan ke: ${artisanName}`);
+    }
+  }
+
+  restockMaterial(matId, addQty) {
+    const mat = this.rawMaterials.find(m => m.id === matId);
+    if (mat) {
+      mat.stock += addQty;
+      mat.status = mat.stock > mat.safetyStock ? 'safe' : 'warn';
+      this.save('zafira_v3_materials', this.rawMaterials);
+      this.addAuditLog('Supply Logistics', this.currentRbacRole, 'MIS_INVENTORY', `Pasokan diterima: +${addQty} ${mat.unit} ${mat.name}`);
+    }
+  }
+
   updateOrderStatus(id, newStatus) {
     const item = this.concierge.find(c => c.id === id);
     if (item) {
+      const oldStatus = item.status;
       item.status = newStatus;
       this.save('zafira_v3_concierge', this.concierge);
+      this.addAuditLog('Client Advisor', this.currentRbacRole, 'TPS_KANBAN', `Status pesanan #${id} (${item.name}) diperbarui: ${oldStatus.toUpperCase()} -> ${newStatus.toUpperCase()}`);
     }
   }
 }
@@ -859,12 +941,14 @@ function submitRendezvousBooking(e) {
   renderCartDrawer();
   renderKanbanBoard();
   renderAccountPortal();
+  renderMsiEisCockpit();
+  renderAuditTrail();
   closeAllModals();
   showToast('✦ Janji temu privat berhasil didaftarkan di Atelier Kebayoran Baru.');
 }
 
 // ==========================================================================
-// ATELIER ADMIN WORKSPACE (KANBAN ORDER PIPELINE)
+// ATELIER ADMIN WORKSPACE (KANBAN ORDER PIPELINE & TPS)
 // ==========================================================================
 
 function renderKanbanBoard() {
@@ -898,14 +982,27 @@ function renderKanbanBoard() {
                 <small style="color:var(--taupe);">${item.date}</small>
               </div>
               <div class="kanban-card-notes">${item.notes}</div>
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; border-top:1px solid #f1f5f9; padding-top:8px;">
-                <span style="font-size:10px; color:var(--muted); font-weight:700;">Ubah Status:</span>
-                <select class="form-select" style="width:auto; padding:2px 8px; font-size:11px;" onchange="adminUpdateOrderStatus(${item.id}, this.value)">
-                  <option value="new" ${item.status === 'new' ? 'selected' : ''}>New</option>
-                  <option value="contacted" ${item.status === 'contacted' ? 'selected' : ''}>Contacted</option>
-                  <option value="confirmed" ${item.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
-                  <option value="completed" ${item.status === 'completed' ? 'selected' : ''}>Completed</option>
-                </select>
+              
+              <!-- MSI Atelier Controls: Artisan & Authenticity Certificate -->
+              <div style="margin-top:10px; padding-top:8px; border-top:1px solid #f1f5f9; display:flex; flex-direction:column; gap:6px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size:10px; color:var(--muted); font-weight:700;">Artisan Kriya:</span>
+                  <select class="form-select" style="width:auto; padding:2px 8px; font-size:11px;" onchange="adminAssignArtisan(${item.id}, this.value)">
+                    <option value="Ibu Siti Khodijah" ${item.artisan === 'Ibu Siti Khodijah' ? 'selected' : ''}>Ibu Siti (Bordir)</option>
+                    <option value="Madame Hélène" ${item.artisan === 'Madame Hélène' ? 'selected' : ''}>Mme Hélène (Paris Drape)</option>
+                    <option value="Bapak Nyoman Sujana" ${item.artisan === 'Bapak Nyoman Sujana' ? 'selected' : ''}>Pak Nyoman (Pahat Logam)</option>
+                    <option value="Belum Ditugaskan" ${!item.artisan || item.artisan === 'Belum Ditugaskan' ? 'selected' : ''}>Belum Ditugaskan</option>
+                  </select>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <button class="btn-outline" style="padding:3px 8px; font-size:10.5px;" onclick="openAuthenticityModal(${item.id})">📜 Sertifikat Keaslian</button>
+                  <select class="form-select" style="width:auto; padding:2px 8px; font-size:11px;" onchange="adminUpdateOrderStatus(${item.id}, this.value)">
+                    <option value="new" ${item.status === 'new' ? 'selected' : ''}>New</option>
+                    <option value="contacted" ${item.status === 'contacted' ? 'selected' : ''}>Contacted</option>
+                    <option value="confirmed" ${item.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
+                    <option value="completed" ${item.status === 'completed' ? 'selected' : ''}>Completed</option>
+                  </select>
+                </div>
               </div>
             </div>
           `).join('')}
@@ -926,10 +1023,19 @@ function renderKanbanBoard() {
   if (kpiUsers) kpiUsers.textContent = '8';
 }
 
+function adminAssignArtisan(orderId, artisanName) {
+  store.assignArtisan(orderId, artisanName);
+  renderKanbanBoard();
+  renderAuditTrail();
+  showToast(`Pesanan #${orderId} ditugaskan kepada: ${artisanName}`);
+}
+
 function adminUpdateOrderStatus(id, newStatus) {
   store.updateOrderStatus(id, newStatus);
   renderKanbanBoard();
   renderAccountPortal();
+  renderMsiEisCockpit();
+  renderAuditTrail();
   showToast(`Pesanan #${id} diperbarui: ${newStatus.toUpperCase()}`);
 }
 
@@ -954,6 +1060,230 @@ function renderAccountPortal() {
 }
 
 // ==========================================================================
+// MANAGEMENT INFORMATION SYSTEM (MSI) MODULES
+// Anthony's Framework: TPS, MIS/DSS, EIS, & Information Governance
+// ==========================================================================
+
+function switchMsiTab(tabKey) {
+  // Check RBAC permissions
+  if (store.currentRbacRole === 'artisan' && tabKey !== 'tps') {
+    showToast('Akses ditolak: Master Artisan hanya memiliki otorisasi lembar kerja TPS.');
+    return;
+  }
+  if (store.currentRbacRole === 'advisor' && (tabKey === 'eis' || tabKey === 'mis')) {
+    showToast('Akses ditolak: Client Advisor hanya berwenang pada modul Operasional & Portal Klien.');
+    return;
+  }
+  if (store.currentRbacRole === 'manager' && tabKey === 'eis') {
+    showToast('Akses dibatasi: Kokpit EIS hanya dapat diakses oleh Maison Director.');
+    return;
+  }
+
+  store.currentMsiTab = tabKey;
+  document.querySelectorAll('.msi-tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.msi-pane').forEach(p => p.classList.remove('active'));
+
+  document.getElementById(`msi-tab-btn-${tabKey}`)?.classList.add('active');
+  document.getElementById(`msi-pane-${tabKey}`)?.classList.add('active');
+
+  if (tabKey === 'mis') {
+    renderMsiWipAndInventory();
+  } else if (tabKey === 'eis') {
+    renderMsiEisCockpit();
+  } else if (tabKey === 'gov') {
+    renderAuditTrail();
+  }
+}
+
+function switchMsiRole(roleKey) {
+  store.currentRbacRole = roleKey;
+  store.addAuditLog('System Security', roleKey, 'RBAC_SECURITY', `Sesi beralih ke peran: ${roleKey.toUpperCase()}`);
+  showToast(`✦ Mode RBAC Aktif: ${roleKey.toUpperCase()}. Hak akses menu disesuaikan.`);
+
+  // If on restricted tab, fall back to permissible tab
+  if (roleKey === 'artisan' && store.currentMsiTab !== 'tps') {
+    switchMsiTab('tps');
+  } else if (roleKey === 'advisor' && (store.currentMsiTab === 'eis' || store.currentMsiTab === 'mis')) {
+    switchMsiTab('tps');
+  } else if (roleKey === 'manager' && store.currentMsiTab === 'eis') {
+    switchMsiTab('mis');
+  }
+}
+
+function renderMsiWipAndInventory() {
+  // 1. Render WIP Grid (Theory of Constraints)
+  const wipContainer = document.getElementById('msi-wip-grid-container');
+  if (wipContainer) {
+    wipContainer.innerHTML = store.wipStations.map(station => {
+      const pct = Math.round((station.current / station.limit) * 100);
+      let barColor = '#10b981';
+      let statusPill = '<span class="msi-status-pill msi-status-safe">Aman</span>';
+      if (pct >= 80) {
+        barColor = '#ef4444';
+        statusPill = '<span class="msi-status-pill msi-status-danger">Kritis</span>';
+      } else if (pct >= 60) {
+        barColor = '#f59e0b';
+        statusPill = '<span class="msi-status-pill msi-status-warn">Mendekati Batas</span>';
+      }
+
+      return `
+        <div class="msi-wip-card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
+            <strong style="font-size:13px; color:var(--sapphire-midnight);">${station.name}</strong>
+            ${statusPill}
+          </div>
+          <div style="font-size:24px; font-family:var(--serif); font-weight:600; color:var(--sapphire-midnight);">
+            ${station.current} <small style="font-size:13px; font-family:var(--sans); color:var(--muted);">/ ${station.limit} maks WIP</small>
+          </div>
+          <div class="msi-progress-bar">
+            <div class="msi-progress-fill" style="width:${pct}%; background:${barColor};"></div>
+          </div>
+          <div style="font-size:10.5px; color:var(--muted); text-align:right;">Beban: ${pct}% kapasitas</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // 2. Render Raw Material Inventory Table
+  const tbody = document.getElementById('msi-inventory-tbody');
+  if (tbody) {
+    tbody.innerHTML = store.rawMaterials.map(mat => {
+      let statusHtml = '<span class="msi-status-pill msi-status-safe">Aman</span>';
+      if (mat.stock <= mat.safetyStock) {
+        statusHtml = '<span class="msi-status-pill msi-status-warn">Perlu Reorder</span>';
+      }
+      return `
+        <tr>
+          <td><strong style="font-family:monospace; font-size:11px;">${mat.code}</strong></td>
+          <td>${mat.name}</td>
+          <td style="color:var(--muted);">${mat.origin}</td>
+          <td><strong>${mat.stock.toFixed(1)} ${mat.unit}</strong></td>
+          <td style="color:var(--muted);">${mat.safetyStock} ${mat.unit}</td>
+          <td>${statusHtml}</td>
+          <td>
+            <button class="btn-outline" style="padding:4px 10px; font-size:10.5px;" onclick="restockMaterialItem('${mat.id}', 10)">+ Restock 10</button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+}
+
+function restockMaterialItem(matId, qty) {
+  store.restockMaterial(matId, qty);
+  renderMsiWipAndInventory();
+  renderAuditTrail();
+  const mat = store.rawMaterials.find(m => m.id === matId);
+  showToast(`Pasokan baru dicatat: +${qty} ${mat?.unit || ''} ${mat?.name || ''}`);
+}
+
+function restockMaterialPrompt() {
+  const mat = store.rawMaterials[1]; // Sutra Lyon
+  restockMaterialItem(mat.id, 10);
+}
+
+function renderMsiEisCockpit() {
+  // Calculate dynamic GMV from concierge orders
+  const baseGmv = 58450000;
+  const additionalGmv = store.concierge.reduce((sum, c) => {
+    return sum + (c.totalPrice || 14900000);
+  }, 0);
+  const totalGmv = baseGmv + additionalGmv;
+  const aov = Math.round(totalGmv / (4 + store.concierge.length));
+
+  const gmvEl = document.getElementById('eis-gmv-val');
+  const aovEl = document.getElementById('eis-aov-val');
+  if (gmvEl) gmvEl.textContent = formatRupiah(totalGmv);
+  if (aovEl) aovEl.textContent = formatRupiah(aov);
+}
+
+function renderAuditTrail() {
+  const tbody = document.getElementById('msi-audit-tbody');
+  if (!tbody) return;
+
+  tbody.innerHTML = store.auditLogs.map(log => `
+    <tr>
+      <td style="white-space:nowrap; font-size:11px; color:var(--muted);">${log.timestamp}</td>
+      <td><strong>${log.actor}</strong></td>
+      <td><span class="badge-status badge-confirmed" style="text-transform:uppercase; font-size:10px;">${log.role}</span></td>
+      <td><strong style="font-family:monospace; font-size:11px; color:#0369a1;">${log.module}</strong></td>
+      <td style="font-size:12px;">${log.action}</td>
+      <td><span class="hash-pill">${log.hash.substring(0, 16)}...</span></td>
+    </tr>
+  `).join('');
+}
+
+function clearAuditLogDemo() {
+  store.auditLogs = INITIAL_AUDIT_LOGS.slice(0, 2);
+  store.save('zafira_v3_audit_logs', store.auditLogs);
+  renderAuditTrail();
+  showToast('Audit log berhasil di-reset untuk simulasi pengujian.');
+}
+
+function openAuthenticityModal(orderId) {
+  const item = store.concierge.find(c => c.id === orderId);
+  if (!item) return;
+
+  const serial = item.serial || `ZFR-2026-${orderId.toString().padStart(4, '0')}`;
+  const artisan = item.artisan || 'Madame Hélène & Ibu Siti Khodijah';
+  const container = document.getElementById('authenticity-modal-content');
+  
+  if (container) {
+    container.innerHTML = `
+      <div class="cert-card">
+        <div class="cert-seal-gold">Z</div>
+        <div style="text-align:center; margin-bottom:24px;">
+          <span style="font-size:10.5px; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); font-weight:700;">Maison de Haute Joaillerie & Adibusana</span>
+          <h2 style="font-family:var(--serif); font-size:26px; color:var(--sapphire-midnight); margin:6px 0 4px 0;">Certificat d’Authenticité et de Kriya</h2>
+          <p style="font-size:12px; color:var(--taupe); font-style:italic;">Bukti Resmi Asal-Usul & Pengerjaan Tangan Empu Kriya ZAFIRA</p>
+        </div>
+
+        <div style="background:#fff; border:1px solid #e2e8f0; border-radius:var(--radius-xs); padding:20px 24px; margin-bottom:20px; font-size:12.5px;">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:12px;">
+            <div>
+              <span style="color:var(--muted); font-size:11px; display:block;">Nomor Seri Koleksi (Batch Lot):</span>
+              <strong style="font-family:monospace; font-size:14px; color:var(--sapphire-midnight);">${serial}</strong>
+            </div>
+            <div>
+              <span style="color:var(--muted); font-size:11px; display:block;">Pemilik Terdaftar (VIC Client):</span>
+              <strong style="color:var(--sapphire-midnight);">${item.name}</strong>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:12px; border-top:1px solid #f1f5f9; padding-top:10px;">
+            <div>
+              <span style="color:var(--muted); font-size:11px; display:block;">Kreasi Adibusana:</span>
+              <strong>${item.service}</strong>
+            </div>
+            <div>
+              <span style="color:var(--muted); font-size:11px; display:block;">Master Artisan Penanggung Jawab:</span>
+              <strong style="color:var(--gold);">${artisan}</strong>
+            </div>
+          </div>
+          <div style="border-top:1px solid #f1f5f9; padding-top:10px;">
+            <span style="color:var(--muted); font-size:11px; display:block;">Spesifikasi & Detail Pesanan:</span>
+            <p style="color:var(--sapphire-midnight); font-size:12px; margin-top:4px; white-space:pre-wrap;">${item.notes}</p>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--muted); border-top:1px solid rgba(197,160,89,0.3); padding-top:16px;">
+          <div>
+            <span>Verifikasi Atelier: <strong>Atelier Kebayoran Baru, Jakarta</strong></span><br>
+            <span>Standard: <strong>Haute Horlogerie & Couture Compliance (ISO/IEC 27001)</strong></span>
+          </div>
+          <div style="text-align:right;">
+            <span style="font-family:monospace; font-size:10px; color:#475569;">Hash Kriptografis: SHA-256</span><br>
+            <span class="hash-pill">9a8f7c2b...verified</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  document.getElementById('authenticity-modal')?.classList.add('open');
+  document.getElementById('drawer-backdrop')?.classList.add('open');
+}
+
+// ==========================================================================
 // VIEW SWITCHER & NAVIGATION
 // ==========================================================================
 
@@ -973,6 +1303,9 @@ function switchView(viewName) {
     document.getElementById('admin-view')?.classList.add('active');
     document.getElementById('btn-view-admin')?.classList.add('active');
     renderKanbanBoard();
+    renderMsiWipAndInventory();
+    renderMsiEisCockpit();
+    renderAuditTrail();
   } else if (viewName === 'account') {
     document.getElementById('account-view')?.classList.add('active');
     document.getElementById('btn-view-account')?.classList.add('active');
@@ -1010,6 +1343,9 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCartDrawer();
   renderKanbanBoard();
   renderAccountPortal();
+  renderMsiWipAndInventory();
+  renderMsiEisCockpit();
+  renderAuditTrail();
 
   // Search input handler
   const searchInput = document.getElementById('sf-search-input');

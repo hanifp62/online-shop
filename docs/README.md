@@ -29,6 +29,7 @@ docs/
 │   └── LUXURY_ECOMMERCE_HCI_UX_RESEARCH_AND_ATM_BENCHMARK.md # Riset mendalam HCI/IMK & ATM luxury 2026
 ├── 03-architecture/
 │   ├── TARGET_ARCHITECTURE.md                # Arsitektur sistem target & struktur modul Laravel
+│   ├── MANAGEMENT_INFORMATION_SYSTEM_AND_ENTERPRISE_ARCHITECTURE.md # Kerangka kerja MSI (TPS, MIS/DSS, EIS) & DFD
 │   ├── DATABASE_DESIGN.md                    # Desain database terpadu, ERD, & kamus data
 │   ├── ARCHITECTURE_DECISIONS.md             # Architecture Decision Records (ADR-001 s/d ADR-005)
 │   ├── DESIGN.md                             # Semantic Design System ZAFIRA untuk Google Stitch

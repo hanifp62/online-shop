@@ -340,48 +340,323 @@
         </div>
       </aside>
 
-      <!-- Main Workspace -->
+      <!-- Main Workspace (MSI Enterprise Architecture) -->
       <section class="admin-main">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
           <div>
-            <span style="font-size:12px; color:var(--muted);">Administration / ZAFIRA Atelier Command</span>
-            <h2 style="font-family:var(--serif); font-size:30px; font-weight:500; color:var(--sapphire-midnight);">Pipeline Janji Temu & Pesanan Concierge</h2>
+            <span style="font-size:12px; color:var(--muted);">Manajemen Sistem Informasi (MSI) / ZAFIRA Atelier Command</span>
+            <h2 style="font-family:var(--serif); font-size:30px; font-weight:500; color:var(--sapphire-midnight);">Sistem Informasi Atelier & Komando Adibusana</h2>
           </div>
-          <div>
-            <button class="btn-gold" style="padding:10px 22px; font-size:11px;" onclick="openRendezvousModal()">+ Buat Janji Temu Baru</button>
+          <div style="display:flex; gap:12px; align-items:center;">
+            <div style="display:flex; align-items:center; gap:8px; background:#fff; padding:6px 14px; border:1px solid #cbd5e1; border-radius:var(--radius-xs);">
+              <span style="font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); font-weight:700;">Role RBAC:</span>
+              <select id="msi-rbac-select" class="form-select" style="padding:2px 8px; font-size:11px; width:auto; border:none; background:transparent; font-weight:600; color:var(--sapphire-midnight);" onchange="switchMsiRole(this.value)">
+                <option value="director">Maison Director (Full EIS + All)</option>
+                <option value="manager">Atelier Manager (MIS/DSS + TPS)</option>
+                <option value="advisor">Client Advisor (TPS Order Desk)</option>
+                <option value="artisan">Master Artisan (Work Orders Only)</option>
+              </select>
+            </div>
+            <button class="btn-gold" style="padding:10px 20px; font-size:11px;" onclick="openRendezvousModal()">+ Buat Janji Temu</button>
           </div>
         </div>
 
-        <!-- KPI Cards Grid -->
-        <div class="stat-cards-grid">
-          <div class="stat-box">
-            <span class="stat-label">Total Kreasi Aktif</span>
-            <div class="stat-value" id="admin-kpi-products">8</div>
-            <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Terverifikasi di Katalog</div>
+        <!-- Anthony's Hierarchy 4-Pillar MSI Navigation Tabs -->
+        <div class="msi-tabs-nav" id="msi-level-nav">
+          <button class="msi-tab-btn active" id="msi-tab-btn-tps" onclick="switchMsiTab('tps')">
+            <span class="msi-tab-level">Level Operasional</span>
+            <strong>1. TPS · Pipeline & Work Order</strong>
+          </button>
+          <button class="msi-tab-btn" id="msi-tab-btn-mis" onclick="switchMsiTab('mis')">
+            <span class="msi-tab-level">Level Taktis & Manajerial</span>
+            <strong>2. MIS & DSS · Kapasitas WIP & Stok</strong>
+          </button>
+          <button class="msi-tab-btn" id="msi-tab-btn-eis" onclick="switchMsiTab('eis')">
+            <span class="msi-tab-level">Level Strategis</span>
+            <strong>3. EIS · Executive Intelligence Cockpit</strong>
+          </button>
+          <button class="msi-tab-btn" id="msi-tab-btn-gov" onclick="switchMsiTab('gov')">
+            <span class="msi-tab-level">Tata Kelola & Kepatuhan</span>
+            <strong>4. Audit Trail & UU PDP</strong>
+          </button>
+        </div>
+
+        <!-- ==================================================================
+             PANE 1: TPS (TRANSACTION PROCESSING SYSTEM)
+             ================================================================== -->
+        <div class="msi-pane active" id="msi-pane-tps">
+          <!-- KPI Cards Grid -->
+          <div class="stat-cards-grid">
+            <div class="stat-box">
+              <span class="stat-label">Total Kreasi Aktif</span>
+              <div class="stat-value" id="admin-kpi-products">8</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Terverifikasi di Katalog</div>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Kategori Wastra</span>
+              <div class="stat-value" id="admin-kpi-categories">8</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Warisan & Kapsul</div>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Pesanan & Concierge</span>
+              <div class="stat-value" id="admin-kpi-orders">4</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Sinkron ke /akun</div>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Klien VIP Terdaftar</span>
+              <div class="stat-value" id="admin-kpi-users">8</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Multi-Guard Client</div>
+            </div>
           </div>
-          <div class="stat-box">
-            <span class="stat-label">Kategori Wastra</span>
-            <div class="stat-value" id="admin-kpi-categories">8</div>
-            <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Warisan & Kapsul</div>
+
+          <!-- 4-Column Kanban Pipeline Board -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <div>
+              <h3 style="font-family:var(--serif); font-size:20px; color:var(--sapphire-midnight);">Pipeline Layanan Concierge & Kriya Atelier</h3>
+              <p style="font-size:12px; color:var(--muted); margin-top:4px;">Ubah status di dropdown kartu untuk melihat sinkronisasi instan ke portal akun pelanggan dan pencatatan audit log mutlak.</p>
+            </div>
           </div>
-          <div class="stat-box">
-            <span class="stat-label">Pesanan & Concierge</span>
-            <div class="stat-value" id="admin-kpi-orders">4</div>
-            <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Sinkron ke /akun</div>
-          </div>
-          <div class="stat-box">
-            <span class="stat-label">Klien VIP Terdaftar</span>
-            <div class="stat-value" id="admin-kpi-users">8</div>
-            <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Multi-Guard Client</div>
+          
+          <div class="kanban-board" id="kanban-board-container">
+            <!-- Populated dynamically via renderKanbanBoard() -->
           </div>
         </div>
 
-        <!-- 4-Column Kanban Pipeline Board -->
-        <h3 style="font-family:var(--serif); font-size:20px; color:var(--sapphire-midnight); margin-bottom:12px;">Pipeline Layanan Concierge Atelier</h3>
-        <p style="font-size:12px; color:var(--muted); margin-bottom:18px;">Ubah status di dropdown kartu untuk melihat sinkronisasi instan ke portal akun pelanggan.</p>
-        
-        <div class="kanban-board" id="kanban-board-container">
-          <!-- Populated dynamically via renderKanbanBoard() -->
+        <!-- ==================================================================
+             PANE 2: MIS & DSS (MANAGEMENT INFORMATION & DECISION SUPPORT SYSTEM)
+             ================================================================== -->
+        <div class="msi-pane" id="msi-pane-mis">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <div>
+              <h3 style="font-family:var(--serif); font-size:20px; color:var(--sapphire-midnight);">Manajemen Kapasitas WIP Atelier & Deteksi Bottleneck (TOC Goldratt)</h3>
+              <p style="font-size:12px; color:var(--muted); margin-top:4px;">Memantau ambang batas beban kerja pengrajin (*WIP Limit*) untuk menjamin kesempurnaan kriya tangan tanpa cacat produksi.</p>
+            </div>
+            <div style="font-size:11px; background:#eff6ff; color:#1e40af; padding:6px 14px; border-radius:var(--radius-xs); border:1px solid #bfdbfe;">
+              ⚡ DSS Active: Cycle Time Optimization
+            </div>
+          </div>
+
+          <!-- WIP Cards Grid -->
+          <div class="msi-wip-grid" id="msi-wip-grid-container">
+            <!-- Populated dynamically -->
+          </div>
+
+          <!-- Bottleneck Alert Banner -->
+          <div class="msi-bottleneck-banner" id="msi-bottleneck-alert">
+            <div>
+              <strong style="color:#92400e; font-size:13px;">✦ Peringatan DSS: Stasiun "Bordir & Kriya Tangan" Mendekati Kapasitas Maksimum (75% WIP)</strong>
+              <p style="font-size:11.5px; color:#78350f; margin-top:4px;">Rekomendasi Sistem: Alokasikan 1 pesanan Kebaya Lumière ke Master Artisan Ibu Siti Khodijah untuk mencegah deviasi SLA pengiriman.</p>
+            </div>
+            <button class="btn-outline" style="padding:6px 14px; font-size:11px; white-space:nowrap;" onclick="showToast('DSS: Beban kerja berhasil diseimbangkan ke stasiun cadangan.')">Seimbangkan Beban</button>
+          </div>
+
+          <!-- Luxury Raw Material Inventory Control -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin:28px 0 14px 0;">
+            <div>
+              <h3 style="font-family:var(--serif); font-size:20px; color:var(--sapphire-midnight);">Pengendalian Inventori Bahan Baku Langka & Wastra Warisan</h3>
+              <p style="font-size:12px; color:var(--muted); margin-top:4px;">Pelacakan stok bahan bersertifikat asal Prancis, Italia, dan sentra tenun Nusantara dengan sistem Safety Stock & Reorder Point.</p>
+            </div>
+            <button class="btn-gold" style="padding:8px 18px; font-size:11px;" onclick="restockMaterialPrompt()">+ Catat Penerimaan Pasokan</button>
+          </div>
+
+          <div class="msi-table-container">
+            <table class="msi-table">
+              <thead>
+                <tr>
+                  <th>Kode Bahan</th>
+                  <th>Nama Material Langka</th>
+                  <th>Asal & Pemasok Terverifikasi</th>
+                  <th>Stok Tersedia</th>
+                  <th>Safety Stock</th>
+                  <th>Status ROP</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="msi-inventory-tbody">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- SLA & Lead Time Analytics -->
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin-top:20px;">
+            <div class="stat-box">
+              <span class="stat-label">Rata-Rata Siklus Kriya</span>
+              <div class="stat-value">5.4 <small style="font-size:16px; font-family:var(--sans);">hari</small></div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Lebih cepat dari SLA (Target 7 hari)</div>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Ketepatan Waktu (On-Time)</span>
+              <div class="stat-value">96.8%</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Standar Salon Haute Joaillerie</div>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Tingkat Cacat Kriya (QC Zero)</span>
+              <div class="stat-value">0.0%</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Inspeksi Ganda Master Artisan</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================================================================
+             PANE 3: EIS (EXECUTIVE INFORMATION SYSTEM / COCKPIT)
+             ================================================================== -->
+        <div class="msi-pane" id="msi-pane-eis">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <div>
+              <h3 style="font-family:var(--serif); font-size:20px; color:var(--sapphire-midnight);">Kokpit Eksekutif & Intelligence Bisnis Maison (EIS/ESS)</h3>
+              <p style="font-size:12px; color:var(--muted); margin-top:4px;">Metrik performa strategis tingkat tinggi untuk Maison Director & Chief Creative Officer.</p>
+            </div>
+            <div style="font-size:11px; color:var(--gold); font-weight:700; letter-spacing:0.1em; text-transform:uppercase;">
+              Periode Berjalan: Q4 2026
+            </div>
+          </div>
+
+          <!-- Executive Scorecard -->
+          <div class="stat-cards-grid">
+            <div class="stat-box">
+              <span class="stat-label">GMV (Gross Merchandise Value)</span>
+              <div class="stat-value" id="eis-gmv-val">Rp74.550.000</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Kalkulasi Dinamis Pesanan</div>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">AOV (Average Order Value)</span>
+              <div class="stat-value" id="eis-aov-val">Rp14.910.000</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Segmen High-Net-Worth</div>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Utilisasi Kapasitas Atelier</span>
+              <div class="stat-value">88.5%</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Kisaran Optimal Beban Kriya</div>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Gross Margin Adibusana</span>
+              <div class="stat-value">74.2%</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Nilai Tambah Kriya Tangan</div>
+            </div>
+          </div>
+
+          <!-- EIS Grid: Revenue Contribution Chart & Strategic Recommendation Engine -->
+          <div class="msi-eis-grid">
+            <div class="msi-chart-container">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h4 style="font-family:var(--serif); font-size:17px; color:var(--sapphire-midnight);">Distribusi Pendapatan Berdasarkan Kategori Wastra</h4>
+                <span style="font-size:11px; color:var(--muted);">Realisasi vs Target</span>
+              </div>
+              
+              <div class="msi-bar-row">
+                <div class="msi-bar-header">
+                  <span>Warisan Nusantara (Batik Tulis & Songket Emas)</span>
+                  <strong>48% · Rp35.784.000</strong>
+                </div>
+                <div class="msi-bar-track">
+                  <div class="msi-bar-fill" style="width:48%;"></div>
+                </div>
+              </div>
+
+              <div class="msi-bar-row">
+                <div class="msi-bar-header">
+                  <span>Kapsul Adibusana (Gaun Sutra Lyon & Bordir Prancis)</span>
+                  <strong>35% · Rp26.092.500</strong>
+                </div>
+                <div class="msi-bar-track">
+                  <div class="msi-bar-fill" style="width:35%;"></div>
+                </div>
+              </div>
+
+              <div class="msi-bar-row">
+                <div class="msi-bar-header">
+                  <span>Aksesori Kriya & Minaudière Logam Pahat</span>
+                  <strong>17% · Rp12.673.500</strong>
+                </div>
+                <div class="msi-bar-track">
+                  <div class="msi-bar-fill" style="width:17%;"></div>
+                </div>
+              </div>
+
+              <div style="margin-top:24px; padding-top:16px; border-top:1px solid #f1f5f9; font-size:11.5px; color:var(--muted);">
+                ✦ Retensi Klien VIP (VIC Retention Rate): <strong>91.5%</strong> · Pertumbuhan Pemesanan Ulang (*Repeat Orders*): <strong>+24.6% YoY</strong>.
+              </div>
+            </div>
+
+            <!-- DSS Strategic Recommendation Box -->
+            <div class="msi-rec-box">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
+                <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--gold);"></span>
+                <h4 style="font-family:var(--serif); font-size:17px; color:var(--sapphire-midnight);">DSS Strategic Recommendations</h4>
+              </div>
+
+              <div class="msi-rec-item">
+                <strong style="color:var(--sapphire-midnight); display:block; margin-bottom:4px;">1. Penguatan Pasokan Brokat Calais</strong>
+                Tingkat permintaan Kebaya Lumière meningkat 35% menjelang kuartal pernikahan. Disarankan menambah kuota impor kain 30 meter.
+              </div>
+
+              <div class="msi-rec-item">
+                <strong style="color:var(--sapphire-midnight); display:block; margin-bottom:4px;">2. Penambahan Slot Malam Kebayoran</strong>
+                Keterisian slot janji temu privat akhir pekan mencapai 95%. Disarankan membuka 2 slot eksklusif malam (19:00 WIB).
+              </div>
+
+              <div class="msi-rec-item">
+                <strong style="color:var(--sapphire-midnight); display:block; margin-bottom:4px;">3. Ekspansi Kapsul Batik Tulis Pria</strong>
+                Margin laba Chemise Rivière mencapai 76%. Dianjurkan merilis 3 varian motif sogan klasik untuk musim liburan.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================================================================
+             PANE 4: GOVERNANCE & AUDIT TRAIL (UU PDP & INTEGRITAS DATA)
+             ================================================================== -->
+        <div class="msi-pane" id="msi-pane-gov">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <div>
+              <h3 style="font-family:var(--serif); font-size:20px; color:var(--sapphire-midnight);">Tata Kelola Sistem Informasi, Audit Trail & Kepatuhan Privasi (UU PDP)</h3>
+              <p style="font-size:12px; color:var(--muted); margin-top:4px;">Rekaman transaksi imutabel (*tamper-evident*) dan kebijakan keamanan data pribadi klien VIP.</p>
+            </div>
+            <button class="btn-outline" style="padding:6px 14px; font-size:11px;" onclick="clearAuditLogDemo()">Reset Audit Log</button>
+          </div>
+
+          <!-- RBAC Matrix Card -->
+          <div style="background:#fff; border:1px solid #e2e8f0; border-radius:var(--radius-xs); padding:20px; margin-bottom:24px;">
+            <h4 style="font-family:var(--serif); font-size:16px; color:var(--sapphire-midnight); margin-bottom:12px;">Matriks Hak Akses Berbasis Peran (RBAC Policy)</h4>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px; font-size:12px;">
+              <div style="background:#f8fafc; padding:12px; border-radius:var(--radius-xs); border-left:3px solid #0369a1;">
+                <strong>Maison Director:</strong>
+                <p style="color:var(--muted); font-size:11px; margin-top:4px;">Akses Penuh: TPS, MIS/DSS, EIS Executive Cockpit, Laporan Keuangan & Audit Log.</p>
+              </div>
+              <div style="background:#f8fafc; padding:12px; border-radius:var(--radius-xs); border-left:3px solid #15803d;">
+                <strong>Atelier Manager:</strong>
+                <p style="color:var(--muted); font-size:11px; margin-top:4px;">Akses Penuh: TPS Kanban, Kontrol Kapasitas WIP, Inventori Bahan, dan Penerbitan Sertifikat.</p>
+              </div>
+              <div style="background:#f8fafc; padding:12px; border-radius:var(--radius-xs); border-left:3px solid #b45309;">
+                <strong>Client Advisor:</strong>
+                <p style="color:var(--muted); font-size:11px; margin-top:4px;">Akses Terbatas: Intake Pesanan, Penjadwalan Temu Janji, dan Komunikasi Klien.</p>
+              </div>
+              <div style="background:#f8fafc; padding:12px; border-radius:var(--radius-xs); border-left:3px solid #7e22ce;">
+                <strong>Master Artisan:</strong>
+                <p style="color:var(--muted); font-size:11px; margin-top:4px;">Akses Khusus: Lembar Instruksi Kerja Kriya (*Work Order*) dan Pembaruan Tahapan Produksi.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Audit Log Table -->
+          <div class="msi-table-container">
+            <table class="msi-table">
+              <thead>
+                <tr>
+                  <th>Waktu (WIB)</th>
+                  <th>Aktor</th>
+                  <th>Peran</th>
+                  <th>Sub-Sistem</th>
+                  <th>Aksi / Mutasi Data</th>
+                  <th>Hash Integritas (SHA-256)</th>
+                </tr>
+              </thead>
+              <tbody id="msi-audit-tbody">
+                <!-- Populated dynamically via renderAuditTrail() -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
     </div>
@@ -490,6 +765,23 @@
         Konfirmasi Janji Temu Bersama Client Advisor ⟶
       </button>
     </form>
+  </div>
+
+  <!-- Digital Certificate of Authenticity Modal (MSI Provenance) -->
+  <div class="modal-window" id="authenticity-modal" role="dialog" aria-modal="true" aria-labelledby="cert-modal-title" style="max-width:720px; background:#fcfbf9; padding:0; overflow:hidden;">
+    <div style="padding:16px 24px; background:var(--sapphire-midnight); display:flex; justify-content:space-between; align-items:center; color:#fff;">
+      <span style="font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-light);">Sistem Ketertelusuran & Sertifikat Kriya Digital</span>
+      <button class="btn-close" style="color:#fff;" onclick="closeAllModals()" aria-label="Tutup">&times;</button>
+    </div>
+    
+    <div style="padding:36px 32px;" id="authenticity-modal-content">
+      <!-- Populated dynamically via openAuthenticityModal(orderId) -->
+    </div>
+
+    <div style="padding:16px 32px; background:#f8fafc; border-top:1px solid #e2e8f0; display:flex; justify-content:flex-end; gap:12px;">
+      <button class="btn-outline" style="padding:10px 20px; font-size:11px;" onclick="closeAllModals()">Tutup</button>
+      <button class="btn-gold" style="padding:10px 24px; font-size:11px;" onclick="window.print(); showToast('Mencetak Lembar Sertifikat Keaslian Adibusana...')">⎙ Cetak Sertifikat Resmi</button>
+    </div>
   </div>
 
   <!-- Toast Notification Container -->

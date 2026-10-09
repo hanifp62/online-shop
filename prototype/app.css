@@ -1335,6 +1335,256 @@ body {
 }
 
 /* ==========================================================================
+   MANAGEMENT INFORMATION SYSTEM (MSI) STYLES
+   Anthony's Hierarchy: TPS, MIS/DSS, EIS, & Governance
+   ========================================================================== */
+.msi-tabs-nav {
+  display: flex;
+  gap: 10px;
+  background: #fff;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 28px;
+  box-shadow: var(--shadow-sm);
+  overflow-x: auto;
+}
+.msi-tab-btn {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px 18px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-xs);
+  text-align: left;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.msi-tab-btn:hover {
+  background: #f8fafc;
+}
+.msi-tab-btn.active {
+  background: var(--sapphire-midnight);
+  border-color: var(--sapphire-midnight);
+  box-shadow: 0 4px 12px rgba(15, 28, 51, 0.15);
+}
+.msi-tab-level {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  font-weight: 700;
+  transition: var(--transition-smooth);
+}
+.msi-tab-btn strong {
+  font-size: 13px;
+  color: var(--sapphire-midnight);
+  font-weight: 600;
+  transition: var(--transition-smooth);
+}
+.msi-tab-btn.active .msi-tab-level {
+  color: var(--gold-light);
+}
+.msi-tab-btn.active strong {
+  color: #fff;
+}
+
+.msi-pane {
+  display: none;
+}
+.msi-pane.active {
+  display: block;
+  animation: fadeIn 0.35s ease;
+}
+
+/* MIS / DSS WIP & Capacity Widgets */
+.msi-wip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.msi-wip-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-xs);
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+}
+.msi-progress-bar {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 10px 0 6px 0;
+}
+.msi-progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+.msi-bottleneck-banner {
+  background: #fffbeb;
+  border-left: 4px solid #f59e0b;
+  padding: 14px 20px;
+  border-radius: var(--radius-xs);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* Raw Material Inventory Table */
+.msi-table-container {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 28px;
+}
+.msi-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  text-align: left;
+}
+.msi-table th {
+  background: #f8fafc;
+  padding: 12px 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  border-bottom: 1px solid #e2e8f0;
+}
+.msi-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #f1f5f9;
+  color: var(--sapphire-midnight);
+}
+.msi-table tr:hover td {
+  background: #fafafa;
+}
+.msi-status-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.msi-status-safe { background: #dcfce7; color: #166534; }
+.msi-status-warn { background: #fef3c7; color: #92400e; }
+.msi-status-danger { background: #fee2e2; color: #991b1b; }
+
+/* EIS Executive Cockpit */
+.msi-eis-grid {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+.msi-chart-container {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-xs);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+.msi-bar-row {
+  margin-bottom: 18px;
+}
+.msi-bar-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sapphire-midnight);
+  margin-bottom: 6px;
+}
+.msi-bar-track {
+  height: 12px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.msi-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--sapphire-midnight), var(--gold));
+  border-radius: 6px;
+}
+.msi-rec-box {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-xs);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+.msi-rec-item {
+  padding: 12px 14px;
+  border-left: 3px solid var(--gold);
+  background: #f8fafc;
+  border-radius: var(--radius-xs);
+  margin-bottom: 12px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Audit & Governance */
+.hash-pill {
+  font-family: monospace;
+  font-size: 10.5px;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #475569;
+}
+
+/* Digital Certificate of Authenticity Modal */
+.cert-card {
+  background: #fcfbf9;
+  border: 2px solid var(--gold);
+  padding: 36px 40px;
+  border-radius: var(--radius-xs);
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+  max-width: 680px;
+  margin: 0 auto;
+}
+.cert-card::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  border: 1px solid rgba(197, 160, 89, 0.4);
+  pointer-events: none;
+}
+.cert-seal-gold {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #dfcaa0 0%, #b89858 80%, #8a6f3a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(184, 152, 88, 0.4);
+  margin: 0 auto 16px auto;
+}
+
+/* ==========================================================================
    DRAWER, MODAL, AND TOAST NOTIFICATIONS
    ========================================================================== */
 .drawer-backdrop {
