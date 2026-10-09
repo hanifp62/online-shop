@@ -40,7 +40,8 @@ docs/
 │   ├── TEST_PLAN.md                          # Rencana pengujian otomatis, manual, & browser
 │   ├── QUALITY_REVIEW.md                     # Evaluasi kualitas lintas lapisan & verifikasi hasil
 │   ├── PROJECT_READINESS_REPORT.md           # Laporan kesiapan proyek & status deliverable
-│   └── FOUNDATION_CHANGELOG.md               # Log perubahan teknis pada fondasi & konfigurasi
+│   ├── FOUNDATION_CHANGELOG.md               # Log perubahan teknis pada fondasi & konfigurasi
+│   └── LOCAL_SKILLS_MANAGEMENT_REPORT.md     # Laporan audit, instalasi 589 skills, & panduan rollback
 └── 06-prototype/
     ├── PROTOTYPE_GUIDE.md                    # Panduan menjalankan dan menjelajahi prototype
     ├── SCREEN_AND_FLOW_MAPPING.md            # Pemetaan layar dan interaksi prototype
