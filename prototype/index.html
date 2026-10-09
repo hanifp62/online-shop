@@ -3,20 +3,149 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ZAFIRA: La Maison de Lumière — Interactive Prototype</title>
+  <title>ZAFIRA: La Maison de Lumière — Interactive Prototype v2.0</title>
   <link rel="icon" href="../public/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=bodoni-moda:400,400i,500,500i,600&family=manrope:300,400,500,600,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="app.css">
+  <style>
+    /* CRITICAL INLINE FALLBACK STYLING: Guarantees 100% visual rendering under all offline/local file conditions */
+    :root {
+      --ivory: #f3efe7;
+      --parchment: #e8e0d3;
+      --sand: #c8b8a4;
+      --taupe: #927f6b;
+      --ink: #20201d;
+      --muted: #6e6a62;
+      --sapphire: #263a5d;
+      --sapphire-deep: #17263f;
+      --gold: #b69a64;
+      --gold-light: #dfcaa0;
+      --white: #fffdf9;
+      --line: rgba(32, 32, 29, 0.15);
+      --serif: 'Bodoni Moda', 'Times New Roman', serif;
+      --sans: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--sans); color: var(--ink); background: var(--ivory); line-height: 1.6; font-size: 14px; }
+    .proto-banner { background: #0d1726; color: #d1d5db; padding: 10px 24px; font-size: 11px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--gold); position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.25); }
+    .proto-badge { background: rgba(182, 154, 100, 0.25); color: var(--gold-light); border: 1px solid var(--gold); padding: 3px 10px; border-radius: 4px; font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.12em; margin-right: 12px; }
+    .proto-btn { background: rgba(255, 255, 255, 0.08); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); padding: 6px 14px; border-radius: 4px; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; transition: all 0.2s ease; }
+    .proto-btn:hover, .proto-btn.active { background: var(--gold); color: var(--sapphire-deep); border-color: var(--gold); font-weight: 700; }
+    .view-container { display: none; }
+    .view-container.active { display: block; }
+    .announcement { background: var(--sapphire-deep); color: rgba(255, 255, 255, 0.9); text-align: center; padding: 9px 16px; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
+    .announcement a { color: var(--gold-light); text-decoration: underline; cursor: pointer; font-weight: 600; }
+    .sf-header { padding: 22px 48px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; border-bottom: 1px solid var(--line); background: var(--white); position: sticky; top: 41px; z-index: 100; box-shadow: 0 2px 12px rgba(28,27,24,0.04); }
+    .sf-nav { display: flex; gap: 28px; }
+    .sf-nav a { color: var(--ink); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; text-decoration: none; cursor: pointer; transition: color 0.2s ease; }
+    .sf-nav a:hover { color: var(--gold); }
+    .sf-brand { text-align: center; font-family: var(--serif); font-size: 30px; font-weight: 500; letter-spacing: 0.18em; color: var(--sapphire-deep); text-decoration: none; }
+    .sf-brand span { display: block; font-family: var(--sans); font-size: 9px; letter-spacing: 0.3em; color: var(--taupe); text-transform: uppercase; margin-top: -2px; }
+    .sf-actions { display: flex; justify-content: flex-end; gap: 14px; align-items: center; }
+    .action-btn { background: transparent; border: 1px solid var(--line); border-radius: 4px; cursor: pointer; color: var(--ink); display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 7px 12px; font-weight: 600; }
+    .badge-count { background: var(--sapphire-deep); color: #fff; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 10px; }
+    .sf-hero { position: relative; height: 500px; background: linear-gradient(to right, rgba(23, 38, 63, 0.92) 0%, rgba(23, 38, 63, 0.55) 60%, rgba(23, 38, 63, 0.2) 100%), url('https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=2000&q=90') center/cover no-repeat; color: #fff; display: flex; align-items: center; padding: 0 80px; }
+    .hero-content { max-width: 620px; }
+    .hero-eyebrow { color: var(--gold-light); font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; margin-bottom: 12px; display: block; font-weight: 700; }
+    .hero-title { font-family: var(--serif); font-size: 50px; font-weight: 400; line-height: 1.15; margin-bottom: 16px; }
+    .hero-desc { font-size: 15px; color: rgba(255, 255, 255, 0.88); margin-bottom: 28px; line-height: 1.75; }
+    .btn-gold { background: var(--gold); color: var(--sapphire-deep); border: 1px solid var(--gold); padding: 12px 28px; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; cursor: pointer; border-radius: 3px; text-decoration: none; display: inline-block; transition: all 0.2s ease; }
+    .btn-gold:hover { background: #fff; border-color: #fff; color: var(--sapphire-deep); }
+    .btn-outline { background: transparent; color: #fff; border: 1px solid rgba(255, 255, 255, 0.45); padding: 12px 28px; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; cursor: pointer; border-radius: 3px; margin-left: 12px; transition: all 0.2s ease; }
+    .btn-outline:hover { background: rgba(255, 255, 255, 0.12); border-color: #fff; }
+    .section-pad { padding: 60px 48px; max-width: 1360px; margin: 0 auto; }
+    .sec-header { text-align: center; margin-bottom: 36px; }
+    .sec-eyebrow { color: var(--gold); font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; display: block; margin-bottom: 8px; font-weight: 600; }
+    .sec-title { font-family: var(--serif); font-size: 36px; font-weight: 400; color: var(--sapphire-deep); }
+    .category-pills { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
+    .cat-pill { background: var(--white); border: 1px solid var(--line); padding: 8px 18px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; border-radius: 20px; font-weight: 600; transition: all 0.2s ease; }
+    .cat-pill:hover, .cat-pill.active { background: var(--sapphire-deep); color: #fff; border-color: var(--sapphire-deep); }
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 28px; }
+    .product-card { background: var(--white); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 14px 32px rgba(23, 38, 63, 0.08); border-color: var(--sand); }
+    .product-media { position: relative; aspect-ratio: 3/4; overflow: hidden; background: #e2e8f0; }
+    .product-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .product-card:hover .product-media img { transform: scale(1.04); }
+    .badge-creations { position: absolute; top: 12px; left: 12px; background: rgba(23, 38, 63, 0.88); color: #fff; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; padding: 4px 8px; border-radius: 2px; font-weight: 600; }
+    .product-overlay-actions { position: absolute; bottom: 12px; left: 12px; right: 12px; display: flex; gap: 8px; }
+    .btn-quick { flex: 1; background: rgba(255, 255, 255, 0.95); border: none; padding: 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; color: var(--sapphire-deep); border-radius: 3px; }
+    .btn-quick:hover { background: var(--gold); color: var(--sapphire-deep); }
+    .product-info { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+    .product-cat { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--taupe); margin-bottom: 4px; font-weight: 600; }
+    .product-title { font-family: var(--serif); font-size: 20px; font-weight: 500; margin-bottom: 6px; color: var(--ink); }
+    .product-desc-snippet { font-size: 12px; color: var(--muted); margin-bottom: 14px; line-height: 1.5; }
+    .product-meta { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 12px; border-top: 1px solid rgba(0, 0, 0, 0.06); }
+    .product-price { font-family: var(--serif); font-size: 17px; font-weight: 600; color: var(--sapphire-deep); }
+    .color-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; border: 1px solid rgba(0,0,0,0.25); }
+    /* Drawer, Modal, Admin Styles */
+    .drawer-backdrop { position: fixed; inset: 0; background: rgba(13, 23, 38, 0.7); backdrop-filter: blur(4px); z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+    .cart-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: 440px; max-width: 90vw; background: var(--white); z-index: 2001; box-shadow: 0 24px 60px rgba(0,0,0,0.3); transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; }
+    .cart-drawer.open { transform: translateX(0); }
+    .drawer-header { padding: 24px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+    .drawer-header h3 { font-family: var(--serif); font-size: 22px; font-weight: 500; }
+    .btn-close { background: transparent; border: none; font-size: 24px; cursor: pointer; color: var(--muted); }
+    .drawer-body { padding: 24px; overflow-y: auto; flex-grow: 1; }
+    .cart-item { display: flex; gap: 16px; padding-bottom: 18px; margin-bottom: 18px; border-bottom: 1px solid var(--line); }
+    .cart-item img { width: 72px; height: 96px; object-fit: cover; border-radius: 3px; }
+    .cart-item-detail { flex-grow: 1; }
+    .cart-item-title { font-family: var(--serif); font-size: 16px; font-weight: 500; margin-bottom: 2px; }
+    .cart-item-price { font-size: 13px; color: var(--sapphire-deep); font-weight: 700; margin-bottom: 8px; }
+    .monogram-tag { display: inline-block; background: rgba(182, 154, 100, 0.18); color: #8b6e35; border: 1px dashed var(--gold); font-size: 10px; padding: 2px 7px; border-radius: 3px; margin-bottom: 8px; font-weight: 600; }
+    .cart-item-controls { display: flex; justify-content: space-between; align-items: center; }
+    .qty-stepper { display: flex; border: 1px solid var(--line); border-radius: 3px; }
+    .qty-btn { background: transparent; border: none; padding: 4px 10px; cursor: pointer; font-weight: 600; }
+    .qty-val { padding: 4px 8px; font-size: 12px; border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
+    .btn-remove { background: transparent; border: none; color: #a83232; font-size: 11px; cursor: pointer; text-decoration: underline; }
+    .drawer-footer { padding: 24px; border-top: 1px solid var(--line); background: var(--ivory); }
+    .subtotal-row { display: flex; justify-content: space-between; font-size: 16px; margin-bottom: 16px; }
+    .subtotal-row strong { font-family: var(--serif); font-size: 22px; color: var(--sapphire-deep); }
+    .modal-window { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.95); background: var(--white); padding: 32px; border-radius: 6px; box-shadow: 0 24px 60px rgba(0,0,0,0.3); width: 620px; max-width: 92vw; max-height: 90vh; overflow-y: auto; z-index: 2002; opacity: 0; pointer-events: none; transition: all 0.3s ease; }
+    .modal-window.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+    /* Admin Styling */
+    .admin-workspace { display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 41px); background: #f8fafc; }
+    .admin-sidebar { background: var(--sapphire-deep); color: #fff; padding: 28px 20px; display: flex; flex-direction: column; border-right: 1px solid rgba(255, 255, 255, 0.08); }
+    .admin-brand-title { font-family: var(--serif); font-size: 22px; letter-spacing: 0.15em; color: #fff; }
+    .admin-brand-sub { font-size: 10px; letter-spacing: 0.2em; color: var(--gold-light); text-transform: uppercase; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.12); }
+    .admin-menu { list-style: none; display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
+    .admin-nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; color: #cbd5e1; text-decoration: none; font-size: 12px; font-weight: 500; border-radius: 4px; cursor: pointer; }
+    .admin-nav-item:hover, .admin-nav-item.active { background: var(--gold); color: var(--sapphire-deep); font-weight: 700; }
+    .admin-main { padding: 32px 40px; overflow-y: auto; }
+    .stat-cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .stat-box { background: #fff; border: 1px solid #e2e8f0; padding: 20px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .stat-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 8px; font-weight: 600; }
+    .stat-value { font-family: var(--serif); font-size: 32px; font-weight: 600; color: var(--sapphire-deep); line-height: 1; }
+    .admin-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 28px; overflow: hidden; }
+    .card-header { padding: 16px 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+    .data-table th { background: #f8fafc; padding: 12px 18px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); border-bottom: 1px solid #e2e8f0; font-weight: 600; }
+    .data-table td { padding: 14px 18px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    .badge-status { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+    .badge-new { background: #e0f2fe; color: #0369a1; }
+    .badge-contacted { background: #fef3c7; color: #b45309; }
+    .badge-confirmed { background: #dcfce7; color: #15803d; }
+    .badge-completed { background: #f3e8ff; color: #7e22ce; }
+    .badge-cancelled { background: #fee2e2; color: #b91c1c; }
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .form-input, .form-select, .form-textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--line); border-radius: 4px; background: var(--white); font-family: inherit; font-size: 13px; }
+    .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 3000; display: flex; flex-direction: column; gap: 8px; }
+    .toast-item { background: var(--sapphire-deep); color: #fff; border-left: 4px solid var(--gold); padding: 14px 20px; border-radius: 4px; box-shadow: 0 12px 32px rgba(0,0,0,0.3); font-size: 13px; display: flex; align-items: center; gap: 12px; min-width: 280px; }
+  </style>
 </head>
 <body>
 
-  <!-- TOP PROTOTYPE GOVERNANCE BAR -->
+  <!-- ========================================== -->
+  <!-- 0. TOP PROTOTYPE GOVERNANCE BAR            -->
+  <!-- ========================================== -->
   <header class="proto-banner">
     <div style="display:flex; align-items:center;">
-      <span class="proto-badge">Interactive Prototype v1.0</span>
-      <span style="color:#94a3b8;">ZAFIRA E-Commerce & Atelier Admin Platform</span>
+      <span class="proto-badge">Stitch & Prototype v2.0</span>
+      <span style="color:#d1d5db; font-weight:600;">ZAFIRA E-Commerce & Atelier Admin Platform</span>
     </div>
-    <div class="proto-controls">
-      <span style="font-size:10px; color:#94a3b8; text-transform:uppercase; margin-right:4px;">Ganti Mode Tampilan:</span>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <span style="font-size:10px; color:#94a3b8; text-transform:uppercase; margin-right:4px;">Ganti Mode:</span>
       <button class="proto-btn active" id="btn-view-storefront" onclick="switchView('storefront')">
         <span>✦</span> Storefront Pelanggan
       </button>
@@ -55,15 +184,13 @@
       </a>
 
       <div class="sf-actions">
-        <div style="position:relative; display:inline-block;">
-          <input type="search" id="sf-search-input" placeholder="Cari sutra, batik, gaun…" style="padding:6px 12px; font-size:12px; border:1px solid var(--line); border-radius:20px; width:180px; background:var(--white);">
-        </div>
+        <input type="search" id="sf-search-input" placeholder="Cari sutra, batik, gaun…" style="padding:7px 14px; font-size:12px; border:1px solid var(--line); border-radius:20px; width:190px; background:var(--white);">
         <button class="action-btn" onclick="switchView('account')" title="Portal Akun Klien">
           <span>Profil / Akun</span>
         </button>
         <button class="action-btn" onclick="openCartDrawer()" title="Tas Belanja">
           <span>Tas</span>
-          <span class="badge-count cart-count-badge">0</span>
+          <span class="badge-count cart-count-badge">1</span>
         </button>
       </div>
     </header>
@@ -90,39 +217,257 @@
 
       <!-- Category Filter Pills -->
       <div class="category-pills" id="category-pills">
-        <!-- Rendered by app.js -->
+        <button class="cat-pill active" onclick="filterCategory('all')">Semua Koleksi</button>
+        <button class="cat-pill" onclick="filterCategory(1)">Busana Wanita</button>
+        <button class="cat-pill" onclick="filterCategory(2)">Mantel Pria</button>
+        <button class="cat-pill" onclick="filterCategory(3)">Tas Pesta</button>
+        <button class="cat-pill" onclick="filterCategory(4)">Sepatu Kulit</button>
+        <button class="cat-pill" onclick="filterCategory(5)">Syal Sutra</button>
+        <button class="cat-pill" onclick="filterCategory(6)">Arloji</button>
+        <button class="cat-pill" onclick="filterCategory(8)">Warisan Nusantara</button>
+        <button class="cat-pill" onclick="filterCategory(9)">Koleksi Kapsul</button>
       </div>
 
-      <!-- Dynamic Product Grid -->
+      <!-- PRE-RENDERED HIGH-FIDELITY PRODUCT GRID (Zero Blank State) -->
       <div class="product-grid" id="product-grid">
-        <!-- Rendered by app.js -->
+        
+        <!-- Product 1: Kebaya Lumiere -->
+        <div class="product-card" data-id="9" data-cat="8">
+          <div class="product-media">
+            <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=1200&q=88" alt="Kebaya Lumière">
+            <span class="badge-creations">Warisan Nusantara</span>
+            <div class="product-overlay-actions">
+              <button class="btn-quick" onclick="openQuickView(9)">Lihat Kriya</button>
+              <button class="btn-quick" style="background:var(--sapphire-deep); color:#fff;" onclick="quickAddToCart(9)">+ Ke Tas</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-cat">Warisan Nusantara</span>
+            <h4 class="product-title">Kebaya Lumière</h4>
+            <p class="product-desc-snippet">Kebaya kontemporer dengan siluet Parisian dan bordir tangan pengrajin Kebayoran...</p>
+            <div class="product-meta">
+              <span class="product-price">Rp14.900.000</span>
+              <span class="color-dot" style="background:#dfcaa0" title="Ivoire & Or"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 2: Chemise Riviere -->
+        <div class="product-card" data-id="10" data-cat="8">
+          <div class="product-media">
+            <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=1200&q=88" alt="Chemise Rivière">
+            <span class="badge-creations">Warisan Nusantara</span>
+            <div class="product-overlay-actions">
+              <button class="btn-quick" onclick="openQuickView(10)">Lihat Kriya</button>
+              <button class="btn-quick" style="background:var(--sapphire-deep); color:#fff;" onclick="quickAddToCart(10)">+ Ke Tas</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-cat">Warisan Nusantara</span>
+            <h4 class="product-title">Chemise Rivière</h4>
+            <p class="product-desc-snippet">Kemeja batik tulis Solo dalam potongan chemise Prancis — canting malam bertemu kerah Italia...</p>
+            <div class="product-meta">
+              <span class="product-price">Rp6.850.000</span>
+              <span class="color-dot" style="background:#263a5d" title="Indigo Solo"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 3: Robe Elan -->
+        <div class="product-card" data-id="3" data-cat="1">
+          <div class="product-media">
+            <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=1200&q=88" alt="Robe Élan">
+            <span class="badge-creations">Eksklusif</span>
+            <div class="product-overlay-actions">
+              <button class="btn-quick" onclick="openQuickView(3)">Lihat Kriya</button>
+              <button class="btn-quick" style="background:var(--sapphire-deep); color:#fff;" onclick="quickAddToCart(3)">+ Ke Tas</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-cat">Busana Wanita</span>
+            <h4 class="product-title">Robe Élan</h4>
+            <p class="product-desc-snippet">Gaun sutra dengan drapery cair, dibuat untuk bergerak anggun dari aperitivo hingga soirée...</p>
+            <div class="product-meta">
+              <span class="product-price">Rp15.900.000</span>
+              <span class="color-dot" style="background:#17263f" title="Sapphire Night"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 4: Minaudiere Saphir -->
+        <div class="product-card" data-id="5" data-cat="3">
+          <div class="product-media">
+            <img src="https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=1200&q=88" alt="Minaudière Saphir">
+            <span class="badge-creations">Edisi Terbatas</span>
+            <div class="product-overlay-actions">
+              <button class="btn-quick" onclick="openQuickView(5)">Lihat Kriya</button>
+              <button class="btn-quick" style="background:var(--sapphire-deep); color:#fff;" onclick="quickAddToCart(5)">+ Ke Tas</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-cat">Tas Pesta</span>
+            <h4 class="product-title">Minaudière Saphir</h4>
+            <p class="product-desc-snippet">Minaudière malam berlapis satin biru safir dengan bingkai kuningan pahatan tangan...</p>
+            <div class="product-meta">
+              <span class="product-price">Rp22.500.000</span>
+              <span class="color-dot" style="background:#1e304d" title="Bleu Zafira"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 5: Manteau Firenze -->
+        <div class="product-card" data-id="6" data-cat="2">
+          <div class="product-media">
+            <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&w=1200&q=88" alt="Manteau Firenze">
+            <span class="badge-creations">Baru</span>
+            <div class="product-overlay-actions">
+              <button class="btn-quick" onclick="openQuickView(6)">Lihat Kriya</button>
+              <button class="btn-quick" style="background:var(--sapphire-deep); color:#fff;" onclick="quickAddToCart(6)">+ Ke Tas</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-cat">Mantel Pria</span>
+            <h4 class="product-title">Manteau Firenze</h4>
+            <p class="product-desc-snippet">Mantel wol-kasmir dengan bahu arsitektural dan potongan panjang, dijahit oleh tangan ahli Biella...</p>
+            <div class="product-meta">
+              <span class="product-price">Rp19.800.000</span>
+              <span class="color-dot" style="background:#927f6b" title="Tuscan Tobacco"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 6: Echarpe Eclat -->
+        <div class="product-card" data-id="11" data-cat="9">
+          <div class="product-media">
+            <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7fdf1?auto=format&fit=crop&w=1200&q=88" alt="Écharpe Éclat">
+            <span class="badge-creations">Koleksi Kapsul</span>
+            <div class="product-overlay-actions">
+              <button class="btn-quick" onclick="openQuickView(11)">Lihat Kriya</button>
+              <button class="btn-quick" style="background:var(--sapphire-deep); color:#fff;" onclick="quickAddToCart(11)">+ Ke Tas</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-cat">Koleksi Kapsul</span>
+            <h4 class="product-title">Écharpe Éclat</h4>
+            <p class="product-desc-snippet">Selendang songket Palembang berbenang emas, disandingkan sutra Lyon Prancis...</p>
+            <div class="product-meta">
+              <span class="product-price">Rp8.900.000</span>
+              <span class="color-dot" style="background:#b69a64" title="Or Palembang"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 7: Robe Aurore -->
+        <div class="product-card" data-id="12" data-cat="9">
+          <div class="product-media">
+            <img src="https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=1200&q=88" alt="Robe Aurore">
+            <span class="badge-creations">Koleksi Kapsul</span>
+            <div class="product-overlay-actions">
+              <button class="btn-quick" onclick="openQuickView(12)">Lihat Kriya</button>
+              <button class="btn-quick" style="background:var(--sapphire-deep); color:#fff;" onclick="quickAddToCart(12)">+ Ke Tas</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-cat">Koleksi Kapsul</span>
+            <h4 class="product-title">Robe Aurore</h4>
+            <p class="product-desc-snippet">Gaun tenun ikat Flores dalam konstruksi couture — geometri ikat bertemu drapery lembut Riviera...</p>
+            <div class="product-meta">
+              <span class="product-price">Rp17.200.000</span>
+              <span class="color-dot" style="background:#b45309" title="Terracotta Ikat"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 8: Mocassin Riva -->
+        <div class="product-card" data-id="4" data-cat="4">
+          <div class="product-media">
+            <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=1200&q=88" alt="Mocassin Riva">
+            <span class="badge-creations">Signature</span>
+            <div class="product-overlay-actions">
+              <button class="btn-quick" onclick="openQuickView(4)">Lihat Kriya</button>
+              <button class="btn-quick" style="background:var(--sapphire-deep); color:#fff;" onclick="quickAddToCart(4)">+ Ke Tas</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-cat">Sepatu Kulit</span>
+            <h4 class="product-title">Mocassin Riva</h4>
+            <p class="product-desc-snippet">Loafer kulit napa dengan proporsi ramping dan ornamen Z berlapis emas pucat...</p>
+            <div class="product-meta">
+              <span class="product-price">Rp9.850.000</span>
+              <span class="color-dot" style="background:#3b2f2f" title="Espresso"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 9: Carre Lumiere -->
+        <div class="product-card" data-id="7" data-cat="5">
+          <div class="product-media">
+            <img src="https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=1200&q=88" alt="Carré Lumière">
+            <span class="badge-creations">Hadiah Pilihan</span>
+            <div class="product-overlay-actions">
+              <button class="btn-quick" onclick="openQuickView(7)">Lihat Kriya</button>
+              <button class="btn-quick" style="background:var(--sapphire-deep); color:#fff;" onclick="quickAddToCart(7)">+ Ke Tas</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-cat">Syal Sutra</span>
+            <h4 class="product-title">Carré Lumière</h4>
+            <p class="product-desc-snippet">Syal twill sutra dengan ilustrasi cahaya yang terurai melalui faset batu safir...</p>
+            <div class="product-meta">
+              <span class="product-price">Rp4.950.000</span>
+              <span class="color-dot" style="background:#263a5d" title="Sapphire & Sand"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 10: Montre Nocturne -->
+        <div class="product-card" data-id="8" data-cat="6">
+          <div class="product-media">
+            <img src="https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=1200&q=88" alt="Montre Nocturne">
+            <span class="badge-creations">Signature</span>
+            <div class="product-overlay-actions">
+              <button class="btn-quick" onclick="openQuickView(8)">Lihat Kriya</button>
+              <button class="btn-quick" style="background:var(--sapphire-deep); color:#fff;" onclick="quickAddToCart(8)">+ Ke Tas</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-cat">Arloji</span>
+            <h4 class="product-title">Montre Nocturne</h4>
+            <p class="product-desc-snippet">Arloji berprofil tipis dengan dial biru matahari, penanda emas, dan strap kulit buatan tangan...</p>
+            <div class="product-meta">
+              <span class="product-price">Rp28.900.000</span>
+              <span class="color-dot" style="background:#0f172a" title="Midnight Blue"></span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <!-- Heritage & Savoir-Faire Section -->
+    <!-- Savoir-Faire Section -->
     <section style="background:var(--white); border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:70px 48px;">
       <div style="max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;">
         <div>
-          <span style="color:var(--gold); font-size:11px; letter-spacing:0.2em; text-transform:uppercase; font-weight:600;">Savoir-Faire & Provenance</span>
+          <span style="color:var(--gold); font-size:11px; letter-spacing:0.2em; text-transform:uppercase; font-weight:700;">Savoir-Faire & Provenance</span>
           <h2 style="font-family:var(--serif); font-size:36px; margin:8px 0 16px; color:var(--sapphire-deep);">Keaslian Tanpa Kompromi</h2>
           <p style="color:var(--muted); line-height:1.8; margin-bottom:20px;">Kami mencantumkan atelier asal bahan pada setiap kreasi: sutra murni Lyon, wol Biella Italia, hingga canting malam batik Laweyan Solo dan tenun ikat Maumere Flores. Setiap jahitan mencerminkan puluhan jam kesabaran para empu kriya.</p>
           <div style="display:flex; gap:32px; border-top:1px solid var(--line); padding-top:20px;">
             <div>
               <strong style="font-family:var(--serif); font-size:32px; color:var(--sapphire-deep); display:block;">60+</strong>
-              <span style="font-size:11px; color:var(--muted); text-transform:uppercase;">Jam Bordir Tangan / Helai</span>
+              <span style="font-size:11px; color:var(--muted); text-transform:uppercase; font-weight:600;">Jam Bordir Tangan / Helai</span>
             </div>
             <div>
               <strong style="font-family:var(--serif); font-size:32px; color:var(--sapphire-deep); display:block;">100%</strong>
-              <span style="font-size:11px; color:var(--muted); text-transform:uppercase;">Pewarna Alam & Sutra Asli</span>
+              <span style="font-size:11px; color:var(--muted); text-transform:uppercase; font-weight:600;">Pewarna Alam & Sutra Asli</span>
             </div>
             <div>
               <strong style="font-family:var(--serif); font-size:32px; color:var(--sapphire-deep); display:block;">Atelier</strong>
-              <span style="font-size:11px; color:var(--muted); text-transform:uppercase;">Paris · Milan · Jakarta</span>
+              <span style="font-size:11px; color:var(--muted); text-transform:uppercase; font-weight:600;">Paris · Milan · Jakarta</span>
             </div>
           </div>
         </div>
         <div>
-          <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=1200&q=88" alt="Kriya ZAFIRA" style="border-radius:4px; box-shadow:var(--shadow-lg);">
+          <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=1200&q=88" alt="Kriya ZAFIRA" style="border-radius:4px; box-shadow:0 16px 40px rgba(0,0,0,0.12);">
         </div>
       </div>
     </section>
@@ -132,11 +477,11 @@
       <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr; gap:40px; margin-bottom:40px;">
         <div>
           <h3 style="font-family:var(--serif); font-size:24px; letter-spacing:0.15em; margin-bottom:12px;">ZAFIRA</h3>
-          <p style="font-size:12px; color:rgba(255,255,255,0.7); max-width:340px; line-height:1.7;">La Maison de Lumière — Rumah mode adibusana Paris-Italia-Indonesia. Jakarta Atelier: Kebayoran Baru, Jakarta Selatan.</p>
+          <p style="font-size:12px; color:rgba(255,255,255,0.75); max-width:340px; line-height:1.7;">La Maison de Lumière — Rumah mode adibusana Paris-Italia-Indonesia. Jakarta Atelier: Kebayoran Baru, Jakarta Selatan.</p>
         </div>
         <div>
           <h4 style="font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold-light); margin-bottom:12px;">Layanan Maison</h4>
-          <ul style="list-style:none; font-size:12px; line-height:2.2; color:rgba(255,255,255,0.8);">
+          <ul style="list-style:none; font-size:12px; line-height:2.2; color:rgba(255,255,255,0.85);">
             <li><a onclick="openConciergeModal()" style="cursor:pointer;">Rendez-vous Privat</a></li>
             <li><a onclick="switchView('account')" style="cursor:pointer;">Portal Akun Klien</a></li>
             <li><a onclick="openCartDrawer()" style="cursor:pointer;">Tas Belanja</a></li>
@@ -144,9 +489,9 @@
         </div>
         <div>
           <h4 style="font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold-light); margin-bottom:12px;">La Lettre ZAFIRA</h4>
-          <p style="font-size:12px; color:rgba(255,255,255,0.7); margin-bottom:12px;">Dapatkan warta eksklusif peluncuran koleksi kapsul.</p>
+          <p style="font-size:12px; color:rgba(255,255,255,0.75); margin-bottom:12px;">Dapatkan warta eksklusif peluncuran koleksi kapsul.</p>
           <form onsubmit="event.preventDefault(); showToast('Terima kasih telah bergabung di La Lettre ZAFIRA.'); this.reset();" style="display:flex;">
-            <input type="email" placeholder="Email Anda" required style="padding:8px 12px; font-size:12px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; border-radius:3px 0 0 3px; flex-grow:1;">
+            <input type="email" placeholder="Email Anda" required style="padding:8px 12px; font-size:12px; border:1px solid rgba(255,255,255,0.25); background:rgba(255,255,255,0.1); color:#fff; border-radius:3px 0 0 3px; flex-grow:1;">
             <button type="submit" class="btn-gold" style="padding:8px 16px; border-radius:0 3px 3px 0;">Daftar</button>
           </form>
         </div>
@@ -161,10 +506,10 @@
   <!-- 2. CUSTOMER ACCOUNT VIEW (/akun SIMULATION) -->
   <!-- ========================================== -->
   <main class="view-container" id="account-view">
-    <div style="max-width:880px; margin:40px auto; padding:0 24px;">
+    <div style="max-width:920px; margin:40px auto; padding:0 24px;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:28px;">
         <div>
-          <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.18em; color:var(--taupe);">Espace Klien ZAFIRA</span>
+          <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.18em; color:var(--taupe); font-weight:600;">Espace Klien ZAFIRA</span>
           <h1 style="font-family:var(--serif); font-size:36px; margin:4px 0 0; color:var(--sapphire-deep);">Bonjour, Madame Aurelia Tan</h1>
         </div>
         <button class="proto-btn" style="background:var(--sapphire-deep); color:#fff;" onclick="switchView('storefront')">← Kembali ke Toko</button>
@@ -172,11 +517,11 @@
 
       <div style="display:grid; grid-template-columns:1fr 2fr; gap:28px;">
         <!-- Profil Pelanggan -->
-        <div style="background:#fff; border:1px solid var(--line); padding:24px; border-radius:4px; height:fit-content;">
+        <div style="background:#fff; border:1px solid var(--line); padding:24px; border-radius:4px; height:fit-content; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
           <h3 style="font-family:var(--serif); font-size:20px; margin-bottom:16px; border-bottom:1px solid var(--line); padding-bottom:8px;">Profil Klien</h3>
           <div class="form-group">
             <label class="form-label">Nama Lengkap</label>
-            <input type="text" class="form-input" value="Aurelia Tan" readonly>
+            <input type="text" class="form-input" value="Madame Aurelia Tan" readonly>
           </div>
           <div class="form-group">
             <label class="form-label">Email Terdaftar</label>
@@ -194,10 +539,27 @@
 
         <!-- Riwayat Pesanan & Concierge -->
         <div>
-          <h3 style="font-family:var(--serif); font-size:22px; margin-bottom:16px; color:var(--sapphire-deep);">Riwayat Janji Temu & Pesanan</h3>
-          <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">Setiap pembaruan status oleh Client Advisor di admin atelier akan langsung tersinkronisasi di kartu bawah ini.</p>
+          <h3 style="font-family:var(--serif); font-size:22px; margin-bottom:12px; color:var(--sapphire-deep);">Riwayat Janji Temu & Pesanan</h3>
+          <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">Setiap pembaruan status oleh Client Advisor di admin atelier akan langsung tersinkronisasi di kartu bawah ini secara real-time.</p>
           <div id="account-history-list">
-            <!-- Rendered by app.js -->
+            <!-- Order Card 1 -->
+            <div style="background:#fff; border:1px solid var(--line); padding:16px; border-radius:4px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+              <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <strong>Pesanan / Janji Temu #101</strong>
+                <span class="badge-status badge-confirmed">Confirmed</span>
+              </div>
+              <p style="font-size:12px; color:var(--muted); margin-bottom:8px;">Jadwal / Waktu: 2026-10-14 14:00</p>
+              <div style="font-size:12px; background:#f8fafc; padding:8px 12px; border-radius:4px; border-left:3px solid var(--gold); white-space:pre-wrap;">[Pesanan Checkout]&#10;- Kebaya Lumière (1x) Rp14.900.000 (Monogram: AT)&#10;Total: Rp14.900.000&#10;&#10;Catatan: Mohon siapkan ukuran S untuk fitting atelier.</div>
+            </div>
+            <!-- Order Card 2 -->
+            <div style="background:#fff; border:1px solid var(--line); padding:16px; border-radius:4px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+              <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <strong>Pesanan / Janji Temu #102</strong>
+                <span class="badge-status badge-contacted">Contacted</span>
+              </div>
+              <p style="font-size:12px; color:var(--muted); margin-bottom:8px;">Jadwal / Waktu: 2026-10-15 16:30</p>
+              <div style="font-size:12px; background:#f8fafc; padding:8px 12px; border-radius:4px; border-left:3px solid var(--gold); white-space:pre-wrap;">[Pesanan Checkout]&#10;- Manteau Firenze (1x) Rp19.800.000&#10;- Chemise Rivière (2x) Rp13.700.000&#10;Total: Rp33.500.000</div>
+            </div>
           </div>
         </div>
       </div>
@@ -211,7 +573,7 @@
     <div class="admin-workspace">
       <!-- Sidebar -->
       <aside class="admin-sidebar">
-        <div class="admin-brand-card">
+        <div>
           <div class="admin-brand-title">ZAFIRA</div>
           <div class="admin-brand-sub">Atelier Administration</div>
         </div>
@@ -225,21 +587,21 @@
           <li><a class="admin-nav-item" onclick="switchAdminTab('audit')"><span>🛡️</span> Arsip Audit Log</a></li>
         </ul>
 
-        <div class="admin-footer-status">
-          <p><span class="status-indicator"></span> Database: <strong>ecommerce</strong></p>
+        <div style="padding-top:18px; border-top:1px solid rgba(255,255,255,0.12); font-size:11px; color:#94a3b8;">
+          <p><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981; margin-right:6px;"></span> Database: <strong>ecommerce</strong></p>
           <p style="margin-top:4px;">Port: 3306 · Cache: Auto-Sync</p>
         </div>
       </aside>
 
       <!-- Main Workspace -->
       <section class="admin-main">
-        <div class="admin-topbar">
-          <div class="admin-title-area">
-            <span class="admin-breadcrumbs">Administration / ZAFIRA Atelier Workspace</span>
-            <h2 id="admin-section-heading">Overview & Analitik Atelier</h2>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:28px;">
+          <div>
+            <span style="font-size:12px; color:var(--muted);">Administration / ZAFIRA Atelier Workspace</span>
+            <h2 id="admin-section-heading" style="font-family:var(--serif); font-size:28px; font-weight:500; color:var(--sapphire-deep);">Overview & Analitik Atelier</h2>
           </div>
           <div>
-            <button class="btn-gold" style="padding:8px 18px; font-size:11px;" onclick="openAddProductModal()">+ Tambah Kreasi Baru</button>
+            <button class="btn-gold" style="padding:9px 20px; font-size:11px;" onclick="openAddProductModal()">+ Tambah Kreasi Baru</button>
             <button class="proto-btn" style="background:#fff; color:var(--ink); border:1px solid #cbd5e1; margin-left:8px;" onclick="switchView('storefront')">Lihat Storefront ↗</button>
           </div>
         </div>
@@ -249,34 +611,34 @@
           <div class="stat-box">
             <span class="stat-label">Total Kreasi Produk</span>
             <div class="stat-value" id="admin-kpi-products">12</div>
-            <div class="stat-sub"><span>✦</span> Aktif di Storefront</div>
+            <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Aktif di Storefront</div>
           </div>
           <div class="stat-box">
             <span class="stat-label">Kategori Koleksi</span>
             <div class="stat-value" id="admin-kpi-categories">8</div>
-            <div class="stat-sub"><span>✦</span> Terhubung ke Filter Pill</div>
+            <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Terhubung ke Filter Pill</div>
           </div>
           <div class="stat-box">
             <span class="stat-label">Permintaan Pesanan / Concierge</span>
             <div class="stat-value" id="admin-kpi-orders">3</div>
-            <div class="stat-sub"><span>✦</span> Sinkron ke Akun Klien</div>
+            <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Sinkron ke Akun Klien</div>
           </div>
           <div class="stat-box">
             <span class="stat-label">Total Klien Terdaftar</span>
             <div class="stat-value" id="admin-kpi-users">8</div>
-            <div class="stat-sub"><span>✦</span> Multi-Guard User</div>
+            <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Multi-Guard User</div>
           </div>
         </div>
 
         <!-- TAB CONTENT: OVERVIEW -->
-        <div id="tab-overview" class="admin-tab-content active">
-          <!-- Recent Orders in Admin -->
+        <div id="tab-overview" class="admin-tab-content">
+          <!-- Recent Orders Table -->
           <div class="admin-card">
             <div class="card-header">
-              <h3 class="card-title">Permintaan Pesanan & Konsultasi Terbaru</h3>
-              <span style="font-size:12px; color:var(--muted);">Ubah status untuk menguji sinkronisasi ke /akun pelanggan</span>
+              <h3 style="font-family:var(--serif); font-size:18px; font-weight:500; color:var(--sapphire-deep);">Permintaan Pesanan & Konsultasi Terbaru</h3>
+              <span style="font-size:12px; color:var(--muted);">Ganti status di sini untuk menguji sinkronisasi ke /akun pelanggan</span>
             </div>
-            <div class="table-responsive">
+            <div style="overflow-x:auto;">
               <table class="data-table">
                 <thead>
                   <tr>
@@ -288,19 +650,63 @@
                   </tr>
                 </thead>
                 <tbody id="admin-concierge-tbody">
-                  <!-- Rendered by app.js -->
+                  <tr>
+                    <td>#101</td>
+                    <td><strong>Madame Aurelia Tan</strong><br><small style="color:var(--muted)">+62 811 8899 771 · aurelia@tanholdings.id</small></td>
+                    <td><div style="font-size:11px; max-width:280px; white-space:pre-wrap; background:#f8fafc; padding:6px 10px; border-radius:3px; border-left:2px solid var(--sapphire);">[Pesanan Checkout]&#10;- Kebaya Lumière (1x) Rp14.900.000 (Monogram: AT)&#10;Total: Rp14.900.000</div></td>
+                    <td>
+                      <select class="form-select" style="padding:4px 8px; font-size:11px; width:auto;" onchange="adminUpdateStatus(101, this.value)">
+                        <option value="new">New</option>
+                        <option value="contacted">Contacted</option>
+                        <option value="confirmed" selected>Confirmed</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                      </select>
+                    </td>
+                    <td><span class="badge-status badge-confirmed">Confirmed</span></td>
+                  </tr>
+                  <tr>
+                    <td>#102</td>
+                    <td><strong>Bapak Hendra Wijaya</strong><br><small style="color:var(--muted)">+62 812 3456 7890 · hendra.w@capital.com</small></td>
+                    <td><div style="font-size:11px; max-width:280px; white-space:pre-wrap; background:#f8fafc; padding:6px 10px; border-radius:3px; border-left:2px solid var(--sapphire);">[Pesanan Checkout]&#10;- Manteau Firenze (1x) Rp19.800.000&#10;- Chemise Rivière (2x) Rp13.700.000&#10;Total: Rp33.500.000</div></td>
+                    <td>
+                      <select class="form-select" style="padding:4px 8px; font-size:11px; width:auto;" onchange="adminUpdateStatus(102, this.value)">
+                        <option value="new">New</option>
+                        <option value="contacted" selected>Contacted</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                      </select>
+                    </td>
+                    <td><span class="badge-status badge-contacted">Contacted</span></td>
+                  </tr>
+                  <tr>
+                    <td>#103</td>
+                    <td><strong>Lady Stephanie Iskandar</strong><br><small style="color:var(--muted)">+62 878 9900 1122 · stephanie@iskandar.org</small></td>
+                    <td><div style="font-size:11px; max-width:280px; white-space:pre-wrap; background:#f8fafc; padding:6px 10px; border-radius:3px; border-left:2px solid var(--sapphire);">Konsultasi gaun malam gala dinner di Monte Carlo.</div></td>
+                    <td>
+                      <select class="form-select" style="padding:4px 8px; font-size:11px; width:auto;" onchange="adminUpdateStatus(103, this.value)">
+                        <option value="new" selected>New</option>
+                        <option value="contacted">Contacted</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                      </select>
+                    </td>
+                    <td><span class="badge-status badge-new">New</span></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </div>
 
-          <!-- Quick Catalog Table in Admin -->
+          <!-- Quick Catalog Table -->
           <div class="admin-card">
             <div class="card-header">
-              <h3 class="card-title">Katalog Kreasi Terbaru</h3>
+              <h3 style="font-family:var(--serif); font-size:18px; font-weight:500; color:var(--sapphire-deep);">Katalog Kreasi Terbaru</h3>
               <button class="proto-btn" style="background:var(--sapphire-deep); color:#fff;" onclick="openAddProductModal()">+ Tambah Produk</button>
             </div>
-            <div class="table-responsive">
+            <div style="overflow-x:auto;">
               <table class="data-table">
                 <thead>
                   <tr>
@@ -313,7 +719,33 @@
                   </tr>
                 </thead>
                 <tbody id="admin-products-tbody">
-                  <!-- Rendered by app.js -->
+                  <!-- Product 1 -->
+                  <tr>
+                    <td style="width:50px"><img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=1200&q=88" style="width:40px; height:50px; object-fit:cover; border-radius:2px;"></td>
+                    <td><strong>Kebaya Lumière</strong><br><small style="color:var(--muted)">kebaya-lumiere</small></td>
+                    <td><span style="background:#f1f5f9; padding:2px 8px; border-radius:4px; font-size:11px;">Warisan Nusantara</span></td>
+                    <td style="font-weight:600; color:var(--sapphire-deep);">Rp14.900.000</td>
+                    <td>Warisan Nusantara</td>
+                    <td><button style="padding:4px 8px; font-size:11px; background:#a83232; color:#fff; border-radius:3px; cursor:pointer; border:none;" onclick="adminDeleteProduct(9)">Hapus</button></td>
+                  </tr>
+                  <!-- Product 2 -->
+                  <tr>
+                    <td style="width:50px"><img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=1200&q=88" style="width:40px; height:50px; object-fit:cover; border-radius:2px;"></td>
+                    <td><strong>Chemise Rivière</strong><br><small style="color:var(--muted)">chemise-riviere</small></td>
+                    <td><span style="background:#f1f5f9; padding:2px 8px; border-radius:4px; font-size:11px;">Warisan Nusantara</span></td>
+                    <td style="font-weight:600; color:var(--sapphire-deep);">Rp6.850.000</td>
+                    <td>Warisan Nusantara</td>
+                    <td><button style="padding:4px 8px; font-size:11px; background:#a83232; color:#fff; border-radius:3px; cursor:pointer; border:none;" onclick="adminDeleteProduct(10)">Hapus</button></td>
+                  </tr>
+                  <!-- Product 3 -->
+                  <tr>
+                    <td style="width:50px"><img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=1200&q=88" style="width:40px; height:50px; object-fit:cover; border-radius:2px;"></td>
+                    <td><strong>Robe Élan</strong><br><small style="color:var(--muted)">elan-dress</small></td>
+                    <td><span style="background:#f1f5f9; padding:2px 8px; border-radius:4px; font-size:11px;">Busana Wanita</span></td>
+                    <td style="font-weight:600; color:var(--sapphire-deep);">Rp15.900.000</td>
+                    <td>Eksklusif</td>
+                    <td><button style="padding:4px 8px; font-size:11px; background:#a83232; color:#fff; border-radius:3px; cursor:pointer; border:none;" onclick="adminDeleteProduct(3)">Hapus</button></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -324,7 +756,7 @@
         <div id="tab-categories" class="admin-tab-content" style="display:none;">
           <div class="admin-card">
             <div class="card-header">
-              <h3 class="card-title">Kelola Kategori Koleksi</h3>
+              <h3 style="font-family:var(--serif); font-size:18px; font-weight:500; color:var(--sapphire-deep);">Kelola Kategori Koleksi</h3>
             </div>
             <div style="padding:20px; border-bottom:1px solid #e2e8f0; background:#fafafa;">
               <form onsubmit="adminAddCategorySubmit(event)" style="display:flex; gap:12px; max-width:480px;">
@@ -332,7 +764,7 @@
                 <button type="submit" class="btn-gold" style="white-space:nowrap;">+ Tambah Kategori</button>
               </form>
             </div>
-            <div class="table-responsive">
+            <div style="overflow-x:auto;">
               <table class="data-table">
                 <thead>
                   <tr>
@@ -343,7 +775,11 @@
                   </tr>
                 </thead>
                 <tbody id="admin-categories-tbody">
-                  <!-- Rendered by app.js -->
+                  <tr><td>#1</td><td><strong>Busana Wanita</strong></td><td>1 kreasi</td><td><button style="padding:4px 8px; font-size:11px; background:#a83232; color:#fff; border-radius:3px; cursor:pointer; border:none;" onclick="adminDeleteCategory(1)">Hapus</button></td></tr>
+                  <tr><td>#2</td><td><strong>Mantel Pria</strong></td><td>1 kreasi</td><td><button style="padding:4px 8px; font-size:11px; background:#a83232; color:#fff; border-radius:3px; cursor:pointer; border:none;" onclick="adminDeleteCategory(2)">Hapus</button></td></tr>
+                  <tr><td>#3</td><td><strong>Tas Pesta</strong></td><td>1 kreasi</td><td><button style="padding:4px 8px; font-size:11px; background:#a83232; color:#fff; border-radius:3px; cursor:pointer; border:none;" onclick="adminDeleteCategory(3)">Hapus</button></td></tr>
+                  <tr><td>#8</td><td><strong>Warisan Nusantara</strong></td><td>2 kreasi</td><td><button style="padding:4px 8px; font-size:11px; background:#a83232; color:#fff; border-radius:3px; cursor:pointer; border:none;" onclick="adminDeleteCategory(8)">Hapus</button></td></tr>
+                  <tr><td>#9</td><td><strong>Koleksi Kapsul</strong></td><td>2 kreasi</td><td><button style="padding:4px 8px; font-size:11px; background:#a83232; color:#fff; border-radius:3px; cursor:pointer; border:none;" onclick="adminDeleteCategory(9)">Hapus</button></td></tr>
                 </tbody>
               </table>
             </div>
@@ -368,12 +804,27 @@
       <button class="btn-close" onclick="closeCartDrawer()">&times;</button>
     </div>
     <div class="drawer-body" id="cart-items-container">
-      <!-- Rendered by app.js -->
+      <div class="cart-item">
+        <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=1200&q=88" alt="Kebaya Lumière">
+        <div class="cart-item-detail">
+          <div class="cart-item-title">Kebaya Lumière</div>
+          <div class="cart-item-price">Rp14.900.000</div>
+          <div class="monogram-tag">✦ Monogram: ZFL</div>
+          <div class="cart-item-controls">
+            <div class="qty-stepper">
+              <button class="qty-btn" onclick="stepCartQty(0, -1)">−</button>
+              <span class="qty-val">1</span>
+              <button class="qty-btn" onclick="stepCartQty(0, 1)">+</button>
+            </div>
+            <button class="btn-remove" onclick="removeCartItem(0)">Hapus</button>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="drawer-footer">
       <div class="subtotal-row">
         <span>Subtotal Pesanan</span>
-        <strong id="cart-subtotal">Rp0</strong>
+        <strong id="cart-subtotal">Rp14.900.000</strong>
       </div>
       <button class="btn-gold" style="width:100%; text-align:center; padding:14px;" onclick="closeCartDrawer(); openConciergeModal();">
         Lanjut bersama Client Advisor ⟶
@@ -387,18 +838,18 @@
   <!-- Quick View Modal -->
   <div class="modal-window" id="quickview-modal">
     <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-      <span style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); font-weight:600;">Detail Kriya & Provenance</span>
+      <span style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); font-weight:700;">Detail Kriya & Provenance</span>
       <button class="btn-close" onclick="closeAllModals()">&times;</button>
     </div>
     <div id="quickview-content">
-      <!-- Rendered by app.js -->
+      <!-- Populated dynamically via openQuickView(id) -->
     </div>
   </div>
 
   <!-- Concierge / Checkout Modal -->
   <div class="modal-window" id="concierge-modal">
     <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-      <h3 style="font-family:var(--serif); font-size:22px;" id="concierge-title">Rendez-vous Privat Atelier ZAFIRA</h3>
+      <h3 style="font-family:var(--serif); font-size:22px;" id="concierge-title">Lanjutkan Pesanan Bersama Client Advisor</h3>
       <button class="btn-close" onclick="closeAllModals()">&times;</button>
     </div>
     <form onsubmit="submitConciergeOrder(event)">
@@ -420,17 +871,17 @@
         <label class="form-label">Layanan Dipilih</label>
         <select id="c-service" class="form-select">
           <option value="private-styling">Private Styling Consultation</option>
-          <option value="atelier">Fitting Langsung di Atelier</option>
+          <option value="atelier">Fitting Langsung di Atelier Jakarta</option>
           <option value="virtual-consultation">Virtual Video Styling</option>
           <option value="gifting">Bespoke Gift Service</option>
         </select>
       </div>
       <div class="form-group">
         <label class="form-label">Ringkasan Pesanan & Catatan</label>
-        <textarea id="concierge-order-summary" class="form-textarea" rows="4" readonly style="background:#f8fafc; font-family:monospace; font-size:11px;"></textarea>
+        <textarea id="concierge-order-summary" class="form-textarea" rows="4" readonly style="background:#f8fafc; font-family:monospace; font-size:11px;">[Pesanan Checkout]&#10;- Kebaya Lumière (1x) Rp14.900.000 (Monogram: ZFL)&#10;Total: Rp14.900.000</textarea>
       </div>
       <div class="form-group">
-        <label class="form-label">Catatan Tambahan (Ukuran / Jadwal Preferensi)</label>
+        <label class="form-label">Catatan Tambahan (Ukuran / Jadwal)</label>
         <input type="text" id="c-notes" class="form-input" placeholder="Contoh: Mohon siapkan ukuran S untuk kebaya...">
       </div>
       <button type="submit" class="btn-gold" style="width:100%; padding:12px; margin-top:8px;">Kirim Permintaan ke Client Advisor</button>
@@ -451,7 +902,13 @@
         </div>
         <div class="form-group">
           <label class="form-label">Kategori</label>
-          <select id="new-product-cat" class="form-select" required></select>
+          <select id="new-product-cat" class="form-select" required>
+            <option value="1">Busana Wanita</option>
+            <option value="2">Mantel Pria</option>
+            <option value="3">Tas Pesta</option>
+            <option value="8">Warisan Nusantara</option>
+            <option value="9">Koleksi Kapsul</option>
+          </select>
         </div>
       </div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">

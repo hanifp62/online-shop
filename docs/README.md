@@ -24,11 +24,13 @@ docs/
 │   ├── RESEARCH_LOG.md                       # Log riset produk luxury e-commerce & referensi teknis
 │   ├── PRD.md                                # Product Requirements Document formal (FR/NFR/US)
 │   ├── USER_JOURNEYS.md                      # Pemetaan alur pengalaman pengguna & admin
-│   └── REQUIREMENTS_TRACEABILITY.md          # Matriks ketertelusuran kebutuhan ke implementasi
+│   ├── REQUIREMENTS_TRACEABILITY.md          # Matriks ketertelusuran kebutuhan ke implementasi
+│   └── HCI_RPL_UX_RESEARCH_AND_COMPARISON.md # Riset komparasi luxury, HCI (Norman/Nielsen), dan RPL
 ├── 03-architecture/
 │   ├── TARGET_ARCHITECTURE.md                # Arsitektur sistem target & struktur modul Laravel
 │   ├── DATABASE_DESIGN.md                    # Desain database terpadu, ERD, & kamus data
 │   ├── ARCHITECTURE_DECISIONS.md             # Architecture Decision Records (ADR-001 s/d ADR-005)
+│   ├── DESIGN.md                             # Semantic Design System ZAFIRA untuk Google Stitch
 │   └── ENVIRONMENT_AND_RUNTIME.md            # Konfigurasi runtime & panduan deployment lokal
 ├── 04-implementation/
 │   ├── IMPLEMENTATION_PLAN.md                # Rencana implementasi komprehensif & pentahapan
