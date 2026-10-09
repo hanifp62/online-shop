@@ -42,7 +42,9 @@ docs/
 │   ├── PROJECT_READINESS_REPORT.md           # Laporan kesiapan proyek & status deliverable
 │   ├── FOUNDATION_CHANGELOG.md               # Log perubahan teknis pada fondasi & konfigurasi
 │   ├── LOCAL_SKILLS_MANAGEMENT_REPORT.md     # Laporan audit, instalasi 589 skills, & panduan rollback
-│   └── ANTIGRAVITY_SKILLS_INTEGRATION_AUDIT_AND_PLAN.md # Audit rekonsiliasi 635 skills & status discovery IDE
+│   ├── ANTIGRAVITY_SKILLS_INTEGRATION_AUDIT_AND_PLAN.md # Audit rekonsiliasi 635 skills & status discovery IDE
+│   ├── SKILLS_STATUS_DIRECTORY.md            # Direktori status 635 skill Antigravity IDE (Markdown)
+│   └── SKILLS_COMPREHENSIVE_MATRIX.json      # Matriks lengkap 1-baris per skill 635 entri (JSON)
 └── 06-prototype/
     ├── PROTOTYPE_GUIDE.md                    # Panduan menjalankan dan menjelajahi prototype
     ├── SCREEN_AND_FLOW_MAPPING.md            # Pemetaan layar dan interaksi prototype
