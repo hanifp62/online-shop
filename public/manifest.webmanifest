@@ -1,0 +1,17 @@
+{
+    "name": "ZAFIRA — La Maison de Lumière",
+    "short_name": "ZAFIRA",
+    "description": "Rumah mode kontemporer dengan jiwa Paris dan keahlian Italia.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#f3efe7",
+    "theme_color": "#17263f",
+    "icons": [
+        {
+            "src": "/favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        }
+    ]
+}

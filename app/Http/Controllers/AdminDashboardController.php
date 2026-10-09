@@ -1,0 +1,109 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Category;
+use App\Models\ConciergeRequest;
+use App\Models\NewsletterSubscriber;
+use App\Models\Product;
+use App\Models\User;
+use App\Models\UserInfoBackup;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\View\View;
+
+class AdminDashboardController extends Controller
+{
+    public function index(Request $request): View
+    {
+        $validated = $request->validate([
+            'status' => ['nullable', Rule::in(['new', 'contacted', 'confirmed', 'completed', 'cancelled'])],
+            'q' => ['nullable', 'string', 'max:255'],
+            'uq' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $conciergeQuery = ConciergeRequest::with('user:id,name')->latest();
+
+        if (! empty($validated['status'])) {
+            $conciergeQuery->where('status', $validated['status']);
+        }
+
+        if (! empty($validated['q'])) {
+            $q = '%'.$validated['q'].'%';
+            $conciergeQuery->where(fn ($query) => $query
+                ->where('name', 'like', $q)
+                ->orWhere('email', 'like', $q)
+                ->orWhere('phone', 'like', $q));
+        }
+
+        $userQuery = User::latest();
+
+        if (! empty($validated['uq'])) {
+            $uq = '%'.$validated['uq'].'%';
+            $userQuery->where(fn ($query) => $query
+                ->where('name', 'like', $uq)
+                ->orWhere('first_name', 'like', $uq)
+                ->orWhere('last_name', 'like', $uq)
+                ->orWhere('email', 'like', $uq)
+                ->orWhere('mobile', 'like', $uq));
+        }
+
+        return view('admin.dashboard', [
+            'stats' => [
+                'users' => User::count(),
+                'backups' => UserInfoBackup::count(),
+                'concierge' => ConciergeRequest::count(),
+                'subscribers' => NewsletterSubscriber::count(),
+                'products' => Product::count(),
+            ],
+            'filters' => [
+                'status' => $validated['status'] ?? '',
+                'q' => $validated['q'] ?? '',
+                'uq' => $validated['uq'] ?? '',
+            ],
+            'latestUsers' => (clone $userQuery)->take(10)->get([
+                'id', 'name', 'first_name', 'last_name', 'email', 'mobile', 'address1', 'address2', 'created_at',
+            ]),
+            'latestBackups' => UserInfoBackup::with('user:id,name')->latest()->take(10)->get(),
+            'latestConcierge' => $conciergeQuery->take(20)->get(),
+            'categories' => Category::withCount('products')->orderBy('cat_id')->get(),
+            'latestProducts' => Product::with('category:cat_id,cat_title')->latest('product_id')->take(8)->get(),
+            'latestSubscribers' => NewsletterSubscriber::latest()->take(8)->get(),
+        ]);
+    }
+
+    public function updateConcierge(Request $request, ConciergeRequest $concierge): RedirectResponse
+    {
+        $validated = $request->validate([
+            'status' => ['required', Rule::in(['new', 'contacted', 'confirmed', 'completed', 'cancelled'])],
+        ]);
+
+        $concierge->update($validated);
+
+        $owner = $concierge->user_id ? " milik user #{$concierge->user_id}" : " ({$concierge->email})";
+
+        return back()->with('success', "Status permintaan #{$concierge->id}{$owner} menjadi {$validated['status']} — terlihat di riwayat /akun.");
+    }
+
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'current_password' => ['required', 'current_password:admin'],
+            'password' => ['required', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
+        ]);
+
+        $request->user('admin')->update(['password' => $validated['password']]);
+
+        return back()->with('success', 'Password admin berhasil diganti.');
+    }
+
+    public function destroySubscriber(NewsletterSubscriber $subscriber): RedirectResponse
+    {
+        $email = $subscriber->email;
+        $subscriber->delete();
+
+        return back()->with('success', "Subscriber {$email} berhasil dihapus.");
+    }
+}
