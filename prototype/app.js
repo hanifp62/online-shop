@@ -218,11 +218,13 @@ class PrototypeStore {
     this.products = this.load('zafira_proto_products', INITIAL_PRODUCTS);
     this.concierge = this.load('zafira_proto_concierge', INITIAL_CONCIERGE);
     this.cart = this.load('zafira_proto_cart', [
-      { productId: 9, qty: 1, monogram: 'ZFL' }
+      { productId: 9, qty: 1, monogram: 'ZFL', size: 'FR 38' }
     ]);
     this.currentCategory = 'all';
     this.searchQuery = '';
     this.currentView = 'storefront'; // 'storefront' | 'admin' | 'account'
+    this.adminOrderStatusFilter = 'all';
+    this.adminOrderSearch = '';
   }
 
   load(key, fallback) {
@@ -249,12 +251,12 @@ class PrototypeStore {
     });
   }
 
-  addToCart(productId, monogram = '') {
-    const existing = this.cart.find(c => c.productId === productId && c.monogram === monogram);
+  addToCart(productId, monogram = '', size = 'FR 38') {
+    const existing = this.cart.find(c => c.productId === productId && c.monogram === monogram && c.size === size);
     if (existing) {
       existing.qty += 1;
     } else {
-      this.cart.push({ productId, qty: 1, monogram });
+      this.cart.push({ productId, qty: 1, monogram, size });
     }
     this.save('zafira_proto_cart', this.cart);
   }
@@ -356,7 +358,9 @@ function showToast(message, type = 'info') {
   const toast = document.createElement('div');
   toast.className = 'toast-item';
   toast.innerHTML = `
-    <span style="color:var(--gold); font-size:16px;">✦</span>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dfcaa0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+    </svg>
     <span>${message}</span>
   `;
   container.appendChild(toast);
@@ -438,7 +442,10 @@ function renderCartDrawer() {
         <div class="cart-item-detail">
           <div class="cart-item-title">${p.title}</div>
           <div class="cart-item-price">${formatRupiah(p.price)}</div>
-          ${item.monogram ? `<div class="monogram-tag">✦ Monogram: ${item.monogram}</div>` : ''}
+          <div style="display:flex; gap:6px; align-items:center; margin-bottom:8px; flex-wrap:wrap;">
+            ${item.size ? `<span style="display:inline-block; font-size:10px; background:#f1f5f9; color:var(--sapphire-deep); font-weight:600; padding:2px 7px; border-radius:3px; border:1px solid #e2e8f0;">Taille: ${item.size}</span>` : ''}
+            ${item.monogram ? `<span class="monogram-tag" style="margin-bottom:0;">✦ Monogram: ${item.monogram}</span>` : ''}
+          </div>
           <div class="cart-item-controls">
             <div class="qty-stepper">
               <button class="qty-btn" onclick="stepCartQty(${idx}, -1)">−</button>
@@ -490,25 +497,41 @@ function renderAdminTables() {
   // Render Admin Concierge Table
   const concTbody = document.getElementById('admin-concierge-tbody');
   if (concTbody) {
-    concTbody.innerHTML = store.concierge.map(c => {
-      return `
-        <tr>
-          <td>#${c.id}</td>
-          <td><strong>${c.name}</strong><br><small style="color:var(--muted)">${c.phone} · ${c.email}</small></td>
-          <td><div style="font-size:11px; max-width:260px; white-space:pre-wrap; background:#f8fafc; padding:4px 8px; border-radius:3px; border-left:2px solid var(--sapphire);">${c.notes}</div></td>
-          <td>
-            <select class="form-select" style="padding:4px 8px; font-size:11px; width:auto;" onchange="adminUpdateStatus(${c.id}, this.value)">
-              <option value="new" ${c.status === 'new' ? 'selected' : ''}>New</option>
-              <option value="contacted" ${c.status === 'contacted' ? 'selected' : ''}>Contacted</option>
-              <option value="confirmed" ${c.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
-              <option value="completed" ${c.status === 'completed' ? 'selected' : ''}>Completed</option>
-              <option value="cancelled" ${c.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
-            </select>
-          </td>
-          <td><span class="badge-status badge-${c.status}">${c.status}</span></td>
-        </tr>
-      `;
-    }).join('');
+    let filteredConcierge = store.concierge;
+    if (store.adminOrderStatusFilter && store.adminOrderStatusFilter !== 'all') {
+      filteredConcierge = filteredConcierge.filter(c => c.status === store.adminOrderStatusFilter);
+    }
+    if (store.adminOrderSearch) {
+      const q = store.adminOrderSearch.toLowerCase();
+      filteredConcierge = filteredConcierge.filter(c => 
+        c.name.toLowerCase().includes(q) || 
+        c.phone.includes(q) || 
+        c.notes.toLowerCase().includes(q)
+      );
+    }
+    if (filteredConcierge.length === 0) {
+      concTbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:24px; color:var(--muted);">Tidak ada pesanan / janji temu yang cocok dengan filter.</td></tr>';
+    } else {
+      concTbody.innerHTML = filteredConcierge.map(c => {
+        return `
+          <tr>
+            <td>#${c.id}</td>
+            <td><strong>${c.name}</strong><br><small style="color:var(--muted)">${c.phone} · ${c.email}</small></td>
+            <td><div style="font-size:11px; max-width:260px; white-space:pre-wrap; background:#f8fafc; padding:4px 8px; border-radius:3px; border-left:2px solid var(--sapphire);">${c.notes}</div></td>
+            <td>
+              <select class="form-select" style="padding:4px 8px; font-size:11px; width:auto;" onchange="adminUpdateStatus(${c.id}, this.value)">
+                <option value="new" ${c.status === 'new' ? 'selected' : ''}>New</option>
+                <option value="contacted" ${c.status === 'contacted' ? 'selected' : ''}>Contacted</option>
+                <option value="confirmed" ${c.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
+                <option value="completed" ${c.status === 'completed' ? 'selected' : ''}>Completed</option>
+                <option value="cancelled" ${c.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+              </select>
+            </td>
+            <td><span class="badge-status badge-${c.status}">${c.status}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
   }
 
   // Render Admin Categories Table
@@ -590,6 +613,29 @@ function closeCartDrawer() {
   document.getElementById('drawer-backdrop')?.classList.remove('open');
 }
 
+let currentQvSize = 'FR 38';
+
+function switchQvTab(tabKey) {
+  document.querySelectorAll('.qv-tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.qv-tab-pane').forEach(pane => pane.classList.remove('active'));
+  document.getElementById(`qv-tab-btn-${tabKey}`)?.classList.add('active');
+  document.getElementById(`qv-tab-pane-${tabKey}`)?.classList.add('active');
+}
+
+function selectQvSize(sizeVal) {
+  currentQvSize = sizeVal;
+  document.querySelectorAll('.size-pill').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-size') === sizeVal);
+  });
+}
+
+function updateMonogramBadge(val) {
+  const badge = document.getElementById('qv-monogram-stamp');
+  if (badge) {
+    badge.textContent = val.trim() ? val.toUpperCase() : 'ZFL';
+  }
+}
+
 function openQuickView(productId) {
   const p = store.products.find(prod => prod.id === productId);
   if (!p) return;
@@ -597,29 +643,93 @@ function openQuickView(productId) {
   const content = document.getElementById('quickview-content');
   if (!content || !modal) return;
 
+  currentQvSize = 'FR 38';
   const cat = store.categories.find(c => c.id == p.cat_id)?.title || 'Koleksi';
 
   content.innerHTML = `
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
-      <img src="${p.image}" alt="${p.title}" style="width:100%; border-radius:4px; object-fit:cover; max-height:420px;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:start;">
       <div>
-        <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.15em; color:var(--taupe);">${cat}</span>
-        <h2 style="font-family:var(--serif); font-size:28px; margin:4px 0 8px;">${p.title}</h2>
-        <div style="font-family:var(--serif); font-size:20px; color:var(--sapphire-deep); font-weight:600; margin-bottom:16px;">${formatRupiah(p.price)}</div>
-        <p style="font-size:13px; line-height:1.6; color:var(--ink); margin-bottom:16px;">${p.desc}</p>
-        
-        <div style="border-top:1px solid var(--line); padding-top:12px; margin-bottom:16px; font-size:12px;">
-          <p><strong>✦ Material:</strong> ${p.material || 'Sutra & Serat Alami'}</p>
-          <p><strong>✦ Provenance:</strong> ${p.origin || 'Atelier Jakarta'}</p>
-          <p><strong>✦ Savoir-Faire:</strong> ${p.craft || 'Jahitan tangan presisi couture'}</p>
+        <img src="${p.image}" alt="${p.title}" style="width:100%; border-radius:4px; object-fit:cover; max-height:480px; box-shadow:0 8px 24px rgba(0,0,0,0.08);">
+        <div style="margin-top:12px; display:flex; justify-content:space-between; font-size:11px; color:var(--muted);">
+          <span>Warna: <strong>${p.color || 'Signature'}</strong></span>
+          <span style="display:inline-flex; align-items:center; gap:6px;">
+            ${p.color_hex ? `<span class="color-dot" style="background:${p.color_hex}"></span>` : ''}
+            ID: #${p.id}
+          </span>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+          <span style="font-size:10px; text-transform:uppercase; letter-spacing:0.18em; color:var(--taupe); font-weight:700;">${cat}</span>
+          ${p.badge ? `<span class="badge-status badge-confirmed" style="font-size:9px;">${p.badge}</span>` : ''}
+        </div>
+        <h2 style="font-family:var(--serif); font-size:26px; margin:4px 0 6px; color:var(--ink);">${p.title}</h2>
+        <div style="font-family:var(--serif); font-size:21px; color:var(--sapphire-deep); font-weight:600; margin-bottom:16px;">${formatRupiah(p.price)}</div>
+
+        <!-- 4-TAB MUSEUM CRAFTSMANSHIP NAVIGATION -->
+        <div class="qv-tabs" role="tablist">
+          <button class="qv-tab-btn active" id="qv-tab-btn-story" onclick="switchQvTab('story')">Siluet</button>
+          <button class="qv-tab-btn" id="qv-tab-btn-material" onclick="switchQvTab('material')">Material</button>
+          <button class="qv-tab-btn" id="qv-tab-btn-craft" onclick="switchQvTab('craft')">Savoir-Faire</button>
+          <button class="qv-tab-btn" id="qv-tab-btn-care" onclick="switchQvTab('care')">Perawatan</button>
         </div>
 
-        <div style="margin-bottom:16px;">
-          <label class="form-label">Personalisasi Monogram (Opsional, Maks 3 Huruf)</label>
-          <input type="text" id="qv-monogram" class="form-input" maxlength="3" placeholder="Contoh: ZFL" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z]/g, '')">
+        <!-- TAB 1: SILUET & NARASI -->
+        <div class="qv-tab-pane active" id="qv-tab-pane-story">
+          <p style="margin-bottom:8px;">${p.desc}</p>
+          <p style="font-size:11.5px; color:var(--muted); font-style:italic;">Potongan dirancang mengikuti garis tubuh secara fluid dengan kenyamanan gerak paripurna.</p>
         </div>
 
-        <button class="btn-gold" style="width:100%; text-align:center;" onclick="addQuickViewToCart(${p.id})">Tambah ke Tas Belanja</button>
+        <!-- TAB 2: MATERIAL & PROVENANCE -->
+        <div class="qv-tab-pane" id="qv-tab-pane-material">
+          <div style="background:#f8fafc; padding:10px 14px; border-radius:3px; border-left:3px solid var(--sapphire); margin-bottom:6px;">
+            <p><strong>Komposisi:</strong> ${p.material || 'Sutra Murni 22 Momme & Katun Organik'}</p>
+            <p style="margin-top:4px;"><strong>Provenance:</strong> ${p.origin || 'Kain: Lyon / Biella · Jahit: Atelier Jakarta'}</p>
+          </div>
+          <p style="font-size:11px; color:var(--muted);">100% serat alami terverifikasi bebas dari bahan sintetis murah.</p>
+        </div>
+
+        <!-- TAB 3: SAVOIR-FAIRE KRIYA -->
+        <div class="qv-tab-pane" id="qv-tab-pane-craft">
+          <div style="background:#f8fafc; padding:10px 14px; border-radius:3px; border-left:3px solid var(--gold); margin-bottom:6px;">
+            <p><strong>Teknik Kriya:</strong> ${p.craft || 'Jahitan tangan rolled-hem, konstruksi bias-cut presisi tinggi.'}</p>
+          </div>
+          <p style="font-size:11px; color:var(--muted);">Dikerjakan di bawah standar haute-couture pengrajin senior Jakarta & Solo.</p>
+        </div>
+
+        <!-- TAB 4: PANDUAN PERAWATAN -->
+        <div class="qv-tab-pane" id="qv-tab-pane-care">
+          <div style="background:#f8fafc; padding:10px 14px; border-radius:3px; border-left:3px solid #64748b; margin-bottom:6px;">
+            <p>${p.care || 'Dry clean dengan spesialis bahan halus. Simpan dalam garment bag kain terhindar sinar matahari langsung.'}</p>
+          </div>
+        </div>
+
+        <!-- COUTURE SIZE SELECTION -->
+        <div style="margin-top:14px; margin-bottom:14px;">
+          <label class="form-label">Pilihan Ukuran (Atelier Fit)</label>
+          <div class="size-pills">
+            <button class="size-pill" data-size="FR 36" onclick="selectQvSize('FR 36')">36</button>
+            <button class="size-pill active" data-size="FR 38" onclick="selectQvSize('FR 38')">38</button>
+            <button class="size-pill" data-size="FR 40" onclick="selectQvSize('FR 40')">40</button>
+            <button class="size-pill" data-size="FR 42" onclick="selectQvSize('FR 42')">42</button>
+          </div>
+        </div>
+
+        <!-- LIVE INTERACTIVE MONOGRAM STUDIO -->
+        <div class="monogram-studio-card">
+          <div class="monogram-stamp-badge" id="qv-monogram-stamp">ZFL</div>
+          <div style="flex-grow:1;">
+            <label class="form-label" style="margin-bottom:3px;">Personalisasi Monogram Emas (Maks 3 Huruf)</label>
+            <input type="text" id="qv-monogram" class="form-input" maxlength="3" placeholder="Contoh: AT" value="ZFL"
+              style="padding:6px 10px; font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;"
+              oninput="this.value = this.value.toUpperCase().replace(/[^A-Z]/g, ''); updateMonogramBadge(this.value);">
+            <small style="font-size:10px; color:var(--taupe); display:block; margin-top:2px;">Dibordir benang emas metalik 18 karat di atelier.</small>
+          </div>
+        </div>
+
+        <button class="btn-gold" style="width:100%; text-align:center; padding:12px;" onclick="addQuickViewToCart(${p.id})">
+          Tambah ke Tas Belanja ⟶
+        </button>
       </div>
     </div>
   `;
@@ -629,12 +739,13 @@ function openQuickView(productId) {
 }
 
 function addQuickViewToCart(productId) {
-  const mono = document.getElementById('qv-monogram')?.value || '';
-  store.addToCart(productId, mono);
+  const mono = document.getElementById('qv-monogram')?.value.trim() || '';
+  store.addToCart(productId, mono, currentQvSize);
   closeAllModals();
   renderCartDrawer();
   openCartDrawer();
-  showToast(`Kreasi dengan monogram "${mono || 'Polos'}" ditambahkan.`);
+  const p = store.products.find(prod => prod.id === productId);
+  showToast(`"${p?.title}" (Ukuran ${currentQvSize}${mono ? `, Monogram ${mono}` : ''}) telah ditambahkan.`);
 }
 
 function closeAllModals() {
@@ -689,7 +800,21 @@ function submitConciergeOrder(e) {
 function adminUpdateStatus(id, newStatus) {
   store.updateConciergeStatus(id, newStatus);
   renderAdminTables();
+  renderAccountPortal();
   showToast(`Status pesanan #${id} diperbarui menjadi: ${newStatus.toUpperCase()}`);
+}
+
+function adminFilterOrderStatus(status) {
+  store.adminOrderStatusFilter = status;
+  document.querySelectorAll('.admin-status-pill').forEach(pill => {
+    pill.classList.toggle('active', pill.getAttribute('data-status') === status);
+  });
+  renderAdminTables();
+}
+
+function adminSearchOrders(query) {
+  store.adminOrderSearch = query;
+  renderAdminTables();
 }
 
 function adminDeleteProduct(id) {
@@ -788,4 +913,11 @@ document.addEventListener('DOMContentLoaded', () => {
       renderProducts();
     });
   }
+
+  // WCAG 2.2 Keyboard Accessibility (Escape to Dismiss All Overlays)
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' || e.key === 'Esc') {
+      closeAllModals();
+    }
+  });
 });

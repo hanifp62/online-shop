@@ -136,24 +136,30 @@
 </head>
 <body>
 
+  <!-- WCAG 2.2 Accessible Skip Link -->
+  <a href="#katalog-section" class="skip-to-content">Lewati ke Konten Utama</a>
+
   <!-- ========================================== -->
   <!-- 0. TOP PROTOTYPE GOVERNANCE BAR            -->
   <!-- ========================================== -->
   <header class="proto-banner">
     <div style="display:flex; align-items:center;">
-      <span class="proto-badge">Stitch & Prototype v2.0</span>
+      <span class="proto-badge">Stitch & Prototype v2.1</span>
       <span style="color:#d1d5db; font-weight:600;">ZAFIRA E-Commerce & Atelier Admin Platform</span>
     </div>
     <div style="display:flex; gap:8px; align-items:center;">
       <span style="font-size:10px; color:#94a3b8; text-transform:uppercase; margin-right:4px;">Ganti Mode:</span>
       <button class="proto-btn active" id="btn-view-storefront" onclick="switchView('storefront')">
-        <span>✦</span> Storefront Pelanggan
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        <span>Storefront Pelanggan</span>
       </button>
       <button class="proto-btn" id="btn-view-account" onclick="switchView('account')">
-        <span>👤</span> Portal Akun (/akun)
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span>Portal Akun (/akun)</span>
       </button>
       <button class="proto-btn" id="btn-view-admin" onclick="switchView('admin')">
-        <span>⚙️</span> Atelier Admin Workspace
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        <span>Atelier Admin Workspace</span>
       </button>
     </div>
   </header>
@@ -579,12 +585,42 @@
         </div>
 
         <ul class="admin-menu">
-          <li><a class="admin-nav-item active" onclick="switchAdminTab('overview')"><span>📊</span> Overview & KPI</a></li>
-          <li><a class="admin-nav-item" onclick="switchAdminTab('products')"><span>👗</span> Katalog Kreasi</a></li>
-          <li><a class="admin-nav-item" onclick="switchAdminTab('categories')"><span>🏷️</span> Kategori Koleksi</a></li>
-          <li><a class="admin-nav-item" onclick="switchAdminTab('orders')"><span>📋</span> Pesanan & Concierge</a></li>
-          <li><a class="admin-nav-item" onclick="switchAdminTab('clients')"><span>👥</span> Data Klien</a></li>
-          <li><a class="admin-nav-item" onclick="switchAdminTab('audit')"><span>🛡️</span> Arsip Audit Log</a></li>
+          <li>
+            <a class="admin-nav-item active" onclick="switchAdminTab('overview')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+              <span>Overview & KPI</span>
+            </a>
+          </li>
+          <li>
+            <a class="admin-nav-item" onclick="switchAdminTab('products')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+              <span>Katalog Kreasi</span>
+            </a>
+          </li>
+          <li>
+            <a class="admin-nav-item" onclick="switchAdminTab('categories')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+              <span>Kategori Koleksi</span>
+            </a>
+          </li>
+          <li>
+            <a class="admin-nav-item" onclick="switchAdminTab('orders')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>Pesanan & Concierge</span>
+            </a>
+          </li>
+          <li>
+            <a class="admin-nav-item" onclick="switchAdminTab('clients')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              <span>Data Klien</span>
+            </a>
+          </li>
+          <li>
+            <a class="admin-nav-item" onclick="switchAdminTab('audit')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
+              <span>Arsip Audit Log</span>
+            </a>
+          </li>
         </ul>
 
         <div style="padding-top:18px; border-top:1px solid rgba(255,255,255,0.12); font-size:11px; color:#94a3b8;">
@@ -637,6 +673,18 @@
             <div class="card-header">
               <h3 style="font-family:var(--serif); font-size:18px; font-weight:500; color:var(--sapphire-deep);">Permintaan Pesanan & Konsultasi Terbaru</h3>
               <span style="font-size:12px; color:var(--muted);">Ganti status di sini untuk menguji sinkronisasi ke /akun pelanggan</span>
+            </div>
+            <!-- Filter & Search Toolbar -->
+            <div style="padding:12px 20px; border-bottom:1px solid #e2e8f0; background:#f8fafc; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+              <div class="admin-status-filters" style="margin-bottom:0;">
+                <button class="admin-status-pill active" data-status="all" onclick="adminFilterOrderStatus('all')">Semua Status</button>
+                <button class="admin-status-pill" data-status="new" onclick="adminFilterOrderStatus('new')">Baru</button>
+                <button class="admin-status-pill" data-status="contacted" onclick="adminFilterOrderStatus('contacted')">Contacted</button>
+                <button class="admin-status-pill" data-status="confirmed" onclick="adminFilterOrderStatus('confirmed')">Confirmed</button>
+                <button class="admin-status-pill" data-status="completed" onclick="adminFilterOrderStatus('completed')">Completed</button>
+                <button class="admin-status-pill" data-status="cancelled" onclick="adminFilterOrderStatus('cancelled')">Cancelled</button>
+              </div>
+              <input type="search" placeholder="Cari nama, kontak, pesanan…" oninput="adminSearchOrders(this.value)" class="form-input" style="width:230px; padding:6px 12px; font-size:12px; border-radius:18px;">
             </div>
             <div style="overflow-x:auto;">
               <table class="data-table">
@@ -798,10 +846,10 @@
   <div class="drawer-backdrop" id="drawer-backdrop" onclick="closeAllModals()"></div>
 
   <!-- Cart Drawer -->
-  <aside class="cart-drawer" id="cart-drawer">
+  <aside class="cart-drawer" id="cart-drawer" role="dialog" aria-modal="true" aria-label="Tas Belanja Maison">
     <div class="drawer-header">
-      <h3>Tas Belanja Maison</h3>
-      <button class="btn-close" onclick="closeCartDrawer()">&times;</button>
+      <h3 id="cart-drawer-title">Tas Belanja Maison</h3>
+      <button class="btn-close" onclick="closeCartDrawer()" aria-label="Tutup tas belanja">&times;</button>
     </div>
     <div class="drawer-body" id="cart-items-container">
       <div class="cart-item">
@@ -836,10 +884,10 @@
   </aside>
 
   <!-- Quick View Modal -->
-  <div class="modal-window" id="quickview-modal">
+  <div class="modal-window" id="quickview-modal" role="dialog" aria-modal="true" aria-labelledby="quickview-modal-label">
     <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-      <span style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); font-weight:700;">Detail Kriya & Provenance</span>
-      <button class="btn-close" onclick="closeAllModals()">&times;</button>
+      <span id="quickview-modal-label" style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); font-weight:700;">Detail Kriya & Provenance</span>
+      <button class="btn-close" onclick="closeAllModals()" aria-label="Tutup detail kriya">&times;</button>
     </div>
     <div id="quickview-content">
       <!-- Populated dynamically via openQuickView(id) -->
@@ -847,10 +895,10 @@
   </div>
 
   <!-- Concierge / Checkout Modal -->
-  <div class="modal-window" id="concierge-modal">
+  <div class="modal-window" id="concierge-modal" role="dialog" aria-modal="true" aria-labelledby="concierge-title">
     <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
       <h3 style="font-family:var(--serif); font-size:22px;" id="concierge-title">Lanjutkan Pesanan Bersama Client Advisor</h3>
-      <button class="btn-close" onclick="closeAllModals()">&times;</button>
+      <button class="btn-close" onclick="closeAllModals()" aria-label="Tutup dialog pesanan">&times;</button>
     </div>
     <form onsubmit="submitConciergeOrder(event)">
       <div class="form-group">
@@ -889,10 +937,10 @@
   </div>
 
   <!-- Admin Add Product Modal -->
-  <div class="modal-window" id="add-product-modal" style="width:680px;">
+  <div class="modal-window" id="add-product-modal" role="dialog" aria-modal="true" aria-labelledby="add-product-title" style="width:680px;">
     <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-      <h3 style="font-family:var(--serif); font-size:22px; color:var(--sapphire-deep);">Tambah Kreasi Baru ke Katalog</h3>
-      <button class="btn-close" onclick="closeAllModals()">&times;</button>
+      <h3 id="add-product-title" style="font-family:var(--serif); font-size:22px; color:var(--sapphire-deep);">Tambah Kreasi Baru ke Katalog</h3>
+      <button class="btn-close" onclick="closeAllModals()" aria-label="Tutup form tambah kreasi">&times;</button>
     </div>
     <form onsubmit="adminAddProductSubmit(event)">
       <div style="display:grid; grid-template-columns:2fr 1fr; gap:12px;">
