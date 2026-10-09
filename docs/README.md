@@ -25,7 +25,8 @@ docs/
 │   ├── PRD.md                                # Product Requirements Document formal (FR/NFR/US)
 │   ├── USER_JOURNEYS.md                      # Pemetaan alur pengalaman pengguna & admin
 │   ├── REQUIREMENTS_TRACEABILITY.md          # Matriks ketertelusuran kebutuhan ke implementasi
-│   └── HCI_RPL_UX_RESEARCH_AND_COMPARISON.md # Riset komparasi luxury, HCI (Norman/Nielsen), dan RPL
+│   ├── HCI_RPL_UX_RESEARCH_AND_COMPARISON.md # Riset komparasi luxury, HCI (Norman/Nielsen), dan RPL
+│   └── LUXURY_ECOMMERCE_HCI_UX_RESEARCH_AND_ATM_BENCHMARK.md # Riset mendalam HCI/IMK & ATM luxury 2026
 ├── 03-architecture/
 │   ├── TARGET_ARCHITECTURE.md                # Arsitektur sistem target & struktur modul Laravel
 │   ├── DATABASE_DESIGN.md                    # Desain database terpadu, ERD, & kamus data
