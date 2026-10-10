@@ -17,7 +17,6 @@ class ProfileController extends Controller
         return view('account.show', [
             'user' => $user,
             'history' => ConciergeRequest::where('user_id', $user->id)
-                ->orWhere(fn ($query) => $query->whereNull('user_id')->where('email', $user->email))
                 ->latest()
                 ->take(10)
                 ->get(),
