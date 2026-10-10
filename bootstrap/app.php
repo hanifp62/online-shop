@@ -18,9 +18,10 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-        // Proxy tepercaya dibaca framework dari config/trustedproxy.php (env TRUSTED_PROXIES).
-        // Config selalu array (kosong = tidak ada proxy tepercaya) agar auto-trust '*'
-        // milik Laravel untuk host Cloud/Forge/Vapor, yang aktif saat config null, tidak berlaku.
+        // Kernel dapat di-resolve sebelum konfigurasi dimuat; baca setelah bootstrap selesai.
+        app()->booted(function () use ($middleware): void {
+            $middleware->trustProxies(at: config('trustedproxy.proxies', []));
+        });
 
         $middleware->redirectGuestsTo(fn ($request) => $request->is('admin*')
             ? route('admin.login')

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class TrustProxyTest extends TestCase
@@ -48,9 +49,18 @@ class TrustProxyTest extends TestCase
         $this->assertStringStartsWith('http://', $response->json('url'));
     }
 
-    public function test_forwarded_proto_dihormati_bila_proxy_tepercaya(): void
+    public static function trustedProxies(): array
     {
-        config(['trustedproxy.proxies' => ['10.0.0.5']]);
+        return [
+            'alamat IP' => [['10.0.0.5']],
+            'rentang CIDR' => [['10.0.0.0/24']],
+        ];
+    }
+
+    #[DataProvider('trustedProxies')]
+    public function test_forwarded_proto_dihormati_bila_proxy_tepercaya(array $proxies): void
+    {
+        config(['trustedproxy.proxies' => $proxies]);
 
         Route::get('/_probe-proxy', fn (Request $request) => response()->json([
             'ip' => $request->ip(),
