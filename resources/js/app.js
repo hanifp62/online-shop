@@ -73,19 +73,27 @@ if (storefront) {
     const searchPanel = select('.search-panel');
     const quickViewModal = select('.quick-view-modal');
     const conciergeModal = select('.concierge-modal');
+    const profileDrawer = select('#welcome-profile-drawer');
     const mobileMenu = select('.mobile-menu');
     const productCards = selectAll('[data-product-card]');
     const productMap = new Map(productCards.map((card) => [card.dataset.id, readProduct(card)]));
     // js-cache-function-results + js-index-maps: haystack search dihitung sekali,
     // bukan string-template per produk per keystroke.
     const productHaystack = new Map(
-        [...productMap.entries()].map(([id, p]) => [id, `${p.name} ${p.category} ${p.color} ${p.description}`.toLowerCase()]),
+        [...productMap.entries()].map(([id, p]) => [id, `${p.name} ${p.category} ${p.color} ${p.description} ${p.material} ${p.origin}`.toLowerCase()]),
     );
     // js-cache-property-access: cache referensi DOM yang dipakai di hot path.
     const cartCountEls = selectAll('.cart-count');
     const wishlistCountEls = selectAll('.wishlist-count');
     const cartCountTextEls = selectAll('.cart-count-text');
-    let cart = storage.get('zafira-cart', []);
+    const storedCart = storage.get('zafira-cart', []);
+    let cart = (Array.isArray(storedCart) ? storedCart : []).filter((item) => item && typeof item.id === 'string')
+        .map((item) => ({ ...item, size: typeof item.size === 'string' ? item.size : '', monogram: typeof item.monogram === 'string' ? item.monogram.replace(MONOGRAM_SANITIZE_RE, '').slice(0, 3).toUpperCase() : '' }));
+    storage.set('zafira-cart', cart);
+    const cartKey = (item) => JSON.stringify([item.id, item.size || '', item.monogram || '']);
+    const catalogSearch = select('#live-catalog-search-input');
+    let activeCategory = 'Semua';
+    let activeWishlistOnly = false;
     let wishlist = storage.get('zafira-wishlist', []);
     // js-set-map-lookups: O(1) untuk includes() yang dipanggil di loop render/filter.
     let wishlistSet = new Set(wishlist);
@@ -144,10 +152,10 @@ if (storefront) {
     }
 
     function syncOverlay() {
-        const somethingOpen = [cartDrawer, searchPanel, quickViewModal, conciergeModal]
+        const somethingOpen = [cartDrawer, searchPanel, quickViewModal, conciergeModal, profileDrawer]
             .some((element) => element?.classList.contains('open'));
-        overlay?.classList.toggle('open', somethingOpen);
-        document.body.classList.toggle('no-scroll', somethingOpen || mobileMenu?.classList.contains('open'));
+        overlay?.classList.toggle('open', Boolean(somethingOpen));
+        document.body.classList.toggle('no-scroll', Boolean(somethingOpen || mobileMenu?.classList.contains('open')));
     }
 
     function openElement(element) {
@@ -176,7 +184,7 @@ if (storefront) {
     }
 
     function closeAll() {
-        [cartDrawer, searchPanel, quickViewModal, conciergeModal].forEach((element) => closeElement(element));
+        [cartDrawer, searchPanel, quickViewModal, conciergeModal, profileDrawer].forEach((element) => closeElement(element));
     }
 
     function updateCounts() {
@@ -317,7 +325,7 @@ if (storefront) {
         cart.forEach((item) => {
             const element = document.createElement('article');
             element.className = 'cart-item';
-            element.dataset.cartId = `${item.id}-${item.size || ''}-${item.monogram || ''}`;
+            element.dataset.cartId = cartKey(item);
             element.innerHTML = `
                 <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" width="100" height="125" loading="lazy">
                 <div class="cart-item-info">
@@ -342,11 +350,11 @@ if (storefront) {
         if (totalElement) totalElement.textContent = rupiah(total);
     }
 
-    function changeQuantity(cartKey, direction) {
-        const item = cart.find((entry) => `${entry.id}-${entry.size || ''}-${entry.monogram || ''}` === cartKey);
+    function changeQuantity(key, direction) {
+        const item = cart.find((entry) => cartKey(entry) === key);
         if (!item) return;
         item.quantity += direction === 'plus' ? 1 : -1;
-        if (item.quantity < 1) cart = cart.filter((entry) => `${entry.id}-${entry.size || ''}-${entry.monogram || ''}` !== cartKey);
+        if (item.quantity < 1) cart = cart.filter((entry) => cartKey(entry) !== key);
         persistCart();
     }
 
@@ -373,30 +381,29 @@ if (storefront) {
         openElement(quickViewModal);
     }
 
-    function applyFilter(category, wishlistOnly = false, { syncUrl = true } = {}) {
-        // js-early-exit: wishlist kosong → langsung sembunyikan semua tanpa loop cocok.
-        if (wishlistOnly && wishlistSet.size === 0) {
-            for (const card of productCards) card.hidden = true;
-            const c = select('[data-product-count]');
-            if (c) c.textContent = '0';
-            const e = select('.empty-products');
-            if (e) e.hidden = false;
-            if (syncUrl) {
-                const u = new URL(window.location.href);
-                u.searchParams.set('tampilkan', 'favorit');
-                u.searchParams.delete('kategori');
-                history.replaceState(null, '', u);
-            }
-            return;
-        }
+    // Satu-satunya mekanisme filter katalog: kategori/favorit ∩ kata kunci, selalu via `hidden`.
+    function applyFilter(category = activeCategory, wishlistOnly = activeWishlistOnly, { syncUrl = true } = {}) {
+        activeCategory = category || 'Semua';
+        activeWishlistOnly = Boolean(wishlistOnly);
+        const query = (catalogSearch?.value || '').trim().toLowerCase();
         let visible = 0;
-        const showAll = !wishlistOnly && category === 'Semua';
+        const showAll = !activeWishlistOnly && activeCategory === 'Semua';
         for (const card of productCards) {
-            const matches = wishlistOnly
+            const inGroup = activeWishlistOnly
                 ? wishlistSet.has(card.dataset.id)
-                : showAll || card.dataset.category === category;
+                : showAll || card.dataset.category === activeCategory;
+            const matches = inGroup && (!query || productHaystack.get(card.dataset.id)?.includes(query));
             card.hidden = !matches;
             if (matches) visible += 1;
+        }
+        const strip = select('#welcome-feedback-strip');
+        if (strip) {
+            const filtering = Boolean(query) || activeWishlistOnly || activeCategory !== 'Semua';
+            strip.hidden = !filtering;
+            if (filtering) {
+                const scope = activeWishlistOnly ? 'Favorit Anda' : (activeCategory === 'Semua' ? 'Semua Kategori' : activeCategory);
+                strip.textContent = `Menampilkan ${visible} kreasi hasil penyaringan (${scope}${query ? ` · kata kunci "${query}"` : ''})`;
+            }
         }
         const count = select('[data-product-count]');
         if (count) count.textContent = visible;
@@ -460,6 +467,9 @@ if (storefront) {
         history.replaceState(null, '', url);
     }
 
+    catalogSearch?.addEventListener('input', () => applyFilter());
+    selectAll('[data-open-profile]').forEach((button) => button.addEventListener('click', () => openElement(profileDrawer)));
+    selectAll('[data-close-profile]').forEach((button) => button.addEventListener('click', () => closeElement(profileDrawer)));
     selectAll('[data-open-cart]').forEach((button) => button.addEventListener('click', () => openElement(cartDrawer)));
     selectAll('[data-close-cart]').forEach((button) => button.addEventListener('click', () => closeElement(cartDrawer)));
     selectAll('[data-open-search]').forEach((button) => button.addEventListener('click', () => {
@@ -469,6 +479,7 @@ if (storefront) {
     selectAll('[data-close-search]').forEach((button) => button.addEventListener('click', () => closeElement(searchPanel)));
     selectAll('[data-open-concierge]').forEach((button) => button.addEventListener('click', () => {
         setConciergeMode(false);
+        closeElement(profileDrawer);
         closeElement(quickViewModal);
         closeElement(mobileMenu);
         openElement(conciergeModal);
@@ -484,7 +495,12 @@ if (storefront) {
     });
     selectAll('[data-card-add]').forEach((button) => {
         button.addEventListener('click', () => {
-            addToCart(readProduct(button.closest('[data-product-card]')));
+            const product = readProduct(button.closest('[data-product-card]'));
+            if (product.category === 'Busana') {
+                window.location.href = `/produk/${encodeURIComponent(product.id)}`;
+                return;
+            }
+            addToCart(product);
             if (!prefersReducedMotion() && button.animate) {
                 button.animate(
                     [{ transform: 'scale(1)' }, { transform: 'scale(.88)' }, { transform: 'scale(1)' }],
@@ -496,6 +512,10 @@ if (storefront) {
     selectAll('[data-quick-add]').forEach((button) => {
         button.addEventListener('click', () => {
             if (!currentQuickProduct) return;
+            if (currentQuickProduct.category === 'Busana') {
+                window.location.href = `/produk/${encodeURIComponent(currentQuickProduct.id)}`;
+                return;
+            }
             addToCart(currentQuickProduct);
             closeElement(quickViewModal);
             setTimeout(() => openElement(cartDrawer), 180);
@@ -507,7 +527,7 @@ if (storefront) {
             const item = event.target.closest('[data-cart-id]');
             if (!item) return;
             if (event.target.closest('[data-remove-cart]')) {
-                const removedIndex = cart.findIndex((entry) => `${entry.id}-${entry.size || ''}-${entry.monogram || ''}` === item.dataset.cartId);
+                const removedIndex = cart.findIndex((entry) => cartKey(entry) === item.dataset.cartId);
                 if (removedIndex === -1) return;
                 const [removed] = cart.splice(removedIndex, 1);
                 persistCart();
@@ -554,7 +574,7 @@ if (storefront) {
     selectAll('[data-filter]').forEach((button) => {
         button.addEventListener('click', () => {
             setActiveFilter(button.dataset.filter);
-            applyFilter(button.dataset.filter);
+            applyFilter(button.dataset.filter, false);
         });
     });
 
@@ -562,7 +582,7 @@ if (storefront) {
         link.addEventListener('click', () => {
             const category = link.dataset.categoryLink;
             setActiveFilter(category);
-            applyFilter(category);
+            applyFilter(category, false);
         });
     });
 
@@ -730,13 +750,14 @@ if (storefront) {
 
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
+            window.closeWelcomeShortcutsModal?.();
             closeAll();
             closeElement(mobileMenu);
             select('.account-menu')?.classList.remove('open');
         }
 
         if (event.key === 'Tab') {
-            const activeLayer = [conciergeModal, quickViewModal, searchPanel, cartDrawer, mobileMenu]
+            const activeLayer = [conciergeModal, quickViewModal, searchPanel, cartDrawer, profileDrawer, mobileMenu]
                 .find((element) => element?.classList.contains('open'));
             if (!activeLayer) return;
             const focusable = selectAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])', activeLayer)

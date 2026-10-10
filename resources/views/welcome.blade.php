@@ -187,7 +187,7 @@
             <button class="icon-button" type="button" data-open-search aria-label="Cari">
                 <svg aria-hidden="true"><use href="#icon-search"/></svg>
             </button>
-            <button class="icon-button" type="button" id="btn-header-profile" onclick="openWelcomeProfileDrawer()" aria-label="Profil VIP &amp; Pilihan Salon" title="Profil VIP &amp; Pilihan Salon" style="position:relative;">
+            <button class="icon-button" type="button" id="btn-header-profile" data-open-profile aria-label="Profil VIP &amp; Pilihan Salon" title="Profil VIP &amp; Pilihan Salon" style="position:relative;">
                 <svg aria-hidden="true"><use href="#icon-user"/></svg>
                 <span style="position:absolute; top:7px; right:7px; width:7px; height:7px; border-radius:50%; background:var(--gold); box-shadow:0 0 8px var(--gold);"></span>
             </button>
@@ -425,7 +425,7 @@
                 <ul>
                     <li><span>01</span><span data-i18n="atelier_step_1">Pilih hingga tiga inisial huruf kapital</span></li>
                     <li><span>02</span><span data-i18n="atelier_step_2">Tentukan nuansa foil emas, perak, atau safir</span></li>
-                    <li><span>03</span><span data-i18n="atelier_step_3">Bordir tangan complimentary oleh artisan ZAFIRA (3–5 hari)</span></li>
+                    <li><span>03</span><span data-i18n="atelier_step_3">Bordir tangan complimentary oleh artisan ZAFIRA</span></li>
                 </ul>
                 <button class="button button-dark" type="button" data-open-concierge><span data-i18n="atelier_cta">Personalisasi Kreasi Anda</span> <svg aria-hidden="true"><use href="#icon-arrow"/></svg></button>
             </div>
@@ -491,7 +491,7 @@
                         </p>
                     </div>
                     <div style="font-size:12.5px; color:var(--ink); font-style:italic; background:var(--ivory); padding:16px; border-radius:var(--radius-xs); border:1px solid var(--line);">
-                        “Pour Madame Aurelia, dengan segala penghormatan atas kecintaan Anda pada adibusana Nusantara.”
+                        “Untuk Anda, dengan penghormatan atas kecintaan pada adibusana Nusantara.”
                     </div>
                 </div>
             </div>
@@ -600,7 +600,7 @@
                 <span class="profile-eyebrow" data-i18n="profile_drawer_eyebrow">Espace Klien Privilégié</span>
                 <h3 id="welcome-profile-heading" data-i18n="profile_drawer_title" style="margin:2px 0 0; font-family:'Bodoni Moda', serif; font-size:22px;">Profil &amp; Pilihan Salon</h3>
             </div>
-            <button class="icon-button" type="button" onclick="closeWelcomeProfileDrawer()" aria-label="Tutup Profil">
+            <button class="icon-button" type="button" data-close-profile aria-label="Tutup Profil">
                 <svg aria-hidden="true"><use href="#icon-close"/></svg>
             </button>
         </div>
@@ -619,7 +619,7 @@
 
             <!-- Quick Action Buttons -->
             <div class="profile-quick-actions">
-                <button type="button" class="profile-action-pill" onclick="closeWelcomeProfileDrawer(); document.querySelector('[data-open-concierge]')?.click();">
+                <button type="button" class="profile-action-pill" data-open-concierge>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                     <span data-i18n="profile_action_fitting">Jadwalkan Fitting</span>
                 </button>
@@ -736,7 +736,7 @@
             <span>Studio Z</span>
         </a>
         @endunless
-        <button type="button" class="dock-btn" onclick="openWelcomeProfileDrawer()" title="Portal Akun Klien VIP">
+        <button type="button" class="dock-btn" data-open-profile title="Portal Akun Klien VIP">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             <span>Akun VIP</span>
         </button>
@@ -794,32 +794,6 @@
         function closeWelcomeShortcutsModal() {
             var el = document.getElementById('welcome-shortcuts-backdrop');
             if (el) { el.style.display = 'none'; }
-        }
-
-        // VIP Client Profile & Atelier Salon Preferences Drawer Handlers
-        function openWelcomeProfileDrawer() {
-            var drawer = document.getElementById('welcome-profile-drawer');
-            var overlay = document.querySelector('[data-overlay]');
-            if (drawer) {
-                drawer.classList.add('open');
-                drawer.setAttribute('aria-hidden', 'false');
-            }
-            if (overlay) {
-                overlay.classList.add('open');
-            }
-            document.body.style.overflow = 'hidden';
-        }
-        function closeWelcomeProfileDrawer() {
-            var drawer = document.getElementById('welcome-profile-drawer');
-            var overlay = document.querySelector('[data-overlay]');
-            if (drawer) {
-                drawer.classList.remove('open');
-                drawer.setAttribute('aria-hidden', 'true');
-            }
-            if (overlay && !document.querySelector('.cart-drawer.open') && !document.querySelector('.search-panel.open')) {
-                overlay.classList.remove('open');
-            }
-            document.body.style.overflow = '';
         }
 
         // L'Art d'Offrir Interactive Unboxing Handlers (Norman & Shneiderman)
@@ -900,88 +874,23 @@
                 });
             });
 
-            // Live Catalog Filtering & Search
             var searchInput = document.getElementById('live-catalog-search-input');
-            var feedbackStrip = document.getElementById('welcome-feedback-strip');
-            var productCards = document.querySelectorAll('[data-product-card]');
-            var categoryPills = document.querySelectorAll('.filter-pill');
-
-            var activeCategory = 'Semua';
-
-            function applyFilters() {
-                var query = searchInput ? searchInput.value.toLowerCase().trim() : '';
-                var visibleCount = 0;
-
-                productCards.forEach(function(card) {
-                    var name = (card.getAttribute('data-name') || '').toLowerCase();
-                    var cat = card.getAttribute('data-category') || '';
-                    var desc = (card.getAttribute('data-description') || '').toLowerCase();
-                    var mat = (card.getAttribute('data-material') || '').toLowerCase();
-
-                    var matchesCat = (activeCategory === 'Semua' || cat.toLowerCase().indexOf(activeCategory.toLowerCase()) !== -1);
-                    var matchesQuery = !query || name.indexOf(query) !== -1 || desc.indexOf(query) !== -1 || mat.indexOf(query) !== -1;
-
-                    if (matchesCat && matchesQuery) {
-                        card.style.display = '';
-                        visibleCount++;
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-
-                if (feedbackStrip) {
-                    if (query || activeCategory !== 'Semua') {
-                        feedbackStrip.style.display = 'block';
-                        feedbackStrip.textContent = 'Menampilkan ' + visibleCount + ' kreasi hasil penyaringan (' + (activeCategory === 'Semua' ? 'Semua Kategori' : activeCategory) + (query ? ' · kata kunci "' + query + '"' : '') + ')';
-                    } else {
-                        feedbackStrip.style.display = 'none';
-                    }
-                }
-
-                var emptyMsg = document.querySelector('.empty-products');
-                if (emptyMsg) {
-                    emptyMsg.hidden = (visibleCount > 0);
-                }
-            }
-
-            if (searchInput) {
-                searchInput.addEventListener('input', applyFilters);
-            }
-
-            categoryPills.forEach(function(pill) {
-                pill.addEventListener('click', function() {
-                    categoryPills.forEach(function(p) { p.classList.remove('active'); });
-                    this.classList.add('active');
-                    activeCategory = this.getAttribute('data-filter') || 'Semua';
-                    applyFilters();
-                });
-            });
-
-            // Overlay click closes profile drawer
-            var overlayEl = document.querySelector('[data-overlay]');
-            if (overlayEl) {
-                overlayEl.addEventListener('click', closeWelcomeProfileDrawer);
-            }
 
             // Keyboard Shortcuts Listener
             document.addEventListener('keydown', function(e) {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
-                    if (e.key === 'Escape') { e.target.blur(); }
+                if (e.target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
                     return;
                 }
                 if (e.key === '?' || (e.shiftKey && e.key === '/')) {
                     e.preventDefault();
                     openWelcomeShortcutsModal();
-                } else if (e.key === 'Escape') {
-                    closeWelcomeShortcutsModal();
-                    closeWelcomeProfileDrawer();
                 } else if (e.key === 'c' || e.key === 'C') {
                     e.preventDefault();
                     var cartBtn = document.querySelector('[data-open-cart]');
                     if (cartBtn) { cartBtn.click(); }
                 } else if (e.key === 'u' || e.key === 'U') {
                     e.preventDefault();
-                    openWelcomeProfileDrawer();
+                    document.querySelector('[data-open-profile]')?.click();
                 } else if (e.key === '/') {
                     e.preventDefault();
                     if (searchInput) {
