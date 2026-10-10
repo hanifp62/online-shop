@@ -131,9 +131,9 @@ class StorefrontController extends Controller
         $request->merge(['email' => mb_strtolower((string) $request->input('email'))]);
 
         $rawItems = $request->input('order_items');
-        if ($rawItems === '') {
+        if (is_string($rawItems) && trim($rawItems) === '') {
             $request->merge(['order_items' => null]);
-        } elseif (is_string($rawItems) && trim($rawItems) !== '') {
+        } elseif (is_string($rawItems)) {
             $decoded = json_decode($rawItems, true);
             $request->merge(['order_items' => is_array($decoded) ? $decoded : $rawItems]);
         }
