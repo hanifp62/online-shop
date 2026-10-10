@@ -267,7 +267,7 @@ if (storefront) {
             const lines = select('[data-checkout-lines]', summary);
             const total = select('[data-checkout-total]', summary);
             if (lines) lines.innerHTML = cart.map((item) => `
-                <li>${escapeHtml(item.name)} <span>× ${escapeHtml(item.quantity)}</span></li>
+                <li>${escapeHtml(item.name)}${item.size ? ` · Ukuran: ${escapeHtml(item.size)}` : ''}${item.monogram ? ` · Monogram: ${escapeHtml(item.monogram)}` : ''} <span>× ${escapeHtml(item.quantity)}</span></li>
             `).join('');
             if (total) total.textContent = rupiah(cart.reduce((sum, item) => sum + (item.price * item.quantity), 0));
         }
@@ -284,8 +284,11 @@ if (storefront) {
             priceLabel: product.priceLabel,
             image: product.image,
             color: product.color,
+            size: product.size || '',
+            monogram: product.monogram || '',
         };
-        const existing = cart.find((item) => item.id === snapshot.id);
+        const existing = cart.find((item) => item.id === snapshot.id
+            && (item.size || '') === snapshot.size && (item.monogram || '') === snapshot.monogram);
         if (existing) {
             existing.quantity += 1;
         } else {
@@ -314,13 +317,15 @@ if (storefront) {
         cart.forEach((item) => {
             const element = document.createElement('article');
             element.className = 'cart-item';
-            element.dataset.cartId = item.id;
+            element.dataset.cartId = `${item.id}-${item.size || ''}-${item.monogram || ''}`;
             element.innerHTML = `
                 <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" width="100" height="125" loading="lazy">
                 <div class="cart-item-info">
                     <span>${escapeHtml(item.category)}</span>
                     <h3><a href="/produk/${encodeURIComponent(item.id)}">${escapeHtml(item.name)}</a></h3>
                     <p translate="no">${escapeHtml(item.priceLabel)}</p>
+                    ${item.size ? `<p>Ukuran: ${escapeHtml(item.size)}</p>` : ''}
+                    ${item.monogram ? `<p>Monogram: ${escapeHtml(item.monogram)}</p>` : ''}
                     <div class="quantity-control" aria-label="Jumlah ${escapeHtml(item.name)}">
                         <button type="button" data-quantity="minus" aria-label="Kurangi jumlah"><svg><use href="#icon-minus"/></svg></button>
                         <span>${escapeHtml(item.quantity)}</span>
@@ -337,11 +342,11 @@ if (storefront) {
         if (totalElement) totalElement.textContent = rupiah(total);
     }
 
-    function changeQuantity(id, direction) {
-        const item = cart.find((entry) => entry.id === id);
+    function changeQuantity(cartKey, direction) {
+        const item = cart.find((entry) => `${entry.id}-${entry.size || ''}-${entry.monogram || ''}` === cartKey);
         if (!item) return;
         item.quantity += direction === 'plus' ? 1 : -1;
-        if (item.quantity < 1) cart = cart.filter((entry) => entry.id !== id);
+        if (item.quantity < 1) cart = cart.filter((entry) => `${entry.id}-${entry.size || ''}-${entry.monogram || ''}` !== cartKey);
         persistCart();
     }
 
@@ -502,7 +507,7 @@ if (storefront) {
             const item = event.target.closest('[data-cart-id]');
             if (!item) return;
             if (event.target.closest('[data-remove-cart]')) {
-                const removedIndex = cart.findIndex((entry) => entry.id === item.dataset.cartId);
+                const removedIndex = cart.findIndex((entry) => `${entry.id}-${entry.size || ''}-${entry.monogram || ''}` === item.dataset.cartId);
                 if (removedIndex === -1) return;
                 const [removed] = cart.splice(removedIndex, 1);
                 persistCart();
@@ -539,6 +544,8 @@ if (storefront) {
                 image: button.dataset.image,
                 description: button.dataset.description,
                 color: button.dataset.color,
+                size: select('#pdp-size')?.value || '',
+                monogram: select('#pdp-monogram-input')?.value.replace(MONOGRAM_SANITIZE_RE, '').slice(0, 3).toUpperCase() || '',
             });
             setTimeout(() => openElement(cartDrawer), 180);
         });

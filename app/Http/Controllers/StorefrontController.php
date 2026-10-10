@@ -150,6 +150,8 @@ class StorefrontController extends Controller
             'order_items.*' => ['array'],
             'order_items.*.id' => ['required', 'string', 'max:255', 'exists:products,product_slug'],
             'order_items.*.quantity' => ['required', 'integer', 'min:1', 'max:10'],
+            'order_items.*.size' => ['nullable', 'string', 'max:50'],
+            'order_items.*.monogram' => ['nullable', 'string', 'regex:/^[A-Z]{1,3}$/'],
         ]);
 
         if (! empty($validated['order_items'])) {
@@ -160,7 +162,12 @@ class StorefrontController extends Controller
                 $qty = (int) $item['quantity'];
                 $price = (int) $product->product_price;
                 $priceStr = 'Rp'.number_format($price, 0, ',', '.');
-                $lines[] = "- {$product->product_title} ({$qty}x) {$priceStr}";
+                $details = array_filter([
+                    ! empty($item['size']) ? 'Ukuran: '.$item['size'] : null,
+                    ! empty($item['monogram']) ? 'Monogram: '.$item['monogram'] : null,
+                ]);
+                $suffix = $details ? ' · '.implode(' · ', $details) : '';
+                $lines[] = "- {$product->product_title} ({$qty}x) {$priceStr}{$suffix}";
                 $total += $price * $qty;
             }
             $existingNotes = trim((string) ($validated['notes'] ?? ''));

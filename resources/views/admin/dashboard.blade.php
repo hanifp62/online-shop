@@ -64,7 +64,7 @@
         <div>
             <span class="eyebrow">Administration</span>
             <h1>Dashboard Maison.</h1>
-            <p>Masuk sebagai {{ auth('admin')->user()->email }} · Semua aksi admin langsung terlihat oleh user: kategori → pill filter, produk → halaman produk, status → riwayat /akun.</p>
+            <p>Masuk sebagai {{ auth('admin')->user()->email }} · Seluruh pembaruan data tersinkronisasi langsung ke storefront, katalog kriya, dan riwayat akun klien.</p>
         </div>
         <div class="admin-actions">
             <form method="POST" action="{{ route('admin.logout') }}">@csrf<button class="button button-dark" type="submit">Keluar</button></form>
@@ -338,8 +338,36 @@
         </form>
     </section>
 
-    <p style="margin-top:20px"><a class="text-link" href="{{ route('home') }}">← Kembali ke Maison</a></p>
+    <p style="margin-top:20px">
+        <a class="text-link" href="{{ route('home') }}" style="display:inline-flex; align-items:center; gap:6px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <span>Kembali ke Maison</span>
+        </a>
+    </p>
 </main>
+
+<!-- Floating Luxury Navigation Dock -->
+<nav class="floating-luxury-dock" style="position:fixed; bottom:20px; left:50%; transform:translateX(-50%); display:inline-flex; align-items:center; gap:4px; background:rgba(8, 16, 29, 0.94); backdrop-filter:blur(16px); border:1px solid rgba(182, 154, 100, 0.45); border-radius:9999px; padding:5px 10px; z-index:999; box-shadow:0 16px 36px rgba(0,0,0,0.35);" aria-label="Navigasi Cepat Atelier">
+    <a class="dock-btn" href="{{ route('home') }}" style="background:transparent; border:none; color:rgba(255,255,255,0.78); font-size:11px; font-weight:500; padding:7px 12px; border-radius:9999px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; text-decoration:none;" title="Storefront Utama">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Storefront</span>
+    </a>
+    @unless(app()->environment('production'))
+    <a class="dock-btn" href="/prototype/#studio-view" style="background:transparent; border:none; color:rgba(255,255,255,0.78); font-size:11px; font-weight:500; padding:7px 12px; border-radius:9999px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; text-decoration:none;" title="Studio Produk">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+        <span>Studio Z</span>
+    </a>
+    @endunless
+    <a class="dock-btn" href="{{ route('account.show') }}" style="background:transparent; border:none; color:rgba(255,255,255,0.78); font-size:11px; font-weight:500; padding:7px 12px; border-radius:9999px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; text-decoration:none;" title="Portal Akun Klien VIP">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span>Akun VIP</span>
+    </a>
+    <a class="dock-btn active" href="/admin" style="background:rgba(182, 154, 100, 0.22); color:#fff; border:none; font-size:11px; font-weight:500; padding:7px 12px; border-radius:9999px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; text-decoration:none;" title="Konsol Admin Atelier">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        <span>Admin Atelier</span>
+    </a>
+</nav>
+
 <div class="toast" role="status" aria-live="polite" @if(session('success')) data-flash="{{ session('success') }}" @endif><span><svg aria-hidden="true"><use href="#icon-check"/></svg></span><p data-toast-message></p></div>
 <svg class="icon-sprite" aria-hidden="true"><symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol></svg>
 </body>
