@@ -24,7 +24,7 @@ return new class extends Migration
                 CREATE PROCEDURE `getcat`(IN `cid` INT)
                 SELECT * FROM `categories` WHERE `cat_id` = `cid`
                 SQL);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             // Jika mysql.proc di instance MySQL/MariaDB lokal memerlukan mysql_upgrade,
             // lewati pembuatan procedure tanpa menggagalkan migrasi, karena seluruh kode
             // aplikasi menggunakan Category::getById() yang 100% kompatibel.
@@ -41,7 +41,7 @@ return new class extends Migration
 
         try {
             DB::unprepared('DROP PROCEDURE IF EXISTS `getcat`');
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             // Abaikan jika procedure tidak ada atau mysql.proc tidak dapat diakses
         }
     }
