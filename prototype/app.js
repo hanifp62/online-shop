@@ -1,5 +1,5 @@
 /**
- * ZAFIRA (La Maison de Lumière) — Flagship Digital Engine (v3.0)
+ * ZAFIRA (La Maison de Lumière) - Flagship Digital Engine (v3.3)
  * Haute Couture Interaction, Editorial Pacing, Product Studio, and Real-Time Concierge
  */
 
@@ -25,7 +25,7 @@ const INITIAL_PRODUCTS = [
     badge: 'Warisan Nusantara',
     color: 'Ivoire & Or',
     color_hex: '#dfcaa0',
-    hero_quote: 'Bordir tambal-tangan 60 jam oleh empu kriya Kebayoran — bertutur dalam kemurnian brokat Prancis.',
+    hero_quote: 'Bordir tambal-tangan 60 jam oleh empu kriya Kebayoran, bertutur dalam kemurnian brokat Prancis.',
     desc: 'Kebaya kontemporer dengan siluet Parisian dan bordir tangan pengrajin Kebayoran. Menjembatani keanggunan keraton dengan modernitas salon haute-couture Paris.',
     material: 'Brokat Prancis 60% viskosa 40% poliamida, dilapisi sutra organza Lyon murni, payet kristal kaca Venesia.',
     origin: 'Brokat: Calais, Prancis · Bordir Tangan: Kebayoran Baru, Jakarta · Jahit: Atelier Utama ZAFIRA',
@@ -33,9 +33,8 @@ const INITIAL_PRODUCTS = [
     care: 'Dry clean khusus spesialis adibusana dan bordir tangan. Simpan digantung pada hanger berbalut katun organik ZAFIRA.',
     measurements: { 'FR 36': 'Dada 84cm · Pinggang 66cm · Pinggul 92cm', 'FR 38': 'Dada 88cm · Pinggang 70cm · Pinggul 96cm', 'FR 40': 'Dada 92cm · Pinggang 74cm · Pinggul 100cm', 'FR 42': 'Dada 96cm · Pinggang 78cm · Pinggul 104cm' },
     images: [
-      'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=1400&q=90',
-      'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=1200&q=90',
-      'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=1200&q=90'
+      'assets/hero_couture.jpg',
+      'assets/echarpe_eclat.jpg'
     ]
   },
   {
@@ -55,8 +54,7 @@ const INITIAL_PRODUCTS = [
     care: 'Cuci tangan dingin dengan sari buah lerak alami atau sampo sutra lembut. Jemur di tempat teduh terbalik.',
     measurements: { 'FR 38': 'Leher 38cm · Dada 96cm · Panjang 74cm', 'FR 40': 'Leher 40cm · Dada 102cm · Panjang 76cm', 'FR 42': 'Leher 42cm · Dada 108cm · Panjang 78cm' },
     images: [
-      'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=1400&q=90',
-      'https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&w=1200&q=90'
+      'assets/chemise_riviere.jpg'
     ]
   },
   {
@@ -76,8 +74,7 @@ const INITIAL_PRODUCTS = [
     care: 'Dry clean khusus spesialis sutra. Jangan diperas atau disetrika uap langsung.',
     measurements: { 'FR 36': 'Dada 82cm · Pinggang 64cm · Panjang 138cm', 'FR 38': 'Dada 86cm · Pinggang 68cm · Panjang 140cm', 'FR 40': 'Dada 90cm · Pinggang 72cm · Panjang 142cm' },
     images: [
-      'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=1400&q=90',
-      'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1200&q=90'
+      'assets/robe_elan.jpg'
     ]
   },
   {
@@ -97,8 +94,7 @@ const INITIAL_PRODUCTS = [
     care: 'Simpan dalam kotak berlapis beludru khusus ZAFIRA. Bersihkan dengan kain mikrofiber kering.',
     measurements: { 'One Size': 'Panjang 19cm · Tinggi 11cm · Kedalaman 4.5cm' },
     images: [
-      'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=1400&q=90',
-      'https://images.unsplash.com/photo-1583743814966-8936f5b7fdf1?auto=format&fit=crop&w=1200&q=90'
+      'assets/minaudiere_saphir.jpg'
     ]
   },
   {
@@ -118,8 +114,7 @@ const INITIAL_PRODUCTS = [
     care: 'Angin-anginkan setelah dipakai. Dry clean profesional maksimal 1x per musim.',
     measurements: { 'FR 48': 'Bahu 46cm · Dada 104cm · Panjang 112cm', 'FR 50': 'Bahu 48cm · Dada 108cm · Panjang 114cm', 'FR 52': 'Bahu 50cm · Dada 112cm · Panjang 116cm' },
     images: [
-      'https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&w=1400&q=90',
-      'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=1200&q=90'
+      'assets/manteau_firenze.jpg'
     ]
   },
   {
@@ -139,7 +134,7 @@ const INITIAL_PRODUCTS = [
     care: 'Dry clean khusus wastra emas. Gulung pada tabung karton bebas asam, jangan dilipat.',
     measurements: { 'One Size': 'Panjang 200cm · Lebar 65cm' },
     images: [
-      'https://images.unsplash.com/photo-1583743814966-8936f5b7fdf1?auto=format&fit=crop&w=1400&q=90'
+      'assets/echarpe_eclat.jpg'
     ]
   },
   {
@@ -159,7 +154,7 @@ const INITIAL_PRODUCTS = [
     care: 'Dry clean spesialis tenun tangan. Simpan digantung dalam garment bag kain.',
     measurements: { 'FR 38': 'Dada 86cm · Pinggang 68cm · Panjang 142cm', 'FR 40': 'Dada 90cm · Pinggang 72cm · Panjang 144cm' },
     images: [
-      'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=1400&q=90'
+      'assets/robe_aurore.jpg'
     ]
   },
   {
@@ -179,7 +174,7 @@ const INITIAL_PRODUCTS = [
     care: 'Gunakan shoe-tree kayu cedar saat tidak dipakai. Bersihkan dengan krim kulit netral.',
     measurements: { 'EU 40': '25.5cm', 'EU 41': '26.2cm', 'EU 42': '27.0cm', 'EU 43': '27.8cm' },
     images: [
-      'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=1400&q=90'
+      'assets/mocassin_riva.jpg'
     ]
   }
 ];
@@ -265,18 +260,21 @@ const INITIAL_CONCIERGE = [
 class PrototypeStore {
   constructor() {
     this.categories = this.load('zafira_v3_categories', INITIAL_CATEGORIES);
-    this.products = this.load('zafira_v3_products', INITIAL_PRODUCTS);
-    this.concierge = this.load('zafira_v3_concierge', INITIAL_CONCIERGE);
-    this.cart = this.load('zafira_v3_cart', [
+    this.products = this.load('zafira_v3_5_products', INITIAL_PRODUCTS);
+    this.concierge = this.load('zafira_v3_5_concierge', INITIAL_CONCIERGE);
+    this.cart = this.load('zafira_v3_5_cart', [
       { productId: 9, qty: 1, size: 'FR 38', monogram: 'AT', packaging: 'gift-box' }
     ]);
+    this.currency = this.load('zafira_currency', 'IDR');
+    this.soundEnabled = this.load('zafira_sound', true);
+    this.isDockCollapsed = false;
 
     // MSI (Management Information System) States
     this.currentMsiTab = 'tps'; // 'tps' | 'mis' | 'eis' | 'gov'
     this.currentRbacRole = 'director'; // 'director' | 'manager' | 'advisor' | 'artisan'
-    this.rawMaterials = this.load('zafira_v3_materials', INITIAL_MATERIALS);
-    this.wipStations = this.load('zafira_v3_wip', INITIAL_WIP_STATIONS);
-    this.auditLogs = this.load('zafira_v3_audit_logs', INITIAL_AUDIT_LOGS);
+    this.rawMaterials = this.load('zafira_v3_5_materials', INITIAL_MATERIALS);
+    this.wipStations = this.load('zafira_v3_5_wip', INITIAL_WIP_STATIONS);
+    this.auditLogs = this.load('zafira_v3_5_audit_logs', INITIAL_AUDIT_LOGS);
 
     this.currentView = 'storefront'; // 'storefront' | 'studio' | 'account' | 'admin'
     this.viewMode = 'editorial'; // 'editorial' (living magazine) | 'gallery' (museum grid)
@@ -332,7 +330,7 @@ class PrototypeStore {
     } else {
       this.cart.push({ productId, qty: 1, size, monogram, packaging });
     }
-    this.save('zafira_v3_cart', this.cart);
+    this.save('zafira_v3_5_cart', this.cart);
   }
 
   updateCartQty(index, delta) {
@@ -341,18 +339,18 @@ class PrototypeStore {
       if (this.cart[index].qty <= 0) {
         this.cart.splice(index, 1);
       }
-      this.save('zafira_v3_cart', this.cart);
+      this.save('zafira_v3_5_cart', this.cart);
     }
   }
 
   removeFromCart(index) {
     this.cart.splice(index, 1);
-    this.save('zafira_v3_cart', this.cart);
+    this.save('zafira_v3_5_cart', this.cart);
   }
 
   clearCart() {
     this.cart = [];
-    this.save('zafira_v3_cart', this.cart);
+    this.save('zafira_v3_5_cart', this.cart);
   }
 
   getCartTotal() {
@@ -370,7 +368,7 @@ class PrototypeStore {
       date: new Date().toISOString().replace('T', ' ').substring(0, 16)
     };
     this.concierge.unshift(newOrder);
-    this.save('zafira_v3_concierge', this.concierge);
+    this.save('zafira_v3_5_concierge', this.concierge);
     return newOrder;
   }
 
@@ -390,7 +388,7 @@ class PrototypeStore {
     const entry = { timestamp, actor, role, module, action, hash };
     this.auditLogs.unshift(entry);
     if (this.auditLogs.length > 40) this.auditLogs.pop();
-    this.save('zafira_v3_audit_logs', this.auditLogs);
+    this.save('zafira_v3_5_audit_logs', this.auditLogs);
     return entry;
   }
 
@@ -398,7 +396,7 @@ class PrototypeStore {
     const item = this.concierge.find(c => c.id === orderId);
     if (item) {
       item.artisan = artisanName;
-      this.save('zafira_v3_concierge', this.concierge);
+      this.save('zafira_v3_5_concierge', this.concierge);
       this.addAuditLog('Atelier Manager', this.currentRbacRole, 'TPS_ASSIGNMENT', `Pesanan #${orderId} ditugaskan ke: ${artisanName}`);
     }
   }
@@ -408,7 +406,7 @@ class PrototypeStore {
     if (mat) {
       mat.stock += addQty;
       mat.status = mat.stock > mat.safetyStock ? 'safe' : 'warn';
-      this.save('zafira_v3_materials', this.rawMaterials);
+      this.save('zafira_v3_5_materials', this.rawMaterials);
       this.addAuditLog('Supply Logistics', this.currentRbacRole, 'MIS_INVENTORY', `Pasokan diterima: +${addQty} ${mat.unit} ${mat.name}`);
     }
   }
@@ -418,7 +416,7 @@ class PrototypeStore {
     if (item) {
       const oldStatus = item.status;
       item.status = newStatus;
-      this.save('zafira_v3_concierge', this.concierge);
+      this.save('zafira_v3_5_concierge', this.concierge);
       this.addAuditLog('Client Advisor', this.currentRbacRole, 'TPS_KANBAN', `Status pesanan #${id} (${item.name}) diperbarui: ${oldStatus.toUpperCase()} -> ${newStatus.toUpperCase()}`);
     }
   }
@@ -428,7 +426,112 @@ class PrototypeStore {
 const store = new PrototypeStore();
 
 function formatRupiah(num) {
-  return 'Rp' + num.toLocaleString('id-ID');
+  const curr = store.currency || 'IDR';
+  if (curr === 'EUR') {
+    const val = Math.round(Number(num || 0) / 17200);
+    return '€\u00A0' + val.toLocaleString('de-DE');
+  }
+  if (curr === 'USD') {
+    const val = Math.round(Number(num || 0) / 16200);
+    return '$\u00A0' + val.toLocaleString('en-US');
+  }
+  return 'Rp\u00A0' + Number(num || 0).toLocaleString('id-ID');
+}
+
+function setCurrency(curr) {
+  store.currency = curr;
+  store.save('zafira_currency', curr);
+  document.querySelectorAll('.curr-opt').forEach(el => {
+    el.classList.toggle('active', el.dataset.curr === curr);
+  });
+  renderCatalog();
+  renderCartDrawer();
+  if (store.currentView === 'studio' && store.activeStudioProduct) {
+    openProductStudio(store.activeStudioProduct.id);
+  }
+  if (store.currentView === 'account') {
+    renderAccountPortal();
+  }
+  playAtelierSound('chime');
+  showToast(`Mata uang dialihkan ke ${curr} (Konversi real-time Maison ZAFIRA)`);
+}
+
+// Web Audio API Synthesis for Subtle Atelier Acoustics
+let audioCtx = null;
+function getAudioContext() {
+  if (!audioCtx && (window.AudioContext || window.webkitAudioContext)) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+function playAtelierSound(type = 'click') {
+  if (!store.soundEnabled) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    if (type === 'click' || type === 'tab') {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(800, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(320, ctx.currentTime + 0.04);
+      gain.gain.setValueAtTime(0.04, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.04);
+    } else if (type === 'stamp' || type === 'seal') {
+      const osc1 = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc1.type = 'triangle';
+      osc2.type = 'sine';
+      osc1.frequency.setValueAtTime(220, ctx.currentTime);
+      osc1.frequency.exponentialRampToValueAtTime(110, ctx.currentTime + 0.12);
+      osc2.frequency.setValueAtTime(587.33, ctx.currentTime);
+      osc2.frequency.exponentialRampToValueAtTime(293.66, ctx.currentTime + 0.18);
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
+      osc1.connect(gain);
+      osc2.connect(gain);
+      gain.connect(ctx.destination);
+      osc1.start();
+      osc2.start();
+      osc1.stop(ctx.currentTime + 0.18);
+      osc2.stop(ctx.currentTime + 0.18);
+    } else if (type === 'chime') {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(1046.50, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(523.25, ctx.currentTime + 0.25);
+      gain.gain.setValueAtTime(0.05, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.25);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.25);
+    }
+  } catch (e) {}
+}
+
+function toggleAudioFeedback() {
+  store.soundEnabled = !store.soundEnabled;
+  store.save('zafira_sound', store.soundEnabled);
+  const btn = document.getElementById('sound-toggle-btn');
+  const label = document.getElementById('sound-label');
+  if (btn && label) {
+    label.textContent = store.soundEnabled ? 'Acoustics: On' : 'Acoustics: Mute';
+    btn.classList.toggle('muted', !store.soundEnabled);
+  }
+  if (store.soundEnabled) playAtelierSound('chime');
+  showToast(store.soundEnabled ? 'Acoustics Atelier diaktifkan' : 'Acoustics Atelier dinonaktifkan');
 }
 
 function showToast(message, type = 'info') {
@@ -589,7 +692,7 @@ function renderProductCardHtml(p) {
   return `
     <article class="product-card" data-id="${p.id}">
       <div class="product-media" onclick="openProductStudio(${p.id})" style="cursor:pointer;">
-        <img src="${p.images[0]}" alt="${p.title}" loading="lazy">
+        <img src="${p.images[0]}" alt="${p.title}">
         ${p.badge ? `<span class="badge-creations">${p.badge}</span>` : ''}
         <div class="product-overlay-actions" onclick="event.stopPropagation()">
           <button class="btn-quick" onclick="openProductStudio(${p.id})">Studio Kriya</button>
@@ -749,6 +852,10 @@ function openProductStudio(productId) {
           <button class="btn-outline" style="width:100%; justify-content:center; padding:13px;" onclick="openRendezvousModal()">
             Jadwalkan Fitting Privat di Atelier
           </button>
+          <a href="https://wa.me/628118899771?text=Halo%20Client%20Advisor%20ZAFIRA,%20saya%20ingin%20berkonsultasi%20mengenai%20kreasi%20${encodeURIComponent(p.title)}" target="_blank" rel="noopener" class="proto-btn" style="background:#f8fafc; border:1px solid #cbd5e1; color:#0f1c33; display:flex; align-items:center; justify-content:center; gap:8px; padding:11px; text-decoration:none; font-size:12px; font-weight:600; border-radius:var(--radius-xs);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+            <span>Konsultasi Cepat via WhatsApp Concierge</span>
+          </a>
         </div>
 
       </div>
@@ -765,6 +872,7 @@ function switchStudioTab(tabKey) {
   document.querySelectorAll('.qv-tab-pane').forEach(pane => pane.classList.remove('active'));
   event.currentTarget.classList.add('active');
   document.getElementById(`studio-pane-${tabKey}`)?.classList.add('active');
+  playAtelierSound('tab');
 }
 
 function selectStudioSize(sizeVal) {
@@ -777,6 +885,7 @@ function selectStudioSize(sizeVal) {
   if (feedback && p.measurements) {
     feedback.textContent = p.measurements[sizeVal] || '';
   }
+  playAtelierSound('click');
 }
 
 function updateStudioMonogramBadge(val) {
@@ -784,6 +893,7 @@ function updateStudioMonogramBadge(val) {
   if (badge) {
     badge.textContent = val.trim() ? val.toUpperCase() : 'ZFL';
   }
+  playAtelierSound('click');
 }
 
 function addStudioToCart() {
@@ -791,6 +901,7 @@ function addStudioToCart() {
   store.addToCart(store.activeStudioProduct.id, store.selectedStudioSize, mono, 'gift-box');
   renderCartDrawer();
   openCartDrawer();
+  playAtelierSound('chime');
   showToast(`Kreasi "${store.activeStudioProduct.title}" (${store.selectedStudioSize}) berhasil ditambahkan ke Tas.`);
 }
 
@@ -798,6 +909,7 @@ function quickAddToCart(productId) {
   store.addToCart(productId, 'FR 38', '', 'gift-box');
   renderCartDrawer();
   openCartDrawer();
+  playAtelierSound('chime');
   const p = store.products.find(prod => prod.id === productId);
   showToast(`"${p?.title}" telah ditambahkan ke tas belanja.`);
 }
@@ -893,11 +1005,11 @@ function updatePackagingRibbon(ribbonColor) {
 function stampWaxSeal() {
   const badge = document.getElementById('interactive-wax-seal');
   if (badge) {
-    badge.style.transform = 'scale(1.25) rotate(12deg)';
-    setTimeout(() => {
-      badge.style.transform = 'scale(1) rotate(0deg)';
-      showToast('✦ Stempel lilin emas resmi ZAFIRA telah dibubuhkan.');
-    }, 250);
+    badge.classList.remove('wax-stamped');
+    void badge.offsetWidth; // trigger reflow
+    badge.classList.add('wax-stamped');
+    playAtelierSound('stamp');
+    showToast('✦ Segel lilin resmi Maison ZAFIRA telah dibubuhkan (No. Seri #ZF-2026-9041).');
   }
 }
 
@@ -983,7 +1095,7 @@ function renderKanbanBoard() {
               </div>
               <div class="kanban-card-notes">${item.notes}</div>
               
-              <!-- MSI Atelier Controls: Artisan & Authenticity Certificate -->
+              <!-- MSI Atelier Controls: Artisan & Authenticity Certificate & Work Order -->
               <div style="margin-top:10px; padding-top:8px; border-top:1px solid #f1f5f9; display:flex; flex-direction:column; gap:6px;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                   <span style="font-size:10px; color:var(--muted); font-weight:700;">Artisan Kriya:</span>
@@ -994,9 +1106,12 @@ function renderKanbanBoard() {
                     <option value="Belum Ditugaskan" ${!item.artisan || item.artisan === 'Belum Ditugaskan' ? 'selected' : ''}>Belum Ditugaskan</option>
                   </select>
                 </div>
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                  <button class="btn-outline" style="padding:3px 8px; font-size:10.5px;" onclick="openAuthenticityModal(${item.id})">📜 Sertifikat Keaslian</button>
-                  <select class="form-select" style="width:auto; padding:2px 8px; font-size:11px;" onchange="adminUpdateOrderStatus(${item.id}, this.value)">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
+                  <div style="display:flex; gap:4px;">
+                    <button class="btn-outline" style="padding:3px 6px; font-size:10px;" onclick="openAuthenticityModal(${item.id})">📜 Sertifikat</button>
+                    <button class="btn-outline" style="padding:3px 6px; font-size:10px;" onclick="openWorkOrderModal(${item.id})">📋 Work Order</button>
+                  </div>
+                  <select class="form-select" style="width:auto; padding:2px 6px; font-size:11px;" onchange="adminUpdateOrderStatus(${item.id}, this.value)">
                     <option value="new" ${item.status === 'new' ? 'selected' : ''}>New</option>
                     <option value="contacted" ${item.status === 'contacted' ? 'selected' : ''}>Contacted</option>
                     <option value="confirmed" ${item.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
@@ -1048,13 +1163,37 @@ function renderAccountPortal() {
   if (!container) return;
 
   container.innerHTML = store.concierge.map(c => `
-    <div style="background:#fff; border:1px solid var(--line); padding:20px; border-radius:var(--radius-xs); margin-bottom:14px; box-shadow:var(--shadow-sm);">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <strong style="font-family:var(--serif); font-size:17px; color:var(--sapphire-midnight);">Pesanan & Janji Temu #${c.id}</strong>
+    <div style="background:#fff; border:1px solid var(--line); padding:24px; border-radius:var(--radius-xs); margin-bottom:16px; box-shadow:var(--shadow-sm);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <div>
+          <span style="font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--taupe); font-weight:700;">Pesanan Adibusana & Janji Temu</span>
+          <h4 style="font-family:var(--serif); font-size:20px; color:var(--sapphire-midnight); margin:2px 0 0;">Commande #${c.id}</h4>
+        </div>
         <span class="badge-status badge-${c.status}">${c.status}</span>
       </div>
-      <p style="font-size:12px; color:var(--muted); margin-bottom:10px;">Layanan: <strong>${c.service}</strong> · Jadwal: <strong>${c.date}</strong></p>
-      <div style="font-size:12px; background:#f8fafc; padding:12px 16px; border-radius:var(--radius-xs); border-left:3px solid var(--gold); white-space:pre-wrap;">${c.notes}</div>
+
+      <!-- Atelier Progress Bar -->
+      <div style="margin:14px 0 16px; padding:12px; background:var(--ivory); border-radius:var(--radius-xs); border:1px solid var(--line);">
+        <div style="display:flex; justify-content:space-between; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); margin-bottom:6px;">
+          <span>1. Konsultasi</span>
+          <span>2. Pola Drape</span>
+          <span>3. Kriya Tangan</span>
+          <span>4. Segel Lilin</span>
+          <span>5. Pengiriman</span>
+        </div>
+        <div style="height:4px; background:#e2e8f0; border-radius:2px; overflow:hidden;">
+          <div style="height:100%; width:${c.status === 'completed' ? '100%' : c.status === 'confirmed' ? '75%' : c.status === 'contacted' ? '40%' : '15%'}; background:var(--gold); transition:width 0.4s ease;"></div>
+        </div>
+      </div>
+
+      <p style="font-size:12.5px; color:var(--muted); margin-bottom:12px;">Layanan: <strong>${c.service}</strong> · Jadwal: <strong>${c.date}</strong> · Nilai: <strong>${formatRupiah(c.totalPrice || 14900000)}</strong></p>
+      
+      <div style="font-size:12px; background:#f8fafc; padding:14px 16px; border-radius:var(--radius-xs); border-left:3px solid var(--gold); white-space:pre-wrap; margin-bottom:14px;">${c.notes}</div>
+      
+      <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #f1f5f9; padding-top:12px;">
+        <span style="font-size:11px; color:var(--muted);">Artisan: <strong>${c.artisan || 'Ibu Siti Khodijah'}</strong></span>
+        <button class="btn-outline" style="padding:6px 14px; font-size:11px;" onclick="openAuthenticityModal(${c.id})">📜 Lihat Sertifikat Keaslian Digital</button>
+      </div>
     </div>
   `).join('');
 }
@@ -1331,12 +1470,121 @@ function filterCategory(catId) {
 
 function closeAllModals() {
   document.querySelectorAll('.modal-window').forEach(m => m.classList.remove('open'));
+  document.getElementById('drawer-backdrop')?.classList.remove('open');
   closeCartDrawer();
 }
 
+function toggleDockCollapse() {
+  store.isDockCollapsed = !store.isDockCollapsed;
+  const dock = document.querySelector('.floating-luxury-dock');
+  const btn = document.getElementById('dock-collapse-btn');
+  if (dock) {
+    dock.classList.toggle('dock-collapsed', store.isDockCollapsed);
+    if (btn) {
+      btn.innerHTML = store.isDockCollapsed ? '✦' : '−';
+      btn.title = store.isDockCollapsed ? 'Buka Menu Navigasi Prototipe' : 'Kecilkan Menu Prototipe';
+    }
+  }
+  playAtelierSound('click');
+}
+
+function rebalanceWipWorkload() {
+  const station = store.wipStations.find(w => w.id === 'wip-3');
+  if (station) {
+    station.current = 2;
+    station.status = 'optimal';
+    store.save('zafira_v3_5_wip', store.wipStations);
+    store.addAuditLog('Atelier Manager (Budi)', store.currentRbacRole, 'MIS_DSS_TOC', 'Beban stasiun bordir dialokasikan ke Master Artisan Ibu Siti Khodijah (WIP dioptimalkan: 2/4)');
+    renderMsiWipAndInventory();
+    renderAuditTrail();
+    const alertBox = document.getElementById('msi-bottleneck-alert');
+    if (alertBox) {
+      alertBox.style.background = '#f0fdf4';
+      alertBox.style.borderColor = '#86efac';
+      alertBox.innerHTML = `
+        <div>
+          <strong style="color:#166534; font-size:13px;">✓ DSS: Beban Kerja Stasiun Bordir Berhasil Diseimbangkan (50% WIP)</strong>
+          <p style="font-size:11.5px; color:#14532d; margin-top:4px;">Pesanan dialokasikan ke Master Artisan Ibu Siti Khodijah. Estimasi deviasi SLA: 0.0%.</p>
+        </div>
+        <span style="font-size:11px; font-weight:700; color:#166534; background:#dcfce7; padding:4px 12px; border-radius:12px;">Optimal</span>
+      `;
+    }
+    playAtelierSound('chime');
+    showToast('DSS: Kapasitas kriya berhasil diseimbangkan ke master artisan.');
+  }
+}
+
+function openWorkOrderModal(orderId) {
+  const order = store.concierge.find(c => c.id === orderId);
+  if (!order) return;
+  const container = document.getElementById('work-order-modal-content');
+  if (container) {
+    container.innerHTML = `
+      <div style="border:1px solid #0f1c33; padding:24px; background:#fffdfa;">
+        <div style="display:flex; justify-content:space-between; border-bottom:2px solid #0f1c33; padding-bottom:12px; margin-bottom:16px;">
+          <div>
+            <h2 style="font-family:var(--serif); font-size:22px; color:#0f1c33; margin:0;">ZAFIRA ATELIER · FICHE DE TRAVAIL</h2>
+            <span style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#b89858; font-weight:700;">Lembar Instruksi Kriya Haute Couture No. WO-${order.id}</span>
+          </div>
+          <div style="text-align:right;">
+            <strong style="font-size:14px; font-family:monospace; color:#0f1c33;">${order.serial || 'ZFR-2026-' + order.id}</strong><br>
+            <small style="color:var(--muted); font-size:10px;">Tanggal Terbit: ${order.date}</small>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; font-size:12px;">
+          <div style="background:#f8fafc; padding:12px; border-radius:2px; border:1px solid #e2e8f0;">
+            <strong style="color:var(--sapphire-midnight);">Klien / Pemesan:</strong><br>
+            ${order.name}<br>
+            <span style="color:var(--muted);">${order.phone}</span>
+          </div>
+          <div style="background:#f8fafc; padding:12px; border-radius:2px; border:1px solid #e2e8f0;">
+            <strong style="color:var(--sapphire-midnight);">Master Artisan Bertugas:</strong><br>
+            <span style="color:#b89858; font-weight:700;">${order.artisan || 'Ibu Siti Khodijah (Senior Artisan)'}</span><br>
+            <small style="color:var(--muted);">Supervisi: Direktur Kreatif ZAFIRA</small>
+          </div>
+        </div>
+        <div style="border:1px solid #e2e8f0; padding:14px; margin-bottom:16px; font-size:12px; background:#fff; border-left:3px solid var(--gold);">
+          <strong style="color:var(--sapphire-midnight);">Instruksi Pengerjaan & Spesifikasi Material:</strong>
+          <p style="white-space:pre-wrap; margin-top:6px; color:#1e293b; line-height:1.6;">${order.notes}</p>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; border-top:1px dashed #cbd5e1; padding-top:16px; font-size:11px; color:#64748b;">
+          <div>
+            <span>Standar QC: Nol Cacat Jahit Rolled-Hem, Benang Bebas Tarik, Segel Lilin Sah</span><br>
+            <span>Tanda Tangan Pengrajin: ________________________</span>
+          </div>
+          <div>
+            <button class="btn-gold" style="padding:8px 16px; font-size:11px;" onclick="window.print(); showToast('Mencetak Lembar Kerja Kriya...')">⎙ Cetak Lembar Kriya</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  document.getElementById('work-order-modal')?.classList.add('open');
+  document.getElementById('drawer-backdrop')?.classList.add('open');
+}
+
 // ==========================================================================
-// INITIALIZATION
+// INITIALIZATION & SENSORY INTERACTION
 // ==========================================================================
+
+// Floating Dock Scroll Intelligence (Auto-Tuck on Scroll Down, Reveal on Scroll Up / Hover)
+let lastScrollY = window.scrollY;
+let isDockHovered = false;
+
+window.addEventListener('scroll', (e) => {
+  const dock = document.querySelector('.floating-luxury-dock');
+  if (!dock || store.isDockCollapsed) return;
+  let currentScrollY = window.scrollY;
+  if (e.target && e.target.scrollTop !== undefined && e.target !== document) {
+    currentScrollY = e.target.scrollTop;
+  }
+  if (currentScrollY > 70 && currentScrollY > lastScrollY && !isDockHovered) {
+    dock.classList.add('dock-tucked');
+  } else if (currentScrollY < lastScrollY || currentScrollY <= 70) {
+    dock.classList.remove('dock-tucked');
+  }
+  lastScrollY = currentScrollY;
+}, { passive: true, capture: true });
 
 document.addEventListener('DOMContentLoaded', () => {
   renderCatalog();
@@ -1346,6 +1594,23 @@ document.addEventListener('DOMContentLoaded', () => {
   renderMsiWipAndInventory();
   renderMsiEisCockpit();
   renderAuditTrail();
+
+  // Initialize currency pills
+  document.querySelectorAll('.curr-opt').forEach(el => {
+    el.classList.toggle('active', el.dataset.curr === (store.currency || 'IDR'));
+  });
+
+  // Dock hover listeners for auto-tuck
+  const dock = document.querySelector('.floating-luxury-dock');
+  if (dock) {
+    dock.addEventListener('mouseenter', () => {
+      isDockHovered = true;
+      dock.classList.remove('dock-tucked');
+    });
+    dock.addEventListener('mouseleave', () => {
+      isDockHovered = false;
+    });
+  }
 
   // Search input handler
   const searchInput = document.getElementById('sf-search-input');
@@ -1360,17 +1625,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' || e.key === 'Esc') {
       closeAllModals();
-    }
-  });
-
-  // Sticky Smart Bar scroll observer
-  window.addEventListener('scroll', () => {
-    const smartBar = document.getElementById('sticky-smart-bar');
-    if (!smartBar) return;
-    if (window.scrollY > 550) {
-      smartBar.classList.add('visible');
-    } else {
-      smartBar.classList.remove('visible');
     }
   });
 });

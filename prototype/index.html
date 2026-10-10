@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ZAFIRA: La Maison de Lumière — Digital Flagship v3.2</title>
+  <title>ZAFIRA: La Maison de Lumière - Digital Flagship v3.5</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <base href="/prototype/">
   <link rel="preconnect" href="https://fonts.bunny.net">
-  <link href="https://fonts.bunny.net/css?family=bodoni-moda:400,400i,500,500i,600,700&family=manrope:300,400,500,600,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.bunny.net/css?family=bodoni-moda:400,400i,500,500i,600,700&family=manrope:300,400,500,600,700&family=jetbrains-mono:400,500,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/prototype/app.css">
   <link rel="stylesheet" href="app.css">
   <style>
@@ -21,6 +21,9 @@
 </head>
 <body>
 
+  <!-- Editorial Analog Film Grain Texture Overlay (z-60 fixed pointer-events-none) -->
+  <div class="film-grain-overlay" aria-hidden="true"></div>
+
   <!-- WCAG 2.2 AAA Accessible Skip Link -->
   <a href="#catalog-content-area" class="skip-to-content">Lewati ke Konten Koleksi Utama</a>
 
@@ -32,22 +35,27 @@
     <!-- Announcement Bar -->
     <div class="announcement">
       <span>Complimentary signature wrapping & pengiriman terlindungi ke seluruh Nusantara</span>
-      <div style="display:flex; align-items:center; gap:20px;">
+      <div style="display:flex; align-items:center; gap:16px;">
         <a onclick="openRendezvousModal()">Rendez-vous Privat Atelier</a>
-        <div class="announcement-currency">
-          <span class="active">IDR · ID</span>
-          <span>EUR · FR</span>
+        <div class="announcement-currency" id="currency-switcher">
+          <span class="curr-opt active" data-curr="IDR" onclick="setCurrency('IDR')">IDR · ID</span>
+          <span class="curr-opt" data-curr="EUR" onclick="setCurrency('EUR')">EUR · FR</span>
+          <span class="curr-opt" data-curr="USD" onclick="setCurrency('USD')">USD · US</span>
         </div>
+        <button class="sound-toggle-btn" id="sound-toggle-btn" onclick="toggleAudioFeedback()" title="Suara Atelier Ambient">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+          <span id="sound-label">Acoustics: On</span>
+        </button>
       </div>
     </div>
 
     <!-- Luxury Floating Glassmorphic Header -->
     <header class="sf-header">
       <nav class="sf-nav">
-        <a onclick="filterCategory('all')">Les Collections</a>
-        <a onclick="filterCategory(8)">Warisan Nusantara</a>
-        <a onclick="filterCategory(9)">Kapsul Adibusana</a>
-        <a href="#packaging-section">Unboxing</a>
+        <a onclick="filterCategory('all')">Koleksi</a>
+        <a onclick="filterCategory(8)">Warisan</a>
+        <a onclick="filterCategory(9)">Adibusana</a>
+        <a href="#packaging-section">Kemasan</a>
         <a onclick="openRendezvousModal()">Concierge</a>
       </nav>
 
@@ -74,8 +82,8 @@
 
     <!-- Monumental Asymmetric Editorial Hero (The Hermès & The Row ATM) -->
     <section class="editorial-hero">
-      <div class="hero-media-pane" onclick="openProductStudio(9)" style="cursor:pointer;">
-        <img class="hero-media-img" src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1600&q=92" alt="ZAFIRA Haute Couture Editorial Runway">
+      <div class="hero-media-pane" onclick="openProductStudio(9)" style="cursor:pointer;" title="Buka Detail Studio Kebaya Lumière">
+        <img class="hero-media-img" src="assets/hero_couture.jpg" alt="ZAFIRA Haute Couture Editorial Runway">
         <div class="hero-stamp-tag">
           <span>Création No. 09 · Broderie Main 60h</span>
         </div>
@@ -84,30 +92,32 @@
         <span class="hero-eyebrow">Haute Couture & Kriya Nusantara</span>
         <h1 class="hero-title">Siluet Paris, Keahlian Italia, Jiwa Nusantara.</h1>
         <p class="hero-manifesto">
-          Setiap helai kreasi dirajut dengan transparansi asal material: sutra murni Lyon, wol Biella, dan canting malam batik Laweyan Solo. Penghormatan tanpa kompromi pada tradisi kriya tangan dan kemurnian desain abadi.
+          Sutra murni Lyon, wol Biella, dan canting malam batik Solo dalam kemurnian kriya tangan abadi.
         </p>
-        <div class="hero-coordinates">
-          <span>Paris 48.85°N</span>
-          <span>·</span>
-          <span>Lyon 45.76°N</span>
-          <span>·</span>
-          <span>Biella 45.56°N</span>
-          <span>·</span>
-          <span>Solo 7.57°S</span>
-          <span>·</span>
-          <span>Jakarta 6.20°S</span>
-        </div>
         <div class="hero-btn-row">
           <button class="btn-gold" onclick="openProductStudio(9)">
             <span>Buka Studio Kebaya Lumière</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
           </button>
           <button class="btn-outline" onclick="openRendezvousModal()">
-            Jadwalkan Rendez-vous Privat
+            Rendez-vous Privat
           </button>
         </div>
       </div>
     </section>
+
+    <!-- Atelier Provenance Ribbon Strip -->
+    <div class="provenance-strip" aria-label="Koordinat Atelier ZAFIRA">
+      <span>Paris 48.85°N</span>
+      <span class="sep">/</span>
+      <span>Lyon 45.76°N</span>
+      <span class="sep">/</span>
+      <span>Biella 45.56°N</span>
+      <span class="sep">/</span>
+      <span>Solo 7.57°S</span>
+      <span class="sep">/</span>
+      <span>Jakarta 6.20°S</span>
+    </div>
 
     <!-- Curated Catalog Control Bar & Dual View Mode (The Row & SSENSE ATM) -->
     <div class="catalog-control-bar" id="main-catalog-area">
@@ -189,7 +199,7 @@
         <div>
           <h3 style="font-family:var(--serif); font-size:26px; letter-spacing:0.18em; margin-bottom:14px; color:#fff;">ZAFIRA</h3>
           <p style="font-size:12.5px; color:rgba(255,255,255,0.72); max-width:360px; line-height:1.8;">
-            La Maison de Lumière — Rumah mode adibusana Paris-Italia-Indonesia. Salon Atelier & Fitting Privat: Kebayoran Baru, Jakarta Selatan.
+            La Maison de Lumière. Rumah mode adibusana Paris-Italia-Indonesia. Salon Atelier & Fitting Privat: Kebayoran Baru, Jakarta Selatan.
           </p>
           <div style="margin-top:18px; font-size:11px; color:var(--gold-light); letter-spacing:0.12em; text-transform:uppercase;">
             Atelier: Paris · Lyon · Biella · Solo · Jakarta
@@ -428,7 +438,7 @@
               <strong style="color:#92400e; font-size:13px;">✦ Peringatan DSS: Stasiun "Bordir & Kriya Tangan" Mendekati Kapasitas Maksimum (75% WIP)</strong>
               <p style="font-size:11.5px; color:#78350f; margin-top:4px;">Rekomendasi Sistem: Alokasikan 1 pesanan Kebaya Lumière ke Master Artisan Ibu Siti Khodijah untuk mencegah deviasi SLA pengiriman.</p>
             </div>
-            <button class="btn-outline" style="padding:6px 14px; font-size:11px; white-space:nowrap;" onclick="showToast('DSS: Beban kerja berhasil diseimbangkan ke stasiun cadangan.')">Seimbangkan Beban</button>
+            <button class="btn-outline" style="padding:6px 14px; font-size:11px; white-space:nowrap;" onclick="rebalanceWipWorkload()">Seimbangkan Beban</button>
           </div>
 
           <!-- Luxury Raw Material Inventory Control -->
@@ -644,23 +654,6 @@
   </main>
 
   <!-- ==========================================================================
-       5. STICKY SMART PURCHASE BAR (FITTS'S LAW ATM)
-       ========================================================================== -->
-  <div class="sticky-smart-bar" id="sticky-smart-bar">
-    <div style="display:flex; align-items:center; gap:16px;">
-      <img src="https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=400&q=88" class="smart-bar-thumb" alt="Thumb">
-      <div>
-        <strong style="font-family:var(--serif); font-size:16px; color:var(--sapphire-midnight);">Kebaya Lumière</strong>
-        <span style="font-size:12px; color:var(--muted); margin-left:8px;">Rp14.900.000 · Taille FR 38</span>
-      </div>
-    </div>
-    <div style="display:flex; gap:12px; align-items:center;">
-      <button class="btn-outline" style="padding:10px 20px; font-size:11px;" onclick="openProductStudio(9)">Detail Studio</button>
-      <button class="btn-gold" style="padding:10px 24px; font-size:11px;" onclick="quickAddToCart(9)">+ Tambah ke Tas</button>
-    </div>
-  </div>
-
-  <!-- ==========================================================================
        6. DRAWERS & MODALS
        ========================================================================== -->
 
@@ -765,6 +758,17 @@
     </div>
   </div>
 
+  <!-- Haute Couture Work Order Modal (Fiche de Travail d'Atelier) -->
+  <div class="modal-window" id="work-order-modal" role="dialog" aria-modal="true" aria-labelledby="wo-modal-title" style="max-width:760px; background:#fcfbf9; padding:0; overflow:hidden;">
+    <div style="padding:16px 24px; background:var(--sapphire-midnight); display:flex; justify-content:space-between; align-items:center; color:#fff;">
+      <span style="font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-light);">Atelier Command · Lembar Instruksi Kriya (Work Order)</span>
+      <button class="btn-close" style="color:#fff;" onclick="closeAllModals()" aria-label="Tutup">&times;</button>
+    </div>
+    <div style="padding:28px;" id="work-order-modal-content">
+      <!-- Populated dynamically via openWorkOrderModal(orderId) -->
+    </div>
+  </div>
+
   <!-- ==========================================================================
        FLOATING LUXURY PROTOTYPE DOCK (Apple & Vercel Grade Architecture)
        ========================================================================== -->
@@ -772,7 +776,7 @@
     <div class="dock-badge">
       <span class="dock-dot"></span>
       <span class="dock-brand">ZAFIRA</span>
-      <span class="dock-ver">v3.2</span>
+      <span class="dock-ver">v3.5 · Haute Couture</span>
     </div>
     <div class="dock-buttons">
       <button class="dock-btn active" id="btn-view-storefront" onclick="switchView('storefront')">
@@ -792,6 +796,7 @@
         <span>Atelier Command (MSI)</span>
       </button>
     </div>
+    <button class="dock-collapse-btn" id="dock-collapse-btn" onclick="toggleDockCollapse()" title="Kecilkan/Buka Navigasi Prototipe" aria-label="Toggle Dock">−</button>
   </nav>
 
   <!-- Toast Notification Container -->

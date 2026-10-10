@@ -48,10 +48,11 @@ docs/
 │   ├── SKILLS_STATUS_DIRECTORY.md            # Direktori status 635 skill Antigravity IDE (Markdown)
 │   ├── SKILLS_COMPREHENSIVE_MATRIX.json      # Matriks lengkap 1-baris per skill 635 entri (JSON)
 │   └── SKILLS_SYNTHESIS_AND_PROTOTYPE_OPTIMIZATION.md # Sintesis lintas skill & optimasi prototype v2.1
-└── 06-prototype/
-    ├── PROTOTYPE_GUIDE.md                    # Panduan menjalankan dan menjelajahi prototype
-    ├── SCREEN_AND_FLOW_MAPPING.md            # Pemetaan layar dan interaksi prototype
-    └── PROTOTYPE_EVALUATION.md               # Bukti verifikasi browser, responsivitas, & temuan
+├── 06-prototype/
+│   ├── PROTOTYPE_GUIDE.md                    # Panduan menjalankan dan menjelajahi prototype
+│   ├── SCREEN_AND_FLOW_MAPPING.md            # Pemetaan layar dan interaksi prototype
+│   └── PROTOTYPE_EVALUATION.md               # Bukti verifikasi browser, responsivitas, & temuan
+└── SCREENSHOT_TO_CODE_WORKFLOW.md            # Panduan operasional & integrasi Screenshot to Code
 ```
 
 ---
