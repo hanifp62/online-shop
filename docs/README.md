@@ -51,7 +51,8 @@ docs/
 ├── 06-prototype/
 │   ├── PROTOTYPE_GUIDE.md                    # Panduan menjalankan dan menjelajahi prototype
 │   ├── SCREEN_AND_FLOW_MAPPING.md            # Pemetaan layar dan interaksi prototype
-│   └── PROTOTYPE_EVALUATION.md               # Bukti verifikasi browser, responsivitas, & temuan
+│   ├── PROTOTYPE_EVALUATION.md               # Bukti verifikasi browser, responsivitas, & temuan
+│   └── HCI_UX_COUNCIL_AUDIT.md               # Audit Dewan HCI 7 Master (Norman, Nielsen, Shneiderman, Cooper, Engelbart, Brown, Krug)
 └── SCREENSHOT_TO_CODE_WORKFLOW.md            # Panduan operasional & integrasi Screenshot to Code
 ```
 

@@ -46,6 +46,10 @@
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
           <span id="sound-label">Acoustics: On</span>
         </button>
+        <button class="sound-toggle-btn" id="shortcuts-toggle-btn" onclick="openKeyboardShortcutsModal()" title="Pintasan Keyboard (Tekan ?)">
+          <kbd style="font-family:'JetBrains Mono', monospace; font-size:10px; background:rgba(255,255,255,0.18); padding:1px 5px; border-radius:3px; color:#fff;">?</kbd>
+          <span>Pintasan</span>
+        </button>
       </div>
     </div>
 
@@ -349,6 +353,30 @@
               </select>
             </div>
             <button class="btn-gold" style="padding:10px 20px; font-size:11px;" onclick="openRendezvousModal()">+ Buat Janji Temu</button>
+          </div>
+        </div>
+
+        <!-- Douglas Engelbart Augmented Atelier Telemetry Bar -->
+        <div class="atelier-telemetry-strip" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-bottom:20px; background:#fff; padding:14px 18px; border:1px solid #e2e8f0; border-radius:var(--radius-xs); box-shadow:var(--shadow-sm);">
+          <div style="border-right:1px solid #e2e8f0; padding-right:12px;">
+            <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); font-weight:700;">Takt Time Pengerjaan</div>
+            <div style="font-size:16px; font-weight:700; color:var(--sapphire-midnight); margin-top:2px;">4.8 Jam / Busana</div>
+            <small style="font-size:10px; color:#16a34a;">✦ Ritme optimal haute couture</small>
+          </div>
+          <div style="border-right:1px solid #e2e8f0; padding-right:12px;">
+            <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); font-weight:700;">Throughput Yield</div>
+            <div style="font-size:16px; font-weight:700; color:var(--sapphire-midnight); margin-top:2px;">98.4% Lolos QC</div>
+            <small style="font-size:10px; color:#16a34a;">Nol cacat jahit mayor</small>
+          </div>
+          <div style="border-right:1px solid #e2e8f0; padding-right:12px;">
+            <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); font-weight:700;">Status Drum-Buffer-Rope</div>
+            <div style="font-size:16px; font-weight:700; color:#b45309; margin-top:2px;" id="dbr-buffer-status">Buffer 48 Jam (Siaga)</div>
+            <small style="font-size:10px; color:var(--muted);">Sinkronisasi Goldratt DBR</small>
+          </div>
+          <div>
+            <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); font-weight:700;">Integritas Rantai Kriya</div>
+            <div style="font-size:16px; font-weight:700; color:var(--sapphire-midnight); margin-top:2px;">SHA-256 Ledger Aktif</div>
+            <small style="font-size:10px; color:#2563eb;">100% Traceable Provenance</small>
           </div>
         </div>
 
@@ -693,6 +721,24 @@
       <button class="btn-close" onclick="closeAllModals()" aria-label="Tutup">&times;</button>
     </div>
 
+    <!-- 3-Step Visibility Progress Indicator (Nielsen Heuristic 1) -->
+    <div class="stepper-indicator-bar" id="rv-stepper-bar">
+      <div class="step-badge active" id="rv-step-1">
+        <span class="step-num">1</span>
+        <span>Klien & Sesi</span>
+      </div>
+      <span style="color:var(--taupe); font-size:11px;">→</span>
+      <div class="step-badge" id="rv-step-2">
+        <span class="step-num">2</span>
+        <span>Preferensi Kriya</span>
+      </div>
+      <span style="color:var(--taupe); font-size:11px;">→</span>
+      <div class="step-badge" id="rv-step-3">
+        <span class="step-num">3</span>
+        <span>Konfirmasi VIP</span>
+      </div>
+    </div>
+
     <form onsubmit="submitRendezvousBooking(event)">
       <div class="form-group">
         <label class="form-label">Nama Lengkap Klien</label>
@@ -798,6 +844,53 @@
     </div>
     <button class="dock-collapse-btn" id="dock-collapse-btn" onclick="toggleDockCollapse()" title="Kecilkan/Buka Navigasi Prototipe" aria-label="Toggle Dock">−</button>
   </nav>
+
+  <!-- Keyboard Shortcuts & Power User Guide Modal (Nielsen Accelerator & Cooper Polite Software) -->
+  <div class="modal-window" id="keyboard-shortcuts-modal" role="dialog" aria-modal="true" aria-labelledby="ks-modal-title" style="max-width:520px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <div>
+        <span style="font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); font-weight:700;">Akselerator Ahli</span>
+        <h3 id="ks-modal-title" style="font-family:var(--serif); font-size:22px; color:var(--sapphire-midnight); margin:2px 0 0;">Pintasan Keyboard Maison ZAFIRA</h3>
+      </div>
+      <button class="btn-close" onclick="closeAllModals()" aria-label="Tutup">&times;</button>
+    </div>
+    <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">
+      Akselerator navigasi efisiensi tinggi (Sesuai Golden Rules Ben Shneiderman & Jakob Nielsen):
+    </p>
+    <div class="shortcuts-table" style="display:flex; flex-direction:column; gap:8px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--ivory); border-radius:var(--radius-xs);">
+        <span style="font-size:12px; font-weight:600; color:var(--sapphire-midnight);">Tutup Semua Modal / Emergency Exit</span>
+        <kbd style="padding:2px 8px; background:#fff; border:1px solid #cbd5e1; border-radius:4px; font-size:11px; box-shadow:0 1px 2px rgba(0,0,0,0.06);">Esc</kbd>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--ivory); border-radius:var(--radius-xs);">
+        <span style="font-size:12px; font-weight:600; color:var(--sapphire-midnight);">Buka / Tutup Panduan Pintasan Ini</span>
+        <kbd style="padding:2px 8px; background:#fff; border:1px solid #cbd5e1; border-radius:4px; font-size:11px; box-shadow:0 1px 2px rgba(0,0,0,0.06);">?</kbd>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--ivory); border-radius:var(--radius-xs);">
+        <span style="font-size:12px; font-weight:600; color:var(--sapphire-midnight);">Lompat ke Storefront Koleksi</span>
+        <kbd style="padding:2px 8px; background:#fff; border:1px solid #cbd5e1; border-radius:4px; font-size:11px; box-shadow:0 1px 2px rgba(0,0,0,0.06);">S</kbd>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--ivory); border-radius:var(--radius-xs);">
+        <span style="font-size:12px; font-weight:600; color:var(--sapphire-midnight);">Buka Studio Produk (PDP)</span>
+        <kbd style="padding:2px 8px; background:#fff; border:1px solid #cbd5e1; border-radius:4px; font-size:11px; box-shadow:0 1px 2px rgba(0,0,0,0.06);">P</kbd>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--ivory); border-radius:var(--radius-xs);">
+        <span style="font-size:12px; font-weight:600; color:var(--sapphire-midnight);">Buka Tas Belanja Maison</span>
+        <kbd style="padding:2px 8px; background:#fff; border:1px solid #cbd5e1; border-radius:4px; font-size:11px; box-shadow:0 1px 2px rgba(0,0,0,0.06);">C</kbd>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--ivory); border-radius:var(--radius-xs);">
+        <span style="font-size:12px; font-weight:600; color:var(--sapphire-midnight);">Konsol Manufaktur Atelier (MSI)</span>
+        <kbd style="padding:2px 8px; background:#fff; border:1px solid #cbd5e1; border-radius:4px; font-size:11px; box-shadow:0 1px 2px rgba(0,0,0,0.06);">A</kbd>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--ivory); border-radius:var(--radius-xs);">
+        <span style="font-size:12px; font-weight:600; color:var(--sapphire-midnight);">Fokus ke Pencarian Koleksi</span>
+        <kbd style="padding:2px 8px; background:#fff; border:1px solid #cbd5e1; border-radius:4px; font-size:11px; box-shadow:0 1px 2px rgba(0,0,0,0.06);">/</kbd>
+      </div>
+    </div>
+    <div style="margin-top:18px; text-align:right;">
+      <button class="btn-gold" style="padding:8px 18px; font-size:11px;" onclick="closeAllModals()">Tutup Panduan</button>
+    </div>
+  </div>
 
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toast-container"></div>

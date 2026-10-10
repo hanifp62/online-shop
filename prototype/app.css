@@ -1910,11 +1910,13 @@ body {
   overflow-y: auto;
   z-index: 2002;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
   transition: transform 0.28s var(--ease-spring), opacity 0.24s ease-out;
 }
 .modal-window.open {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
   transform: translate(-50%, -50%) scale(1);
 }
@@ -2126,4 +2128,165 @@ button:active, .btn-gold:active, .btn-outline:active, .proto-btn:active, .dock-b
     font-size: 12px;
     padding: 12px 14px;
   }
+}
+
+/* ==========================================================================
+   HCI/UX COUNCIL MASTERS ENHANCEMENTS (v3.6)
+   Norman, Nielsen, Shneiderman, Cooper, Engelbart, Brown, Krug
+   ========================================================================== */
+
+/* 1. [Norman] Monogram Counter & Focus Beacon */
+.monogram-counter-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--ivory);
+  border: 1px solid var(--line);
+  color: var(--taupe);
+  transition: var(--transition-fast);
+}
+.monogram-counter-badge.full {
+  background: #fef3c7;
+  color: #92400e;
+  border-color: #f59e0b;
+}
+.monogram-stamp-badge {
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+}
+.monogram-stamp-badge.pulsing::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: var(--radius-xs);
+  border: 2px solid var(--gold);
+  animation: beacon-pulse 1.4s infinite;
+  pointer-events: none;
+}
+@keyframes beacon-pulse {
+  0% { transform: scale(0.96); opacity: 0.9; }
+  50% { transform: scale(1.1); opacity: 0.25; }
+  100% { transform: scale(0.96); opacity: 0.9; }
+}
+
+/* 2. [Steve Krug] Studio Breadcrumbs */
+.studio-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.studio-breadcrumbs a {
+  color: var(--taupe);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.studio-breadcrumbs a:hover {
+  color: var(--sapphire-midnight);
+  text-decoration: underline;
+}
+.studio-breadcrumbs span.active {
+  color: var(--sapphire-midnight);
+  font-weight: 700;
+}
+
+/* 3. [Shneiderman & Nielsen] Toast Action Undo Button */
+.toast-action-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--gold);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+  white-space: nowrap;
+  transition: var(--transition-fast);
+}
+.toast-action-btn:hover {
+  background: var(--gold);
+  color: var(--sapphire-midnight);
+}
+
+/* 4. [Shneiderman & Nielsen] Search Feedback & Catalog Empty State */
+.catalog-search-feedback-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: var(--ivory);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xs);
+  margin: 0 48px 24px;
+  font-size: 12.5px;
+  color: var(--sapphire-midnight);
+}
+.catalog-empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  margin: 0 48px 48px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* 5. [Engelbart] Augmented Telemetry Strip */
+.atelier-telemetry-strip {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.atelier-telemetry-strip:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* 6. Stepper Indicator Bar & Shortcuts Table */
+.stepper-indicator-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 16px;
+  background: var(--ivory);
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--line);
+}
+.step-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.step-badge.active {
+  color: var(--sapphire-midnight);
+  font-weight: 700;
+}
+.step-badge .step-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: #64748b;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+}
+.step-badge.active .step-num {
+  background: var(--sapphire-midnight);
+  color: #fff;
+}
+.shortcuts-table kbd {
+  font-family: var(--mono);
 }

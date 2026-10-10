@@ -534,7 +534,7 @@ function toggleAudioFeedback() {
   showToast(store.soundEnabled ? 'Acoustics Atelier diaktifkan' : 'Acoustics Atelier dinonaktifkan');
 }
 
-function showToast(message, type = 'info') {
+function showToast(message, type = 'info', actionText = null, actionCallback = null) {
   const container = document.getElementById('toast-container');
   if (!container) return;
   const toast = document.createElement('div');
@@ -543,19 +543,51 @@ function showToast(message, type = 'info') {
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dfcaa0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
     </svg>
-    <span>${message}</span>
+    <span style="flex-grow:1;">${message}</span>
+    ${actionText ? `<button class="toast-action-btn" type="button">${actionText}</button>` : ''}
   `;
   container.appendChild(toast);
+
+  if (actionText && typeof actionCallback === 'function') {
+    const actionBtn = toast.querySelector('.toast-action-btn');
+    if (actionBtn) {
+      actionBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        actionCallback();
+        toast.remove();
+      });
+    }
+  }
+
+  const duration = actionText ? 6500 : 4000;
   setTimeout(() => {
+    if (!toast.parentNode) return;
     toast.style.opacity = '0';
     toast.style.transform = 'translateY(10px)';
     setTimeout(() => toast.remove(), 300);
-  }, 4000);
+  }, duration);
 }
 
 // ==========================================================================
-// RENDERERS (EDITORIAL VS GALLERY)
+// RENDERERS (EDITORIAL VS GALLERY) - SHNEIDERMAN INFORMATION SEEKING
 // ==========================================================================
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]);
+}
+
+function resetSearchAndFilter() {
+  store.searchQuery = '';
+  store.currentCategory = 'all';
+  const searchInput = document.getElementById('sf-search-input');
+  if (searchInput) searchInput.value = '';
+  document.querySelectorAll('.cat-pill').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.cat === 'all');
+  });
+  renderCatalog();
+  showToast('Menampilkan seluruh koleksi kriya Maison ZAFIRA.');
+}
 
 function renderCatalog() {
   const container = document.getElementById('catalog-content-area');
@@ -563,23 +595,51 @@ function renderCatalog() {
 
   const filtered = store.getFilteredProducts();
 
+  // Search Feedback Ribbon (Shneiderman Rule 3: Informative Feedback)
+  const searchFeedbackHtml = store.searchQuery ? `
+    <div class="catalog-search-feedback-bar">
+      <span>Menampilkan <strong>${filtered.length}</strong> kreasi untuk pencarian: “<em>${escapeHtml(store.searchQuery)}</em>”</span>
+      <button class="proto-btn" style="background:transparent; color:var(--muted); border:1px solid var(--line); padding:4px 10px; font-size:11px;" onclick="resetSearchAndFilter()">× Bersihkan Pencarian</button>
+    </div>
+  ` : '';
+
+  // Empty State (Nielsen Heuristic 9: Help users recognize, diagnose & recover)
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      ${searchFeedbackHtml}
+      <div class="catalog-empty-state">
+        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:12px;">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <h3 style="font-family:var(--serif); font-size:24px; color:var(--sapphire-midnight); margin:0 0 8px;">Tiada Kreasi Kriya Ditemukan</h3>
+        <p style="color:var(--muted); font-size:13px; max-width:440px; margin:0 auto 20px; line-height:1.6;">
+          Pencarian untuk “<strong>${escapeHtml(store.searchQuery)}</strong>” tidak menemukan kreasi yang sesuai. Silakan gunakan kata kunci lain atau bersihkan penyaring.
+        </p>
+        <button class="btn-gold" onclick="resetSearchAndFilter()">Tampilkan Semua Koleksi Kriya</button>
+      </div>
+    `;
+    return;
+  }
+
   if (store.viewMode === 'editorial') {
     // 1. EDITORIAL LIVING MAGAZINE SHOWCASE
     container.innerHTML = `
+      ${searchFeedbackHtml}
       <div class="editorial-flow">
         
         <!-- Diptych 1: Kebaya Lumiere & Savoir-Faire -->
         <article class="diptych-row">
-          <div class="diptych-media" onclick="openProductStudio(9)" style="cursor:pointer;">
-            <img src="${filtered[0]?.images[0] || INITIAL_PRODUCTS[0].images[0]}" alt="${filtered[0]?.title}">
-            <span class="diptych-caption-tag">Warisan Adibusana · 60h Broderie</span>
+          <div class="diptych-media" onclick="openProductStudio(${filtered[0].id})" style="cursor:pointer;">
+            <img src="${filtered[0].images[0]}" alt="${filtered[0].title}">
+            <span class="diptych-caption-tag">${filtered[0].badge || 'Warisan Adibusana'} · 60h Broderie</span>
           </div>
           <div class="diptych-content">
             <span class="diptych-origin">Atelier Paris · Bordir Tangan Kebayoran</span>
-            <h3 class="diptych-title">${filtered[0]?.title || 'Kebaya Lumière'}</h3>
-            <p class="diptych-quote">“${filtered[0]?.hero_quote || 'Bordir tambal-tangan 60 jam oleh empu kriya Kebayoran.'}”</p>
+            <h3 class="diptych-title">${filtered[0].title}</h3>
+            <p class="diptych-quote">“${filtered[0].hero_quote || 'Kemurnian kriya adibusana.'}”</p>
             <p style="font-size:13.5px; color:var(--muted); line-height:1.8; margin-bottom:20px;">
-              ${filtered[0]?.desc}
+              ${filtered[0].desc}
             </p>
             <div class="diptych-metrics">
               <div class="metric-col">
@@ -591,24 +651,24 @@ function renderCatalog() {
                 <span>Sutra Organza Lyon</span>
               </div>
               <div class="metric-col">
-                <strong>${formatRupiah(filtered[0]?.price || 14900000)}</strong>
+                <strong>${formatRupiah(filtered[0].price)}</strong>
                 <span>Nilai Kreasi</span>
               </div>
             </div>
             <div style="display:flex; gap:12px; align-items:center;">
-              <button class="btn-gold" onclick="openProductStudio(${filtered[0]?.id || 9})">Buka Studio Kriya ⟶</button>
-              <button class="btn-outline" onclick="quickAddToCart(${filtered[0]?.id || 9})">+ Tas Belanja</button>
+              <button class="btn-gold" onclick="openProductStudio(${filtered[0].id})">Buka Studio Kriya ⟶</button>
+              <button class="btn-outline" onclick="quickAddToCart(${filtered[0].id})">+ Tas Belanja</button>
             </div>
           </div>
         </article>
 
-        <!-- Diptych 2 (Reverse): Chemise Riviere & Canting Solo -->
+        <!-- Diptych 2 (Reverse): Second Creation -->
         ${filtered[1] ? `
         <article class="diptych-row reverse">
           <div class="diptych-content">
             <span class="diptych-origin">Batik Tulis Laweyan · Kerah Neapolitan</span>
             <h3 class="diptych-title">${filtered[1].title}</h3>
-            <p class="diptych-quote">“${filtered[1].hero_quote}”</p>
+            <p class="diptych-quote">“${filtered[1].hero_quote || 'Kemegahan busana kriya.'}”</p>
             <p style="font-size:13.5px; color:var(--muted); line-height:1.8; margin-bottom:20px;">
               ${filtered[1].desc}
             </p>
@@ -633,7 +693,7 @@ function renderCatalog() {
           </div>
           <div class="diptych-media" onclick="openProductStudio(${filtered[1].id})" style="cursor:pointer;">
             <img src="${filtered[1].images[0]}" alt="${filtered[1].title}">
-            <span class="diptych-caption-tag">Pewarna Alami · Canting Solo</span>
+            <span class="diptych-caption-tag">${filtered[1].badge || 'Pewarna Alami'} · Canting Solo</span>
           </div>
         </article>
         ` : ''}
@@ -665,6 +725,7 @@ function renderCatalog() {
       </section>
 
       <!-- Grid Triptych: Other Creations -->
+      ${filtered.length > 2 ? `
       <div class="editorial-flow">
         <div style="text-align:center; margin-bottom:36px;">
           <span style="font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); font-weight:700;">Les Autres Pièces</span>
@@ -674,10 +735,12 @@ function renderCatalog() {
           ${filtered.slice(2).map(p => renderProductCardHtml(p)).join('')}
         </div>
       </div>
+      ` : ''}
     `;
   } else {
     // 2. CLEAN GALLERY MODE (MUSEUM CATALOG GRID)
     container.innerHTML = `
+      ${searchFeedbackHtml}
       <div class="gallery-flow">
         <div class="gallery-grid">
           ${filtered.map(p => renderProductCardHtml(p)).join('')}
@@ -759,6 +822,15 @@ function openProductStudio(productId) {
 
       <!-- Right: Sticky Purchase & Savoir-Faire Panel -->
       <div class="studio-panel-pane">
+        <!-- Steve Krug Trunk Test: Contextual Breadcrumbs -->
+        <div class="studio-breadcrumbs">
+          <a onclick="switchView('storefront')">Maison ZAFIRA</a>
+          <span>/</span>
+          <a onclick="switchView('storefront'); filterCategory(${p.cat_id})">${cat}</a>
+          <span>/</span>
+          <span class="active">${p.title}</span>
+        </div>
+
         <span class="studio-category-label">${cat}</span>
         <h1 class="studio-product-title">${p.title}</h1>
         <div class="studio-price">${formatRupiah(p.price)}</div>
@@ -821,15 +893,22 @@ function openProductStudio(productId) {
           </div>
         </div>
 
-        <!-- Live Monogram Studio -->
+        <!-- Live Monogram Studio with Norman Affordance & Active Counter -->
         <div class="monogram-studio-card">
-          <div class="monogram-stamp-badge" id="studio-monogram-stamp">AT</div>
+          <div class="monogram-stamp-badge" id="studio-monogram-stamp">${store.activeStudioMonogram || 'AT'}</div>
           <div style="flex-grow:1;">
-            <label class="form-label" style="margin-bottom:3px;">Personalisasi Monogram Emas</label>
-            <input type="text" id="studio-monogram-input" class="form-input" maxlength="3" value="AT" placeholder="Misal: AT"
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <label class="form-label" style="margin-bottom:0;">Personalisasi Monogram Emas</label>
+              <span id="monogram-char-counter" class="monogram-counter-badge ${(store.activeStudioMonogram || 'AT').length === 3 ? 'full' : ''}">
+                ${(store.activeStudioMonogram || 'AT').length} / 3
+              </span>
+            </div>
+            <input type="text" id="studio-monogram-input" class="form-input" maxlength="3" value="${store.activeStudioMonogram || 'AT'}" placeholder="Misal: AT"
               style="padding:6px 12px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;"
               oninput="this.value = this.value.toUpperCase().replace(/[^A-Z]/g, ''); updateStudioMonogramBadge(this.value)">
-            <small style="font-size:10px; color:var(--taupe); display:block; margin-top:3px;">Dibordir tangan dengan benang metalik emas 18 karat di atelier.</small>
+            <small style="font-size:10px; color:var(--taupe); display:block; margin-top:3px;">
+              ✦ Dibordir tangan dengan benang metalik emas 18 karat di atelier.
+            </small>
           </div>
         </div>
 
@@ -889,9 +968,18 @@ function selectStudioSize(sizeVal) {
 }
 
 function updateStudioMonogramBadge(val) {
+  store.activeStudioMonogram = val;
   const badge = document.getElementById('studio-monogram-stamp');
+  const counter = document.getElementById('monogram-char-counter');
   if (badge) {
-    badge.textContent = val.trim() ? val.toUpperCase() : 'ZFL';
+    badge.textContent = val.trim() ? val.toUpperCase() : '✦';
+    badge.classList.add('pulsing');
+    clearTimeout(badge._pulseTimer);
+    badge._pulseTimer = setTimeout(() => badge.classList.remove('pulsing'), 900);
+  }
+  if (counter) {
+    counter.textContent = `${val.length} / 3`;
+    counter.classList.toggle('full', val.length === 3);
   }
   playAtelierSound('click');
 }
@@ -980,9 +1068,22 @@ function stepCartQty(index, delta) {
 }
 
 function removeCartItem(index) {
+  const itemToRestore = store.cart[index];
+  if (!itemToRestore) return;
+  const product = store.products.find(p => p.id === itemToRestore.productId);
+  const title = product?.title || 'Kreasi';
+
   store.removeFromCart(index);
   renderCartDrawer();
-  showToast('Kreasi dihapus dari tas belanja.');
+  playAtelierSound('click');
+
+  showToast(`"${title}" dihapus dari tas belanja.`, 'info', 'Urungkan (Undo)', () => {
+    store.cart.splice(index, 0, itemToRestore);
+    store.save('zafira_v3_5_cart', store.cart);
+    renderCartDrawer();
+    playAtelierSound('chime');
+    showToast(`✦ "${title}" berhasil dikembalikan ke tas belanja.`);
+  });
 }
 
 // ==========================================================================
@@ -1543,8 +1644,41 @@ function openWorkOrderModal(orderId) {
             <small style="color:var(--muted);">Supervisi: Direktur Kreatif ZAFIRA</small>
           </div>
         </div>
+
+        <!-- Douglas Engelbart Compound High-Bandwidth Display: Technical Blueprint -->
+        <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:14px; margin-bottom:16px;">
+          <div style="background:#091528; color:#93c5fd; padding:12px; border-radius:var(--radius-xs); font-family:'JetBrains Mono', monospace; font-size:10px; border:1px solid #1e3a8a;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:6px; color:#fde047; font-weight:700;">
+              <span>✦ SCHÉMA DE PATRONAGE (BLUEPRINT)</span>
+              <span>ÉCHELLE 1:10</span>
+            </div>
+            <svg width="100%" height="82" viewBox="0 0 240 82" style="background:#050c18; border:1px dashed #3b82f6; border-radius:2px;">
+              <path d="M 25 22 L 65 12 L 105 22 L 95 72 L 35 72 Z" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <path d="M 135 12 L 175 22 L 215 12 L 205 72 L 145 72 Z" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+              <circle cx="65" cy="12" r="3" fill="#fbbf24"/>
+              <circle cx="175" cy="22" r="3" fill="#fbbf24"/>
+              <text x="38" y="47" fill="#93c5fd" font-size="8">Dada: 92cm</text>
+              <text x="148" y="47" fill="#93c5fd" font-size="8">Pinggang: 74cm</text>
+            </svg>
+            <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:9px; color:#cbd5e1;">
+              <span>Toleransi: ±1.5mm</span>
+              <span>Jahitan: French Seam 18 SPI</span>
+            </div>
+          </div>
+
+          <div style="background:#f8fafc; padding:12px; border-radius:var(--radius-xs); border:1px solid #e2e8f0; font-size:11px;">
+            <strong style="color:var(--sapphire-midnight);">Spesifikasi Benang & Kain:</strong>
+            <ul style="margin:6px 0 0 16px; padding:0; line-height:1.6; color:#334155;">
+              <li>Benang Jahit: Sutra Gutermann Mara No. 120</li>
+              <li>Benang Bordir: Metalik Emas 18K Madeira</li>
+              <li>Batik: Malam Dingin Solo, 9x Celupan Alami</li>
+              <li>Kemasan: Signature Midnight Box + Or Ribbon</li>
+            </ul>
+          </div>
+        </div>
+
         <div style="border:1px solid #e2e8f0; padding:14px; margin-bottom:16px; font-size:12px; background:#fff; border-left:3px solid var(--gold);">
-          <strong style="color:var(--sapphire-midnight);">Instruksi Pengerjaan & Spesifikasi Material:</strong>
+          <strong style="color:var(--sapphire-midnight);">Instruksi Pengerjaan & Spesifikasi Khusus Klien:</strong>
           <p style="white-space:pre-wrap; margin-top:6px; color:#1e293b; line-height:1.6;">${order.notes}</p>
         </div>
         <div style="display:flex; justify-content:space-between; align-items:flex-end; border-top:1px dashed #cbd5e1; padding-top:16px; font-size:11px; color:#64748b;">
@@ -1586,6 +1720,17 @@ window.addEventListener('scroll', (e) => {
   lastScrollY = currentScrollY;
 }, { passive: true, capture: true });
 
+function openKeyboardShortcutsModal() {
+  closeAllModals();
+  const modal = document.getElementById('keyboard-shortcuts-modal');
+  if (modal) {
+    modal.classList.add('open');
+    document.getElementById('drawer-backdrop')?.classList.add('open');
+    playAtelierSound('click');
+  }
+}
+window.openKeyboardShortcutsModal = openKeyboardShortcutsModal;
+
 document.addEventListener('DOMContentLoaded', () => {
   renderCatalog();
   renderCartDrawer();
@@ -1621,10 +1766,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Keyboard accessibility
+  // Keyboard accessibility & Power User Accelerators (Shneiderman & Nielsen)
   document.addEventListener('keydown', (e) => {
+    // Universal Emergency Exit (Escape)
     if (e.key === 'Escape' || e.key === 'Esc') {
       closeAllModals();
+      return;
+    }
+
+    // Do not trigger hotkeys if user is currently typing in an input, textarea, or select
+    const activeEl = document.activeElement;
+    const tagName = activeEl ? activeEl.tagName.toLowerCase() : '';
+    if (tagName === 'input' || tagName === 'textarea' || tagName === 'select') {
+      return;
+    }
+
+    if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+      e.preventDefault();
+      const modal = document.getElementById('keyboard-shortcuts-modal');
+      if (modal && modal.classList.contains('open')) {
+        closeAllModals();
+      } else {
+        openKeyboardShortcutsModal();
+      }
+    } else if (e.key === 's' || e.key === 'S') {
+      switchView('storefront');
+      showToast('Navigasi Cepat: Storefront Koleksi');
+    } else if (e.key === 'p' || e.key === 'P') {
+      openProductStudio(9);
+      showToast('Navigasi Cepat: Studio Kriya (Kebaya Lumière)');
+    } else if (e.key === 'c' || e.key === 'C') {
+      openCartDrawer();
+    } else if (e.key === 'a' || e.key === 'A') {
+      switchView('admin');
+      showToast('Navigasi Cepat: Atelier Command (MSI)');
+    } else if (e.key === '/') {
+      e.preventDefault();
+      const sInput = document.getElementById('sf-search-input');
+      if (sInput) {
+        if (store.activeView !== 'storefront') switchView('storefront');
+        sInput.focus();
+        sInput.select();
+      }
     }
   });
 });
