@@ -13,7 +13,6 @@ use Database\Seeders\AdminSeeder;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\ProductSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class AdminManagementTest extends TestCase
@@ -23,7 +22,6 @@ class AdminManagementTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        putenv('ADMIN_SEED_PASSWORD='.Str::password());
         $this->seed([AdminSeeder::class, CategorySeeder::class]);
     }
 
