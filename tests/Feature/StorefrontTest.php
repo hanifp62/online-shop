@@ -4,10 +4,12 @@ namespace Tests\Feature;
 
 use App\Mail\ConciergeRequested;
 use App\Mail\NewsletterWelcome;
+use App\Models\ConciergeRequest;
 use App\Models\Product;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\ProductSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
@@ -96,14 +98,69 @@ class StorefrontTest extends TestCase
         $this->assertDatabaseHas('concierge_requests', ['email' => 'bima@example.com']);
     }
 
-    public function test_newsletter_subscription_is_idempotent(): void
+    public function test_newsletter_subscription_is_idempotent_with_uniform_response(): void
     {
         Mail::fake();
 
-        $this->postJson('/newsletter', ['email' => 'maison@example.com'])->assertCreated();
-        $this->postJson('/newsletter', ['email' => 'maison@example.com'])->assertOk();
+        $first = $this->postJson('/newsletter', ['email' => 'maison@example.com']);
+        $second = $this->postJson('/newsletter', ['email' => 'maison@example.com']);
+
+        $first->assertOk();
+        $second->assertOk();
+        $this->assertSame($first->json('message'), $second->json('message'));
 
         $this->assertDatabaseCount('newsletter_subscribers', 1);
         Mail::assertQueued(NewsletterWelcome::class, 1);
+    }
+
+    private function conciergePayload(array $orderItems, array $extra = []): array
+    {
+        return array_merge([
+            'name' => 'Madame Valerie',
+            'email' => 'valerie@maison.id',
+            'phone' => '+62 811 2233 4455',
+            'service' => 'virtual-consultation',
+            'order_items' => json_encode($orderItems),
+        ], $extra);
+    }
+
+    public function test_concierge_order_items_use_server_side_name_and_price(): void
+    {
+        Mail::fake();
+
+        $this->postJson('/concierge', $this->conciergePayload([
+            ['id' => 'sac-seraphine', 'name' => 'Nama Palsu', 'price' => 1, 'quantity' => 2],
+        ]))->assertCreated();
+
+        $notes = ConciergeRequest::where('email', 'valerie@maison.id')->firstOrFail()->notes;
+        $this->assertStringContainsString('Sac Séraphine (2x) Rp18.750.000', $notes);
+        $this->assertStringContainsString('Total: Rp37.500.000', $notes);
+        $this->assertStringNotContainsString('Nama Palsu', $notes);
+    }
+
+    public function test_concierge_rejects_invalid_order_items(): void
+    {
+        Mail::fake();
+        $this->withoutMiddleware(ThrottleRequests::class);
+
+        $valid = ['id' => 'sac-seraphine', 'quantity' => 1];
+        $cases = [
+            'unknown product' => [['id' => 'tidak-ada', 'quantity' => 1]],
+            'quantity zero' => [['id' => 'sac-seraphine', 'quantity' => 0]],
+            'quantity too high' => [['id' => 'sac-seraphine', 'quantity' => 11]],
+            'quantity not integer' => [['id' => 'sac-seraphine', 'quantity' => 'abc']],
+            'too many items' => array_fill(0, 21, $valid),
+            'not a list' => 'bukan-json',
+        ];
+
+        foreach ($cases as $label => $items) {
+            $payload = $this->conciergePayload([]);
+            $payload['order_items'] = is_string($items) ? $items : json_encode($items);
+
+            $this->postJson('/concierge', $payload)
+                ->assertUnprocessable("Kasus '{$label}' seharusnya ditolak.");
+        }
+
+        $this->assertDatabaseCount('concierge_requests', 0);
     }
 }

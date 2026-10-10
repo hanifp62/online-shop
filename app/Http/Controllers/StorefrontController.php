@@ -130,6 +130,12 @@ class StorefrontController extends Controller
     {
         $request->merge(['email' => mb_strtolower((string) $request->input('email'))]);
 
+        $rawItems = $request->input('order_items');
+        if (is_string($rawItems) && trim($rawItems) !== '') {
+            $decoded = json_decode($rawItems, true);
+            $request->merge(['order_items' => is_array($decoded) ? $decoded : $rawItems]);
+        }
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'email', 'max:255'],
@@ -138,25 +144,26 @@ class StorefrontController extends Controller
             'preferred_date' => ['nullable', 'date', 'after_or_equal:today'],
             'preferred_time' => ['nullable', 'date_format:H:i'],
             'notes' => ['nullable', 'string', 'max:1000'],
-            'order_items' => ['nullable'],
+            'order_items' => ['nullable', 'array', 'max:20'],
+            'order_items.*' => ['array'],
+            'order_items.*.id' => ['required', 'string', 'max:255', 'exists:products,product_slug'],
+            'order_items.*.quantity' => ['required', 'integer', 'min:1', 'max:10'],
         ]);
 
         if (! empty($validated['order_items'])) {
-            $orderData = is_string($validated['order_items']) ? json_decode($validated['order_items'], true) : $validated['order_items'];
-            if (is_array($orderData) && count($orderData) > 0) {
-                $lines = [];
-                $total = 0;
-                foreach ($orderData as $item) {
-                    $name = $item['name'] ?? 'Item';
-                    $qty = (int) ($item['quantity'] ?? $item['qty'] ?? 1);
-                    $price = (int) ($item['price'] ?? 0);
-                    $priceStr = 'Rp'.number_format($price, 0, ',', '.');
-                    $lines[] = "- {$name} ({$qty}x) {$priceStr}";
-                    $total += $price * $qty;
-                }
-                $summary = "[Pesanan Checkout]\n".implode("\n", $lines)."\nTotal: Rp".number_format($total, 0, ',', '.');
-                $validated['notes'] = trim($summary.($validated['notes'] ? "\n\nCatatan: ".$validated['notes'] : ''));
+            $lines = [];
+            $total = 0;
+            foreach ($validated['order_items'] as $item) {
+                $product = Product::where('product_slug', $item['id'])->firstOrFail();
+                $qty = (int) $item['quantity'];
+                $price = (int) $product->product_price;
+                $priceStr = 'Rp'.number_format($price, 0, ',', '.');
+                $lines[] = "- {$product->product_title} ({$qty}x) {$priceStr}";
+                $total += $price * $qty;
             }
+            $existingNotes = trim((string) ($validated['notes'] ?? ''));
+            $summary = "[Pesanan Checkout]\n".implode("\n", $lines)."\nTotal: Rp".number_format($total, 0, ',', '.');
+            $validated['notes'] = trim($summary.($existingNotes !== '' ? "\n\nCatatan: ".$existingNotes : ''));
         }
         unset($validated['order_items']);
 
@@ -186,12 +193,10 @@ class StorefrontController extends Controller
             Mail::to($subscriber->email)->queue(new NewsletterWelcome($subscriber));
         }
 
-        $message = $subscriber->wasRecentlyCreated
-            ? 'Selamat datang di La Lettre ZAFIRA.'
-            : 'Email Anda telah terdaftar di La Lettre ZAFIRA.';
+        $message = 'Terima kasih telah berlangganan La Lettre ZAFIRA.';
 
         if ($request->expectsJson()) {
-            return response()->json(['message' => $message], $subscriber->wasRecentlyCreated ? 201 : 200);
+            return response()->json(['message' => $message]);
         }
 
         return back()->with('success', $message);
