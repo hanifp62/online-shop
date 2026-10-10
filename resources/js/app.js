@@ -74,6 +74,8 @@ if (storefront) {
     const quickViewModal = select('.quick-view-modal');
     const conciergeModal = select('.concierge-modal');
     const profileDrawer = select('#welcome-profile-drawer');
+    const sizeGuideDrawer = select('[data-size-guide]');
+    const shortcutsModal = select('#welcome-shortcuts-backdrop');
     const mobileMenu = select('.mobile-menu');
     const productCards = selectAll('[data-product-card]');
     const productMap = new Map(productCards.map((card) => [card.dataset.id, readProduct(card)]));
@@ -152,39 +154,58 @@ if (storefront) {
     }
 
     function syncOverlay() {
-        const somethingOpen = [cartDrawer, searchPanel, quickViewModal, conciergeModal, profileDrawer]
+        const somethingOpen = [cartDrawer, searchPanel, quickViewModal, conciergeModal, profileDrawer, sizeGuideDrawer, shortcutsModal]
             .some((element) => element?.classList.contains('open'));
         overlay?.classList.toggle('open', Boolean(somethingOpen));
         document.body.classList.toggle('no-scroll', Boolean(somethingOpen || mobileMenu?.classList.contains('open')));
     }
 
-    function openElement(element) {
+    function openElement(element, trigger = document.activeElement) {
         if (!element) return;
-        lastFocusedElement = document.activeElement;
+        const parentDialog = [cartDrawer, searchPanel, quickViewModal, conciergeModal, profileDrawer, sizeGuideDrawer, shortcutsModal, mobileMenu]
+            .find((layer) => layer !== element && layer?.contains?.(trigger));
+        element._opener = parentDialog?._opener || trigger;
+        lastFocusedElement = element._opener;
+        if (element === shortcutsModal) element.style.display = 'flex';
+        element.inert = false;
         element.classList.add('open');
         element.setAttribute('aria-hidden', 'false');
         syncOverlay();
-        setTimeout(() => {
-            const preferredFocus = element === searchPanel
-                ? select('[data-search-input]', element)
-                : select('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])', element);
-            preferredFocus?.focus();
-        }, 320);
+        const preferredFocus = element === searchPanel
+            ? select('[data-search-input]', element)
+            : select('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])', element);
+        preferredFocus?.focus();
     }
 
-    function closeElement(element) {
+    function closeElement(element, restoreFocus = true) {
         if (!element) return;
         const wasOpen = element.classList.contains('open');
         element.classList.remove('open');
         element.setAttribute('aria-hidden', 'true');
+        element.inert = true;
+        if (element === shortcutsModal) element.style.display = 'none';
         syncOverlay();
-        if (wasOpen && !select('.open[role="dialog"], .mobile-menu.open')) {
-            lastFocusedElement?.focus?.();
-        }
+        const opener = element._opener || lastFocusedElement;
+        if (wasOpen && restoreFocus && !select('.open[role="dialog"], .mobile-menu.open')) opener?.focus?.();
+    }    
+
+    function closeShortcuts() {
+        closeElement(shortcutsModal);
     }
 
+    function openShortcuts(trigger = document.activeElement) {
+        openElement(shortcutsModal, trigger);
+    }
+
+    window.closeWelcomeShortcutsModal = closeShortcuts;
+    window.openWelcomeShortcutsModal = openShortcuts; 
+
     function closeAll() {
-        [cartDrawer, searchPanel, quickViewModal, conciergeModal, profileDrawer].forEach((element) => closeElement(element));
+        const layers = [cartDrawer, searchPanel, quickViewModal, conciergeModal, profileDrawer, sizeGuideDrawer, shortcutsModal];
+        const active = layers.find((element) => element?.classList.contains('open'));
+        const opener = active?._opener;
+        layers.forEach((element) => closeElement(element, false));
+        opener?.focus?.();
     }
 
     function updateCounts() {
@@ -427,7 +448,9 @@ if (storefront) {
 
     function setActiveFilter(category) {
         selectAll('[data-filter]').forEach((button) => {
-            button.classList.toggle('active', button.dataset.filter === category);
+            const isActive = button.dataset.filter === category;
+            button.classList.toggle('active', isActive);
+            button.setAttribute('aria-pressed', String(isActive));
         });
     }
 
@@ -468,21 +491,22 @@ if (storefront) {
     }
 
     catalogSearch?.addEventListener('input', () => applyFilter());
-    selectAll('[data-open-profile]').forEach((button) => button.addEventListener('click', () => openElement(profileDrawer)));
+    selectAll('[data-open-size-guide]').forEach((button) => button.addEventListener('click', () => openElement(sizeGuideDrawer, button)));
+    selectAll('[data-close-size-guide]').forEach((button) => button.addEventListener('click', () => closeElement(sizeGuideDrawer)));
+    selectAll('[data-open-profile]').forEach((button) => button.addEventListener('click', () => openElement(profileDrawer, button)));
     selectAll('[data-close-profile]').forEach((button) => button.addEventListener('click', () => closeElement(profileDrawer)));
-    selectAll('[data-open-cart]').forEach((button) => button.addEventListener('click', () => openElement(cartDrawer)));
+    selectAll('[data-open-cart]').forEach((button) => button.addEventListener('click', () => openElement(cartDrawer, button)));
     selectAll('[data-close-cart]').forEach((button) => button.addEventListener('click', () => closeElement(cartDrawer)));
-    selectAll('[data-open-search]').forEach((button) => button.addEventListener('click', () => {
-        openElement(searchPanel);
-        setTimeout(() => select('[data-search-input]')?.focus(), 300);
-    }));
+    selectAll('[data-open-search]').forEach((button) => button.addEventListener('click', () => openElement(searchPanel, button)));
     selectAll('[data-close-search]').forEach((button) => button.addEventListener('click', () => closeElement(searchPanel)));
+    selectAll('[data-open-shortcuts]').forEach((button) => button.addEventListener('click', () => openShortcuts(button)));
+    selectAll('[data-close-shortcuts]').forEach((button) => button.addEventListener('click', () => closeShortcuts()));
     selectAll('[data-open-concierge]').forEach((button) => button.addEventListener('click', () => {
         setConciergeMode(false);
         closeElement(profileDrawer);
         closeElement(quickViewModal);
         closeElement(mobileMenu);
-        openElement(conciergeModal);
+        openElement(conciergeModal, button);
     }));
     selectAll('[data-close-modal]').forEach((button) => button.addEventListener('click', () => closeElement(button.closest('.modal'))));
     overlay?.addEventListener('click', closeAll);
@@ -750,14 +774,13 @@ if (storefront) {
 
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
-            window.closeWelcomeShortcutsModal?.();
             closeAll();
             closeElement(mobileMenu);
             select('.account-menu')?.classList.remove('open');
         }
 
         if (event.key === 'Tab') {
-            const activeLayer = [conciergeModal, quickViewModal, searchPanel, cartDrawer, profileDrawer, mobileMenu]
+            const activeLayer = [shortcutsModal, sizeGuideDrawer, conciergeModal, quickViewModal, searchPanel, cartDrawer, profileDrawer, mobileMenu]
                 .find((element) => element?.classList.contains('open'));
             if (!activeLayer) return;
             const focusable = selectAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])', activeLayer)

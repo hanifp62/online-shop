@@ -310,25 +310,27 @@
             <div class="section-shell">
                 <div class="products-heading reveal">
                     <div><span class="eyebrow" data-i18n="products_eyebrow">Les Nouveautés</span><h2 data-i18n="products_title">Objek-objek penuh pesona</h2></div>
-                    <p class="result-count"><span data-product-count>{{ count($products) }}</span> <span data-i18n="products_count_suffix">kreasi</span></p>
+                    <p class="result-count" role="status" aria-live="polite"><span data-product-count>{{ count($products) }}</span> <span data-i18n="products_count_suffix">kreasi</span></p>
                 </div>
 
                 <!-- Live Catalog Control Bar (Shneiderman / Nielsen) -->
                 <div style="margin: 20px 0 24px; display:flex; flex-direction:column; gap:12px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
                         <div class="filter-bar" role="group" aria-label="Filter kategori produk">
-                            <button type="button" class="filter-pill active" data-filter="Semua" data-i18n="filter_all">Semua</button>
+                            <button type="button" class="filter-pill active" data-filter="Semua" aria-pressed="true" data-i18n="filter_all">Semua</button>
                             @foreach (($categories ?? collect()) as $category)
-                                <button type="button" class="filter-pill" data-filter="{{ $category->cat_title }}">{{ $category->cat_title }}</button>
+                                <button type="button" class="filter-pill" data-filter="{{ $category->cat_title }}" aria-pressed="false">{{ $category->cat_title }}</button>
                             @endforeach
                         </div>
-                        <div style="position:relative; min-width:260px; flex:1; max-width:340px;">
-                            <input type="text" id="live-catalog-search-input" placeholder="Cari kreasi kriya, tas, sutra..." data-i18n-placeholder="search_placeholder"
-                                   style="width:100%; padding:9px 16px 9px 36px; border:1px solid rgba(32,32,29,0.18); border-radius:100px; font-size:12.5px; background:rgba(255,255,255,0.85); outline:none;">
-                            <svg style="position:absolute; left:12px; top:50%; transform:translateY(-50%); width:14px; height:14px; stroke:var(--taupe); fill:none;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        </div>
+                        <form style="position:relative; min-width:260px; flex:1; max-width:340px;" role="search" aria-label="Cari kreasi dalam katalog" onsubmit="event.preventDefault()">
+                            <label for="live-catalog-search-input" class="sr-only">Cari kreasi dalam katalog</label>
+                            <input type="search" id="live-catalog-search-input" placeholder="Cari kreasi kriya, tas, sutra..." data-i18n-placeholder="search_placeholder"
+                                   style="width:100%; padding:9px 16px 9px 36px; border:1px solid rgba(32,32,29,0.18); border-radius:100px; font-size:12.5px; background:rgba(255,255,255,0.85); outline:none;"
+                                   autocomplete="off" spellcheck="false" name="cari-katalog">
+                            <svg aria-hidden="true" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); width:14px; height:14px; stroke:var(--taupe); fill:none;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </form>
                     </div>
-                    <div id="welcome-feedback-strip" style="display:none; font-size:11.5px; color:var(--muted); background:rgba(182,154,100,0.1); border-left:3px solid var(--gold); padding:6px 14px; border-radius:4px;">
+                    <div id="welcome-feedback-strip" role="status" aria-live="polite" style="display:none; font-size:11.5px; color:var(--muted); background:rgba(182,154,100,0.1); border-left:3px solid var(--gold); padding:6px 14px; border-radius:4px;">
                         Menampilkan hasil kurasi instan
                     </div>
                 </div>
@@ -695,7 +697,7 @@
 
     <section class="search-panel" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="search-title" tabindex="-1">
         <div class="search-top"><a class="brand brand-horizontal" href="{{ route('home') }}"><x-brand-mark /></a><button class="icon-button" type="button" data-close-search aria-label="Tutup pencarian"><svg aria-hidden="true"><use href="#icon-close"/></svg></button></div>
-        <div class="search-inner"><span class="eyebrow">Recherche</span><h2 id="search-title">Apa yang Anda cari?</h2><div class="search-field"><svg aria-hidden="true"><use href="#icon-search"/></svg><label class="sr-only" for="search-input">Cari produk</label><input id="search-input" type="search" data-search-input placeholder="Cari tas, busana, aksesori…" data-i18n-placeholder="search_placeholder" autocomplete="off" spellcheck="false" name="q"><button type="button" data-clear-search>Hapus</button></div><div class="search-suggestions"><span>Pencarian populer</span><button type="button" data-search-term="Tas Tangan">Tas ikonis</button><button type="button" data-search-term="Saphir">Saphir</button><button type="button" data-search-term="Baru">Koleksi terbaru</button></div><div class="search-results" data-search-results></div></div>
+        <div class="search-inner"><span class="eyebrow">Recherche</span><h2 id="search-title">Apa yang Anda cari?</h2><form class="search-field" role="search" aria-label="Cari produk" onsubmit="event.preventDefault()"><svg aria-hidden="true"><use href="#icon-search"/></svg><label class="sr-only" for="search-input">Cari produk</label><input id="search-input" type="search" data-search-input placeholder="Cari tas, busana, aksesori…" data-i18n-placeholder="search_placeholder" autocomplete="off" spellcheck="false" name="q"><button type="button" data-clear-search>Hapus</button></form><div class="search-suggestions"><span>Pencarian populer</span><button type="button" data-search-term="Tas Tangan">Tas ikonis</button><button type="button" data-search-term="Saphir">Saphir</button><button type="button" data-search-term="Baru">Koleksi terbaru</button></div><div class="search-results" data-search-results></div></div>
     </section>
 
     <section class="quick-view-modal modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="quick-view-title" tabindex="-1">
@@ -744,18 +746,18 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
             <span>Admin Atelier</span>
         </a>
-        <button type="button" class="dock-btn" onclick="openWelcomeShortcutsModal()" title="Pintasan Keyboard (Tekan ?)">
+        <button type="button" class="dock-btn" data-open-shortcuts aria-label="Buka panduan pintasan keyboard" title="Pintasan Keyboard (Tekan ?)">
             <kbd style="font-family:'JetBrains Mono', monospace; font-size:10px; background:rgba(255,255,255,0.2); padding:1px 5px; border-radius:3px; color:#fff;">?</kbd>
             <span>Pintasan</span>
         </button>
     </nav>
 
     <!-- Keyboard Shortcuts Accelerator Modal (Nielsen Heuristic 7 / Shneiderman Rule 2) -->
-    <div class="modal-backdrop" id="welcome-shortcuts-backdrop" style="display:none; position:fixed; inset:0; background:rgba(8,16,29,0.72); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center;" onclick="closeWelcomeShortcutsModal()">
+    <div class="modal-backdrop" id="welcome-shortcuts-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="shortcuts-title" tabindex="-1" style="display:none; position:fixed; inset:0; background:rgba(8,16,29,0.72); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center;" data-close-shortcuts>
         <div class="modal-window" style="background:var(--surface, #fff); max-width:440px; width:90%; padding:28px; border-radius:12px; box-shadow:0 24px 60px rgba(0,0,0,0.3); border:1px solid var(--line);" onclick="event.stopPropagation()">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-                <h3 style="font-family:'Bodoni Moda', serif; font-size:20px; color:var(--ink, #17263f); margin:0;" data-i18n="shortcuts_title">Pintasan Keyboard ZAFIRA</h3>
-                <button type="button" onclick="closeWelcomeShortcutsModal()" style="background:none; border:none; cursor:pointer; color:var(--muted); display:flex; align-items:center;" aria-label="Tutup"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+                <h3 id="shortcuts-title" style="font-family:'Bodoni Moda', serif; font-size:20px; color:var(--ink, #17263f); margin:0;" data-i18n="shortcuts_title">Pintasan Keyboard ZAFIRA</h3>
+                <button type="button" data-close-shortcuts style="background:none; border:none; cursor:pointer; color:var(--muted); display:flex; align-items:center;" aria-label="Tutup panduan pintasan"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
             </div>
             <p style="font-size:12px; color:var(--muted); margin-bottom:18px;" data-i18n="shortcuts_desc">Akselerator navigasi efisiensi tinggi untuk menjelajahi seluruh ruang salon digital.</p>
             <div style="display:flex; flex-direction:column; gap:10px;">
@@ -778,7 +780,7 @@
 
             </div>
             <div style="margin-top:20px; text-align:right;">
-                <button type="button" onclick="closeWelcomeShortcutsModal()" style="background:var(--gold, #b69a64); color:#fff; border:none; padding:8px 20px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;" data-i18n="shortcuts_close">Tutup Panduan</button>
+                <button type="button" data-close-shortcuts style="background:var(--gold, #b69a64); color:#fff; border:none; padding:8px 20px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;" data-i18n="shortcuts_close">Tutup Panduan</button>
             </div>
         </div>
     </div>
@@ -787,15 +789,6 @@
 
     <script>
         // Enhanced Client-Side Interactions (Live Search, Monogram, Keyboard Shortcuts)
-        function openWelcomeShortcutsModal() {
-            var el = document.getElementById('welcome-shortcuts-backdrop');
-            if (el) { el.style.display = 'flex'; }
-        }
-        function closeWelcomeShortcutsModal() {
-            var el = document.getElementById('welcome-shortcuts-backdrop');
-            if (el) { el.style.display = 'none'; }
-        }
-
         // L'Art d'Offrir Interactive Unboxing Handlers (Norman & Shneiderman)
         function setWelcomeRibbon(color) {
             var band = document.getElementById('welcome-ribbon-band');
@@ -878,12 +871,12 @@
 
             // Keyboard Shortcuts Listener
             document.addEventListener('keydown', function(e) {
-                if (e.target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
+                if (e.ctrlKey || e.metaKey || e.altKey || document.querySelector('.open[role="dialog"], .mobile-menu.open') || e.target?.isContentEditable || (e.target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName))) {
                     return;
                 }
                 if (e.key === '?' || (e.shiftKey && e.key === '/')) {
                     e.preventDefault();
-                    openWelcomeShortcutsModal();
+                    document.querySelector('[data-open-shortcuts]')?.click();
                 } else if (e.key === 'c' || e.key === 'C') {
                     e.preventDefault();
                     var cartBtn = document.querySelector('[data-open-cart]');

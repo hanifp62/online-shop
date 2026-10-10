@@ -81,7 +81,11 @@
                             <option value="FR 36">FR 36</option><option value="FR 38">FR 38</option>
                             <option value="FR 40">FR 40</option><option value="FR 42">FR 42</option>
                         </select>
-                        <details><summary>Panduan ukuran</summary><p>Ukuran FR adalah referensi pilihan awal. Konsultasikan kecocokan ukuran dengan concierge sebelum pemesanan.</p></details>
+                        <button type="button" class="text-link" data-open-size-guide>Panduan ukuran</button>
+                        <section class="drawer size-guide-drawer" data-size-guide role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="size-guide-title" tabindex="-1">
+                            <div class="drawer-header"><div><span class="eyebrow">Guide des Tailles</span><h2 id="size-guide-title">Panduan Ukuran</h2></div><button class="icon-button" type="button" data-close-size-guide aria-label="Tutup panduan ukuran"><svg aria-hidden="true"><use href="#icon-close"/></svg></button></div>
+                            <p>Ukuran FR adalah referensi pilihan awal. Konsultasikan kecocokan ukuran dengan concierge sebelum pemesanan.</p>
+                        </section>
                     </div>
                     @endif
 
