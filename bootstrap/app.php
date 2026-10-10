@@ -18,8 +18,9 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-        // Proxy tepercaya dibaca lewat config/trustedproxy.php (env TRUSTED_PROXIES),
-        // bukan '*', agar header X-Forwarded-* tidak bisa dipalsukan klien langsung.
+        // Proxy tepercaya dibaca framework dari config/trustedproxy.php (env TRUSTED_PROXIES).
+        // Config selalu array (kosong = tidak ada proxy tepercaya) agar auto-trust '*'
+        // milik Laravel untuk host Cloud/Forge/Vapor, yang aktif saat config null, tidak berlaku.
 
         $middleware->redirectGuestsTo(fn ($request) => $request->is('admin*')
             ? route('admin.login')
