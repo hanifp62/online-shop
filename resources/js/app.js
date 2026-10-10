@@ -77,6 +77,11 @@ if (storefront) {
     const sizeGuideDrawer = select('[data-size-guide]');
     const shortcutsModal = select('#welcome-shortcuts-backdrop');
     const mobileMenu = select('.mobile-menu');
+    [cartDrawer, searchPanel, quickViewModal, conciergeModal, profileDrawer, sizeGuideDrawer, shortcutsModal].forEach((element) => {
+        if (!element) return;
+        element.inert = true;
+        element.setAttribute('aria-hidden', 'true');
+    });
     const productCards = selectAll('[data-product-card]');
     const productMap = new Map(productCards.map((card) => [card.dataset.id, readProduct(card)]));
     // js-cache-function-results + js-index-maps: haystack search dihitung sekali,

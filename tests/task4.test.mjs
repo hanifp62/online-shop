@@ -26,6 +26,9 @@ test('PDP size guide is an accessible dialog and native alerts are absent', () =
     assert.doesNotMatch(product, /alert\s*\(/);
     assert.match(product, /data-open-size-guide/);
     assert.match(product, /data-size-guide[^>]+role="dialog"[^>]+aria-modal="true"/);
+    // PDP body carries .storefront so sizeGuideDrawer wiring inside if(storefront) is active.
+    assert.match(product, /<body[^>]+class="storefront/);
+    assert.match(app, /selectAll\('\[data-open-size-guide\]'\)/);
 });
 
 test('keyboard help participates in accessible dialog flow', () => {

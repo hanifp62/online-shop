@@ -17,13 +17,25 @@ function harness() {
     layers.forEach(layer => { layer.button = node(); });
     const trigger = node();
     const context = { cartDrawer: layers[0], searchPanel: layers[1], quickViewModal: layers[2], conciergeModal: layers[3], profileDrawer: layers[4], sizeGuideDrawer: layers[5], shortcutsModal: layers[6], mobileMenu: layers[7], overlay: node(), document: { activeElement: trigger, body: node() }, window: {}, lastFocusedElement: null,
-        select: (_, layer) => layer?.button ?? null,
+        select: (_, layer) => layer ? layer.button : null,
         selectAll: (_, layer) => layer ? [layer.button] : [],
     };
     vm.createContext(context);
+    vm.runInContext(source.slice(source.indexOf("    const mobileMenu = select('.mobile-menu');") + "    const mobileMenu = select('.mobile-menu');".length, source.indexOf('    const productCards =')), context);
     vm.runInContext(source.slice(source.indexOf('    function syncOverlay()'), source.indexOf('    function updateCounts()')), context);
     return { ...context, layers, trigger, focus: () => focused, run: code => vm.runInContext(code, context) };
 }
+
+test('all overlays start inert and hidden', () => {
+    const h = harness();
+    for (const layer of h.layers.slice(0, 7)) {
+        assert.equal(layer.inert, true);
+        assert.equal(layer.attrs['aria-hidden'], 'true');
+    }
+    h.openElement(h.cartDrawer, h.trigger);
+    assert.equal(h.cartDrawer.inert, false);
+    assert.equal(h.cartDrawer.attrs['aria-hidden'], 'false');
+});
 
 test('every overlay focuses inside, Escape lifecycle closes all and returns to external trigger', () => {
     const h = harness();
