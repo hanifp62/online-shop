@@ -8,6 +8,7 @@ use App\Models\ConciergeRequest;
 use App\Models\Product;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\ProductSeeder;
+use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Mail;
@@ -136,6 +137,20 @@ class StorefrontTest extends TestCase
         $this->assertStringContainsString('Sac Séraphine (2x) Rp18.750.000', $notes);
         $this->assertStringContainsString('Total: Rp37.500.000', $notes);
         $this->assertStringNotContainsString('Nama Palsu', $notes);
+    }
+
+    public function test_concierge_accepts_empty_hidden_order_items(): void
+    {
+        Mail::fake();
+        $this->withoutMiddleware(ConvertEmptyStringsToNull::class);
+
+        $this->postJson('/concierge', $this->conciergePayload([], ['order_items' => '']))
+            ->assertCreated();
+
+        $this->assertDatabaseHas('concierge_requests', [
+            'email' => 'valerie@maison.id',
+            'notes' => null,
+        ]);
     }
 
     public function test_concierge_rejects_invalid_order_items(): void
