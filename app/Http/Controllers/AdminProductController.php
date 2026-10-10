@@ -72,8 +72,9 @@ class AdminProductController extends Controller
             'product_craft' => ['sometimes', 'nullable', 'string', 'max:2000'],
         ]);
 
+        $previous = clone $product;
         $product->update($validated);
-        AdminCategoryController::flushStorefrontCache();
+        AdminCategoryController::flushStorefrontCache([$previous]);
 
         if (isset($validated['product_cat']) && count($validated) === 1) {
             $category = Category::getById($validated['product_cat']);
@@ -93,8 +94,9 @@ class AdminProductController extends Controller
     public function destroy(Product $product): RedirectResponse
     {
         $title = $product->product_title;
+        $stale = clone $product;
         $product->delete();
-        AdminCategoryController::flushStorefrontCache();
+        AdminCategoryController::flushStorefrontCache([$stale]);
 
         return back()->with('success', "Produk {$title} berhasil dihapus.");
     }

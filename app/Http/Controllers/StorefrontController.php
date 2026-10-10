@@ -22,7 +22,7 @@ class StorefrontController extends Controller
     {
         // server-cache-lru: katalog jarang berubah, cache lintas-request 5 menit.
         // server-serialization: select kolom yang dipakai view saja.
-        // Cache di-flush oleh AdminCategoryController setiap mutasi kategori.
+        // Key katalog dihapus oleh AdminCategoryController setelah mutasi kategori/produk.
         $products = Cache::remember('storefront:products:v1', 300, fn () => Product::with(['category:cat_id,cat_title'])
             ->select(['product_id', 'product_cat', 'product_brand', 'product_title', 'product_slug', 'product_price', 'product_image', 'product_badge', 'product_color', 'product_alt', 'product_description', 'product_material', 'product_composition', 'product_origin', 'product_care', 'product_craft'])
             ->orderBy('product_id')

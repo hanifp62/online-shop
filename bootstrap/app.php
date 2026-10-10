@@ -18,7 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-        $middleware->trustProxies(at: '*');
+        // Proxy tepercaya dibaca lewat config/trustedproxy.php (env TRUSTED_PROXIES),
+        // bukan '*', agar header X-Forwarded-* tidak bisa dipalsukan klien langsung.
 
         $middleware->redirectGuestsTo(fn ($request) => $request->is('admin*')
             ? route('admin.login')

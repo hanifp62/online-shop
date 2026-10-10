@@ -1,6 +1,5 @@
-const CACHE_NAME = 'zafira-cache-v1';
+const CACHE_NAME = 'zafira-cache-v2';
 const CORE_ASSETS = [
-    '/',
     '/favicon.svg',
     '/manifest.webmanifest',
     '/robots.txt',
@@ -16,7 +15,11 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((keys) =>
-            Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))
+            Promise.all(
+                keys
+                    .filter((key) => key.startsWith('zafira-cache-') && key !== CACHE_NAME)
+                    .map((key) => caches.delete(key))
+            )
         )
     );
     self.clients.claim();
@@ -28,13 +31,30 @@ self.addEventListener('fetch', (event) => {
 
     if (request.method !== 'GET' || url.origin !== location.origin) return;
 
-    if (url.pathname.startsWith('/build/') || url.pathname === '/') {
+    // Navigasi HTML: selalu network-first agar tidak menyajikan state terotentikasi,
+    // CSRF token kadaluarsa, atau keranjang lama dari cache.
+    if (request.mode === 'navigate' || request.destination === 'document') {
+        event.respondWith(
+            fetch(request).catch(
+                () => new Response('Koneksi terputus. Silakan coba kembali saat terhubung ke jaringan.', {
+                    status: 503,
+                    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+                })
+            )
+        );
+        return;
+    }
+
+    // Aset build hasil kompilasi Vite (immutable / ber-hash)
+    if (url.pathname.startsWith('/build/')) {
         event.respondWith(
             caches.match(request).then((cached) => {
                 if (cached) return cached;
                 return fetch(request).then((response) => {
-                    const copy = response.clone();
-                    caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+                    if (response && response.status === 200) {
+                        const copy = response.clone();
+                        caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+                    }
                     return response;
                 });
             })
