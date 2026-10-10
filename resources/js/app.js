@@ -178,8 +178,16 @@ if (storefront) {
         syncOverlay();
         const preferredFocus = element === searchPanel
             ? select('[data-search-input]', element)
-            : select('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])', element);
-        preferredFocus?.focus();
+            : select('button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])', element);
+        // Retry while opening transitions keep the target unfocusable.
+        const focusInside = (attempt = 0) => {
+            if (!element.classList.contains('open') || !preferredFocus || element.contains(document.activeElement)) return;
+            preferredFocus.focus();
+            if (document.activeElement !== preferredFocus && attempt < 10) {
+                setTimeout(() => focusInside(attempt + 1), 50);
+            }
+        };
+        setTimeout(focusInside, 50);
     }
 
     function closeElement(element, restoreFocus = true) {
@@ -788,7 +796,7 @@ if (storefront) {
             const activeLayer = [shortcutsModal, sizeGuideDrawer, conciergeModal, quickViewModal, searchPanel, cartDrawer, profileDrawer, mobileMenu]
                 .find((element) => element?.classList.contains('open'));
             if (!activeLayer) return;
-            const focusable = selectAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])', activeLayer)
+            const focusable = selectAll('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])', activeLayer)
                 .filter((element) => element.offsetParent !== null);
             if (!focusable.length) return;
             const first = focusable[0];

@@ -213,7 +213,7 @@ const INITIAL_CONCIERGE = [
     serial: 'ZFR-2026-0101',
     totalPrice: 14900000,
     date: '2026-10-15 14:00',
-    notes: '[Pesanan Adibusana]\n• Kebaya Lumière (1x) FR 38 · Monogram: AT\n• Kemasan Kado: Kotak Safir & Pita Emas\nTotal: Rp14.900.000\n\nCatatan: Fitting privat di Salon Kebayoran Baru.'
+    notes: '[Pesanan Adibusana]\n- Kebaya Lumière (1x) FR 38 · Monogram: AT\n- Kemasan Kado: Kotak Safir & Pita Emas\nTotal: Rp14.900.000\n\nCatatan: Fitting privat di Salon Kebayoran Baru.'
   },
   {
     id: 102,
@@ -226,7 +226,7 @@ const INITIAL_CONCIERGE = [
     serial: 'ZFR-2026-0102',
     totalPrice: 33500000,
     date: '2026-10-16 16:30',
-    notes: '[Pesanan Adibusana]\n• Manteau Firenze (1x) FR 50\n• Chemise Rivière (2x) FR 40\nTotal: Rp33.500.000'
+    notes: '[Pesanan Adibusana]\n- Manteau Firenze (1x) FR 50\n- Chemise Rivière (2x) FR 40\nTotal: Rp33.500.000'
   },
   {
     id: 103,
@@ -283,7 +283,7 @@ class PrototypeStore {
     this.activeStudioProduct = this.products[0];
     this.selectedStudioSize = 'FR 38';
     this.selectedStudioTab = 'story';
-    
+
     // Packaging Simulator State
     this.packagingState = {
       ribbon: 'gold', // 'gold' | 'sapphire'
@@ -314,8 +314,60 @@ class PrototypeStore {
     } catch (e) {}
   }
 
+  getProductLocalized(p, lang) {
+    if (!p) return null;
+    if (!lang) lang = window.Zafira ? window.Zafira.getLanguage() : 'id';
+    const multiDict = window.Zafira && window.Zafira.MULTI_PRODUCTS;
+    const multi = multiDict && (multiDict[p.id] || (p.id === 1 ? multiDict[9] : (p.id === 2 ? multiDict[10] : (p.id === 13 ? multiDict[4] : null))));
+    const rawBadge = (multi && multi[lang] && multi[lang].badge) || p.badge;
+    const localizedBadge = window.Zafira && window.Zafira.getBadgeLocalized ? window.Zafira.getBadgeLocalized(rawBadge, lang) : rawBadge;
+
+    if (multi && multi[lang]) {
+      return {
+        ...p,
+        title: multi[lang].title || p.title,
+        badge: localizedBadge,
+        color: multi[lang].color || p.color,
+        hero_quote: multi[lang].hero_quote || p.hero_quote,
+        desc: multi[lang].desc || p.desc,
+        material: multi[lang].material || p.material,
+        origin: multi[lang].origin || p.origin,
+        craft: multi[lang].craft || p.craft,
+        care: multi[lang].care || p.care,
+        formattedPrice: window.Zafira.formatPrice(p.price, lang)
+      };
+    }
+    return {
+      ...p,
+      badge: localizedBadge,
+      formattedPrice: window.Zafira ? window.Zafira.formatPrice(p.price, lang) : formatRupiah(p.price)
+    };
+  }
+
+  getCategoryTitle(catId, lang) {
+    if (!lang) lang = window.Zafira ? window.Zafira.getLanguage() : 'id';
+    const keyMap = {
+      'all': 'cat_all',
+      8: 'cat_nusantara',
+      9: 'cat_capsule',
+      1: 'cat_women',
+      2: 'cat_men',
+      3: 'cat_bags',
+      4: 'cat_shoes',
+      5: 'cat_scarves'
+    };
+    const key = keyMap[catId];
+    if (key && window.Zafira) {
+      return window.Zafira.t(key, 'Koleksi');
+    }
+    const cat = this.categories.find(c => c.id == catId);
+    return cat ? cat.title : 'Koleksi';
+  }
+
   getFilteredProducts() {
-    return this.products.filter(p => {
+    const curLang = window.Zafira ? window.Zafira.getLanguage() : 'id';
+    return this.products.filter(rawP => {
+      const p = this.getProductLocalized(rawP, curLang);
       const matchesCat = this.currentCategory === 'all' || p.cat_id == this.currentCategory;
       const q = this.searchQuery.toLowerCase();
       const matchesSearch = !q || p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q) || (p.color && p.color.toLowerCase().includes(q));
@@ -374,17 +426,17 @@ class PrototypeStore {
 
   addAuditLog(actor, role, module, action) {
     const now = new Date();
-    const timestamp = now.getFullYear() + '-' + 
-      String(now.getMonth() + 1).padStart(2, '0') + '-' + 
-      String(now.getDate()).padStart(2, '0') + ' ' + 
-      String(now.getHours()).padStart(2, '0') + ':' + 
-      String(now.getMinutes()).padStart(2, '0') + ':' + 
+    const timestamp = now.getFullYear() + '-' +
+      String(now.getMonth() + 1).padStart(2, '0') + '-' +
+      String(now.getDate()).padStart(2, '0') + ' ' +
+      String(now.getHours()).padStart(2, '0') + ':' +
+      String(now.getMinutes()).padStart(2, '0') + ':' +
       String(now.getSeconds()).padStart(2, '0') + ' WIB';
-    
+
     const hexChars = '0123456789abcdef';
     let hash = '';
     for (let i = 0; i < 64; i++) hash += hexChars[Math.floor(Math.random() * 16)];
-    
+
     const entry = { timestamp, actor, role, module, action, hash };
     this.auditLogs.unshift(entry);
     if (this.auditLogs.length > 40) this.auditLogs.pop();
@@ -530,6 +582,12 @@ function toggleAudioFeedback() {
     label.textContent = store.soundEnabled ? 'Acoustics: On' : 'Acoustics: Mute';
     btn.classList.toggle('muted', !store.soundEnabled);
   }
+  const profBtn = document.getElementById('profile-sound-btn');
+  const profLabel = document.getElementById('profile-sound-label');
+  if (profBtn && profLabel) {
+    profLabel.textContent = store.soundEnabled ? (window.Zafira ? window.Zafira.t('sound_on', 'Aktif') : 'Aktif') : (window.Zafira ? window.Zafira.t('sound_mute', 'Senyap') : 'Senyap');
+    profBtn.classList.toggle('muted', !store.soundEnabled);
+  }
   if (store.soundEnabled) playAtelierSound('chime');
   showToast(store.soundEnabled ? 'Acoustics Atelier diaktifkan' : 'Acoustics Atelier dinonaktifkan');
 }
@@ -540,8 +598,10 @@ function showToast(message, type = 'info', actionText = null, actionCallback = n
   const toast = document.createElement('div');
   toast.className = 'toast-item';
   toast.innerHTML = `
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dfcaa0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
-      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dfcaa0" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+      <circle cx="12" cy="12" r="9"></circle>
+      <path d="M12 7v5"></path>
+      <circle cx="12" cy="16" r="0.75" fill="#dfcaa0"></circle>
     </svg>
     <span style="flex-grow:1;">${message}</span>
     ${actionText ? `<button class="toast-action-btn" type="button">${actionText}</button>` : ''}
@@ -599,7 +659,7 @@ function renderCatalog() {
   const searchFeedbackHtml = store.searchQuery ? `
     <div class="catalog-search-feedback-bar">
       <span>Menampilkan <strong>${filtered.length}</strong> kreasi untuk pencarian: “<em>${escapeHtml(store.searchQuery)}</em>”</span>
-      <button class="proto-btn" style="background:transparent; color:var(--muted); border:1px solid var(--line); padding:4px 10px; font-size:11px;" onclick="resetSearchAndFilter()">× Bersihkan Pencarian</button>
+      <button class="proto-btn" style="background:transparent; color:var(--muted); border:1px solid var(--line); padding:4px 10px; font-size:11px;" onclick="resetSearchAndFilter()">Bersihkan Pencarian</button>
     </div>
   ` : '';
 
@@ -627,37 +687,37 @@ function renderCatalog() {
     container.innerHTML = `
       ${searchFeedbackHtml}
       <div class="editorial-flow">
-        
-        <!-- Diptych 1: Kebaya Lumiere & Savoir-Faire -->
+
+        <!-- Diptych 1: First Creation & Savoir-Faire -->
         <article class="diptych-row">
           <div class="diptych-media" onclick="openProductStudio(${filtered[0].id})" style="cursor:pointer;">
-            <img src="${filtered[0].images[0]}" alt="${filtered[0].title}">
-            <span class="diptych-caption-tag">${filtered[0].badge || 'Warisan Adibusana'} · 60h Broderie</span>
+            <img src="${filtered[0].images[0]}" alt="${store.getProductLocalized(filtered[0]).title}">
+            <span class="diptych-caption-tag">${store.getProductLocalized(filtered[0]).badge || 'Haute Couture'} · 60h Broderie</span>
           </div>
           <div class="diptych-content">
-            <span class="diptych-origin">Atelier Paris · Bordir Tangan Kebayoran</span>
-            <h3 class="diptych-title">${filtered[0].title}</h3>
-            <p class="diptych-quote">“${filtered[0].hero_quote || 'Kemurnian kriya adibusana.'}”</p>
+            <span class="diptych-origin">${store.getProductLocalized(filtered[0]).origin || 'Atelier Paris · Bordir Tangan Kebayoran'}</span>
+            <h3 class="diptych-title">${store.getProductLocalized(filtered[0]).title}</h3>
+            <p class="diptych-quote">“${store.getProductLocalized(filtered[0]).hero_quote || 'Kemurnian kriya adibusana.'}”</p>
             <p style="font-size:13.5px; color:var(--muted); line-height:1.8; margin-bottom:20px;">
-              ${filtered[0].desc}
+              ${store.getProductLocalized(filtered[0]).desc}
             </p>
             <div class="diptych-metrics">
               <div class="metric-col">
                 <strong>60+ Jam</strong>
-                <span>Bordir Tangan</span>
+                <span>${window.Zafira ? window.Zafira.t('studio_tab_craft', 'Savoir-Faire') : 'Bordir Tangan'}</span>
               </div>
               <div class="metric-col">
                 <strong>22 Momme</strong>
-                <span>Sutra Organza Lyon</span>
+                <span>${window.Zafira ? window.Zafira.t('studio_tab_material', 'Material') : 'Sutra Organza Lyon'}</span>
               </div>
               <div class="metric-col">
-                <strong>${formatRupiah(filtered[0].price)}</strong>
-                <span>Nilai Kreasi</span>
+                <strong>${store.getProductLocalized(filtered[0]).formattedPrice}</strong>
+                <span>${window.Zafira ? window.Zafira.t('cart_total_label', 'Nilai Kreasi') : 'Nilai Kreasi'}</span>
               </div>
             </div>
             <div style="display:flex; gap:12px; align-items:center;">
-              <button class="btn-gold" onclick="openProductStudio(${filtered[0].id})">Buka Studio Kriya ⟶</button>
-              <button class="btn-outline" onclick="quickAddToCart(${filtered[0].id})">+ Tas Belanja</button>
+              <button class="btn-gold" onclick="openProductStudio(${filtered[0].id})">${window.Zafira ? window.Zafira.t('hero_cta_studio', 'Buka Studio Kriya') : 'Buka Studio Kriya'}</button>
+              <button class="btn-outline" onclick="quickAddToCart(${filtered[0].id})">${window.Zafira ? window.Zafira.t('card_add', 'Tambah ke Tas') : 'Tambah ke Tas'}</button>
             </div>
           </div>
         </article>
@@ -666,34 +726,34 @@ function renderCatalog() {
         ${filtered[1] ? `
         <article class="diptych-row reverse">
           <div class="diptych-content">
-            <span class="diptych-origin">Batik Tulis Laweyan · Kerah Neapolitan</span>
-            <h3 class="diptych-title">${filtered[1].title}</h3>
-            <p class="diptych-quote">“${filtered[1].hero_quote || 'Kemegahan busana kriya.'}”</p>
+            <span class="diptych-origin">${store.getProductLocalized(filtered[1]).origin || 'Batik Tulis Laweyan · Kerah Neapolitan'}</span>
+            <h3 class="diptych-title">${store.getProductLocalized(filtered[1]).title}</h3>
+            <p class="diptych-quote">“${store.getProductLocalized(filtered[1]).hero_quote || 'Kemegahan busana kriya.'}”</p>
             <p style="font-size:13.5px; color:var(--muted); line-height:1.8; margin-bottom:20px;">
-              ${filtered[1].desc}
+              ${store.getProductLocalized(filtered[1]).desc}
             </p>
             <div class="diptych-metrics">
               <div class="metric-col">
                 <strong>3 Minggu</strong>
-                <span>Goresan Canting</span>
+                <span>${window.Zafira ? window.Zafira.t('studio_tab_craft', 'Savoir-Faire') : 'Goresan Canting'}</span>
               </div>
               <div class="metric-col">
                 <strong>9 Kali</strong>
-                <span>Celupan Indigo Alam</span>
+                <span>${window.Zafira ? window.Zafira.t('studio_tab_material', 'Material') : 'Celupan Indigo'}</span>
               </div>
               <div class="metric-col">
-                <strong>${formatRupiah(filtered[1].price)}</strong>
-                <span>Nilai Kreasi</span>
+                <strong>${store.getProductLocalized(filtered[1]).formattedPrice}</strong>
+                <span>${window.Zafira ? window.Zafira.t('cart_total_label', 'Nilai Kreasi') : 'Nilai Kreasi'}</span>
               </div>
             </div>
             <div style="display:flex; gap:12px; align-items:center;">
-              <button class="btn-gold" onclick="openProductStudio(${filtered[1].id})">Buka Studio Kriya ⟶</button>
-              <button class="btn-outline" onclick="quickAddToCart(${filtered[1].id})">+ Tas Belanja</button>
+              <button class="btn-gold" onclick="openProductStudio(${filtered[1].id})">${window.Zafira ? window.Zafira.t('hero_cta_studio', 'Buka Studio Kriya') : 'Buka Studio Kriya'}</button>
+              <button class="btn-outline" onclick="quickAddToCart(${filtered[1].id})">${window.Zafira ? window.Zafira.t('card_add', 'Tambah ke Tas') : 'Tambah ke Tas'}</button>
             </div>
           </div>
           <div class="diptych-media" onclick="openProductStudio(${filtered[1].id})" style="cursor:pointer;">
-            <img src="${filtered[1].images[0]}" alt="${filtered[1].title}">
-            <span class="diptych-caption-tag">${filtered[1].badge || 'Pewarna Alami'} · Canting Solo</span>
+            <img src="${filtered[1].images[0]}" alt="${store.getProductLocalized(filtered[1]).title}">
+            <span class="diptych-caption-tag">${store.getProductLocalized(filtered[1]).badge || 'Pewarna Alami'} · Canting Solo</span>
           </div>
         </article>
         ` : ''}
@@ -750,16 +810,20 @@ function renderCatalog() {
   }
 }
 
-function renderProductCardHtml(p) {
-  const cat = store.categories.find(c => c.id == p.cat_id)?.title || 'Koleksi';
+function renderProductCardHtml(rawP) {
+  const p = store.getProductLocalized(rawP);
+  const cat = store.getCategoryTitle(p.cat_id);
+  const studioLabel = window.Zafira ? window.Zafira.t('card_studio_link', 'Studio Z') : 'Studio Z';
+  const addLabel = window.Zafira ? window.Zafira.t('card_add', 'Ke Tas') : 'Ke Tas';
+
   return `
     <article class="product-card" data-id="${p.id}">
       <div class="product-media" onclick="openProductStudio(${p.id})" style="cursor:pointer;">
         <img src="${p.images[0]}" alt="${p.title}">
         ${p.badge ? `<span class="badge-creations">${p.badge}</span>` : ''}
         <div class="product-overlay-actions" onclick="event.stopPropagation()">
-          <button class="btn-quick" onclick="openProductStudio(${p.id})">Studio Kriya</button>
-          <button class="btn-quick" style="background:var(--sapphire-midnight); color:#fff; border-color:var(--sapphire-midnight);" onclick="quickAddToCart(${p.id})">+ Ke Tas</button>
+          <button class="btn-quick" onclick="openProductStudio(${p.id})">${studioLabel}</button>
+          <button class="btn-quick" style="background:var(--sapphire-midnight); color:#fff; border-color:var(--sapphire-midnight);" onclick="quickAddToCart(${p.id})">+ ${addLabel}</button>
         </div>
       </div>
       <div class="product-info">
@@ -767,7 +831,7 @@ function renderProductCardHtml(p) {
         <h4 class="product-title" onclick="openProductStudio(${p.id})" style="cursor:pointer;">${p.title}</h4>
         <p class="product-desc-snippet">${p.desc.substring(0, 80)}...</p>
         <div class="product-meta">
-          <span class="product-price">${formatRupiah(p.price)}</span>
+          <span class="product-price">${p.formattedPrice}</span>
           ${p.color_hex ? `<span class="color-dot" style="background:${p.color_hex}" title="${p.color}"></span>` : ''}
         </div>
       </div>
@@ -780,37 +844,45 @@ function renderProductCardHtml(p) {
 // ==========================================================================
 
 function openProductStudio(productId) {
-  const p = store.products.find(prod => prod.id === productId);
-  if (!p) return;
-  store.activeStudioProduct = p;
-  store.selectedStudioSize = Object.keys(p.measurements || {})[0] || 'FR 38';
+  const baseP = store.products.find(prod => prod.id === productId);
+  if (!baseP) return;
+  store.activeStudioProduct = baseP;
+  const p = store.getProductLocalized(baseP);
+  store.selectedStudioSize = Object.keys(baseP.measurements || {})[0] || 'FR 38';
   store.selectedStudioTab = 'story';
 
   // Render Studio DOM
   const studioView = document.getElementById('product-studio-view');
   if (!studioView) return;
 
-  const cat = store.categories.find(c => c.id == p.cat_id)?.title || 'Koleksi Adibusana';
+  const cat = store.getCategoryTitle(p.cat_id);
   const sizeKeys = Object.keys(p.measurements || { 'FR 36': '', 'FR 38': '', 'FR 40': '', 'FR 42': '' });
 
   studioView.innerHTML = `
     <!-- Top Back Navigation -->
     <div class="studio-top-nav">
-      <button class="proto-btn" style="background:transparent; color:var(--ink); border:1px solid var(--line);" onclick="switchView('storefront')">
-        ← Kembali ke Penjelajahan Maison
+      <button class="proto-btn" style="background:transparent; color:var(--ink); border:1px solid var(--line); display:inline-flex; align-items:center; gap:6px;" onclick="switchView('storefront')">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span data-i18n="studio_back_btn">${window.Zafira ? window.Zafira.t('studio_back_btn', 'Kembali ke Penjelajahan') : 'Kembali ke Penjelajahan'}</span>
       </button>
       <div style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--taupe); font-weight:700;">
         ${cat} · Création No. ${p.id}
       </div>
-      <button class="action-btn" onclick="openCartDrawer()">
-        <span>Tas Belanja</span>
-        <span class="badge-count cart-count-badge">${store.cart.reduce((s, i) => s + i.qty, 0)}</span>
-      </button>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button class="action-btn" onclick="openProfileDrawer()" title="Profil &amp; Pilihan Salon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span data-i18n="nav_profile">${window.Zafira ? window.Zafira.t('nav_profile', 'Profil') : 'Profil'}</span>
+        </button>
+        <button class="action-btn" onclick="openCartDrawer()">
+          <span data-i18n="studio_cart_btn">${window.Zafira ? window.Zafira.t('studio_cart_btn', 'Tas Belanja') : 'Tas Belanja'}</span>
+          <span class="badge-count cart-count-badge">${store.cart.reduce((s, i) => s + i.qty, 0)}</span>
+        </button>
+      </div>
     </div>
 
     <!-- Split Screen Studio -->
     <div class="studio-layout">
-      
+
       <!-- Left: High-Resolution Vertical Image Gallery -->
       <div class="studio-gallery-pane">
         ${p.images.map((imgUrl, i) => `
@@ -833,14 +905,14 @@ function openProductStudio(productId) {
 
         <span class="studio-category-label">${cat}</span>
         <h1 class="studio-product-title">${p.title}</h1>
-        <div class="studio-price">${formatRupiah(p.price)}</div>
+        <div class="studio-price">${p.formattedPrice}</div>
 
         <!-- 4-Tab Craftsmanship Navigation -->
         <div class="qv-tabs" role="tablist">
-          <button class="qv-tab-btn ${store.selectedStudioTab === 'story' ? 'active' : ''}" onclick="switchStudioTab('story')">Siluet</button>
-          <button class="qv-tab-btn ${store.selectedStudioTab === 'material' ? 'active' : ''}" onclick="switchStudioTab('material')">Material</button>
-          <button class="qv-tab-btn ${store.selectedStudioTab === 'craft' ? 'active' : ''}" onclick="switchStudioTab('craft')">Savoir-Faire</button>
-          <button class="qv-tab-btn ${store.selectedStudioTab === 'care' ? 'active' : ''}" onclick="switchStudioTab('care')">Perawatan</button>
+          <button class="qv-tab-btn ${store.selectedStudioTab === 'story' ? 'active' : ''}" onclick="switchStudioTab('story')" data-i18n="studio_tab_silhouette">${window.Zafira ? window.Zafira.t('studio_tab_silhouette', 'Siluet') : 'Siluet'}</button>
+          <button class="qv-tab-btn ${store.selectedStudioTab === 'material' ? 'active' : ''}" onclick="switchStudioTab('material')" data-i18n="studio_tab_material">${window.Zafira ? window.Zafira.t('studio_tab_material', 'Material') : 'Material'}</button>
+          <button class="qv-tab-btn ${store.selectedStudioTab === 'craft' ? 'active' : ''}" onclick="switchStudioTab('craft')" data-i18n="studio_tab_savoir_faire">${window.Zafira ? window.Zafira.t('studio_tab_savoir_faire', 'Savoir-Faire') : 'Savoir-Faire'}</button>
+          <button class="qv-tab-btn ${store.selectedStudioTab === 'care' ? 'active' : ''}" onclick="switchStudioTab('care')" data-i18n="studio_tab_care">${window.Zafira ? window.Zafira.t('studio_tab_care', 'Perawatan') : 'Perawatan'}</button>
         </div>
 
         <!-- Tab 1: Siluet & Narasi -->
@@ -854,8 +926,8 @@ function openProductStudio(productId) {
         <!-- Tab 2: Material & Asal Bahan -->
         <div class="qv-tab-pane ${store.selectedStudioTab === 'material' ? 'active' : ''}" id="studio-pane-material">
           <div style="background:var(--ivory); padding:14px; border-radius:var(--radius-xs); border-left:3px solid var(--sapphire-midnight); margin-bottom:8px;">
-            <p><strong>Komposisi:</strong> ${p.material}</p>
-            <p style="margin-top:6px;"><strong>Provenance:</strong> ${p.origin}</p>
+            <p><strong data-i18n="studio_label_composition">${window.Zafira ? window.Zafira.t('studio_label_composition', 'Komposisi:') : 'Komposisi:'}</strong> ${p.material}</p>
+            <p style="margin-top:6px;"><strong data-i18n="studio_label_provenance">${window.Zafira ? window.Zafira.t('studio_label_provenance', 'Provenance:') : 'Provenance:'}</strong> ${p.origin}</p>
           </div>
           <small style="color:var(--muted); font-size:11px;">Tersertifikasi serat alami bebas pewarna sintetis berat.</small>
         </div>
@@ -863,7 +935,7 @@ function openProductStudio(productId) {
         <!-- Tab 3: Savoir-Faire Kriya -->
         <div class="qv-tab-pane ${store.selectedStudioTab === 'craft' ? 'active' : ''}" id="studio-pane-craft">
           <div style="background:var(--ivory); padding:14px; border-radius:var(--radius-xs); border-left:3px solid var(--gold); margin-bottom:8px;">
-            <p><strong>Keahlian Tangan:</strong> ${p.craft}</p>
+            <p><strong data-i18n="studio_label_craft">${window.Zafira ? window.Zafira.t('studio_label_craft', 'Keahlian Tangan:') : 'Keahlian Tangan:'}</strong> ${p.craft}</p>
           </div>
           <small style="color:var(--muted); font-size:11px;">Dikerjakan di bawah supervisi Direktur Kreatif ZAFIRA.</small>
         </div>
@@ -871,15 +943,15 @@ function openProductStudio(productId) {
         <!-- Tab 4: Panduan Perawatan -->
         <div class="qv-tab-pane ${store.selectedStudioTab === 'care' ? 'active' : ''}" id="studio-pane-care">
           <div style="background:var(--ivory); padding:14px; border-radius:var(--radius-xs); border-left:3px solid #64748b; margin-bottom:8px;">
-            <p>${p.care}</p>
+            <p><strong data-i18n="studio_label_care">${window.Zafira ? window.Zafira.t('studio_label_care', 'Perawatan Busana:') : 'Perawatan Busana:'}</strong> ${p.care}</p>
           </div>
         </div>
 
         <!-- Size Selection (Atelier Fit) -->
         <div class="size-selector-wrap">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <label class="form-label">Pilihan Ukuran Atelier</label>
-            <span style="font-size:11px; color:var(--taupe); cursor:pointer; text-decoration:underline;" onclick="alert('Panduan Ukuran: Standard French Couture sizing (FR). Konsultasi ukuran khusus tersedia via Client Advisor.')">Panduan Ukuran</span>
+            <label class="form-label" data-i18n="studio_size_label">${window.Zafira ? window.Zafira.t('studio_size_label', 'PILIHAN UKURAN ATELIER') : 'PILIHAN UKURAN ATELIER'}</label>
+            <span style="font-size:11px; color:var(--taupe); cursor:pointer; text-decoration:underline;" onclick="alert('Panduan Ukuran: Standard French Couture sizing (FR). Konsultasi ukuran khusus tersedia via Client Advisor.')" data-i18n="studio_size_guide">${window.Zafira ? window.Zafira.t('studio_size_guide', 'Panduan Ukuran') : 'Panduan Ukuran'}</span>
           </div>
           <div class="size-pills">
             ${sizeKeys.map(sizeKey => `
@@ -898,7 +970,7 @@ function openProductStudio(productId) {
           <div class="monogram-stamp-badge" id="studio-monogram-stamp">${store.activeStudioMonogram || 'AT'}</div>
           <div style="flex-grow:1;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-              <label class="form-label" style="margin-bottom:0;">Personalisasi Monogram Emas</label>
+              <label class="form-label" style="margin-bottom:0;" data-i18n="studio_monogram_title">${window.Zafira ? window.Zafira.t('studio_monogram_title', 'Personalisasi Monogram Emas') : 'Personalisasi Monogram Emas'}</label>
               <span id="monogram-char-counter" class="monogram-counter-badge ${(store.activeStudioMonogram || 'AT').length === 3 ? 'full' : ''}">
                 ${(store.activeStudioMonogram || 'AT').length} / 3
               </span>
@@ -906,8 +978,8 @@ function openProductStudio(productId) {
             <input type="text" id="studio-monogram-input" class="form-input" maxlength="3" value="${store.activeStudioMonogram || 'AT'}" placeholder="Misal: AT"
               style="padding:6px 12px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;"
               oninput="this.value = this.value.toUpperCase().replace(/[^A-Z]/g, ''); updateStudioMonogramBadge(this.value)">
-            <small style="font-size:10px; color:var(--taupe); display:block; margin-top:3px;">
-              ✦ Dibordir tangan dengan benang metalik emas 18 karat di atelier.
+            <small style="font-size:10px; color:var(--taupe); display:flex; align-items:center; gap:4px; margin-top:3px;">
+              <span class="indicator-dot gold"></span> <span data-i18n="studio_monogram_desc">${window.Zafira ? window.Zafira.t('studio_monogram_desc', 'Dibordir tangan dengan benang metalik emas 18 karat di atelier.') : 'Dibordir tangan dengan benang metalik emas 18 karat di atelier.'}</span>
             </small>
           </div>
         </div>
@@ -916,25 +988,37 @@ function openProductStudio(productId) {
         <div style="margin-bottom:24px; padding:12px; background:var(--ivory); border-radius:var(--radius-xs); border:1px solid var(--line);">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <div>
-              <strong style="font-size:12px; color:var(--sapphire-midnight);">Kemasan Kado Signature & Wax Seal</strong>
-              <p style="font-size:11px; color:var(--muted);">Kotak kaku safir, pita sutra Lyon, dan stempel segel lilin merah.</p>
+              <strong style="font-size:12px; color:var(--sapphire-midnight);" data-i18n="packaging_title">Kemasan Kado Signature & Wax Seal</strong>
+              <p style="font-size:11px; color:var(--muted);" data-i18n="studio_packaging_desc">${window.Zafira ? window.Zafira.t('studio_packaging_desc', 'Kotak kaku safir, pita sutra Lyon, dan stempel segel lilin merah.') : 'Kotak kaku safir, pita sutra Lyon, dan stempel segel lilin merah.'}</p>
             </div>
             <span style="font-size:10px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:10px;">Complimentary</span>
           </div>
         </div>
 
+        <!-- Provenance & Artisan Verification Card (Loro Piana & Cartier Benchmark) -->
+        <div style="margin-bottom:20px; padding:14px; background:var(--ivory); border-radius:var(--radius-xs); border:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div>
+            <div style="display:flex; align-items:center; gap:6px; margin-bottom:2px;">
+              <span class="indicator-dot gold" style="display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--gold);"></span>
+              <span style="font-size:9.5px; text-transform:uppercase; letter-spacing:0.14em; color:var(--taupe); font-weight:700;">Traçabilité &amp; Kriya Terverifikasi</span>
+            </div>
+            <strong style="font-size:12px; color:var(--sapphire-midnight); display:block;">84 Jam Kriya Tangan · Sertifikat Keaslian Digital</strong>
+            <span style="font-size:11px; color:var(--muted);">Terdaftar dalam Ledger SHA-256 Maison ZAFIRA</span>
+          </div>
+          <button type="button" class="btn-outline" style="padding:6px 12px; font-size:10.5px; display:inline-flex; align-items:center; gap:5px;" onclick="openAuthenticityModal(${p.id})">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+            <span>Verifikasi Keaslian</span>
+          </button>
+        </div>
+
         <!-- Purchase Actions -->
         <div style="display:flex; flex-direction:column; gap:12px;">
-          <button class="btn-gold" style="width:100%; justify-content:center; padding:15px;" onclick="addStudioToCart()">
-            Tambah ke Tas Belanja ⟶
+          <button class="btn-gold" style="width:100%; justify-content:center; padding:15px;" onclick="addStudioToCart()" data-i18n="studio_add_bag_btn">
+            ${window.Zafira ? window.Zafira.t('studio_add_bag_btn', 'Tambah ke Tas Belanja') : 'Tambah ke Tas Belanja'}
           </button>
-          <button class="btn-outline" style="width:100%; justify-content:center; padding:13px;" onclick="openRendezvousModal()">
-            Jadwalkan Fitting Privat di Atelier
+          <button class="btn-outline" style="width:100%; justify-content:center; padding:13px;" onclick="openRendezvousModal()" data-i18n="studio_book_fitting_btn">
+            ${window.Zafira ? window.Zafira.t('studio_book_fitting_btn', 'Jadwalkan Fitting Privat di Atelier') : 'Jadwalkan Fitting Privat di Atelier'}
           </button>
-          <a href="https://wa.me/628118899771?text=Halo%20Client%20Advisor%20ZAFIRA,%20saya%20ingin%20berkonsultasi%20mengenai%20kreasi%20${encodeURIComponent(p.title)}" target="_blank" rel="noopener" class="proto-btn" style="background:#f8fafc; border:1px solid #cbd5e1; color:#0f1c33; display:flex; align-items:center; justify-content:center; gap:8px; padding:11px; text-decoration:none; font-size:12px; font-weight:600; border-radius:var(--radius-xs);">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-            <span>Konsultasi Cepat via WhatsApp Concierge</span>
-          </a>
         </div>
 
       </div>
@@ -972,7 +1056,7 @@ function updateStudioMonogramBadge(val) {
   const badge = document.getElementById('studio-monogram-stamp');
   const counter = document.getElementById('monogram-char-counter');
   if (badge) {
-    badge.textContent = val.trim() ? val.toUpperCase() : '✦';
+    badge.textContent = val.trim() ? val.toUpperCase() : 'Z';
     badge.classList.add('pulsing');
     clearTimeout(badge._pulseTimer);
     badge._pulseTimer = setTimeout(() => badge.classList.remove('pulsing'), 900);
@@ -990,7 +1074,10 @@ function addStudioToCart() {
   renderCartDrawer();
   openCartDrawer();
   playAtelierSound('chime');
-  showToast(`Kreasi "${store.activeStudioProduct.title}" (${store.selectedStudioSize}) berhasil ditambahkan ke Tas.`);
+  const locProd = store.getProductLocalized(store.activeStudioProduct);
+  const tpl = window.Zafira ? window.Zafira.t('toast_cart_added_title', 'Kreasi "{title}" ({size}) berhasil ditambahkan ke Tas.') : 'Kreasi "{title}" ({size}) berhasil ditambahkan ke Tas.';
+  const msg = tpl.replace('{title}', locProd ? locProd.title : 'Kreasi').replace('{size}', store.selectedStudioSize);
+  showToast(msg);
 }
 
 function quickAddToCart(productId) {
@@ -999,7 +1086,10 @@ function quickAddToCart(productId) {
   openCartDrawer();
   playAtelierSound('chime');
   const p = store.products.find(prod => prod.id === productId);
-  showToast(`"${p?.title}" telah ditambahkan ke tas belanja.`);
+  const locProd = store.getProductLocalized(p);
+  const tpl = window.Zafira ? window.Zafira.t('toast_cart_added_title', 'Kreasi "{title}" ({size}) berhasil ditambahkan ke Tas.') : 'Kreasi "{title}" ({size}) berhasil ditambahkan ke Tas.';
+  const msg = tpl.replace('{title}', locProd ? locProd.title : (p?.title || 'Kreasi')).replace('{size}', 'FR 38');
+  showToast(msg);
 }
 
 // ==========================================================================
@@ -1009,6 +1099,7 @@ function quickAddToCart(productId) {
 function openCartDrawer() {
   document.getElementById('cart-drawer')?.classList.add('open');
   document.getElementById('drawer-backdrop')?.classList.add('open');
+  playAtelierSound('swoosh');
 }
 
 function closeCartDrawer() {
@@ -1016,10 +1107,35 @@ function closeCartDrawer() {
   document.getElementById('drawer-backdrop')?.classList.remove('open');
 }
 
+function openProfileDrawer() {
+  closeAllModals();
+  document.getElementById('profile-drawer')?.classList.add('open');
+  document.getElementById('drawer-backdrop')?.classList.add('open');
+  playAtelierSound('swoosh');
+}
+
+function closeProfileDrawer() {
+  document.getElementById('profile-drawer')?.classList.remove('open');
+  document.getElementById('drawer-backdrop')?.classList.remove('open');
+}
+
+function openMobileNavDrawer() {
+  closeAllModals();
+  document.getElementById('mobile-nav-drawer')?.classList.add('open');
+  document.getElementById('drawer-backdrop')?.classList.add('open');
+  playAtelierSound('swoosh');
+}
+
+function closeMobileNavDrawer() {
+  document.getElementById('mobile-nav-drawer')?.classList.remove('open');
+  document.getElementById('drawer-backdrop')?.classList.remove('open');
+}
+
 function renderCartDrawer() {
   const container = document.getElementById('cart-items-container');
   const subtotalEl = document.getElementById('cart-subtotal');
   const badgeCounts = document.querySelectorAll('.cart-count-badge');
+  const lang = (window.Zafira && window.Zafira.getLang) ? window.Zafira.getLang() : (localStorage.getItem('zafira-lang') || 'id');
 
   const totalCount = store.cart.reduce((sum, item) => sum + item.qty, 0);
   badgeCounts.forEach(el => el.textContent = totalCount);
@@ -1027,39 +1143,48 @@ function renderCartDrawer() {
   if (!container) return;
 
   if (store.cart.length === 0) {
-    container.innerHTML = '<div style="text-align:center; padding:60px 20px; color:var(--muted);">Tas belanja Maison Anda saat ini kosong.</div>';
-    if (subtotalEl) subtotalEl.textContent = 'Rp0';
+    const emptyMsg = window.Zafira ? window.Zafira.t('cart_empty_title', 'Tas belanja Maison Anda saat ini kosong.') : 'Tas belanja Maison Anda saat ini kosong.';
+    container.innerHTML = `<div style="text-align:center; padding:60px 20px; color:var(--muted);">${emptyMsg}</div>`;
+    if (subtotalEl) subtotalEl.textContent = window.Zafira ? window.Zafira.formatPrice(0, store.currency) : 'Rp0';
     return;
   }
 
+  const removeLabel = window.Zafira ? window.Zafira.t('cart_remove', 'Hapus') : 'Hapus';
+  const sizeLabel = window.Zafira ? window.Zafira.t('cart_size', 'Taille:') : 'Taille:';
+  const monogramLabel = window.Zafira ? window.Zafira.t('cart_monogram', 'Monogram:') : 'Monogram:';
+
   container.innerHTML = store.cart.map((item, idx) => {
-    const p = store.products.find(prod => prod.id === item.productId);
-    if (!p) return '';
+    const rawProd = store.products.find(prod => prod.id === item.productId);
+    if (!rawProd) return '';
+    const p = store.getProductLocalized(rawProd, lang);
+    const itemPriceFormatted = window.Zafira ? window.Zafira.formatPrice(p.price, store.currency) : formatRupiah(p.price);
     return `
       <div class="cart-item">
         <img src="${p.images[0]}" alt="${p.title}">
         <div class="cart-item-detail">
           <h4 class="cart-item-title">${p.title}</h4>
-          <div class="cart-item-price">${formatRupiah(p.price)}</div>
+          <div class="cart-item-price">${itemPriceFormatted}</div>
           <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;">
-            ${item.size ? `<span style="font-size:10px; background:#f1f5f9; color:var(--sapphire-midnight); font-weight:700; padding:2px 7px; border-radius:2px; border:1px solid #e2e8f0;">Taille: ${item.size}</span>` : ''}
-            ${item.monogram ? `<span style="font-size:10px; background:rgba(184,152,88,0.15); color:#876831; font-weight:700; padding:2px 7px; border-radius:2px; border:1px solid var(--gold);">✦ Monogram: ${item.monogram}</span>` : ''}
-            <span style="font-size:10px; background:#f8fafc; color:#15803d; font-weight:600; padding:2px 7px; border-radius:2px;">Signature Box & Seal</span>
+            ${item.size ? `<span style="font-size:10px; background:#f1f5f9; color:var(--sapphire-midnight); font-weight:700; padding:2px 7px; border-radius:2px; border:1px solid #e2e8f0;">${sizeLabel} ${item.size}</span>` : ''}
+            ${item.monogram ? `<span style="font-size:10px; background:rgba(184,152,88,0.15); color:#876831; font-weight:700; padding:2px 7px; border-radius:2px; border:1px solid var(--gold); display:inline-flex; align-items:center; gap:4px;"><span class="indicator-dot gold" style="margin-right:2px;"></span> ${monogramLabel} ${item.monogram}</span>` : ''}
+            <span style="font-size:10px; background:#f8fafc; color:#15803d; font-weight:600; padding:2px 7px; border-radius:2px;">Signature Box &amp; Seal</span>
           </div>
           <div class="cart-item-controls">
             <div class="qty-stepper">
-              <button class="qty-btn" onclick="stepCartQty(${idx}, -1)">−</button>
+              <button class="qty-btn" onclick="stepCartQty(${idx}, -1)" aria-label="Kurangi Jumlah"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
               <span class="qty-val">${item.qty}</span>
-              <button class="qty-btn" onclick="stepCartQty(${idx}, 1)">+</button>
+              <button class="qty-btn" onclick="stepCartQty(${idx}, 1)" aria-label="Tambah Jumlah"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
             </div>
-            <button class="btn-remove" onclick="removeCartItem(${idx})">Hapus</button>
+            <button class="btn-remove" onclick="removeCartItem(${idx})">${removeLabel}</button>
           </div>
         </div>
       </div>
     `;
   }).join('');
 
-  if (subtotalEl) subtotalEl.textContent = formatRupiah(store.getCartTotal());
+  if (subtotalEl) {
+    subtotalEl.textContent = window.Zafira ? window.Zafira.formatPrice(store.getCartTotal(), store.currency) : formatRupiah(store.getCartTotal());
+  }
 }
 
 function stepCartQty(index, delta) {
@@ -1071,18 +1196,23 @@ function removeCartItem(index) {
   const itemToRestore = store.cart[index];
   if (!itemToRestore) return;
   const product = store.products.find(p => p.id === itemToRestore.productId);
-  const title = product?.title || 'Kreasi';
+  const locProd = store.getProductLocalized(product);
+  const title = locProd?.title || product?.title || 'Kreasi';
 
   store.removeFromCart(index);
   renderCartDrawer();
   playAtelierSound('click');
 
-  showToast(`"${title}" dihapus dari tas belanja.`, 'info', 'Urungkan (Undo)', () => {
+  const removedTpl = window.Zafira ? window.Zafira.t('toast_cart_removed', '"{title}" dihapus dari tas belanja.') : '"{title}" dihapus dari tas belanja.';
+  const undoBtn = window.Zafira ? window.Zafira.t('toast_cart_undo_btn', 'Urungkan (Undo)') : 'Urungkan (Undo)';
+  const restoredTpl = window.Zafira ? window.Zafira.t('toast_cart_restored', 'Kreasi "{title}" dikembalikan ke tas belanja.') : 'Kreasi "{title}" dikembalikan ke tas belanja.';
+
+  showToast(removedTpl.replace('{title}', title), 'info', undoBtn, () => {
     store.cart.splice(index, 0, itemToRestore);
     store.save('zafira_v3_5_cart', store.cart);
     renderCartDrawer();
     playAtelierSound('chime');
-    showToast(`✦ "${title}" berhasil dikembalikan ke tas belanja.`);
+    showToast(restoredTpl.replace('{title}', title));
   });
 }
 
@@ -1095,12 +1225,14 @@ function updatePackagingRibbon(ribbonColor) {
   const ribbonEl = document.getElementById('preview-ribbon-band');
   if (ribbonEl) {
     if (ribbonColor === 'gold') {
-      ribbonEl.style.background = 'linear-gradient(to bottom, #d4ba7d, #b89858)';
+      ribbonEl.style.background = '#b89858';
     } else {
-      ribbonEl.style.background = 'linear-gradient(to bottom, #2a436f, #0f1c33)';
+      ribbonEl.style.background = '#1b2e50';
     }
   }
-  showToast(`Pita kemasan diganti: ${ribbonColor === 'gold' ? 'Or Champagne' : 'Bleu Saphir'}`);
+  const ribbonName = ribbonColor === 'gold' ? 'Or Champagne' : 'Bleu Saphir';
+  const tpl = window.Zafira ? window.Zafira.t('toast_ribbon_updated', 'Pita kemasan diganti: {ribbon}.') : 'Pita kemasan diganti: {ribbon}.';
+  showToast(tpl.replace('{ribbon}', ribbonName));
 }
 
 function stampWaxSeal() {
@@ -1110,7 +1242,8 @@ function stampWaxSeal() {
     void badge.offsetWidth; // trigger reflow
     badge.classList.add('wax-stamped');
     playAtelierSound('stamp');
-    showToast('✦ Segel lilin resmi Maison ZAFIRA telah dibubuhkan (No. Seri #ZF-2026-9041).');
+    const tpl = window.Zafira ? window.Zafira.t('toast_wax_sealed', 'Segel lilin resmi Maison ZAFIRA telah dibubuhkan (No. Seri #{sn}).') : 'Segel lilin resmi Maison ZAFIRA telah dibubuhkan (No. Seri #{sn}).';
+    showToast(tpl.replace('{sn}', 'ZF-2026-9041'));
   }
 }
 
@@ -1138,7 +1271,7 @@ function submitRendezvousBooking(e) {
 
   const cartSummary = store.cart.map(item => {
     const p = store.products.find(prod => prod.id === item.productId);
-    return `• ${p?.title} (${item.qty}x) ${item.size ? `[${item.size}]` : ''} ${item.monogram ? `[Monogram: ${item.monogram}]` : ''}`;
+    return `- ${p?.title} (${item.qty}x) ${item.size ? `[${item.size}]` : ''} ${item.monogram ? `[Monogram: ${item.monogram}]` : ''}`;
   }).join('\n');
 
   store.addConciergeOrder({
@@ -1157,7 +1290,8 @@ function submitRendezvousBooking(e) {
   renderMsiEisCockpit();
   renderAuditTrail();
   closeAllModals();
-  showToast('✦ Janji temu privat berhasil didaftarkan di Atelier Kebayoran Baru.');
+  const apptTpl = window.Zafira ? window.Zafira.t('toast_rendezvous_registered', 'Simulasi: permohonan janji temu dicatat lokal saja; tidak tersimpan di server.') : 'Simulasi: permohonan janji temu dicatat lokal saja; tidak tersimpan di server.';
+  showToast(apptTpl);
 }
 
 // ==========================================================================
@@ -1169,10 +1303,10 @@ function renderKanbanBoard() {
   if (!board) return;
 
   const cols = [
-    { key: 'new', title: 'Baru (New)', color: '#0369a1' },
-    { key: 'contacted', title: 'Dihubungi (Contacted)', color: '#b45309' },
-    { key: 'confirmed', title: 'Terkonfirmasi (Confirmed)', color: '#15803d' },
-    { key: 'completed', title: 'Selesai (Completed)', color: '#7e22ce' }
+    { key: 'new', title: window.Zafira ? window.Zafira.t('msi_col_new', 'Baru (New)') : 'Baru (New)', color: '#0369a1' },
+    { key: 'contacted', title: window.Zafira ? window.Zafira.t('msi_col_contacted', 'Dihubungi (Contacted)') : 'Dihubungi (Contacted)', color: '#b45309' },
+    { key: 'confirmed', title: window.Zafira ? window.Zafira.t('msi_col_confirmed', 'Terkonfirmasi (Confirmed)') : 'Terkonfirmasi (Confirmed)', color: '#15803d' },
+    { key: 'completed', title: window.Zafira ? window.Zafira.t('msi_col_completed', 'Selesai (Completed)') : 'Selesai (Completed)', color: '#7e22ce' }
   ];
 
   board.innerHTML = cols.map(col => {
@@ -1195,7 +1329,7 @@ function renderKanbanBoard() {
                 <small style="color:var(--taupe);">${item.date}</small>
               </div>
               <div class="kanban-card-notes">${item.notes}</div>
-              
+
               <!-- MSI Atelier Controls: Artisan & Authenticity Certificate & Work Order -->
               <div style="margin-top:10px; padding-top:8px; border-top:1px solid #f1f5f9; display:flex; flex-direction:column; gap:6px;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -1209,8 +1343,8 @@ function renderKanbanBoard() {
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
                   <div style="display:flex; gap:4px;">
-                    <button class="btn-outline" style="padding:3px 6px; font-size:10px;" onclick="openAuthenticityModal(${item.id})">📜 Sertifikat</button>
-                    <button class="btn-outline" style="padding:3px 6px; font-size:10px;" onclick="openWorkOrderModal(${item.id})">📋 Work Order</button>
+                    <button class="btn-outline" style="padding:3px 6px; font-size:10px; display:inline-flex; align-items:center; gap:3px;" onclick="openAuthenticityModal(${item.id})"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> Sertifikat</button>
+                    <button class="btn-outline" style="padding:3px 6px; font-size:10px; display:inline-flex; align-items:center; gap:3px;" onclick="openWorkOrderModal(${item.id})"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line></svg> Work Order</button>
                   </div>
                   <select class="form-select" style="width:auto; padding:2px 6px; font-size:11px;" onchange="adminUpdateOrderStatus(${item.id}, this.value)">
                     <option value="new" ${item.status === 'new' ? 'selected' : ''}>New</option>
@@ -1263,40 +1397,74 @@ function renderAccountPortal() {
   const container = document.getElementById('account-history-list');
   if (!container) return;
 
-  container.innerHTML = store.concierge.map(c => `
-    <div style="background:#fff; border:1px solid var(--line); padding:24px; border-radius:var(--radius-xs); margin-bottom:16px; box-shadow:var(--shadow-sm);">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+  const orderTitle = window.Zafira ? window.Zafira.t('account_orders_title', 'Pesanan Adibusana & Janji Temu') : 'Pesanan Adibusana & Janji Temu';
+  const certBtnText = window.Zafira ? window.Zafira.t('account_cert_btn', 'Lihat Sertifikat Keaslian Digital') : 'Lihat Sertifikat Keaslian Digital';
+  const step1 = window.Zafira ? window.Zafira.t('account_step_1', '1. Konsultasi') : '1. Konsultasi';
+  const step2 = window.Zafira ? window.Zafira.t('account_step_2', '2. Pola Drape') : '2. Pola Drape';
+  const step3 = window.Zafira ? window.Zafira.t('account_step_3', '3. Kriya Tangan') : '3. Kriya Tangan';
+  const step4 = window.Zafira ? window.Zafira.t('account_step_4', '4. Segel Lilin') : '4. Segel Lilin';
+  const step5 = window.Zafira ? window.Zafira.t('account_step_5', '5. Pengiriman') : '5. Pengiriman';
+
+  const serviceLabel = window.Zafira ? window.Zafira.t('account_service_label', 'Layanan:') : 'Layanan:';
+  const scheduleLabel = window.Zafira ? window.Zafira.t('account_schedule_label', 'Jadwal:') : 'Jadwal:';
+  const valueLabel = window.Zafira ? window.Zafira.t('account_value_label', 'Nilai:') : 'Nilai:';
+
+  container.innerHTML = store.concierge.map(c => {
+    const formattedPrice = window.Zafira ? window.Zafira.formatPrice(c.totalPrice || 14900000) : formatRupiah(c.totalPrice || 14900000);
+    const isCompleted = c.status === 'completed';
+    const isConfirmed = c.status === 'confirmed';
+    const isContacted = c.status === 'contacted';
+
+    return `
+    <article class="order-ledger-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
         <div>
-          <span style="font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--taupe); font-weight:700;">Pesanan Adibusana & Janji Temu</span>
-          <h4 style="font-family:var(--serif); font-size:20px; color:var(--sapphire-midnight); margin:2px 0 0;">Commande #${c.id}</h4>
+          <span style="font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--taupe); font-weight:700;">${orderTitle}</span>
+          <h4 style="font-family:var(--serif); font-size:20px; color:var(--sapphire-midnight); margin:2px 0 0;">Commande N° ${c.id}</h4>
         </div>
         <span class="badge-status badge-${c.status}">${c.status}</span>
       </div>
 
-      <!-- Atelier Progress Bar -->
-      <div style="margin:14px 0 16px; padding:12px; background:var(--ivory); border-radius:var(--radius-xs); border:1px solid var(--line);">
-        <div style="display:flex; justify-content:space-between; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); margin-bottom:6px;">
-          <span>1. Konsultasi</span>
-          <span>2. Pola Drape</span>
-          <span>3. Kriya Tangan</span>
-          <span>4. Segel Lilin</span>
-          <span>5. Pengiriman</span>
+      <!-- Haute Couture 5-Stage Stepper -->
+      <div class="stepper-5">
+        <div class="stepper-step completed">
+          <div class="stepper-step-bar"></div>
+          <div class="stepper-step-label">${step1}</div>
         </div>
-        <div style="height:4px; background:#e2e8f0; border-radius:2px; overflow:hidden;">
-          <div style="height:100%; width:${c.status === 'completed' ? '100%' : c.status === 'confirmed' ? '75%' : c.status === 'contacted' ? '40%' : '15%'}; background:var(--gold); transition:width 0.4s ease;"></div>
+        <div class="stepper-step ${isConfirmed || isCompleted ? 'completed' : isContacted ? 'active' : ''}">
+          <div class="stepper-step-bar"></div>
+          <div class="stepper-step-label">${step2}</div>
+        </div>
+        <div class="stepper-step ${isCompleted ? 'completed' : isConfirmed ? 'active' : ''}">
+          <div class="stepper-step-bar"></div>
+          <div class="stepper-step-label">${step3}</div>
+        </div>
+        <div class="stepper-step ${isCompleted ? 'completed' : ''}">
+          <div class="stepper-step-bar"></div>
+          <div class="stepper-step-label">${step4}</div>
+        </div>
+        <div class="stepper-step ${isCompleted ? 'completed' : ''}">
+          <div class="stepper-step-bar"></div>
+          <div class="stepper-step-label">${step5}</div>
         </div>
       </div>
 
-      <p style="font-size:12.5px; color:var(--muted); margin-bottom:12px;">Layanan: <strong>${c.service}</strong> · Jadwal: <strong>${c.date}</strong> · Nilai: <strong>${formatRupiah(c.totalPrice || 14900000)}</strong></p>
-      
-      <div style="font-size:12px; background:#f8fafc; padding:14px 16px; border-radius:var(--radius-xs); border-left:3px solid var(--gold); white-space:pre-wrap; margin-bottom:14px;">${c.notes}</div>
-      
-      <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #f1f5f9; padding-top:12px;">
-        <span style="font-size:11px; color:var(--muted);">Artisan: <strong>${c.artisan || 'Ibu Siti Khodijah'}</strong></span>
-        <button class="btn-outline" style="padding:6px 14px; font-size:11px;" onclick="openAuthenticityModal(${c.id})">📜 Lihat Sertifikat Keaslian Digital</button>
+      <p style="font-size:12.5px; color:var(--muted); margin-bottom:12px;">
+        ${serviceLabel} <strong>${c.service}</strong> · ${scheduleLabel} <strong>${c.date}</strong> · ${valueLabel} <strong style="font-variant-numeric:tabular-nums;">${formattedPrice}</strong>
+      </p>
+
+      <div style="font-size:12px; background:var(--ivory); padding:12px 14px; border-radius:var(--radius-xs); border-left:3px solid var(--gold); white-space:pre-wrap; margin-bottom:14px; line-height:1.5;">${c.notes}</div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--line); padding-top:12px; flex-wrap:wrap; gap:8px;">
+        <span style="font-size:11px; color:var(--muted);">Artisan: <strong>${c.artisan || 'Ibu Siti Khodijah'}</strong> · Atelier Jakarta</span>
+        <div style="display:flex; gap:8px;">
+          <button class="proto-btn" style="padding:6px 12px; font-size:10.5px; background:var(--sapphire-midnight); color:#fff;" onclick="openWorkOrderModal('${c.id}')">Fiche de Travail</button>
+          <button class="btn-outline" style="padding:6px 12px; font-size:10.5px; display:inline-flex; align-items:center; gap:5px;" onclick="openAuthenticityModal(${c.id})"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> ${certBtnText}</button>
+        </div>
       </div>
-    </div>
-  `).join('');
+    </article>
+  `;
+  }).join('');
 }
 
 // ==========================================================================
@@ -1338,7 +1506,7 @@ function switchMsiTab(tabKey) {
 function switchMsiRole(roleKey) {
   store.currentRbacRole = roleKey;
   store.addAuditLog('System Security', roleKey, 'RBAC_SECURITY', `Sesi beralih ke peran: ${roleKey.toUpperCase()}`);
-  showToast(`✦ Mode RBAC Aktif: ${roleKey.toUpperCase()}. Hak akses menu disesuaikan.`);
+  showToast(`Hak akses atelier disesuaikan: ${roleKey.toUpperCase()}.`);
 
   // If on restricted tab, fall back to permissible tab
   if (roleKey === 'artisan' && store.currentMsiTab !== 'tps') {
@@ -1467,7 +1635,7 @@ function openAuthenticityModal(orderId) {
   const serial = item.serial || `ZFR-2026-${orderId.toString().padStart(4, '0')}`;
   const artisan = item.artisan || 'Madame Hélène & Ibu Siti Khodijah';
   const container = document.getElementById('authenticity-modal-content');
-  
+
   if (container) {
     container.innerHTML = `
       <div class="cert-card">
@@ -1572,7 +1740,9 @@ function filterCategory(catId) {
 function closeAllModals() {
   document.querySelectorAll('.modal-window').forEach(m => m.classList.remove('open'));
   document.getElementById('drawer-backdrop')?.classList.remove('open');
-  closeCartDrawer();
+  document.getElementById('cart-drawer')?.classList.remove('open');
+  document.getElementById('profile-drawer')?.classList.remove('open');
+  document.getElementById('mobile-nav-drawer')?.classList.remove('open');
 }
 
 function toggleDockCollapse() {
@@ -1582,7 +1752,9 @@ function toggleDockCollapse() {
   if (dock) {
     dock.classList.toggle('dock-collapsed', store.isDockCollapsed);
     if (btn) {
-      btn.innerHTML = store.isDockCollapsed ? '✦' : '−';
+      btn.innerHTML = store.isDockCollapsed
+        ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'
+        : '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>';
       btn.title = store.isDockCollapsed ? 'Buka Menu Navigasi Prototipe' : 'Kecilkan Menu Prototipe';
     }
   }
@@ -1604,7 +1776,7 @@ function rebalanceWipWorkload() {
       alertBox.style.borderColor = '#86efac';
       alertBox.innerHTML = `
         <div>
-          <strong style="color:#166534; font-size:13px;">✓ DSS: Beban Kerja Stasiun Bordir Berhasil Diseimbangkan (50% WIP)</strong>
+          <strong style="color:#166534; font-size:13px; display:inline-flex; align-items:center; gap:6px;"><span class="indicator-dot" style="background:#166534;"></span> Beban Kerja Stasiun Bordir Berhasil Diseimbangkan (50% WIP)</strong>
           <p style="font-size:11.5px; color:#14532d; margin-top:4px;">Pesanan dialokasikan ke Master Artisan Ibu Siti Khodijah. Estimasi deviasi SLA: 0.0%.</p>
         </div>
         <span style="font-size:11px; font-weight:700; color:#166534; background:#dcfce7; padding:4px 12px; border-radius:12px;">Optimal</span>
@@ -1649,7 +1821,10 @@ function openWorkOrderModal(orderId) {
         <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:14px; margin-bottom:16px;">
           <div style="background:#091528; color:#93c5fd; padding:12px; border-radius:var(--radius-xs); font-family:'JetBrains Mono', monospace; font-size:10px; border:1px solid #1e3a8a;">
             <div style="display:flex; justify-content:space-between; margin-bottom:6px; color:#fde047; font-weight:700;">
-              <span>✦ SCHÉMA DE PATRONAGE (BLUEPRINT)</span>
+              <span style="display:inline-flex; align-items:center; gap:6px;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20"/></svg>
+                SCHÉMA DE PATRONAGE · BLUEPRINT KRIYA
+              </span>
               <span>ÉCHELLE 1:10</span>
             </div>
             <svg width="100%" height="82" viewBox="0 0 240 82" style="background:#050c18; border:1px dashed #3b82f6; border-radius:2px;">
@@ -1661,7 +1836,7 @@ function openWorkOrderModal(orderId) {
               <text x="148" y="47" fill="#93c5fd" font-size="8">Pinggang: 74cm</text>
             </svg>
             <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:9px; color:#cbd5e1;">
-              <span>Toleransi: ±1.5mm</span>
+              <span>Toleransi Presisi: 1.5mm</span>
               <span>Jahitan: French Seam 18 SPI</span>
             </div>
           </div>
@@ -1687,7 +1862,10 @@ function openWorkOrderModal(orderId) {
             <span>Tanda Tangan Pengrajin: ________________________</span>
           </div>
           <div>
-            <button class="btn-gold" style="padding:8px 16px; font-size:11px;" onclick="window.print(); showToast('Mencetak Lembar Kerja Kriya...')">⎙ Cetak Lembar Kriya</button>
+            <button class="btn-gold" style="padding:8px 16px; font-size:11px; display:inline-flex; align-items:center; gap:6px;" onclick="window.print(); showToast('Mencetak Lembar Kerja Kriya...')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+              Cetak Lembar Kerja
+            </button>
           </div>
         </div>
       </div>
@@ -1745,6 +1923,56 @@ document.addEventListener('DOMContentLoaded', () => {
     el.classList.toggle('active', el.dataset.curr === (store.currency || 'IDR'));
   });
 
+  // Live Re-rendering on Language and Theme Changes (HCI Nielsen Heuristic 1 & Cooper)
+  window.addEventListener('zafira:lang-changed', (e) => {
+    const lang = (e.detail && e.detail.lang) || localStorage.getItem('zafira-lang') || 'id';
+
+    // Automatically harmonize default currency with standard international luxury practice
+    if (lang === 'fr' || lang === 'it') {
+      store.currency = 'EUR';
+    } else if (lang === 'en') {
+      store.currency = 'USD';
+    } else {
+      store.currency = 'IDR';
+    }
+    store.save('zafira_currency', store.currency);
+
+    document.querySelectorAll('.curr-opt').forEach(el => {
+      el.classList.toggle('active', el.dataset.curr === store.currency);
+    });
+
+    // Re-render currently active view
+    if (store.currentView === 'storefront') {
+      renderCatalog();
+    } else if (store.currentView === 'studio') {
+      const activeId = store.activeStudioProduct ? store.activeStudioProduct.id : 9;
+      openProductStudio(activeId);
+    } else if (store.currentView === 'admin') {
+      renderKanbanBoard();
+      renderMsiWipAndInventory();
+      renderMsiEisCockpit();
+    } else if (store.currentView === 'account') {
+      renderAccountPortal();
+    }
+    renderCartDrawer();
+  });
+
+  // Handle URL Hash or Query Routing (Bridge between Storefront & Prototype)
+  const hash = window.location.hash;
+  const urlParams = new URLSearchParams(window.location.search);
+  const requestedProductId = urlParams.get('p');
+  if (requestedProductId) {
+    const numericId = Number(requestedProductId);
+    const product = store.products.find((item) => item.slug === requestedProductId || item.id === numericId);
+    if (product) openProductStudio(product.id);
+  } else if (hash === '#msi-view' || hash === '#admin') {
+    switchView('admin');
+  } else if (hash === '#studio-view' || hash === '#studio') {
+    openProductStudio(9);
+  } else if (hash === '#account-view' || hash === '#account') {
+    switchView('account');
+  }
+
   // Dock hover listeners for auto-tuck
   const dock = document.querySelector('.floating-luxury-dock');
   if (dock) {
@@ -1800,6 +2028,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (e.key === 'a' || e.key === 'A') {
       switchView('admin');
       showToast('Navigasi Cepat: Atelier Command (MSI)');
+    } else if (e.key === 'u' || e.key === 'U') {
+      openProfileDrawer();
+      showToast('Navigasi Cepat: Profil Klien VIP & Salon');
     } else if (e.key === '/') {
       e.preventDefault();
       const sInput = document.getElementById('sf-search-input');
@@ -1810,4 +2041,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
+
+  // Global window exports for inline HTML onclick handlers
+  window.openProfileDrawer = openProfileDrawer;
+  window.closeProfileDrawer = closeProfileDrawer;
+  window.openMobileNavDrawer = openMobileNavDrawer;
+  window.closeMobileNavDrawer = closeMobileNavDrawer;
 });

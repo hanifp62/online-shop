@@ -2,6 +2,8 @@
 
 Selamat datang di indeks dokumentasi teknis dan produk untuk proyek e-commerce **ZAFIRA** (`online-shop`). Seluruh dokumen disusun secara sistematis, berbasis bukti (*evidence-driven*), dan saling terhubung (*traceable*).
 
+**Verifikasi remediasi terbaru:** [REMEDIATION_VERIFICATION_2026-10-10.md](05-quality/REMEDIATION_VERIFICATION_2026-10-10.md) — FR-201–FR-204 dan NFR-201–NFR-203, dengan batasan staging yang dinyatakan.
+
 ---
 
 ## Indeks Struktur Dokumentasi
@@ -42,6 +44,7 @@ docs/
 │   ├── TEST_PLAN.md                          # Rencana pengujian otomatis, manual, & browser
 │   ├── QUALITY_REVIEW.md                     # Evaluasi kualitas lintas lapisan & verifikasi hasil
 │   ├── PROJECT_READINESS_REPORT.md           # Laporan kesiapan proyek & status deliverable
+│   ├── COUNCIL_AUDIT_REPORT.md                # Evaluasi silang dewan, koreksi fase, dan backlog remediasi
 │   ├── FOUNDATION_CHANGELOG.md               # Log perubahan teknis pada fondasi & konfigurasi
 │   ├── LOCAL_SKILLS_MANAGEMENT_REPORT.md     # Laporan audit, instalasi 589 skills, & panduan rollback
 │   ├── ANTIGRAVITY_SKILLS_INTEGRATION_AUDIT_AND_PLAN.md # Audit rekonsiliasi 635 skills & status discovery IDE
@@ -66,7 +69,9 @@ docs/
 | **Fase 1** | `PROJECT_INSPECTION.md`, `FEATURE_INVENTORY.md`, dll. | **Selesai** | 5 laporan audit tuntas berbasis bukti kode nyata |
 | **Fase 2** | `PROJECT_CONTEXT.md` | **Selesai** | Identitas brand ZAFIRA & pemetaan gap produk |
 | **Fase 3** | `COMPATIBILITY_REPORT.md`, `FOUNDATION_CHANGELOG.md` | **Selesai** | Izin binary `+x`, `npm run build` OK, MariaDB aktif |
-| **Fase 4** | `PRODUCT_BRIEF.md`, `PRD.md`, `USER_JOURNEYS.md` | **Selesai** | PRD lengkap (FR/NFR/US), Traceability Matrix |
+| **Fase 4** | `PRODUCT_BRIEF.md`, `PRD.md`, `USER_JOURNEYS.md` | **Selesai** | PRD lengkap (FR/NFR/US), Traceability Matrix; ditambah sintesis benchmark di `02-product/benchmark/SINTESIS_KOMPARATIF_ZAFIRA.md` |
 | **Fase 5** | `TARGET_ARCHITECTURE.md`, `DATABASE_DESIGN.md` | **Selesai** | Target architecture, ERD database, backlog task |
 | **Fase 6** | `PROTOTYPE_GUIDE.md`, Source Code `prototype/` | **Selesai** | Prototype interaktif melayani HTTP 200 di port 8000 |
 | **Fase 7** | `QUALITY_REVIEW.md`, `PROJECT_READINESS_REPORT.md` | **Selesai** | 49 test passing, laporan kesiapan proyek lengkap |
+
+> **Koreksi 2026-10-10:** status "Selesai" di atas adalah catatan historis, bukan klaim siap produksi. Lihat `05-quality/COUNCIL_AUDIT_REPORT.md` untuk koreksi per fase dan backlog remediasi.

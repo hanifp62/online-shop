@@ -3,13 +3,25 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ZAFIRA: La Maison de Lumière - Digital Flagship v3.5</title>
+  <title>ZAFIRA: La Maison de Lumière - Haute Couture Flagship</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <base href="/prototype/">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('zafira-theme') || 'system';
+        var resolved = t === 'system' ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : t;
+        document.documentElement.setAttribute('data-theme', resolved);
+        document.documentElement.setAttribute('data-theme-setting', t);
+        var l = localStorage.getItem('zafira-lang') || 'id';
+        document.documentElement.setAttribute('lang', l);
+      } catch (e) {}
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=bodoni-moda:400,400i,500,500i,600,700&family=manrope:300,400,500,600,700&family=jetbrains-mono:400,500,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/prototype/app.css">
-  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="/prototype/app.css?v=3.9.0">
+  <link rel="stylesheet" href="app.css?v=3.9.0">
   <style>
     /* Critical Inline Protection against FOUT & Unstyled Elements */
     html { background: #08101d; color: #181816; -webkit-font-smoothing: antialiased; }
@@ -27,40 +39,73 @@
   <!-- WCAG 2.2 AAA Accessible Skip Link -->
   <a href="#catalog-content-area" class="skip-to-content">Lewati ke Konten Koleksi Utama</a>
 
+  <!-- Universal Luxury Announcement & Utility Strip (Hermès / Chanel ATM) -->
+  <div class="announcement">
+    <!-- Col Left: Prestigious Language & Currency Selector -->
+    <div class="announcement-col-left">
+      <div class="lang-switcher" role="group" aria-label="Langues / Languages">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="opacity:0.8; margin-right:2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <button type="button" class="lang-opt active" data-set-lang="id" aria-pressed="true" title="Bahasa Indonesia">ID</button>
+        <span class="lang-divider">·</span>
+        <button type="button" class="lang-opt" data-set-lang="en" aria-pressed="false" title="English">EN</button>
+        <span class="lang-divider">·</span>
+        <button type="button" class="lang-opt" data-set-lang="fr" aria-pressed="false" title="Français">FR</button>
+        <span class="lang-divider">·</span>
+        <button type="button" class="lang-opt" data-set-lang="it" aria-pressed="false" title="Italiano">IT</button>
+      </div>
+      <div class="announcement-currency" id="currency-switcher">
+        <span class="curr-opt active" data-curr="IDR" onclick="setCurrency('IDR')">IDR</span>
+        <span class="curr-opt" data-curr="EUR" onclick="setCurrency('EUR')">EUR</span>
+        <span class="curr-opt" data-curr="USD" onclick="setCurrency('USD')">USD</span>
+      </div>
+    </div>
+
+    <!-- Col Center: Maison Editorial Promise -->
+    <div class="announcement-col-center">
+      <span data-i18n="announcement">Complimentary signature wrapping &amp; pengiriman terlindungi ke seluruh Nusantara</span>
+    </div>
+
+    <!-- Col Right: Aesthetic Controls & Concierge -->
+    <div class="announcement-col-right">
+      <div class="theme-switcher" role="group" aria-label="Thème / Appearance">
+        <button type="button" class="theme-opt" data-set-theme="light" title="Mode Terang" aria-label="Mode Terang">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+        <button type="button" class="theme-opt" data-set-theme="dark" title="Mode Gelap" aria-label="Mode Gelap">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+        <button type="button" class="theme-opt" data-set-theme="system" title="Sistem" aria-label="Sistem">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        </button>
+      </div>
+      <a onclick="openRendezvousModal()" class="announcement-rv-btn" data-i18n="rendezvous_btn">Rendez-vous Privat</a>
+      <button class="sound-toggle-btn" id="sound-toggle-btn" onclick="toggleAudioFeedback()" title="Suara Atelier Ambient">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        <span id="sound-label">Acoustics: On</span>
+      </button>
+      <button class="sound-toggle-btn" id="shortcuts-toggle-btn" onclick="openKeyboardShortcutsModal()" title="Pintasan Keyboard (Tekan ?)">
+        <kbd style="font-family:'JetBrains Mono', monospace; font-size:9.5px; background:rgba(255,255,255,0.18); padding:1px 4px; border-radius:2px; color:#fff;">?</kbd>
+      </button>
+    </div>
+  </div>
+
   <!-- ==========================================================================
        1. FLAGSHIP STOREFRONT EXPERIENCE
        ========================================================================== -->
   <main class="view-container active" id="storefront-view">
-    
-    <!-- Announcement Bar -->
-    <div class="announcement">
-      <span>Complimentary signature wrapping & pengiriman terlindungi ke seluruh Nusantara</span>
-      <div style="display:flex; align-items:center; gap:16px;">
-        <a onclick="openRendezvousModal()">Rendez-vous Privat Atelier</a>
-        <div class="announcement-currency" id="currency-switcher">
-          <span class="curr-opt active" data-curr="IDR" onclick="setCurrency('IDR')">IDR · ID</span>
-          <span class="curr-opt" data-curr="EUR" onclick="setCurrency('EUR')">EUR · FR</span>
-          <span class="curr-opt" data-curr="USD" onclick="setCurrency('USD')">USD · US</span>
-        </div>
-        <button class="sound-toggle-btn" id="sound-toggle-btn" onclick="toggleAudioFeedback()" title="Suara Atelier Ambient">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-          <span id="sound-label">Acoustics: On</span>
-        </button>
-        <button class="sound-toggle-btn" id="shortcuts-toggle-btn" onclick="openKeyboardShortcutsModal()" title="Pintasan Keyboard (Tekan ?)">
-          <kbd style="font-family:'JetBrains Mono', monospace; font-size:10px; background:rgba(255,255,255,0.18); padding:1px 5px; border-radius:3px; color:#fff;">?</kbd>
-          <span>Pintasan</span>
-        </button>
-      </div>
-    </div>
 
     <!-- Luxury Floating Glassmorphic Header -->
     <header class="sf-header">
+      <button class="mobile-nav-toggle" id="btn-mobile-nav-toggle" onclick="openMobileNavDrawer()" aria-label="Buka Menu Navigasi" title="Navigasi Kategori">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+
       <nav class="sf-nav">
-        <a onclick="filterCategory('all')">Koleksi</a>
-        <a onclick="filterCategory(8)">Warisan</a>
-        <a onclick="filterCategory(9)">Adibusana</a>
-        <a href="#packaging-section">Kemasan</a>
-        <a onclick="openRendezvousModal()">Concierge</a>
+        <a onclick="filterCategory('all')" data-i18n="nav_collection">Koleksi</a>
+        <a onclick="filterCategory(8)" data-i18n="nav_heritage">Warisan</a>
+        <a onclick="filterCategory(9)" data-i18n="nav_arrivals">Adibusana</a>
+        <a href="#packaging-section" data-i18n="nav_packaging">Kemasan</a>
+        <a onclick="openRendezvousModal()" data-i18n="nav_services">Concierge</a>
       </nav>
 
       <a class="sf-brand" href="#storefront" onclick="switchView('storefront')">
@@ -71,15 +116,20 @@
       <div class="sf-actions">
         <div class="search-wrapper">
           <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <input type="search" id="sf-search-input" class="search-input" placeholder="Cari sutra, batik, kriya…">
+          <input type="search" id="sf-search-input" class="search-input" placeholder="Cari sutra, batik, kriya…" data-i18n-placeholder="search_placeholder">
         </div>
         <button class="action-btn" onclick="openRendezvousModal()" title="Jadwal Janji Temu Privat">
-          <span>Rendez-vous</span>
+          <span data-i18n="rendezvous_btn">Rendez-vous</span>
         </button>
         <button class="action-btn" onclick="openCartDrawer()" title="Tas Belanja Maison">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-          <span>Tas</span>
+          <span data-i18n="cart_aria">Tas</span>
           <span class="badge-count cart-count-badge">1</span>
+        </button>
+        <button class="action-btn profile-action-btn" id="btn-header-profile" onclick="openProfileDrawer()" title="Profil Klien VIP &amp; Pilihan Salon" aria-label="Profil Klien VIP">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span class="profile-label" data-i18n="nav_profile">Profil</span>
+          <span class="vip-status-dot" title="VIC Circle Active"></span>
         </button>
       </div>
     </header>
@@ -93,18 +143,18 @@
         </div>
       </div>
       <div class="hero-text-pane">
-        <span class="hero-eyebrow">Haute Couture & Kriya Nusantara</span>
-        <h1 class="hero-title">Siluet Paris, Keahlian Italia, Jiwa Nusantara.</h1>
-        <p class="hero-manifesto">
-          Sutra murni Lyon, wol Biella, dan canting malam batik Solo dalam kemurnian kriya tangan abadi.
+        <span class="hero-eyebrow" data-i18n="hero_eyebrow">La Collection Première · 2026</span>
+        <h1 class="hero-title" data-i18n="hero_title">Lahir dari Cahaya,<br>Dibentuk oleh Keanggunan</h1>
+        <p class="hero-manifesto" data-i18n="hero_subtitle">
+          Keanggunan Paris bertemu keahlian Italia dalam setiap kreasi yang memancarkan jiwa Anda.
         </p>
         <div class="hero-btn-row">
           <button class="btn-gold" onclick="openProductStudio(9)">
-            <span>Buka Studio Kebaya Lumière</span>
+            <span data-i18n="hero_cta_studio">Studio Kriya &amp; Savoir-Faire</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
           </button>
           <button class="btn-outline" onclick="openRendezvousModal()">
-            Rendez-vous Privat
+            <span data-i18n="rendezvous_btn">Rendez-vous Privat</span>
           </button>
         </div>
       </div>
@@ -126,13 +176,13 @@
     <!-- Curated Catalog Control Bar & Dual View Mode (The Row & SSENSE ATM) -->
     <div class="catalog-control-bar" id="main-catalog-area">
       <div class="catalog-filter-group">
-        <button class="cat-pill active" data-cat="all" onclick="filterCategory('all')">Semua Koleksi</button>
-        <button class="cat-pill" data-cat="8" onclick="filterCategory(8)">Warisan Nusantara</button>
-        <button class="cat-pill" data-cat="9" onclick="filterCategory(9)">Kapsul Adibusana</button>
-        <button class="cat-pill" data-cat="1" onclick="filterCategory(1)">Busana Wanita</button>
-        <button class="cat-pill" data-cat="2" onclick="filterCategory(2)">Mantel Pria</button>
-        <button class="cat-pill" data-cat="3" onclick="filterCategory(3)">Tas Malam</button>
-        <button class="cat-pill" data-cat="5" onclick="filterCategory(5)">Syal Sutra</button>
+        <button class="cat-pill active" data-cat="all" onclick="filterCategory('all')" data-i18n="filter_all">Semua Koleksi</button>
+        <button class="cat-pill" data-cat="8" onclick="filterCategory(8)" data-i18n="filter_heritage">Warisan Nusantara</button>
+        <button class="cat-pill" data-cat="9" onclick="filterCategory(9)" data-i18n="filter_capsule">Kapsul Adibusana</button>
+        <button class="cat-pill" data-cat="1" onclick="filterCategory(1)" data-i18n="filter_women">Busana Wanita</button>
+        <button class="cat-pill" data-cat="2" onclick="filterCategory(2)" data-i18n="filter_men">Mantel Pria</button>
+        <button class="cat-pill" data-cat="3" onclick="filterCategory(3)" data-i18n="filter_bags">Tas Malam</button>
+        <button class="cat-pill" data-cat="5" onclick="filterCategory(5)" data-i18n="filter_accessories">Syal Sutra</button>
       </div>
 
       <!-- View Switcher -->
@@ -159,19 +209,19 @@
     <section class="packaging-section" id="packaging-section">
       <div class="packaging-inner">
         <div>
-          <span style="font-size:11px; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); font-weight:700;">L'Art d'Offrir ZAFIRA</span>
-          <h2 style="font-family:var(--serif); font-size:36px; margin:8px 0 16px; color:var(--sapphire-midnight);">Kemasan Kado Ikonik & Segel Lilin Emas</h2>
-          <p style="color:var(--muted); line-height:1.8; margin-bottom:20px;">
+          <span style="font-size:11px; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); font-weight:700;" data-i18n="packaging_eyebrow">L'Art d'Offrir ZAFIRA</span>
+          <h2 style="font-family:var(--serif); font-size:36px; margin:8px 0 16px; color:var(--sapphire-midnight);" data-i18n="packaging_title">Kemasan Kado Ikonik &amp; Segel Lilin Emas</h2>
+          <p style="color:var(--muted); line-height:1.8; margin-bottom:20px;" data-i18n="packaging_desc">
             Setiap kreasi dihantarkan dalam kotak kaku safir pekat yang dibuat dengan tangan, diikat pita sutra twill Lyon, dan dilindungi kartu kaligrafi tulisan tangan bertanda stempel segel lilin merah-emas Maison ZAFIRA.
           </p>
           <div style="display:flex; gap:16px; align-items:center; margin-bottom:24px;">
-            <label style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--muted);">Pilihan Pita Sutra:</label>
-            <button class="proto-btn" style="background:#b89858; color:#0f1c33; font-weight:700;" onclick="updatePackagingRibbon('gold')">Pita Emas (Or)</button>
-            <button class="proto-btn" style="background:#0f1c33; color:#fff;" onclick="updatePackagingRibbon('sapphire')">Pita Safir (Saphir)</button>
+            <label style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--muted);" data-i18n="packaging_ribbon_label">Pilihan Pita Sutra:</label>
+            <button class="proto-btn" style="background:#b89858; color:#0f1c33; font-weight:700;" onclick="updatePackagingRibbon('gold')" data-i18n="packaging_ribbon_gold">Pita Emas (Or)</button>
+            <button class="proto-btn" style="background:#0f1c33; color:#fff;" onclick="updatePackagingRibbon('sapphire')" data-i18n="packaging_ribbon_sapphire">Pita Safir (Saphir)</button>
           </div>
           <div style="font-size:12px; color:var(--muted); display:flex; align-items:center; gap:8px;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-            <span>Layanan kemasan kado adibusana ini diberikan secara cuma-cuma (*complimentary*).</span>
+            <span data-i18n="packaging_complimentary">Layanan kemasan kado adibusana ini diberikan secara cuma-cuma (complimentary).</span>
           </div>
         </div>
 
@@ -186,8 +236,8 @@
             <div class="wax-seal-badge" id="interactive-wax-seal" onclick="stampWaxSeal()" title="Klik untuk memvalidasi segel lilin">
               Z
             </div>
-            <p style="font-size:10px; color:var(--gold-light); margin-top:14px; position:relative; z-index:2;">
-              ✦ Klik stempel lilin untuk membubuhkan segel resmi
+            <p style="font-size:10px; color:var(--gold-light); margin-top:14px; position:relative; z-index:2; display:flex; align-items:center; justify-content:center; gap:6px;">
+              <span class="indicator-dot gold"></span> Sentuh stempel lilin untuk memvalidasi segel resmi kriya
             </p>
           </div>
           <div style="font-size:12px; color:var(--ink); font-style:italic; background:var(--ivory); padding:14px; border-radius:var(--radius-xs); border:1px solid var(--line);">
@@ -198,46 +248,74 @@
     </section>
 
     <!-- Luxury Footer -->
-    <footer style="background:var(--sapphire-midnight); color:#fff; padding:70px 48px 36px; border-top:1px solid rgba(255,255,255,0.08);">
-      <div style="max-width:1300px; margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:48px; margin-bottom:48px;">
+    <footer class="sf-footer">
+      <div class="sf-footer-grid">
         <div>
           <h3 style="font-family:var(--serif); font-size:26px; letter-spacing:0.18em; margin-bottom:14px; color:#fff;">ZAFIRA</h3>
-          <p style="font-size:12.5px; color:rgba(255,255,255,0.72); max-width:360px; line-height:1.8;">
-            La Maison de Lumière. Rumah mode adibusana Paris-Italia-Indonesia. Salon Atelier & Fitting Privat: Kebayoran Baru, Jakarta Selatan.
+          <p style="font-size:12.5px; color:rgba(255,255,255,0.72); max-width:360px; line-height:1.8;" data-i18n="footer_motto">
+            Parisian in spirit. Italian by craft. Indonesian at heart.
           </p>
           <div style="margin-top:18px; font-size:11px; color:var(--gold-light); letter-spacing:0.12em; text-transform:uppercase;">
             Atelier: Paris · Lyon · Biella · Solo · Jakarta
           </div>
         </div>
         <div>
-          <h4 style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-light); margin-bottom:16px;">Layanan Maison</h4>
+          <h4 style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-light); margin-bottom:16px;" data-i18n="footer_services">Layanan Maison</h4>
           <ul style="list-style:none; font-size:12.5px; line-height:2.4; color:rgba(255,255,255,0.85);">
-            <li><a onclick="openRendezvousModal()" style="cursor:pointer;">Rendez-vous Privat</a></li>
-            <li><a onclick="switchView('account')" style="cursor:pointer;">Portal Klien VIP</a></li>
-            <li><a onclick="openCartDrawer()" style="cursor:pointer;">Tas Belanja Maison</a></li>
-            <li><a onclick="switchView('studio')" style="cursor:pointer;">Studio Produk Kriya</a></li>
+            <li><a onclick="openRendezvousModal()" style="cursor:pointer;" data-i18n="rendezvous_btn">Rendez-vous Privat</a></li>
+            <li><a onclick="switchView('account')" style="cursor:pointer;" data-i18n="footer_account_portal">Portal Klien VIP</a></li>
+            <li><a onclick="openCartDrawer()" style="cursor:pointer;" data-i18n="cart_aria">Tas Belanja Maison</a></li>
+            <li><a onclick="switchView('studio')" style="cursor:pointer;" data-i18n="nav_digital_atelier">Studio Produk Kriya</a></li>
           </ul>
         </div>
         <div>
-          <h4 style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-light); margin-bottom:16px;">Savoir-Faire</h4>
+          <h4 style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-light); margin-bottom:16px;" data-i18n="footer_savoir_title">Savoir-Faire</h4>
           <ul style="list-style:none; font-size:12.5px; line-height:2.4; color:rgba(255,255,255,0.85);">
-            <li><span>Bordir Tangan Kebayoran</span></li>
-            <li><span>Batik Canting Malam Solo</span></li>
-            <li><span>Tenun Ikat Maumere Flores</span></li>
-            <li><span>Sutra Organza Lyon Prancis</span></li>
+            <li><span data-i18n="savoir_1">Bordir Tangan Kebayoran</span></li>
+            <li><span data-i18n="savoir_2">Batik Canting Malam Solo</span></li>
+            <li><span data-i18n="savoir_3">Tenun Ikat Maumere Flores</span></li>
+            <li><span data-i18n="savoir_4">Sutra Organza Lyon Prancis</span></li>
           </ul>
         </div>
         <div>
-          <h4 style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-light); margin-bottom:16px;">La Lettre ZAFIRA</h4>
-          <p style="font-size:12px; color:rgba(255,255,255,0.72); margin-bottom:14px;">Dapatkan warta peluncuran koleksi kapsul dan undangan pameran tertutup.</p>
-          <form onsubmit="event.preventDefault(); showToast('✦ Terima kasih telah bergabung di warta eksklusif ZAFIRA.'); this.reset();" style="display:flex;">
-            <input type="email" placeholder="Email Anda" required style="padding:9px 12px; font-size:12px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); color:#fff; border-radius:var(--radius-xs) 0 0 var(--radius-xs); flex-grow:1;">
-            <button type="submit" class="btn-gold" style="padding:9px 16px; border-radius:0 var(--radius-xs) var(--radius-xs) 0;">Daftar</button>
+          <h4 style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-light); margin-bottom:16px;" data-i18n="newsletter_eyebrow">La Lettre ZAFIRA</h4>
+          <p style="font-size:12px; color:rgba(255,255,255,0.72); margin-bottom:14px;" data-i18n="newsletter_desc">Dapatkan warta peluncuran koleksi kapsul dan undangan pameran tertutup.</p>
+          <form onsubmit="event.preventDefault(); showToast('Terima kasih telah bergabung dalam lingkaran warta La Lettre ZAFIRA.'); this.reset();" style="display:flex;">
+            <input type="email" placeholder="Email Anda" data-i18n-placeholder="newsletter_placeholder" required style="padding:9px 12px; font-size:12px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); color:#fff; border-radius:var(--radius-xs) 0 0 var(--radius-xs); flex-grow:1;">
+            <button type="submit" class="btn-gold" style="padding:9px 16px; border-radius:0 var(--radius-xs) var(--radius-xs) 0;" data-i18n="newsletter_submit">Daftar</button>
           </form>
         </div>
       </div>
-      <div style="text-align:center; font-size:11px; color:rgba(255,255,255,0.45); border-top:1px solid rgba(255,255,255,0.08); padding-top:24px;">
-        © 2026 ZAFIRA Maison de Lumière. All rights reserved. Member of Comité Colbert & Dewan Kerajinan Adibusana Nusantara.
+
+      <!-- Canonical Luxury Footer International Preferences Bar (Hermès & Chanel ATM) -->
+      <div class="footer-preferences-bar">
+        <div class="footer-pref-item">
+          <label class="footer-pref-label" for="proto-footer-lang-select" data-i18n="footer_lang_label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span data-i18n="footer_lang_label">Wilayah &amp; Bahasa</span>
+          </label>
+          <select id="proto-footer-lang-select" class="zafira-lang-select" aria-label="Pilih Bahasa / Select Language">
+            <option value="id">Indonesia · Bahasa Indonesia (IDR Rp)</option>
+            <option value="en">International · English (USD $)</option>
+            <option value="fr">France · Français (EUR €)</option>
+            <option value="it">Italia · Italiano (EUR €)</option>
+          </select>
+        </div>
+        <div class="footer-pref-item">
+          <label class="footer-pref-label" for="proto-footer-theme-select" data-i18n="footer_theme_label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <span data-i18n="footer_theme_label">Pilihan Tampilan</span>
+          </label>
+          <select id="proto-footer-theme-select" class="zafira-theme-select" aria-label="Mode Tampilan / Display Mode">
+            <option value="light">Mode Terang (Clair)</option>
+            <option value="dark">Mode Gelap (Sombre)</option>
+            <option value="system">Sesuai Perangkat (Système)</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="text-align:center; font-size:11px; color:rgba(255,255,255,0.45); border-top:1px solid rgba(255,255,255,0.08); padding-top:24px;" data-i18n="footer_legal_rights">
+        © 2026 ZAFIRA Maison de Lumière. All rights reserved. Member of Comité Colbert &amp; Dewan Kerajinan Adibusana Nusantara.
       </div>
     </footer>
   </main>
@@ -253,45 +331,224 @@
        3. VIP CLIENT ACCOUNT PORTAL (/akun SIMULATION)
        ========================================================================== -->
   <main class="view-container" id="account-view">
-    <div style="max-width:960px; margin:40px auto; padding:0 32px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px;">
+    <div class="account-portal-shell">
+      <!-- Elite Salon Header -->
+      <div class="account-header-bar">
         <div>
-          <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.2em; color:var(--taupe); font-weight:700;">Espace Klien ZAFIRA</span>
-          <h1 style="font-family:var(--serif); font-size:36px; margin:4px 0 0; color:var(--sapphire-midnight);">Bonjour, Madame Aurelia Tan</h1>
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+            <span class="account-badge-tier">
+              <span class="indicator-dot gold" style="display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--gold); box-shadow:0 0 8px var(--gold);"></span>
+              VIC Circle · Grand Mécène N° #VIC-7709
+            </span>
+            <span style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--taupe); font-weight:700;" data-i18n="account_subtitle">Espace Klien ZAFIRA · Le Salon Privé</span>
+          </div>
+          <h1><span data-i18n="account_greeting_prefix">Bonjour,</span> Madame Aurelia Tan</h1>
         </div>
-        <button class="proto-btn" style="background:var(--sapphire-midnight); color:#fff;" onclick="switchView('storefront')">← Kembali ke Penjelajahan</button>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button class="btn-gold" style="padding:9px 18px; font-size:11px; display:inline-flex; align-items:center; gap:6px;" onclick="openRendezvousModal()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span>Reservasi Fitting Privat</span>
+          </button>
+          <button class="proto-btn" style="background:var(--sapphire-midnight); color:#fff; display:inline-flex; align-items:center; gap:6px; padding:9px 16px;" onclick="switchView('storefront')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <span data-i18n="account_back_btn">Kembali ke Penjelajahan</span>
+          </button>
+        </div>
       </div>
 
-      <div style="display:grid; grid-template-columns:1fr 2fr; gap:32px;">
-        <!-- Profil Klien -->
-        <div style="background:#fff; border:1px solid var(--line); padding:26px; border-radius:var(--radius-xs); height:fit-content; box-shadow:var(--shadow-sm);">
-          <h3 style="font-family:var(--serif); font-size:20px; margin-bottom:18px; border-bottom:1px solid var(--line); padding-bottom:10px;">Profil Klien VIP</h3>
-          <div class="form-group">
-            <label class="form-label">Nama Lengkap</label>
-            <input type="text" class="form-input" value="Madame Aurelia Tan" readonly>
+      <!-- Private Salon 2-Column Split View -->
+      <div class="account-grid">
+
+        <!-- Left: Identity, Bespoke Silhouette, & Salon Settings -->
+        <div class="account-col-left">
+
+          <!-- Client Card -->
+          <div class="salon-card client-profile-card">
+            <div class="salon-card-header">
+              <h3 class="salon-card-title" data-i18n="account_profile_title">Profil Klien VIP</h3>
+              <span style="font-size:10px; font-weight:700; color:var(--gold); text-transform:uppercase; letter-spacing:0.1em;">Statut Vérifié</span>
+            </div>
+            <div class="client-avatar-row">
+              <div class="client-avatar-stamp">AT</div>
+              <div class="client-meta">
+                <h3>Madame Aurelia Tan</h3>
+                <p>Membre Privilégié · Adibusana Sejak 2024</p>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:12px;">
+              <label class="form-label" style="font-size:10px;" data-i18n="account_email_label">Email Terdaftar</label>
+              <input type="email" class="form-input" value="aurelia@tanholdings.id" readonly style="font-size:12px; padding:7px 12px;">
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+              <label class="form-label" style="font-size:10px;" data-i18n="account_phone_label">Nomor WhatsApp</label>
+              <input type="text" class="form-input" value="+62 811 8899 771" readonly style="font-size:12px; padding:7px 12px;">
+            </div>
+            <div class="form-group" style="margin-bottom:14px;">
+              <label class="form-label" style="font-size:10px;" data-i18n="account_address_label">Alamat Pengiriman Utama</label>
+              <textarea class="form-textarea" rows="2" readonly style="font-size:12px; padding:7px 12px;">Jl. Kartika Pinang No. 18, Pondok Indah, Jakarta Selatan</textarea>
+            </div>
+
+            <!-- Assigned Couturier -->
+            <div class="advisor-pill">
+              <div>
+                <span style="font-size:9.5px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); font-weight:700; display:block;">Conseiller Dédié</span>
+                <strong style="font-size:12px; color:var(--sapphire-midnight);">Maître Jean-Luc</strong>
+                <span style="font-size:10.5px; color:var(--muted); display:block;">Atelier ZAFIRA Jakarta</span>
+              </div>
+              <button class="proto-btn" style="padding:5px 12px; font-size:10.5px; background:var(--sapphire-midnight); color:#fff;" onclick="openRendezvousModal()">Hubungi</button>
+            </div>
           </div>
-          <div class="form-group">
-            <label class="form-label">Email Terdaftar</label>
-            <input type="email" class="form-input" value="aurelia@tanholdings.id" readonly>
+
+          <!-- Bespoke Silhouette Card -->
+          <div class="salon-card silhouette-card">
+            <div class="salon-card-header">
+              <h3 class="salon-card-title">Siluet &amp; Ukuran Sur-Mesure</h3>
+              <span style="font-size:10px; font-weight:700; color:var(--taupe); text-transform:uppercase; letter-spacing:0.08em;">FR 38 / IT 42</span>
+            </div>
+            <p style="font-size:11.5px; color:var(--muted); margin-bottom:12px;">Tolak ukur anatomi kriya tersimpan untuk pemotongan pola drape presisi tinggi tanpa perlu ukur ulang.</p>
+
+            <div class="silhouette-grid">
+              <div class="silhouette-stat">
+                <span>Poitrine (Dada)</span>
+                <strong>86 cm</strong>
+              </div>
+              <div class="silhouette-stat">
+                <span>Taille (Pinggang)</span>
+                <strong>68 cm</strong>
+              </div>
+              <div class="silhouette-stat">
+                <span>Bassin (Panggul)</span>
+                <strong>94 cm</strong>
+              </div>
+              <div class="silhouette-stat">
+                <span>Carrure Dos</span>
+                <strong>38 cm</strong>
+              </div>
+            </div>
+
+            <div style="padding:10px 14px; background:var(--ivory); border-radius:var(--radius-xs); border:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+              <div>
+                <span style="font-size:9.5px; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); font-weight:700; display:block;">Monogram Inisial</span>
+                <strong style="font-size:13px; color:var(--sapphire-midnight);">« AT » · Or Classique 24k</strong>
+              </div>
+              <span class="monogram-stamp-badge" style="width:32px; height:32px; font-size:13px;">AT</span>
+            </div>
+
+            <button class="btn-outline" style="width:100%; justify-content:center; padding:9px 14px; font-size:11px; margin-top:14px;" onclick="showToast('Permintaan penyesuaian siluet diteruskan ke Maître Jean-Luc.')">
+              Perbarui Ukuran Siluet Kriya
+            </button>
           </div>
-          <div class="form-group">
-            <label class="form-label">Nomor WhatsApp</label>
-            <input type="text" class="form-input" value="+62 811 8899 771" readonly>
+
+          <!-- Harmonized Salon Preferences Card -->
+          <div class="salon-card preferences-card">
+            <div class="salon-card-header">
+              <h3 class="salon-card-title">Pengaturan Salon Pribadi</h3>
+              <span style="font-size:10px; font-weight:700; color:var(--taupe);">Sync 100%</span>
+            </div>
+
+            <!-- Appearance Mode Segmented -->
+            <div style="margin-bottom:14px;">
+              <label class="form-label" style="font-size:10px; margin-bottom:6px;">Mode Tampilan Suasana</label>
+              <div class="profile-theme-segmented">
+                <button type="button" class="theme-seg-btn" id="account-seg-light" onclick="setAppTheme('light')">Clair</button>
+                <button type="button" class="theme-seg-btn" id="account-seg-dark" onclick="setAppTheme('dark')">Sombre</button>
+                <button type="button" class="theme-seg-btn" id="account-seg-auto" onclick="setAppTheme('auto')">Auto</button>
+              </div>
+            </div>
+
+            <!-- Language & Currency -->
+            <div style="margin-bottom:14px;">
+              <label class="form-label" style="font-size:10px; margin-bottom:6px;">Wilayah, Bahasa &amp; Mata Uang</label>
+              <select class="profile-lang-select" onchange="setAppLanguage(this.value)">
+                <option value="id">Bahasa Indonesia (IDR Rp)</option>
+                <option value="en">English (USD $)</option>
+                <option value="fr">Français (EUR €)</option>
+                <option value="it">Italiano (EUR €)</option>
+              </select>
+            </div>
+
+            <!-- Acoustics Toggle -->
+            <div>
+              <label class="form-label" style="font-size:10px; margin-bottom:6px;">Suasana Akustik Atelier</label>
+              <button type="button" class="sound-toggle-pill" onclick="toggleAtelierSound()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                <span>Akustik Kriya Atelier: Aktif</span>
+              </button>
+            </div>
+
           </div>
-          <div class="form-group">
-            <label class="form-label">Alamat Pengiriman</label>
-            <textarea class="form-textarea" rows="2" readonly>Jl. Kartika Pinang No. 18, Pondok Indah, Jakarta Selatan</textarea>
-          </div>
+
         </div>
 
-        <!-- Riwayat Pesanan & Concierge -->
-        <div>
-          <h3 style="font-family:var(--serif); font-size:22px; margin-bottom:12px; color:var(--sapphire-midnight);">Riwayat Janji Temu & Pesanan Adibusana</h3>
-          <p style="font-size:12px; color:var(--muted); margin-bottom:18px;">Setiap pembaruan status oleh Client Advisor di admin atelier akan tersinkronisasi seketika di kartu bawah ini secara real-time.</p>
-          <div id="account-history-list">
-            <!-- Populated dynamically via renderAccountPortal() -->
+        <!-- Right: Active Commission Stepper & Orders History -->
+        <div class="account-col-right">
+
+          <!-- Highlight: Active Haute Couture Commission Banner -->
+          <div class="commission-active-banner">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+              <div>
+                <span style="font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-dark); font-weight:700; display:block;">Komisi Adibusana Aktif Saat Ini</span>
+                <h2 style="font-family:var(--serif); font-size:24px; color:var(--sapphire-midnight); margin:4px 0 2px;">Kebaya Lumière Soie Royale</h2>
+                <p style="font-size:12px; color:var(--muted); margin:0;">Commande N° ZF-2026-8891 · Monogram Emas « AT »</p>
+              </div>
+              <span class="badge-status badge-confirmed" style="font-size:10px; padding:4px 10px;">Tahap 3 / 4 Aktif (75%)</span>
+            </div>
+
+            <p style="font-size:12px; color:var(--muted); margin-bottom:14px; line-height:1.5;">
+              Kreasi sedang dalam pengerjaan bordir tangan motif flora Kebayoran oleh Maître Artisan di Atelier Jakarta. Est. Penyelesaian &amp; Penyegelan Lilin: <strong>18 Oktober 2026</strong>.
+            </p>
+
+            <!-- 5-Stage Stepper -->
+            <div class="stepper-5">
+              <div class="stepper-step completed">
+                <div class="stepper-step-bar"></div>
+                <div class="stepper-step-label">1. Konsultasi</div>
+              </div>
+              <div class="stepper-step completed">
+                <div class="stepper-step-bar"></div>
+                <div class="stepper-step-label">2. Pola Drape</div>
+              </div>
+              <div class="stepper-step active">
+                <div class="stepper-step-bar"></div>
+                <div class="stepper-step-label">3. Bordir Tangan</div>
+              </div>
+              <div class="stepper-step">
+                <div class="stepper-step-bar"></div>
+                <div class="stepper-step-label">4. Segel Lilin</div>
+              </div>
+              <div class="stepper-step">
+                <div class="stepper-step-bar"></div>
+                <div class="stepper-step-label">5. Pengiriman</div>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:10px; align-items:center; margin-top:16px; flex-wrap:wrap;">
+              <button class="btn-gold" style="padding:9px 16px; font-size:11px;" onclick="openWorkOrderModal('ZF-2026-8891')">
+                Lihat Fiche de Travail d'Atelier
+              </button>
+              <button class="btn-outline" style="padding:9px 16px; font-size:11px;" onclick="openAuthenticityModal(1)">
+                Sertifikat Keaslian Digital
+              </button>
+            </div>
           </div>
+
+          <!-- History & Concierge Appointments -->
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+              <div>
+                <h3 style="font-family:var(--serif); font-size:22px; color:var(--sapphire-midnight); margin:0;" data-i18n="account_orders_title">Riwayat Janji Temu &amp; Pesanan Adibusana</h3>
+                <p style="font-size:12px; color:var(--muted); margin:4px 0 0;" data-i18n="account_orders_desc">Setiap pembaruan status pengerjaan kriya tersinkronisasi seketika secara real-time dari konsol manufaktur atelier.</p>
+              </div>
+            </div>
+
+            <div id="account-history-list">
+              <!-- Populated dynamically via renderAccountPortal() -->
+            </div>
+          </div>
+
         </div>
+
       </div>
     </div>
   </main>
@@ -305,26 +562,27 @@
       <aside class="admin-sidebar">
         <div>
           <div style="font-family:var(--serif); font-size:24px; letter-spacing:0.18em; color:#fff;">ZAFIRA</div>
-          <div style="font-size:10px; letter-spacing:0.25em; color:var(--gold-light); text-transform:uppercase; margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.12);">Atelier Administration</div>
+          <div style="font-size:10px; letter-spacing:0.25em; color:var(--gold-light); text-transform:uppercase; margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.12);" data-i18n="msi_brand_sub">Atelier Administration</div>
         </div>
 
         <ul class="admin-menu">
           <li>
             <a class="admin-nav-item active">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-              <span>Pipeline & Kanban</span>
+              <span data-i18n="msi_nav_kanban">Pipeline &amp; Kanban</span>
             </a>
           </li>
           <li>
             <a class="admin-nav-item" onclick="switchView('storefront')">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-              <span>Lihat Storefront ↗</span>
+              <span data-i18n="msi_nav_storefront">Lihat Storefront</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
             </a>
           </li>
           <li>
             <a class="admin-nav-item" onclick="switchView('account')">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-              <span>Portal Akun Klien</span>
+              <span data-i18n="msi_nav_account">Portal Akun Klien</span>
             </a>
           </li>
         </ul>
@@ -339,64 +597,64 @@
       <section class="admin-main">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
           <div>
-            <span style="font-size:12px; color:var(--muted);">Manajemen Sistem Informasi (MSI) / ZAFIRA Atelier Command</span>
-            <h2 style="font-family:var(--serif); font-size:30px; font-weight:500; color:var(--sapphire-midnight);">Sistem Informasi Atelier & Komando Adibusana</h2>
+            <span style="font-size:12px; color:var(--muted);" data-i18n="msi_sys_info_sub">Manajemen Sistem Informasi (MSI) / ZAFIRA Atelier Command</span>
+            <h2 style="font-family:var(--serif); font-size:30px; font-weight:500; color:var(--sapphire-midnight);" data-i18n="msi_sys_info_title">Sistem Informasi Atelier &amp; Komando Adibusana</h2>
           </div>
           <div style="display:flex; gap:12px; align-items:center;">
             <div style="display:flex; align-items:center; gap:8px; background:#fff; padding:6px 14px; border:1px solid #cbd5e1; border-radius:var(--radius-xs);">
-              <span style="font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); font-weight:700;">Role RBAC:</span>
+              <span style="font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); font-weight:700;" data-i18n="msi_rbac_label">Hak Akses Atelier:</span>
               <select id="msi-rbac-select" class="form-select" style="padding:2px 8px; font-size:11px; width:auto; border:none; background:transparent; font-weight:600; color:var(--sapphire-midnight);" onchange="switchMsiRole(this.value)">
-                <option value="director">Maison Director (Full EIS + All)</option>
-                <option value="manager">Atelier Manager (MIS/DSS + TPS)</option>
-                <option value="advisor">Client Advisor (TPS Order Desk)</option>
-                <option value="artisan">Master Artisan (Work Orders Only)</option>
+                <option value="director" data-i18n="msi_role_director">Direction Générale (Akses Penuh EIS, MIS, TPS)</option>
+                <option value="manager" data-i18n="msi_role_manager">Direction de l'Atelier (MIS/DSS &amp; Kapasitas Kriya)</option>
+                <option value="advisor" data-i18n="msi_role_advisor">Client Concierge Desk (Layanan Klien &amp; Pesanan)</option>
+                <option value="artisan" data-i18n="msi_role_artisan">Maître Artisan (Lembar Instruksi Kriya)</option>
               </select>
             </div>
-            <button class="btn-gold" style="padding:10px 20px; font-size:11px;" onclick="openRendezvousModal()">+ Buat Janji Temu</button>
+            <button class="btn-gold" style="padding:10px 20px; font-size:11px;" onclick="openRendezvousModal()" data-i18n="msi_create_apt_btn">+ Buat Janji Temu</button>
           </div>
         </div>
 
         <!-- Douglas Engelbart Augmented Atelier Telemetry Bar -->
         <div class="atelier-telemetry-strip" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-bottom:20px; background:#fff; padding:14px 18px; border:1px solid #e2e8f0; border-radius:var(--radius-xs); box-shadow:var(--shadow-sm);">
           <div style="border-right:1px solid #e2e8f0; padding-right:12px;">
-            <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); font-weight:700;">Takt Time Pengerjaan</div>
+            <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); font-weight:700;" data-i18n="msi_takt_label">Takt Time Pengerjaan</div>
             <div style="font-size:16px; font-weight:700; color:var(--sapphire-midnight); margin-top:2px;">4.8 Jam / Busana</div>
-            <small style="font-size:10px; color:#16a34a;">✦ Ritme optimal haute couture</small>
+            <small style="font-size:10px; color:#16a34a; display:flex; align-items:center; gap:4px; margin-top:2px;"><span class="indicator-dot"></span> <span data-i18n="msi_takt_sub">Ritme optimal haute couture</span></small>
           </div>
           <div style="border-right:1px solid #e2e8f0; padding-right:12px;">
-            <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); font-weight:700;">Throughput Yield</div>
+            <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); font-weight:700;" data-i18n="msi_yield_label">Throughput Yield</div>
             <div style="font-size:16px; font-weight:700; color:var(--sapphire-midnight); margin-top:2px;">98.4% Lolos QC</div>
-            <small style="font-size:10px; color:#16a34a;">Nol cacat jahit mayor</small>
+            <small style="font-size:10px; color:#16a34a; display:flex; align-items:center; gap:4px; margin-top:2px;"><span class="indicator-dot"></span> <span data-i18n="msi_yield_sub">Nol cacat jahit mayor</span></small>
           </div>
           <div style="border-right:1px solid #e2e8f0; padding-right:12px;">
-            <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); font-weight:700;">Status Drum-Buffer-Rope</div>
+            <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); font-weight:700;" data-i18n="msi_dbr_label">Status Drum-Buffer-Rope</div>
             <div style="font-size:16px; font-weight:700; color:#b45309; margin-top:2px;" id="dbr-buffer-status">Buffer 48 Jam (Siaga)</div>
-            <small style="font-size:10px; color:var(--muted);">Sinkronisasi Goldratt DBR</small>
+            <small style="font-size:10px; color:var(--muted);" data-i18n="msi_dbr_sub">Sinkronisasi Goldratt DBR</small>
           </div>
           <div>
-            <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); font-weight:700;">Integritas Rantai Kriya</div>
+            <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); font-weight:700;" data-i18n="msi_chain_label">Integritas Rantai Kriya</div>
             <div style="font-size:16px; font-weight:700; color:var(--sapphire-midnight); margin-top:2px;">SHA-256 Ledger Aktif</div>
-            <small style="font-size:10px; color:#2563eb;">100% Traceable Provenance</small>
+            <small style="font-size:10px; color:#2563eb; display:flex; align-items:center; gap:4px; margin-top:2px;"><span class="indicator-dot" style="background:#2563eb;"></span> <span data-i18n="msi_chain_sub">100% Traceable Provenance</span></small>
           </div>
         </div>
 
         <!-- Anthony's Hierarchy 4-Pillar MSI Navigation Tabs -->
         <div class="msi-tabs-nav" id="msi-level-nav">
           <button class="msi-tab-btn active" id="msi-tab-btn-tps" onclick="switchMsiTab('tps')">
-            <span class="msi-tab-level">Level Operasional</span>
-            <strong>1. TPS · Pipeline & Work Order</strong>
+            <span class="msi-tab-level" data-i18n="msi_tab_tps_level">Operasional Atelier</span>
+            <strong data-i18n="msi_tab_tps_title">1. Suivi des Commandes &amp; Lembar Kriya</strong>
           </button>
           <button class="msi-tab-btn" id="msi-tab-btn-mis" onclick="switchMsiTab('mis')">
-            <span class="msi-tab-level">Level Taktis & Manajerial</span>
-            <strong>2. MIS & DSS · Kapasitas WIP & Stok</strong>
+            <span class="msi-tab-level" data-i18n="msi_tab_mis_level">Taktis Manajerial</span>
+            <strong data-i18n="msi_tab_mis_title">2. Kapasitas Kriya &amp; Alokasi Pengrajin</strong>
           </button>
           <button class="msi-tab-btn" id="msi-tab-btn-eis" onclick="switchMsiTab('eis')">
-            <span class="msi-tab-level">Level Strategis</span>
-            <strong>3. EIS · Executive Intelligence Cockpit</strong>
+            <span class="msi-tab-level" data-i18n="msi_tab_eis_level">Strategis Maison</span>
+            <strong data-i18n="msi_tab_eis_title">3. Tableau de Bord Strategis Atelier</strong>
           </button>
           <button class="msi-tab-btn" id="msi-tab-btn-gov" onclick="switchMsiTab('gov')">
-            <span class="msi-tab-level">Tata Kelola & Kepatuhan</span>
-            <strong>4. Audit Trail & UU PDP</strong>
+            <span class="msi-tab-level" data-i18n="msi_tab_gov_level">Tata Kelola &amp; Privasi</span>
+            <strong data-i18n="msi_tab_gov_title">4. Registre de Traçabilité &amp; UU PDP</strong>
           </button>
         </div>
 
@@ -407,35 +665,35 @@
           <!-- KPI Cards Grid -->
           <div class="stat-cards-grid">
             <div class="stat-box">
-              <span class="stat-label">Total Kreasi Aktif</span>
+              <span class="stat-label" data-i18n="msi_kpi_active_prod">Total Kreasi Aktif</span>
               <div class="stat-value" id="admin-kpi-products">8</div>
-              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Terverifikasi di Katalog</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px; display:flex; align-items:center;"><span class="indicator-dot"></span> Terdaftar di Katalog Maison</div>
             </div>
             <div class="stat-box">
-              <span class="stat-label">Kategori Wastra</span>
+              <span class="stat-label" data-i18n="msi_kpi_wastra_cat">Kategori Wastra</span>
               <div class="stat-value" id="admin-kpi-categories">8</div>
-              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Warisan & Kapsul</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px; display:flex; align-items:center;"><span class="indicator-dot"></span> Koleksi Warisan &amp; Kapsul</div>
             </div>
             <div class="stat-box">
-              <span class="stat-label">Pesanan & Concierge</span>
+              <span class="stat-label" data-i18n="msi_kpi_orders">Pesanan &amp; Concierge</span>
               <div class="stat-value" id="admin-kpi-orders">4</div>
-              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Sinkron ke /akun</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px; display:flex; align-items:center;"><span class="indicator-dot"></span> Sinkronisasi Buku Pesanan</div>
             </div>
             <div class="stat-box">
-              <span class="stat-label">Klien VIP Terdaftar</span>
+              <span class="stat-label" data-i18n="msi_kpi_vip_clients">Klien VIP Terdaftar</span>
               <div class="stat-value" id="admin-kpi-users">8</div>
-              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Multi-Guard Client</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px; display:flex; align-items:center;"><span class="indicator-dot"></span> Klien Kehormatan (VIC)</div>
             </div>
           </div>
 
           <!-- 4-Column Kanban Pipeline Board -->
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
             <div>
-              <h3 style="font-family:var(--serif); font-size:20px; color:var(--sapphire-midnight);">Pipeline Layanan Concierge & Kriya Atelier</h3>
-              <p style="font-size:12px; color:var(--muted); margin-top:4px;">Ubah status di dropdown kartu untuk melihat sinkronisasi instan ke portal akun pelanggan dan pencatatan audit log mutlak.</p>
+              <h3 style="font-family:var(--serif); font-size:20px; color:var(--sapphire-midnight);" data-i18n="msi_kanban_title">Pipeline Layanan Concierge &amp; Kriya Atelier</h3>
+              <p style="font-size:12px; color:var(--muted); margin-top:4px;" data-i18n="msi_kanban_desc">Ubah status di dropdown kartu untuk melihat sinkronisasi instan ke portal akun pelanggan dan pencatatan audit log mutlak.</p>
             </div>
           </div>
-          
+
           <div class="kanban-board" id="kanban-board-container">
             <!-- Populated dynamically via renderKanbanBoard() -->
           </div>
@@ -450,8 +708,9 @@
               <h3 style="font-family:var(--serif); font-size:20px; color:var(--sapphire-midnight);">Manajemen Kapasitas WIP Atelier & Deteksi Bottleneck (TOC Goldratt)</h3>
               <p style="font-size:12px; color:var(--muted); margin-top:4px;">Memantau ambang batas beban kerja pengrajin (*WIP Limit*) untuk menjamin kesempurnaan kriya tangan tanpa cacat produksi.</p>
             </div>
-            <div style="font-size:11px; background:#eff6ff; color:#1e40af; padding:6px 14px; border-radius:var(--radius-xs); border:1px solid #bfdbfe;">
-              ⚡ DSS Active: Cycle Time Optimization
+            <div style="font-size:11px; background:#eff6ff; color:#1e40af; padding:6px 14px; border-radius:var(--radius-xs); border:1px solid #bfdbfe; display:inline-flex; align-items:center; gap:6px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              DSS Active: Cycle Time Optimization
             </div>
           </div>
 
@@ -463,7 +722,7 @@
           <!-- Bottleneck Alert Banner -->
           <div class="msi-bottleneck-banner" id="msi-bottleneck-alert">
             <div>
-              <strong style="color:#92400e; font-size:13px;">✦ Peringatan DSS: Stasiun "Bordir & Kriya Tangan" Mendekati Kapasitas Maksimum (75% WIP)</strong>
+              <strong style="color:#92400e; font-size:13px; display:inline-flex; align-items:center; gap:6px;"><span style="display:inline-block; width:7px; height:7px; background:#d97706; border-radius:50%;"></span> Peringatan DSS: Stasiun "Bordir & Kriya Tangan" Mendekati Kapasitas Maksimum (75% WIP)</strong>
               <p style="font-size:11.5px; color:#78350f; margin-top:4px;">Rekomendasi Sistem: Alokasikan 1 pesanan Kebaya Lumière ke Master Artisan Ibu Siti Khodijah untuk mencegah deviasi SLA pengiriman.</p>
             </div>
             <button class="btn-outline" style="padding:6px 14px; font-size:11px; white-space:nowrap;" onclick="rebalanceWipWorkload()">Seimbangkan Beban</button>
@@ -502,17 +761,17 @@
             <div class="stat-box">
               <span class="stat-label">Rata-Rata Siklus Kriya</span>
               <div class="stat-value">5.4 <small style="font-size:16px; font-family:var(--sans);">hari</small></div>
-              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Lebih cepat dari SLA (Target 7 hari)</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px; display:flex; align-items:center;"><span class="indicator-dot"></span> Memenuhi Komitmen Kriya (Standar 7 Hari)</div>
             </div>
             <div class="stat-box">
               <span class="stat-label">Ketepatan Waktu (On-Time)</span>
               <div class="stat-value">96.8%</div>
-              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Standar Salon Haute Joaillerie</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px; display:flex; align-items:center;"><span class="indicator-dot"></span> Standar Kualitas Salon Adibusana</div>
             </div>
             <div class="stat-box">
               <span class="stat-label">Tingkat Cacat Kriya (QC Zero)</span>
               <div class="stat-value">0.0%</div>
-              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Inspeksi Ganda Master Artisan</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px; display:flex; align-items:center;"><span class="indicator-dot"></span> Inspeksi Ganda Master Artisan</div>
             </div>
           </div>
         </div>
@@ -524,7 +783,7 @@
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
             <div>
               <h3 style="font-family:var(--serif); font-size:20px; color:var(--sapphire-midnight);">Kokpit Eksekutif & Intelligence Bisnis Maison (EIS/ESS)</h3>
-              <p style="font-size:12px; color:var(--muted); margin-top:4px;">Metrik performa strategis tingkat tinggi untuk Maison Director & Chief Creative Officer.</p>
+              <p style="font-size:12px; color:var(--muted); margin-top:4px;">Metrik performa strategis tingkat tinggi untuk Direction Générale & Direktur Kreatif.</p>
             </div>
             <div style="font-size:11px; color:var(--gold); font-weight:700; letter-spacing:0.1em; text-transform:uppercase;">
               Periode Berjalan: Q4 2026
@@ -536,22 +795,22 @@
             <div class="stat-box">
               <span class="stat-label">GMV (Gross Merchandise Value)</span>
               <div class="stat-value" id="eis-gmv-val">Rp74.550.000</div>
-              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Kalkulasi Dinamis Pesanan</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px; display:flex; align-items:center;"><span class="indicator-dot"></span> Akumulasi Transaksi Terverifikasi</div>
             </div>
             <div class="stat-box">
               <span class="stat-label">AOV (Average Order Value)</span>
               <div class="stat-value" id="eis-aov-val">Rp14.910.000</div>
-              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Segmen High-Net-Worth</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px; display:flex; align-items:center;"><span class="indicator-dot"></span> Kurasi Pelanggan Istimewa (VIC)</div>
             </div>
             <div class="stat-box">
               <span class="stat-label">Utilisasi Kapasitas Atelier</span>
               <div class="stat-value">88.5%</div>
-              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Kisaran Optimal Beban Kriya</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px; display:flex; align-items:center;"><span class="indicator-dot"></span> Utilisasi Atelier Seimbang</div>
             </div>
             <div class="stat-box">
               <span class="stat-label">Gross Margin Adibusana</span>
               <div class="stat-value">74.2%</div>
-              <div style="font-size:11px; color:#10b981; margin-top:6px;">✦ Nilai Tambah Kriya Tangan</div>
+              <div style="font-size:11px; color:#10b981; margin-top:6px; display:flex; align-items:center;"><span class="indicator-dot"></span> Nilai Tambah Mahakarya Kriya</div>
             </div>
           </div>
 
@@ -562,7 +821,7 @@
                 <h4 style="font-family:var(--serif); font-size:17px; color:var(--sapphire-midnight);">Distribusi Pendapatan Berdasarkan Kategori Wastra</h4>
                 <span style="font-size:11px; color:var(--muted);">Realisasi vs Target</span>
               </div>
-              
+
               <div class="msi-bar-row">
                 <div class="msi-bar-header">
                   <span>Warisan Nusantara (Batik Tulis & Songket Emas)</span>
@@ -593,8 +852,8 @@
                 </div>
               </div>
 
-              <div style="margin-top:24px; padding-top:16px; border-top:1px solid #f1f5f9; font-size:11.5px; color:var(--muted);">
-                ✦ Retensi Klien VIP (VIC Retention Rate): <strong>91.5%</strong> · Pertumbuhan Pemesanan Ulang (*Repeat Orders*): <strong>+24.6% YoY</strong>.
+              <div style="margin-top:24px; padding-top:16px; border-top:1px solid #f1f5f9; font-size:11.5px; color:var(--muted); display:flex; align-items:center; gap:6px;">
+                <span class="indicator-dot"></span> Retensi Klien Kehormatan (VIC): <strong>91.5%</strong> · Pertumbuhan Pemesanan Ulang (*Repeat Orders*): <strong>+24.6% YoY</strong>.
               </div>
             </div>
 
@@ -691,23 +950,216 @@
   <!-- Shopping Bag Cart Drawer -->
   <aside class="cart-drawer" id="cart-drawer" role="dialog" aria-modal="true" aria-label="Tas Belanja Maison">
     <div class="drawer-header">
-      <h3 id="cart-drawer-title">Tas Belanja Maison</h3>
-      <button class="btn-close" onclick="closeCartDrawer()" aria-label="Tutup tas belanja">&times;</button>
+      <h3 id="cart-drawer-title" data-i18n="cart_header_title">Tas Belanja Maison</h3>
+      <button class="btn-close" onclick="closeCartDrawer()" aria-label="Tutup tas belanja">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
     </div>
     <div class="drawer-body" id="cart-items-container">
       <!-- Populated dynamically via renderCartDrawer() -->
     </div>
     <div class="drawer-footer">
       <div class="subtotal-row">
-        <span>Subtotal Pesanan</span>
+        <span data-i18n="cart_total_label">Subtotal Pesanan</span>
         <strong id="cart-subtotal">Rp0</strong>
       </div>
-      <button class="btn-gold" style="width:100%; justify-content:center; padding:15px;" onclick="closeCartDrawer(); openRendezvousModal();">
-        Lanjut bersama Client Advisor ⟶
+      <button class="btn-gold" style="width:100%; justify-content:center; padding:15px; display:inline-flex; align-items:center; gap:8px;" onclick="closeCartDrawer(); openRendezvousModal();">
+        <span data-i18n="cart_checkout_btn">Lanjut bersama Client Advisor</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
-      <p style="text-align:center; font-size:11px; color:var(--muted); margin-top:12px;">
+      <p style="text-align:center; font-size:11px; color:var(--muted); margin-top:12px;" data-i18n="cart_service_note">
         Pesanan akan dikonfirmasi secara personal oleh Client Advisor ZAFIRA.
       </p>
+    </div>
+  </aside>
+
+  <!-- VIP Client Profile & Atelier Salon Preferences Drawer (Alan Cooper Polite Software & Don Norman Gulf of Evaluation) -->
+  <aside class="profile-drawer" id="profile-drawer" role="dialog" aria-modal="true" aria-label="Profil &amp; Pilihan Salon">
+    <div class="drawer-header">
+      <div>
+        <span class="profile-eyebrow" data-i18n="profile_drawer_eyebrow">Espace Klien Privilégié</span>
+        <h3 id="profile-drawer-heading" data-i18n="profile_drawer_title" style="margin:2px 0 0; font-family:var(--serif); font-size:22px;">Profil &amp; Pilihan Salon</h3>
+      </div>
+      <button class="btn-close" onclick="closeProfileDrawer()" aria-label="Tutup Profil">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="drawer-body profile-drawer-body">
+      <!-- 1. VIP Client Identity Card -->
+      <div class="profile-vic-card">
+        <div class="profile-vic-avatar">
+          <span>AT</span>
+        </div>
+        <div class="profile-vic-info">
+          <div class="profile-vic-badge-row">
+            <span class="profile-vic-badge" data-i18n="profile_vic_badge">VIC Circle · Grand Mécène</span>
+            <span class="profile-vic-id">#VIC-7709</span>
+          </div>
+          <h4 class="profile-vic-name">Madame Aurelia Tan</h4>
+          <p class="profile-vic-email">aurelia@tanholdings.id</p>
+          <p class="profile-vic-advisor"><span data-i18n="profile_advisor_label">Couturier Pribadi:</span> <strong>Maître Jean-Luc (Atelier Jakarta)</strong></p>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="profile-quick-actions">
+        <button class="profile-action-pill" onclick="closeProfileDrawer(); openRendezvousModal();">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span data-i18n="profile_action_fitting">Jadwalkan Fitting</span>
+        </button>
+        <button class="profile-action-pill" onclick="closeProfileDrawer(); switchView('account');">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span data-i18n="profile_action_orders">Riwayat Pesanan</span>
+        </button>
+      </div>
+
+      <!-- 2. Active Couture Work Order Tracker (Instant Visibility) -->
+      <div class="profile-section-card">
+        <div class="profile-section-header">
+          <span class="profile-section-title" data-i18n="profile_recent_order_title">Pesanan Kriya Aktif</span>
+          <span class="profile-order-status-badge">Tahap 3/4 · Bordir Tangan</span>
+        </div>
+        <div class="profile-order-item">
+          <div class="profile-order-details">
+            <strong class="profile-order-product">Kebaya Lumière Soie Royale</strong>
+            <span class="profile-order-meta">No. ZF-2026-8891 · Monogram « AT » (Gold Thread)</span>
+            <div class="profile-order-progress-wrap">
+              <div class="profile-order-progress-bar" style="width: 75%;"></div>
+            </div>
+            <div class="profile-order-step-desc">
+              <span>Bordir Kebayoran 60h · Est. 18 Okt 2026</span>
+              <a onclick="closeProfileDrawer(); openWorkOrderModal('ord-1');" class="profile-wo-link">Fiche Kriya &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Bespoke Silhouette & Monogram Preferences -->
+      <div class="profile-section-card">
+        <div class="profile-section-header">
+          <span class="profile-section-title" data-i18n="profile_silhouette_title">Ukuran &amp; Siluet Kriya</span>
+          <button class="profile-link-btn" onclick="closeProfileDrawer(); switchView('account');" data-i18n="profile_edit_measurements">Ubah</button>
+        </div>
+        <div class="profile-measurements-grid">
+          <div class="profile-m-box">
+            <span class="m-label" data-i18n="profile_registered_size">Ukuran Terdaftar</span>
+            <strong class="m-val">FR 38 / IT 42</strong>
+          </div>
+          <div class="profile-m-box">
+            <span class="m-label" data-i18n="profile_monogram_pref">Inisial Monogram</span>
+            <strong class="m-val" style="color:var(--gold);">« AT » · Or Classique</strong>
+          </div>
+          <div class="profile-m-box" style="grid-column: span 2;">
+            <span class="m-label" data-i18n="profile_chest_waist">Dada / Pinggang / Panggul</span>
+            <strong class="m-val">86 cm · 68 cm · 94 cm</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Salon & Experience Preferences (Harmonized Settings) -->
+      <div class="profile-section-card profile-settings-group">
+        <div class="profile-section-header">
+          <span class="profile-section-title" data-i18n="profile_settings_title">Pilihan Pengalaman Salon</span>
+        </div>
+
+        <!-- Mode Tampilan (Appearance: Light, Dark, System) -->
+        <div class="profile-setting-row">
+          <div class="setting-info">
+            <span class="setting-name" data-i18n="profile_theme_label">Mode Tampilan Salon</span>
+            <span class="setting-desc" data-i18n="profile_theme_desc">Pilih pencahayaan salon</span>
+          </div>
+          <div class="profile-theme-segmented" role="radiogroup" aria-label="Mode Tampilan">
+            <button type="button" class="theme-seg-btn" data-set-theme="light" title="Mode Terang (Clair)">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              <span>Clair</span>
+            </button>
+            <button type="button" class="theme-seg-btn" data-set-theme="dark" title="Mode Gelap (Sombre)">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              <span>Sombre</span>
+            </button>
+            <button type="button" class="theme-seg-btn" data-set-theme="system" title="Mengikuti Sistem">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              <span>Auto</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Pilihan Bahasa & Mata Uang -->
+        <div class="profile-setting-row">
+          <div class="setting-info">
+            <span class="setting-name" data-i18n="profile_lang_label">Bahasa &amp; Mata Uang</span>
+            <span class="setting-desc" data-i18n="profile_lang_desc">Pilih edisi bahasa katalog</span>
+          </div>
+          <select class="zafira-lang-select profile-lang-select" aria-label="Pilih Bahasa">
+            <option value="id">Bahasa Indonesia (IDR Rp)</option>
+            <option value="en">English (USD $)</option>
+            <option value="fr">Français (EUR €)</option>
+            <option value="it">Italiano (EUR €)</option>
+          </select>
+        </div>
+
+        <!-- Suara Ambient Atelier (Acoustics) -->
+        <div class="profile-setting-row">
+          <div class="setting-info">
+            <span class="setting-name" data-i18n="profile_sound_label">Suasana Akustik Atelier</span>
+            <span class="setting-desc" data-i18n="profile_sound_desc">Umpan balik audio lembut</span>
+          </div>
+          <button class="sound-toggle-pill" id="profile-sound-btn" onclick="toggleAudioFeedback()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+            <span id="profile-sound-label">Aktif</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 5. Navigation Links & Portal Bridge -->
+      <div class="profile-footer-links">
+        <button class="btn-gold" style="width:100%; justify-content:center; padding:12px;" onclick="closeProfileDrawer(); switchView('account');" data-i18n="profile_full_portal">
+          Buka Portal Klien Lengkap (/akun)
+        </button>
+        <button class="btn-text" style="width:100%; text-align:center; margin-top:10px; font-size:11.5px; color:var(--taupe); display:block; cursor:pointer;" onclick="closeProfileDrawer(); switchView('admin');" data-i18n="profile_msi_link">
+          Akses Konsol Pengrajin Atelier (MSI &amp; TPS) &rarr;
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Mobile Navigation Drawer (For Responsive Screens <= 900px) -->
+  <aside class="mobile-nav-drawer" id="mobile-nav-drawer" role="dialog" aria-modal="true" aria-label="Navigasi Kriya Mobile">
+    <div class="drawer-header">
+      <div>
+        <span style="font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); font-weight:700;">Maison ZAFIRA</span>
+        <h3 style="font-family:var(--serif); font-size:22px; margin:2px 0 0;">Navigasi Kriya</h3>
+      </div>
+      <button class="btn-close" onclick="closeMobileNavDrawer()" aria-label="Tutup Navigasi">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="drawer-body" style="padding:24px 28px;">
+      <nav class="mobile-nav-links">
+        <a onclick="filterCategory('all'); closeMobileNavDrawer();" data-i18n="nav_collection">Koleksi</a>
+        <a onclick="filterCategory(8); closeMobileNavDrawer();" data-i18n="nav_heritage">Warisan Nusantara</a>
+        <a onclick="filterCategory(9); closeMobileNavDrawer();" data-i18n="nav_arrivals">Kapsul Adibusana</a>
+        <a href="#packaging-section" onclick="closeMobileNavDrawer();" data-i18n="nav_packaging">Kemasan &amp; L'Art d'Offrir</a>
+        <a onclick="closeMobileNavDrawer(); openRendezvousModal();" data-i18n="nav_services">Concierge Privat</a>
+        <a onclick="closeMobileNavDrawer(); openProductStudio(9);" style="color:var(--gold); font-weight:600;" data-i18n="dock_studio">Studio Kriya (PDP)</a>
+        <a onclick="closeMobileNavDrawer(); switchView('account');" style="font-weight:600;" data-i18n="dock_account">Espace Klien VIP</a>
+      </nav>
+
+      <div style="margin-top:28px; padding-top:20px; border-top:1px solid var(--line);">
+        <span style="font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--taupe); font-weight:700; display:block; margin-bottom:12px;">Mata Uang</span>
+        <div class="mobile-curr-group" style="display:flex; gap:8px;">
+          <button class="curr-opt active" data-curr="IDR" onclick="setCurrency('IDR')">IDR Rp</button>
+          <button class="curr-opt" data-curr="EUR" onclick="setCurrency('EUR')">EUR €</button>
+          <button class="curr-opt" data-curr="USD" onclick="setCurrency('USD')">USD $</button>
+        </div>
+      </div>
+
+      <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--line);">
+        <button class="btn-gold" style="width:100%; justify-content:center; padding:12px;" onclick="closeMobileNavDrawer(); openRendezvousModal();" data-i18n="rendezvous_btn">
+          Rendez-vous Privat
+        </button>
+      </div>
     </div>
   </aside>
 
@@ -718,7 +1170,9 @@
         <span style="font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); font-weight:700;">Atelier Kebayoran Baru</span>
         <h3 id="rv-modal-title" style="font-family:var(--serif); font-size:24px; color:var(--sapphire-midnight);">Rendez-vous Privat & Konsultasi</h3>
       </div>
-      <button class="btn-close" onclick="closeAllModals()" aria-label="Tutup">&times;</button>
+      <button class="btn-close" onclick="closeAllModals()" aria-label="Tutup">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
     </div>
 
     <!-- 3-Step Visibility Progress Indicator (Nielsen Heuristic 1) -->
@@ -727,12 +1181,12 @@
         <span class="step-num">1</span>
         <span>Klien & Sesi</span>
       </div>
-      <span style="color:var(--taupe); font-size:11px;">→</span>
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--taupe)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
       <div class="step-badge" id="rv-step-2">
         <span class="step-num">2</span>
         <span>Preferensi Kriya</span>
       </div>
-      <span style="color:var(--taupe); font-size:11px;">→</span>
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--taupe)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
       <div class="step-badge" id="rv-step-3">
         <span class="step-num">3</span>
         <span>Konfirmasi VIP</span>
@@ -781,8 +1235,9 @@
         <label class="form-label">Catatan Tambahan (Ukuran / Penyesuaian Kriya)</label>
         <textarea id="rv-notes" class="form-textarea" rows="3" placeholder="Contoh: Mohon siapkan ukuran S untuk kebaya dan sampel benang emas Palembang..."></textarea>
       </div>
-      <button type="submit" class="btn-gold" style="width:100%; justify-content:center; padding:14px; margin-top:8px;">
-        Konfirmasi Janji Temu Bersama Client Advisor ⟶
+      <button type="submit" class="btn-gold" style="width:100%; justify-content:center; padding:14px; margin-top:8px; display:inline-flex; align-items:center; gap:8px;">
+        <span>Konfirmasi Janji Temu Bersama Client Advisor</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
     </form>
   </div>
@@ -791,16 +1246,21 @@
   <div class="modal-window" id="authenticity-modal" role="dialog" aria-modal="true" aria-labelledby="cert-modal-title" style="max-width:720px; background:#fcfbf9; padding:0; overflow:hidden;">
     <div style="padding:16px 24px; background:var(--sapphire-midnight); display:flex; justify-content:space-between; align-items:center; color:#fff;">
       <span style="font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-light);">Sistem Ketertelusuran & Sertifikat Kriya Digital</span>
-      <button class="btn-close" style="color:#fff;" onclick="closeAllModals()" aria-label="Tutup">&times;</button>
+      <button class="btn-close" style="color:#fff;" onclick="closeAllModals()" aria-label="Tutup">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
     </div>
-    
+
     <div style="padding:36px 32px;" id="authenticity-modal-content">
       <!-- Populated dynamically via openAuthenticityModal(orderId) -->
     </div>
 
     <div style="padding:16px 32px; background:#f8fafc; border-top:1px solid #e2e8f0; display:flex; justify-content:flex-end; gap:12px;">
       <button class="btn-outline" style="padding:10px 20px; font-size:11px;" onclick="closeAllModals()">Tutup</button>
-      <button class="btn-gold" style="padding:10px 24px; font-size:11px;" onclick="window.print(); showToast('Mencetak Lembar Sertifikat Keaslian Adibusana...')">⎙ Cetak Sertifikat Resmi</button>
+      <button class="btn-gold" style="padding:10px 24px; font-size:11px; display:inline-flex; align-items:center; gap:6px;" onclick="window.print(); showToast('Mencetak Lembar Sertifikat Keaslian Adibusana...')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Cetak Sertifikat Resmi
+      </button>
     </div>
   </div>
 
@@ -808,7 +1268,9 @@
   <div class="modal-window" id="work-order-modal" role="dialog" aria-modal="true" aria-labelledby="wo-modal-title" style="max-width:760px; background:#fcfbf9; padding:0; overflow:hidden;">
     <div style="padding:16px 24px; background:var(--sapphire-midnight); display:flex; justify-content:space-between; align-items:center; color:#fff;">
       <span style="font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-light);">Atelier Command · Lembar Instruksi Kriya (Work Order)</span>
-      <button class="btn-close" style="color:#fff;" onclick="closeAllModals()" aria-label="Tutup">&times;</button>
+      <button class="btn-close" style="color:#fff;" onclick="closeAllModals()" aria-label="Tutup">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
     </div>
     <div style="padding:28px;" id="work-order-modal-content">
       <!-- Populated dynamically via openWorkOrderModal(orderId) -->
@@ -822,40 +1284,44 @@
     <div class="dock-badge">
       <span class="dock-dot"></span>
       <span class="dock-brand">ZAFIRA</span>
-      <span class="dock-ver">v3.5 · Haute Couture</span>
+      <span class="dock-ver">v4.1 · Multi-Lang</span>
     </div>
     <div class="dock-buttons">
       <button class="dock-btn active" id="btn-view-storefront" onclick="switchView('storefront')">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-        <span>Storefront</span>
+        <span data-i18n="dock_storefront">Storefront</span>
       </button>
       <button class="dock-btn" id="btn-view-studio" onclick="openProductStudio(9)">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-        <span>Studio PDP</span>
+        <span data-i18n="dock_studio">Studio PDP</span>
       </button>
       <button class="dock-btn" id="btn-view-account" onclick="switchView('account')">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        <span>Akun VIP</span>
+        <span data-i18n="dock_account">Akun VIP</span>
       </button>
       <button class="dock-btn" id="btn-view-admin" onclick="switchView('admin')">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-        <span>Atelier Command (MSI)</span>
+        <span data-i18n="dock_atelier">Atelier Kriya</span>
       </button>
     </div>
-    <button class="dock-collapse-btn" id="dock-collapse-btn" onclick="toggleDockCollapse()" title="Kecilkan/Buka Navigasi Prototipe" aria-label="Toggle Dock">−</button>
+    <button class="dock-collapse-btn" id="dock-collapse-btn" onclick="toggleDockCollapse()" title="Kecilkan/Buka Navigasi Prototipe" aria-label="Toggle Dock">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
   </nav>
 
   <!-- Keyboard Shortcuts & Power User Guide Modal (Nielsen Accelerator & Cooper Polite Software) -->
   <div class="modal-window" id="keyboard-shortcuts-modal" role="dialog" aria-modal="true" aria-labelledby="ks-modal-title" style="max-width:520px;">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
       <div>
-        <span style="font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); font-weight:700;">Akselerator Ahli</span>
+        <span style="font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); font-weight:700;">Akselerator Salon</span>
         <h3 id="ks-modal-title" style="font-family:var(--serif); font-size:22px; color:var(--sapphire-midnight); margin:2px 0 0;">Pintasan Keyboard Maison ZAFIRA</h3>
       </div>
-      <button class="btn-close" onclick="closeAllModals()" aria-label="Tutup">&times;</button>
+      <button class="btn-close" onclick="closeAllModals()" aria-label="Tutup">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
     </div>
     <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">
-      Akselerator navigasi efisiensi tinggi (Sesuai Golden Rules Ben Shneiderman & Jakob Nielsen):
+      Akselerator navigasi efisiensi tinggi untuk menjelajahi seluruh ruang salon digital:
     </p>
     <div class="shortcuts-table" style="display:flex; flex-direction:column; gap:8px;">
       <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--ivory); border-radius:var(--radius-xs);">
@@ -883,6 +1349,10 @@
         <kbd style="padding:2px 8px; background:#fff; border:1px solid #cbd5e1; border-radius:4px; font-size:11px; box-shadow:0 1px 2px rgba(0,0,0,0.06);">A</kbd>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--ivory); border-radius:var(--radius-xs);">
+        <span style="font-size:12px; font-weight:600; color:var(--sapphire-midnight);">Buka Profil Klien VIP &amp; Salon</span>
+        <kbd style="padding:2px 8px; background:#fff; border:1px solid #cbd5e1; border-radius:4px; font-size:11px; box-shadow:0 1px 2px rgba(0,0,0,0.06);">U</kbd>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--ivory); border-radius:var(--radius-xs);">
         <span style="font-size:12px; font-weight:600; color:var(--sapphire-midnight);">Fokus ke Pencarian Koleksi</span>
         <kbd style="padding:2px 8px; background:#fff; border:1px solid #cbd5e1; border-radius:4px; font-size:11px; box-shadow:0 1px 2px rgba(0,0,0,0.06);">/</kbd>
       </div>
@@ -896,6 +1366,7 @@
   <div class="toast-container" id="toast-container"></div>
 
   <!-- Scripts -->
-  <script src="app.js"></script>
+  <script src="zafira-core.js"></script>
+  <script src="app.js?v=3.9.0"></script>
 </body>
 </html>

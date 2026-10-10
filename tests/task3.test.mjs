@@ -5,6 +5,11 @@ import vm from 'node:vm';
 
 const app = readFileSync(new URL('../resources/js/app.js', import.meta.url), 'utf8').replace(/^import .*;\n/gm, '');
 const welcome = readFileSync(new URL('../resources/views/welcome.blade.php', import.meta.url), 'utf8');
+const prototypeApp = readFileSync(new URL('../prototype/app.js', import.meta.url), 'utf8');
+
+test('prototype product links resolve storefront slugs', () => {
+    assert.match(prototypeApp, /item\.slug === requestedProductId \|\| item\.id === numericId/);
+});
 function node(dataset = {}) {
     const classes = new Set();
     const handlers = {};

@@ -56,7 +56,7 @@
         .hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; filter: brightness(0.72) contrast(1.05); }
         .hero-overlay { position: absolute; inset: 0; background: rgba(8, 16, 29, 0.45); }
         .hero-edition { position: absolute; top: 120px; right: 4vw; color: rgba(255,255,255,0.7); font-family: var(--mono, monospace); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; z-index: 2; text-align: right; }
-        .hero-content { position: relative; z-index: 2; max-width: 800px; text-align: center; padding: 0 20px; color: #fff; margin-top: 40px; }
+        .hero-content { position: relative; left: auto; right: auto; bottom: auto; z-index: 2; max-width: 800px; text-align: center; padding: 0 20px; color: #fff; margin-top: 40px; }
         .hero-content h1 { font-family: 'Bodoni Moda', serif; font-size: clamp(38px, 6vw, 68px); font-weight: 400; line-height: 1.1; margin: 18px 0 24px; text-shadow: 0 4px 24px rgba(0,0,0,0.4); }
         .hero-content p { font-size: clamp(14px, 1.8vw, 17px); color: rgba(255,255,255,0.88); max-width: 580px; margin: 0 auto 32px; font-weight: 300; }
         .hero-scroll { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.75); font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; }

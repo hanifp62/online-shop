@@ -2,6 +2,7 @@
 
 **Proyek:** ZAFIRA (La Maison de Lumière — `online-shop`)  
 **Tanggal:** 2026-10-10  
+**Laporan Verifikasi Remediasi Terkait:** [`docs/05-quality/REMEDIATION_VERIFICATION_2026-10-10.md`](../05-quality/REMEDIATION_VERIFICATION_2026-10-10.md) (mencakup FR-201..FR-204 & NFR-201..NFR-203 pasca-remediasi).
 
 ---
 

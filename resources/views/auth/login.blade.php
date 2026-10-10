@@ -14,12 +14,15 @@
 <body>
 <main class="auth-page">
     <section class="auth-visual" aria-label="Dunia ZAFIRA">
-        <img src="https://images.unsplash.com/photo-1536243298747-ea8874136d64?auto=format&fit=crop&w=1400&q=88" alt="Editorial elegan ZAFIRA" width="1400" height="1750" fetchpriority="high">
+        <img src="{{ asset('prototype/assets/hero_couture.jpg') }}" alt="Editorial adibusana ZAFIRA Haute Couture" width="1400" height="1750" fetchpriority="high">
         <a class="brand" href="{{ route('home') }}" aria-label="ZAFIRA beranda"><x-brand-mark /></a>
-        <div class="auth-quote"><span class="eyebrow light">Votre Monde Privé</span><h2>Keanggunan yang<br><em>mengenal Anda.</em></h2><p>Simpan pilihan, akses undangan privat, dan nikmati layanan personal dari Maison.</p></div>
+        <div class="auth-quote"><span class="eyebrow light">Votre Monde Privé</span><h2>Keanggunan abadi dalam setiap helai busana Anda.</h2><p>Simpan pilihan kriya, akses undangan privat, dan nikmati layanan personal dari Maison ZAFIRA.</p></div>
     </section>
     <section class="auth-content">
-        <a class="auth-back text-link" href="{{ route('home') }}">← Kembali ke Maison</a>
+        <a class="auth-back text-link" href="{{ route('home') }}" style="display:inline-flex; align-items:center; gap:6px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <span>Kembali ke Maison</span>
+        </a>
         <div class="auth-card">
             <span class="eyebrow">Mon Compte</span>
             <h1>Selamat datang kembali.</h1>
