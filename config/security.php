@@ -1,6 +1,6 @@
 <?php
 
 return [
-    // Process-only opt-in; keep .env and request input outside this switch.
-    'csp_report_only' => getenv('ZAFIRA_CSP_REPORT_ONLY') === '1',
+    // Laravel loads .env through env(); keep request input outside this switch.
+    'csp_report_only' => env('ZAFIRA_CSP_REPORT_ONLY') === '1',
 ];

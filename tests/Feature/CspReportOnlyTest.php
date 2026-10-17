@@ -17,11 +17,11 @@ class CspReportOnlyTest extends TestCase
 
     public function test_config_reads_process_env_flag(): void
     {
-        // Mirrors config/security.php without mutating .env.
-        putenv('ZAFIRA_CSP_REPORT_ONLY=1');
-        $this->assertTrue(getenv('ZAFIRA_CSP_REPORT_ONLY') === '1');
-        putenv('ZAFIRA_CSP_REPORT_ONLY');
-        $this->assertFalse(getenv('ZAFIRA_CSP_REPORT_ONLY') === '1');
+        $source = file_get_contents(config_path('security.php'));
+        $this->assertIsString($source);
+        $this->assertStringContainsString("env('ZAFIRA_CSP_REPORT_ONLY') === '1'", $source);
+        $this->assertStringNotContainsString('getenv(', $source);
+        $this->assertFalse(config('security.csp_report_only'));
     }
 
     public function test_report_only_header_present_when_enabled(): void
