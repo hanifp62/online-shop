@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Middleware\EnsureAdminTotp;
 use App\Models\Admin;
 use App\Models\AdminTotpRecoveryCode;
 use App\Models\User;
@@ -9,6 +10,7 @@ use App\Services\TotpService;
 use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
@@ -338,12 +340,12 @@ class AdminTotpTest extends TestCase
         $this->assertStringNotContainsString('salah', strtolower($msg));
     }
 
-    public function test_flag_without_secret_passes_as_legacy_and_alarms(): void
+    public function test_flag_without_secret_redirects_to_enrol_and_alarms(): void
     {
         $admin = Admin::create(['name' => 'Flag', 'email' => 'flag@example.test', 'password' => self::PW]);
         $admin->forceFill(['totp_required_at' => now()])->save();
         $this->assertFalse($admin->fresh()->requiresTotp());
-        $this->actingAs($admin, 'admin')->get('/admin')->assertOk();
+        $this->actingAs($admin, 'admin')->get('/admin')->assertRedirect(route('admin.totp.enrol'));
         $this->assertNotEmpty(array_filter($this->logs, fn ($l) => $l['level'] === 'critical'));
     }
 
@@ -600,4 +602,177 @@ PHP;
         }
     }
 
+    // ---- 11846b4c: Enrolment Self-Service & TotpRequire ----
+
+    public function test_legacy_admin_sees_enrolment_banner_on_dashboard(): void
+    {
+        $admin = Admin::create(['name' => 'Legacy', 'email' => 'leg@example.test', 'password' => self::PW]);
+        $this->actingAs($admin, 'admin')->get('/admin')
+            ->assertOk()
+            ->assertSee(route('admin.totp.enrol'))
+            ->assertSee('Aktifkan Verifikasi Dua Langkah');
+    }
+
+    public function test_enrolled_admin_does_not_see_enrolment_banner_on_dashboard(): void
+    {
+        [$admin, $secret] = $this->totpAdmin();
+        $sid1 = $this->passwordLogin($admin);
+        [, $sid2] = $this->http('POST', '/admin/totp', ['code' => $this->otp($secret)], $sid1);
+        [$res] = $this->http('GET', '/admin', [], $sid2);
+        $res->assertOk()->assertDontSee(route('admin.totp.enrol'));
+    }
+
+    public function test_admin_with_totp_cannot_re_enrol_via_get_or_post(): void
+    {
+        [$admin] = $this->totpAdmin();
+        $this->actingAs($admin, 'admin')->get('/admin/totp/enrol')->assertRedirect(route('admin.dashboard'));
+        $this->actingAs($admin, 'admin')->post('/admin/totp/enrol', ['code' => '123456'])->assertRedirect(route('admin.dashboard'));
+    }
+
+    public function test_enrol_page_generates_new_secret_and_uri_in_session(): void
+    {
+        $admin = Admin::create(['name' => 'Enrollee', 'email' => 'enrollee@example.test', 'password' => self::PW]);
+        $res = $this->actingAs($admin, 'admin')->get('/admin/totp/enrol');
+        $res->assertOk();
+        $res->assertSessionHas('totp_enrol_secret');
+        $res->assertSessionHas('totp_enrol_uri');
+        $pendingCiphertext = session('totp_enrol_secret');
+        $secret = Crypt::decryptString($pendingCiphertext);
+        $this->assertNotEmpty($secret);
+        $this->assertNotSame($secret, $pendingCiphertext);
+        $res->assertSee($secret);
+        $this->assertNull($admin->fresh()->totp_secret);
+        $this->assertNull($admin->fresh()->totp_required_at);
+    }
+
+    public function test_enrol_post_invalid_code_fails_and_keeps_pending_secret(): void
+    {
+        $admin = Admin::create(['name' => 'Enrollee', 'email' => 'enrollee2@example.test', 'password' => self::PW]);
+        $svc = app(TotpService::class);
+        $secret = $svc->generateSecret();
+        $res = $this->actingAs($admin, 'admin')
+            ->withSession(['totp_enrol_secret' => Crypt::encryptString($secret)])
+            ->post('/admin/totp/enrol', ['code' => '000000']);
+        $res->assertSessionHasErrors('code');
+        $this->assertNull($admin->fresh()->totp_secret);
+        $this->assertNull($admin->fresh()->totp_required_at);
+    }
+
+    public function test_enrol_post_success_saves_ciphertext_hash_and_shows_codes_once(): void
+    {
+        $admin = Admin::create(['name' => 'Enrollee', 'email' => 'enrollee3@example.test', 'password' => self::PW]);
+        [, $sid0] = $this->http('GET', '/admin/login');
+        [, $sid1] = $this->http('POST', '/admin/login', ['email' => $admin->email, 'password' => self::PW], $sid0);
+        [$enrolGet, $sid1] = $this->http('GET', '/admin/totp/enrol', [], $sid1);
+        $enrolGet->assertOk();
+        $secret = Crypt::decryptString((string) session('totp_enrol_secret'));
+        $code = $this->otp($secret);
+
+        [$res, $sid2] = $this->http('POST', '/admin/totp/enrol', ['code' => $code], $sid1);
+
+        $res->assertRedirect(route('admin.totp.enrol.recovery'));
+
+        $fresh = $admin->fresh();
+        $this->assertNotNull($fresh->totp_required_at);
+        $this->assertTrue($fresh->requiresTotp());
+        $this->assertSame($secret, $fresh->totp_secret);
+
+        // Ciphertext verification via direct DB query
+        $rawSecret = DB::table('admins')->where('id', $admin->id)->value('totp_secret');
+        $this->assertNotSame($secret, $rawSecret);
+        $this->assertStringStartsWith('eyJpdiI6', $rawSecret);
+
+        // 8 recovery codes hashed with bcrypt in DB
+        $storedCodes = DB::table('admin_totp_recovery_codes')->where('admin_id', $admin->id)->get();
+        $this->assertCount(8, $storedCodes);
+        foreach ($storedCodes as $sc) {
+            $this->assertStringStartsWith('$2y$', $sc->code_hash);
+            $this->assertSame(60, strlen($sc->code_hash));
+        }
+
+        // View recovery codes confirmation: shown exactly ONCE
+        [$confirm, $sid2] = $this->http('GET', '/admin/totp/enrol/recovery', [], $sid2);
+        $confirm->assertOk();
+        $confirm->assertSee('Simpan Kode Cadangan');
+
+        // Subsequent GET to recovery must redirect away and NOT show codes again
+        [$confirm2, $sid2] = $this->http('GET', '/admin/totp/enrol/recovery', [], $sid2);
+        $confirm2->assertRedirect(route('admin.dashboard'));
+
+        // Subsequent GET to enrol must redirect away and NOT show codes
+        [$enrol2, $sid2] = $this->http('GET', '/admin/totp/enrol', [], $sid2);
+        $enrol2->assertRedirect(route('admin.dashboard'));
+
+        // Console is accessible immediately in the rotated session
+        [$dash] = $this->http('GET', '/admin', [], $sid2);
+        $dash->assertOk();
+    }
+
+    public function test_stale_enrol_request_cannot_replace_an_existing_secret(): void
+    {
+        $admin = Admin::create(['name' => 'Race', 'email' => 'race@example.test', 'password' => self::PW]);
+        $pending = app(TotpService::class)->generateSecret();
+        $existing = app(TotpService::class)->generateSecret();
+        $this->actingAs($admin, 'admin')->withSession([
+            'totp_enrol_secret' => Crypt::encryptString($pending),
+        ]);
+
+        // Another enrolment wins after this request's authenticated model was loaded.
+        DB::table('admins')->where('id', $admin->id)->update([
+            'totp_secret' => Crypt::encryptString($existing),
+            'totp_required_at' => now(),
+        ]);
+        $this->post('/admin/totp/enrol', ['code' => $this->otp($pending)])
+            ->assertRedirect(route('admin.dashboard'));
+
+        $this->assertSame($existing, $admin->fresh()->totp_secret);
+        $this->assertSame(0, $admin->totpRecoveryCodes()->count());
+        $this->assertNull(session('totp_enrol_codes'));
+    }
+
+    public function test_enrol_with_corrupt_pending_secret_logs_critical(): void
+    {
+        $admin = Admin::create(['name' => 'CorruptEnrol', 'email' => 'corrupt-enrol@example.test', 'password' => self::PW]);
+        $res = $this->actingAs($admin, 'admin')
+            ->withSession(['totp_enrol_secret' => 'not-valid-ciphertext'])
+            ->post('/admin/totp/enrol', ['code' => '123456']);
+        $res->assertSessionHasErrors('code');
+        $crit = array_values(array_filter($this->logs, fn ($l) => $l['level'] === 'critical'));
+        $this->assertNotEmpty($crit);
+        $this->assertArrayHasKey('admin_id', $crit[0]['context']);
+    }
+
+    public function test_provisioning_uri_method_generates_valid_otpauth_uri(): void
+    {
+        $svc = app(TotpService::class);
+        $secret = $svc->generateSecret();
+        $uri = $svc->provisioningUri('admin@zafira.test', $secret);
+        $this->assertStringStartsWith('otpauth://totp/', $uri);
+        $this->assertStringContainsString('secret='.$secret, $uri);
+    }
+
+    public function test_admin_totp_require_command_refuses_when_admin_has_no_secret(): void
+    {
+        $a1 = Admin::create(['name' => 'NoSecret1', 'email' => 'nosecret1@example.test', 'password' => self::PW]);
+        $this->artisan('admin:totp-require', ['--all' => true])
+            ->expectsOutputToContain('nosecret1@example.test')
+            ->expectsOutputToContain('Dibatalkan')
+            ->assertExitCode(1);
+
+        $this->assertNull($a1->fresh()->totp_required_at);
+    }
+
+    public function test_admin_totp_require_command_succeeds_when_all_admins_have_secrets(): void
+    {
+        [$a1] = $this->totpAdmin('a1@example.test');
+        [$a2] = $this->totpAdmin('a2@example.test');
+        DB::table('admins')->update(['totp_required_at' => null]);
+
+        $this->artisan('admin:totp-require', ['--all' => true])
+            ->expectsOutputToContain('Berhasil mewajibkan TOTP')
+            ->assertExitCode(0);
+
+        $this->assertNotNull($a1->fresh()->totp_required_at);
+        $this->assertNotNull($a2->fresh()->totp_required_at);
+    }
 }

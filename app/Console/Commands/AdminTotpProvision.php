@@ -43,7 +43,7 @@ class AdminTotpProvision extends Command
         $this->line('Simpan sekarang. Data ini tidak akan ditampilkan lagi.');
         $this->line('Password: '.$password);
         $this->line('Kunci setup: '.$secret);
-        $this->line('URI: '.$totp->makeOtpAuthUri($email, $secret));
+        $this->line('URI: '.$totp->provisioningUri($email, $secret));
         $this->line('Kode cadangan 2FA (sekali pakai):');
         foreach ($codes as $code) {
             $this->line('  '.$code);

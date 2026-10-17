@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminTotpController;
+use App\Http\Controllers\AdminTotpEnrolController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AuthController;
@@ -94,6 +95,10 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/admin/totp', [AdminTotpController::class, 'show'])->name('admin.totp.challenge');
     Route::post('/admin/totp', [AdminTotpController::class, 'verify'])->name('admin.totp.verify');
     Route::post('/admin/totp/recovery', [AdminTotpController::class, 'recovery'])->name('admin.totp.recovery');
+    // Enrolment: deliberately outside EnsureAdminTotp so an admin without a secret can still reach it.
+    Route::get('/admin/totp/enrol', [AdminTotpEnrolController::class, 'show'])->name('admin.totp.enrol');
+    Route::post('/admin/totp/enrol', [AdminTotpEnrolController::class, 'store'])->name('admin.totp.enrol.store');
+    Route::get('/admin/totp/enrol/recovery', [AdminTotpEnrolController::class, 'recovery'])->name('admin.totp.enrol.recovery');
     Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 });
 

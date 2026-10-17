@@ -81,6 +81,12 @@
         <a href="#panel-keamanan">Keamanan</a>
     </nav>
 
+    @if (auth('admin')->user()->getRawOriginal('totp_secret') === null)
+        <div class="auth-errors" role="status">
+            <a class="button button-sapphire" href="{{ route('admin.totp.enrol') }}">Aktifkan Verifikasi Dua Langkah</a>
+        </div>
+    @endif
+
     @if (session('success'))
         <div class="auth-errors" role="status" style="margin-bottom:16px"><ul><li>{{ session('success') }}</li></ul></div>
     @endif

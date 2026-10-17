@@ -13,9 +13,11 @@
 | `app/Http/Middleware/EnsureAdminTotp.php` | Gerbang konsol (15 rute) |
 | `app/Http/Controllers/AdminTotpController.php` | Challenge GET/POST `admin/totp`, POST `admin/totp/recovery` (rate limit 5/menit per admin\|ip) |
 | `app/Console/Commands/AdminTotpProvision.php` | `admin:totp-provision`: membuat secret + 8 kode pemulihan, dicetak sekali |
-| `tests/Feature/AdminTotpTest.php` | 31 test perilaku (EXIT=0, 211 assertion) |
+| `app/Http/Controllers/AdminTotpEnrolController.php` | Enrol mandiri GET/POST `/admin/totp/enrol`, konfirmasi sekali `/admin/totp/enrol/recovery` |
+| `app/Console/Commands/AdminTotpRequire.php` | `admin:totp-require --all`: mewajibkan TOTP bila seluruh admin telah memiliki secret |
+| `tests/Feature/AdminTotpTest.php` | 42 test perilaku (EXIT=0, 286 assertion) |
 
-Rute: 21 total; 19 `auth:admin`, 2 `guest:admin`. Dari 19: 15 konsol (termasuk `/admin/orders*` dan `admin/reports/orders.pdf`) memakai `EnsureAdminTotp`, 4 challenge (`admin/logout`, GET/POST `admin/totp`, POST `admin/totp/recovery`).
+Rute terukur setelah enrol: 22 `auth:admin`, terdiri dari 15 konsol bergate `EnsureAdminTotp` dan 7 tanpa gate (logout, tiga challenge, tiga enrol). Dua rute login memakai `guest:admin`. Hitungan ini berasal dari `php artisan route:list --json` (EXIT=0), bukan target angka tetap.
 
 ## 2. Kebijakan
 
@@ -30,8 +32,8 @@ Kode pemulihan tidak membawa cap waktu TOTP. Penanda tetap harus naik agar sesi 
 
 Replay sekuensial ditolak lebih awal oleh `verifyKeyNewer` (alasan `invalid_code`). Cabang `replayed` hanya tercapai pada interleaving baca-lalu-tulis.
 
-### K5 — Tanda tanpa secret lolos + `Log::critical`
-Belum ada reissue kode pemulihan. Admin yang bertanda tetapi secret-nya hilang akan terkunci permanen bila diblokir. Karena itu admin bertanda tanpa secret diperlakukan sebagai legacy dan sistem menulis `Log::critical` untuk ditindaklanjuti operator.
+### K5 — Flag tanpa secret dialihkan ke enrol + `Log::critical`
+Admin bertanda `totp_required_at` tanpa `totp_secret` tidak lagi lolos konsol. Middleware menulis `Log::critical` dan mengalihkan ke `admin.totp.enrol`. Kolom `totp_last_used_at` tetap bernama itu agar tidak mengubah skema eksisting; nilainya adalah *time-step* integer 30 detik dari `verifyKeyNewer`, bukan `DateTime`.
 
 ### Rotasi `APP_KEY`
 `totp_secret` dienkripsi dengan `APP_KEY`. Bila kunci hilang atau dirotasi, secret tidak terdekripsi (`DecryptException` → `broken_secret`, `Log::critical`). Pemulihan: jalankan ulang `php artisan admin:totp-provision` untuk admin terdampak dan bagikan secret baru lewat kanal aman. Riwayat git memuat 2 commit yang menyentuh string `APP_KEY` (nilai tidak diperiksa/dicetak); rotasi kunci gratis hanya selama belum ada secret TOTP di produksi.
@@ -52,7 +54,17 @@ Admin ber-TOTP: `totp_last_used_at` = null, kode pemulihan dihapus, `remember_to
 | 7 | `grep "=== true"` jalur verifikasi (4 berkas) | Kosong (EXIT=1). `StorefrontController.php:105` di luar jalur, sah, tidak diubah |
 | 8 | Log tanpa rahasia | `no secret password or code in logs` lulus (listener `MessageLogged`) |
 
-Full suite (SQLite): **EXIT=0, 231 passed, 4 skipped, 1646 assertions**.
+Full suite terbaru setelah enrol (SQLite): **EXIT=0, 242 passed, 4 skipped, 1721 assertions**.
+
+### Enrol mandiri — 11846b4c
+
+- Secret pending dan URI disimpan terenkripsi dalam sesi; belum ada penulisan secret ke DB sebelum kode benar.
+- Konfirmasi menyimpan secret terenkripsi, flag wajib TOTP, langkah terakhir, dan 8 hash bcrypt dalam satu transaksi.
+- CAS `WHERE totp_secret IS NULL` mencegah request stale menimpa enrol yang sudah menang. Sesi dirotasi setelah kode benar.
+- Kode cadangan disimpan terenkripsi dalam sesi dan diambil dengan `pull()` untuk tampilan sekali; respons memakai `Cache-Control: no-store`.
+- Admin legacy tetap dapat login dan masuk konsol dengan banner enrol. Admin yang sudah memiliki secret tidak dapat enrol ulang.
+- Mutasi penghapusan `whereNull('totp_secret')` membuat `test_stale_enrol_request_cannot_replace_an_existing_secret` merah (EXIT=1). Berkas dipulihkan, MD5 identik, test kembali hijau (EXIT=0).
+- Ini membuktikan interleaving dengan model autentikasi stale, **bukan** uji konkurensi MySQL nyata.
 
 ## 4. Mutasi
 

@@ -22,9 +22,9 @@ class TotpService
         return $this->google2fa->generateSecretKey();
     }
 
-    public function makeOtpAuthUri(string $email, string $secret): string
+    public function provisioningUri(string $label, string $secret): string
     {
-        return $this->google2fa->getQRCodeUrl(config('app.name', 'ZAFIRA'), $email, $secret);
+        return $this->google2fa->getQRCodeUrl(config('app.name', 'ZAFIRA'), $label, $secret);
     }
 
     /** @return list<string> */

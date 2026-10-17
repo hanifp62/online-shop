@@ -23,6 +23,8 @@ class EnsureAdminTotp
         if (! $admin->requiresTotp()) {
             if ($admin->totp_required_at !== null) {
                 Log::critical('Admin TOTP flag present without secret', ['admin_id' => $admin->id]);
+
+                return redirect()->route('admin.totp.enrol');
             }
 
             return $next($request);
