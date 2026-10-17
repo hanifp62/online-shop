@@ -4,6 +4,7 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminTotpController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AuthController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\StorefrontController;
+use App\Http\Middleware\EnsureAdminTotp;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
@@ -87,7 +89,15 @@ Route::middleware('guest:admin')->group(function () {
         ->name('admin.login.process');
 });
 
+// Admin sudah login tetapi belum lolos faktor kedua: hanya boleh verifikasi atau keluar.
 Route::middleware('auth:admin')->group(function () {
+    Route::get('/admin/totp', [AdminTotpController::class, 'show'])->name('admin.totp.challenge');
+    Route::post('/admin/totp', [AdminTotpController::class, 'verify'])->name('admin.totp.verify');
+    Route::post('/admin/totp/recovery', [AdminTotpController::class, 'recovery'])->name('admin.totp.recovery');
+    Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+});
+
+Route::middleware(['auth:admin', EnsureAdminTotp::class])->group(function () {
     Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::patch('/admin/concierge/{concierge}', [AdminDashboardController::class, 'updateConcierge'])->name('admin.concierge.update');
     Route::patch('/admin/password', [AdminDashboardController::class, 'updatePassword'])->name('admin.password.update');
@@ -103,5 +113,4 @@ Route::middleware('auth:admin')->group(function () {
     Route::patch('/admin/orders/{id}', [AdminOrderController::class, 'updateStatus'])->whereNumber('id')->name('admin.orders.update');
     Route::get('/admin/orders/{id}/invoice', [AdminOrderController::class, 'invoice'])->whereNumber('id')->name('admin.orders.invoice');
     Route::get('/admin/reports/orders.pdf', [AdminOrderController::class, 'report'])->name('admin.orders.report');
-    Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 });

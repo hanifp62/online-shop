@@ -2,7 +2,7 @@
 
 **Proyek:** ZAFIRA (La Maison de Lumière — `online-shop`)  
 **Status:** Approved & Implemented  
-**Tanggal:** 2026-10-10  
+**Tanggal:** 2026-10-10 (ADR-006–009 ditambahkan 2026-10-14)
 
 ---
 
@@ -20,7 +20,8 @@
 - **Status:** Diterima (Accepted).
 - **Konteks:** Storefront ZAFIRA menerima volume kunjungan tinggi dengan katalog produk yang tidak berubah setiap detik, namun ketika pengelola butik mengubah harga atau kategori, perubahan harus langsung terlihat oleh pelanggan.
 - **Keputusan:** Membungkus pembacaan produk dan kategori dalam `Cache::remember` berdurasi 300 detik. Setiap operasi penambahan, pengubahan, atau penghapusan produk maupun kategori memicu metode statis `AdminCategoryController::flushStorefrontCache()`.
-- **Konsekuensi:** Waktu respon beranda sangat cepat (< 50ms di cache hit) dengan jaminan *zero stale cache* saat terjadi mutasi data.
+- **Konsekuensi:** Waktu respon beranda cepat di cache hit.
+- **Koreksi 2026-10-14:** Klaim *zero stale cache* hanya berlaku untuk mutasi admin produk/kategori. Perubahan stok dari checkout dan pembatalan tidak memanggil `flushStorefrontCache()`, sehingga snapshot katalog dan JSON-LD dapat tertinggal sampai TTL 300 detik berakhir. Lihat ADR-008. Angka "< 50ms" adalah klaim lama tanpa bukti pengukuran terlampir (NOT_MEASURED).
 
 ---
 
@@ -48,3 +49,49 @@
 - **Konteks:** Tampilan sisi pengguna ZAFIRA telah memiliki kualitas desain dan tipografi yang sangat matang (skor estetika tinggi), sementara halaman admin sebelumnya monolitik dan belum seimbang.
 - **Keputusan:** Mempertahankan 100% aset visual, warna, dan font storefront, serta membangun sistem antarmuka admin atelier modern yang mengadopsi prinsip desain yang sama (palet Safir, Emas, Linen pekat, sidebar ramping, dan KPI terstruktur).
 - **Konsekuensi:** Tercipta keharmonisan visual antara sisi depan toko dan ruang kerja pengelola atelier.
+
+---
+
+## ADR-006: Kontrak Cart Pembelian Terpadu
+
+- **Status:** Diterima (Accepted).
+- **Konteks:** Beranda, katalog, PDP, drawer, dan `/belanja` sebelumnya berisiko memiliki representasi cart berbeda.
+- **Keputusan:** Cart pembelian standar memakai session server dengan kontrak `product_id => quantity`; endpoint mutasi memakai semantik SET. Ukuran dan monogram tetap alur concierge, bukan atribut pembelian standar. Data localStorage legacy `zafira-cart` dan `zafira-cart:v1` dipertahankan untuk rekonsiliasi terbaca, tanpa merge otomatis atau duplikasi.
+- **Mutasi UI:** `cartRequest()` di `resources/js/app.js` memasukkan setiap aksi ke antrean promise. Jumlah target dihitung saat giliran aksi tiba (fungsi *intent*), bukan saat klik, sehingga klik cepat tidak terbuang dan tidak memakai angka basi. Request gagal tidak memblokir antrean. Undo menambahkan jumlah yang dihapus ke isi cart saat itu. Batas: antrean tidak dibatasi panjangnya; teks status dapat sesaat menampilkan "diperbarui" saat aksi berikutnya masih berjalan.
+- **Konsekuensi:** Semua titik pembelian membaca sumber yang sama. Aksi bertumpuk dieksekusi berurutan dengan state terbaru. Halaman katalog memakai pesan inline `#catalog-feedback`, bukan toast dan badge header (celah UX terbuka).
+
+## ADR-007: Idempotensi Checkout dan Model Stok
+
+- **Status:** Diterima (Accepted untuk SQLite dan kontrak aplikasi; validasi engine produksi NOT_RUN).
+- **Konteks:** Retry jaringan dan dua request bersamaan dapat membuat order ganda, mengurangi stok ganda, atau memakai voucher lebih dari batas.
+- **Keputusan:** Kunci idempotensi diperiksa ulang di dalam transaksi/lock sebelum mutasi. Payload berbeda dengan kunci sama menghasilkan 409; payload sama replay order lama. Retry hanya untuk error SQLite busy/locked, maksimal tiga kali, dengan 503 setelah habis. Model stok yang dipilih adalah **Model A: stok tersimpan sebagai integer pada produk dan dikurangi atomik secara kondisional saat checkout**. Cancel memakai compare-and-set dan mengembalikan stok sekali.
+- **Konsekuensi:** Harness dua proses membuktikan overlap dan kasus stok tepat satu pada SQLite. MariaDB/MySQL tetap perlu verifikasi terpisah sebelum klaim lintas-engine.
+
+## ADR-008: Freshness JSON-LD Ketersediaan Produk
+
+- **Status:** Diterima (Accepted).
+- **Konteks:** JSON-LD harus tidak mengklaim `InStock` untuk produk tidak aktif atau stok nol, tetapi pembacaan katalog memakai cache.
+- **Keputusan:** `InStock` hanya bila cache memuat `is_active=true` dan `stock>0`; selain itu `OutOfStock`. TTL 300 detik dipertahankan, dan cache lama tanpa field stok tidak boleh menghasilkan klaim `InStock`. Mutasi admin membersihkan cache. Perubahan checkout non-admin terlihat setelah TTL atau invalidasi berikutnya.
+- **Konsekuensi:** Klaim freshness dibatasi oleh TTL 300 detik. Verifikasi mencakup stok nol, stok positif, nonaktif, cache lama, dan refresh setelah TTL.
+- **Revisi 2026-10-14 (lanjutan):** Halaman produk (PDP) tidak lagi memakai cache `storefront:product:{slug}:v1`; status aktif dan stok dibaca langsung dari database pada setiap request, sehingga JSON-LD mengikuti hasil checkout, cancel, dan perubahan admin pada request berikutnya. Test regresi: `StorefrontAvailabilityTest` (6 test). Harga: satu query tambahan per kunjungan PDP. Cache beranda/katalog dan produk terkait tetap 300 detik; kartu di sana tidak menampilkan stok, dan server tetap memvalidasi stok saat tambah ke tas serta checkout. Target freshness numerik belum disetujui pemilik produk.
+
+## ADR-009: Profil Manual Native Terisolasi
+
+- **Status:** Diterima (Accepted untuk uji lokal).
+- **Konteks:** Uji manual harus memakai `php artisan serve` native tanpa menyentuh MySQL operasional, email nyata, pembayaran, atau secrets produksi.
+- **Keputusan:** Gunakan root/runtime/profile sintetis yang namespaced, SQLite terpisah, session dan cache `file` di root dummy, queue `sync`, mail `log`, log `single`, dan port 8017. Preflight memeriksa fallback `.env`, cached config, external env, symlink, dan sink runtime sebelum migrasi/fixture.
+- **Konsekuensi:** Data fixture dapat bertahan saat restart dan dapat diulang. MariaDB/MySQL, screen reader, dan user study tetap NOT_RUN.
+
+## ADR-010: Status Pembayaran `paid` Dinonaktifkan pada Lingkup Pending-Only
+
+- **Status:** Diterima (Accepted untuk lingkup uji lokal); integrasi pembayaran NOT_IMPLEMENTED.
+- **Konteks:** Sebelumnya admin dapat mengubah pesanan `pending` menjadi `paid` lewat form dasbor atau `PATCH /admin/orders/{id}` tanpa bukti pembayaran apa pun. Tidak ada gateway, webhook, atau rekonsiliasi. Pembayaran punya tahap berbeda (authorization, capture, processing, settlement) yang belum dimodelkan.
+- **Keputusan:** `CheckoutService::transition` menolak target `paid` dengan 422 (`Order::MANUAL_BLOCKED`); opsi `paid` disembunyikan dari form admin. `cancelled` tetap tersedia dari `pending`. Status `paid` baru boleh dibuka kembali bila ada sumber bukti pembayaran tepercaya dan definisi paid per metode pembayaran yang disetujui pemilik.
+- **Konsekuensi:** Pesanan uji tetap `pending / belum dibayar`. Alur `paid → processing → shipped → completed` tidak dapat dicapai lewat antarmuka; test ulasan memakai fixture `completed` langsung di database. Tidak ada audit trail perubahan status (belum diimplementasikan). Shipping fee 0 bukan kebijakan gratis ongkir; keputusan produk masih terbuka.
+
+## ADR-011: TOTP 2FA Admin Bertahap dengan Anti-Replay Compare-and-Swap
+
+- **Status:** Diterima (Accepted untuk uji lokal SQLite); MySQL live NOT_RUN.
+- **Konteks:** Konsol admin hanya dilindungi kata sandi. Admin lama belum punya secret TOTP, jadi wajib 2FA serentak berisiko mengunci staf.
+- **Keputusan:** Admin bertanda `totp_required_at` wajib lolos challenge TOTP sebelum rute konsol (`EnsureAdminTotp`). Secret disimpan dengan cast `encrypted`, kode pemulihan disimpan sebagai hash bcrypt di tabel terpisah. Anti-replay memakai `UPDATE ... WHERE totp_last_used_at = <nilai lama>` atomik. Rincian dan bukti: [ADMIN_TOTP_2FA.md](ADMIN_TOTP_2FA.md).
+- **Konsekuensi:** Admin legacy tanpa tanda tetap masuk (anti-lockout). Rotasi `APP_KEY` mengharuskan provisioning ulang. Belum ada reissue kode pemulihan.

@@ -21,8 +21,14 @@ class AdminAuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        if (Auth::guard('admin')->attempt($validated, $request->boolean('remember'))) {
+        // Tanpa remember-me: sesi admin tidak boleh bertahan lewat cookie jangka panjang.
+        if (Auth::guard('admin')->attempt($validated)) {
+            // Rotasi #1 setelah password; rotasi #2 terjadi setelah TOTP lolos.
             $request->session()->regenerate();
+
+            if (Auth::guard('admin')->user()->requiresTotp()) {
+                return redirect()->route('admin.totp.challenge');
+            }
 
             return redirect()->route('admin.dashboard')
                 ->with('success', 'Selamat datang kembali, Admin.');

@@ -9,8 +9,12 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\UserInfoBackup;
+use App\Http\Middleware\EnsureAdminTotp;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
@@ -97,7 +101,30 @@ class AdminDashboardController extends Controller
             'password' => ['required', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
         ]);
 
-        $request->user('admin')->update(['password' => $validated['password']]);
+        $admin = $request->user('admin');
+        $usesTotp = $admin->requiresTotp();
+
+        DB::transaction(function () use ($admin, $validated, $usesTotp): void {
+            $admin->forceFill([
+                'password' => $validated['password'],
+                'remember_token' => Str::random(60),
+            ]);
+            if ($usesTotp) {
+                $admin->totp_last_used_at = null;
+                $admin->totpRecoveryCodes()->delete();
+            }
+            $admin->save();
+        });
+
+        if ($usesTotp) {
+            // Admin guard only; the shared web guard session is left intact.
+            Auth::guard('admin')->logout();
+            $request->session()->forget(EnsureAdminTotp::SESSION_KEY);
+            $request->session()->regenerate(true);
+
+            return redirect()->route('admin.login')
+                ->with('success', 'Password diganti. Masuk lagi; kode cadangan lama sudah dicabut.');
+        }
 
         return back()->with('success', 'Password admin berhasil diganti.');
     }
