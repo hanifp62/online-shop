@@ -218,6 +218,51 @@ class AdminTotpTest extends TestCase
         $this->assertSame($second['timestamp'], (int) $admin->fresh()->totp_last_used_at);
     }
 
+    // ---- ccb230ef: verification boundaries ----
+
+    public function test_code_three_steps_ahead_is_rejected_and_marker_unchanged(): void
+    {
+        [$admin, $secret] = $this->totpAdmin();
+        // Code minted for a future timestamp; server clock untouched.
+        $out = app(TotpService::class)->verifyAndAdvance($admin->id, $this->otp($secret, 3));
+        $this->assertFalse($out['ok']);
+        $this->assertSame('invalid_code', $out['reason']);
+        $this->assertNull(DB::table('admins')->where('id', $admin->id)->value('totp_last_used_at'));
+    }
+
+    public function test_raw_db_marker_equals_vendor_timestamp_integer(): void
+    {
+        [$admin, $secret] = $this->totpAdmin();
+        $code = $this->otp($secret);
+        $expected = (new Google2FA)->verifyKeyNewer($secret, $code, 0, 1);
+        $this->assertIsInt($expected);
+        $out = app(TotpService::class)->verifyAndAdvance($admin->id, $code);
+        $this->assertTrue($out['ok']);
+        $raw = DB::table('admins')->where('id', $admin->id)->value('totp_last_used_at');
+        $this->assertSame($expected, (int) $raw);
+        $this->assertSame((string) $expected, (string) $raw);
+        $this->assertSame($expected, $out['timestamp']);
+    }
+
+    public function test_lockout_message_states_remaining_seconds_as_number(): void
+    {
+        [$admin, $secret] = $this->totpAdmin();
+        $sid = $this->passwordLogin($admin);
+        $bad = $this->otp($secret) === '000000' ? '000001' : '000000';
+        for ($i = 0; $i < 5; $i++) {
+            [, $sid] = $this->http('POST', '/admin/totp', ['code' => $bad], $sid);
+        }
+        [$res] = $this->http('POST', '/admin/totp', ['code' => $this->otp($secret)], $sid);
+        $res->assertSessionHasErrors('code');
+        $message = session('errors')->first('code');
+        $this->assertMatchesRegularExpression('/Coba lagi dalam (\d+) detik\./', $message);
+        preg_match('/(\d+) detik/', $message, $m);
+        $this->assertGreaterThanOrEqual(1, (int) $m[1]);
+        $this->assertLessThanOrEqual(60, (int) $m[1]);
+        // Locked out: even the valid code did not advance the marker.
+        $this->assertNull(DB::table('admins')->where('id', $admin->id)->value('totp_last_used_at'));
+    }
+
     public function test_compare_and_swap_second_call_with_same_old_returns_zero(): void
     {
         [$admin] = $this->totpAdmin();
