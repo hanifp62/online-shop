@@ -15,7 +15,7 @@
 | `app/Console/Commands/AdminTotpProvision.php` | `admin:totp-provision`: membuat secret + 8 kode pemulihan, dicetak sekali |
 | `app/Http/Controllers/AdminTotpEnrolController.php` | Enrol mandiri GET/POST `/admin/totp/enrol`, konfirmasi sekali `/admin/totp/enrol/recovery` |
 | `app/Console/Commands/AdminTotpRequire.php` | `admin:totp-require --all`: mewajibkan TOTP bila seluruh admin telah memiliki secret |
-| `tests/Feature/AdminTotpTest.php` | 42 test perilaku (EXIT=0, 286 assertion) |
+| `tests/Feature/AdminTotpTest.php` | 46 test perilaku (EXIT=0, 308 assertion) |
 
 Rute terukur setelah enrol: 22 `auth:admin`, terdiri dari 15 konsol bergate `EnsureAdminTotp` dan 7 tanpa gate (logout, tiga challenge, tiga enrol). Dua rute login memakai `guest:admin`. Hitungan ini berasal dari `php artisan route:list --json` (EXIT=0), bukan target angka tetap.
 
@@ -66,6 +66,19 @@ Full suite terbaru setelah enrol (SQLite): **EXIT=0, 242 passed, 4 skipped, 1721
 - Mutasi penghapusan `whereNull('totp_secret')` membuat `test_stale_enrol_request_cannot_replace_an_existing_secret` merah (EXIT=1). Berkas dipulihkan, MD5 identik, test kembali hijau (EXIT=0).
 - Ini membuktikan interleaving dengan model autentikasi stale, **bukan** uji konkurensi MySQL nyata.
 
+### Batas verifikasi — ccb230ef
+
+- Kode `+3` step ditolak sebagai `invalid_code`, dan `totp_last_used_at` tetap null. Mutasi window `1 → 4` membuat test ini merah.
+- Nilai mentah DB `totp_last_used_at` sama dengan integer `verifyKeyNewer`. Mutasi `result + 1` membuat 7 test merah.
+- Pesan lockout memuat sisa detik sebagai angka 1–60. Mutasi tanpa angka membuat 2 test merah.
+- Setiap mutasi dipulihkan. Full suite setelah pemulihan: EXIT=0, 245 passed, 4 skipped, 1739 assertions.
+
+### QR enrol — 3d7884f6
+
+- QR dirender lokal sebagai SVG data URI dari URI provisioning yang sama. Secret tidak dikirim ke layanan QR eksternal.
+- Test membandingkan data URI pada respons dengan hasil `qrDataUri()` untuk URI di sesi.
+- Full suite setelah QR: EXIT=0, 246 passed, 4 skipped, 1743 assertions.
+
 ## 4. Mutasi
 
 | ID | Mutasi | Merah | Revert |
@@ -94,4 +107,4 @@ Worktree bersih di HEAD `8bc5a9a` (tanpa perubahan 2FA): EXIT=1, 4 failed, 64 pa
 - **Tracking BELUM:** `/workspace/tasks.json` dan direktori `/workspace` tidak tersedia di lingkungan ini. Pencarian repo dan Documents tidak menemukan `tasks.json`. Status `3c485b5d` tidak diubah; task berikutnya belum dimulai.
 - Belum ada reissue kode pemulihan; admin yang kehabisan kode bergantung pada `admin:totp-provision` oleh operator.
 - Cakupan M3 tipis (1 test).
-- Semua perubahan 2FA belum di-commit.
+- Commit 2FA tersedia lokal dan belum di-push.

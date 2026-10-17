@@ -674,6 +674,17 @@ PHP;
         $this->actingAs($admin, 'admin')->post('/admin/totp/enrol', ['code' => '123456'])->assertRedirect(route('admin.dashboard'));
     }
 
+    public function test_enrol_page_renders_qr_code_from_provisioning_uri(): void
+    {
+        $admin = Admin::create(['name' => 'QR Enrollee', 'email' => 'qr@example.test', 'password' => self::PW]);
+        $res = $this->actingAs($admin, 'admin')->get('/admin/totp/enrol');
+        $res->assertOk();
+        $res->assertSee('data:image/svg+xml;base64,', false);
+        $res->assertSee('alt="Kode QR untuk aplikasi autentikator"', false);
+        $uri = Crypt::decryptString(session('totp_enrol_uri'));
+        $res->assertSee(app(TotpService::class)->qrDataUri($uri), false);
+    }
+
     public function test_enrol_page_generates_new_secret_and_uri_in_session(): void
     {
         $admin = Admin::create(['name' => 'Enrollee', 'email' => 'enrollee@example.test', 'password' => self::PW]);

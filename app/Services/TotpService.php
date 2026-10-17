@@ -3,6 +3,10 @@
 namespace App\Services;
 
 use App\Models\Admin;
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
 use App\Models\AdminTotpRecoveryCode;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\DB;
@@ -25,6 +29,15 @@ class TotpService
     public function provisioningUri(string $label, string $secret): string
     {
         return $this->google2fa->getQRCodeUrl(config('app.name', 'ZAFIRA'), $label, $secret);
+    }
+
+    /** Inline SVG data URI; nothing leaves the server, so the secret never reaches a QR web service. */
+    public function qrDataUri(string $provisioningUri): string
+    {
+        $renderer = new ImageRenderer(new RendererStyle(220, 4), new SvgImageBackEnd);
+        $svg = (new Writer($renderer))->writeString($provisioningUri);
+
+        return 'data:image/svg+xml;base64,'.base64_encode($svg);
     }
 
     /** @return list<string> */

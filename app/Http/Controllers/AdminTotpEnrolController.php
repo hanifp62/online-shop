@@ -42,7 +42,7 @@ class AdminTotpEnrolController extends Controller
         $request->session()->put(self::PENDING_URI, Crypt::encryptString($uri));
 
         return response()
-            ->view('admin.totp-enrol', ['secret' => $secret, 'uri' => $uri])
+            ->view('admin.totp-enrol', ['secret' => $secret, 'uri' => $uri, 'qr' => $this->totp->qrDataUri($uri)])
             ->header('Cache-Control', 'no-store, no-cache, must-revalidate, private');
     }
 

@@ -18,6 +18,7 @@
             @if ($errors->any())
                 <div class="auth-errors" role="alert" tabindex="-1"><ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
             @endif
+            <img src="{{ $qr }}" width="220" height="220" alt="Kode QR untuk aplikasi autentikator" style="display:block;margin:0 auto 1rem;background:#fff">
             <div class="field">
                 <label for="setup_key">Kunci setup</label>
                 <input id="setup_key" type="text" value="{{ $secret }}" readonly spellcheck="false" autocomplete="off">
