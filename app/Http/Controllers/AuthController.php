@@ -17,7 +17,7 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->merge(['email' => mb_strtolower((string) $request->input('email'))]);
+        $this->normalizeEmail($request);
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:users,name'],
@@ -54,11 +54,11 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $request->merge(['email' => mb_strtolower((string) $request->input('email'))]);
+        $this->normalizeEmail($request);
 
         $validated = $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required'],
+            'password' => ['required', 'string'],
             'remember' => ['nullable', 'boolean'],
         ]);
 
@@ -89,8 +89,10 @@ class AuthController extends Controller
         // masih login di browser yang sama (kompatibilitas user/admin).
         if (! Auth::guard('admin')->check()) {
             $request->session()->invalidate();
-            $request->session()->regenerateToken();
+        } else {
+            $request->session()->migrate(true);
         }
+        $request->session()->regenerateToken();
 
         return redirect('/')
             ->with('success', 'Anda berhasil logout.');

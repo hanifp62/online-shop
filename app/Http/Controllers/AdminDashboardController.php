@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\ConciergeRequest;
 use App\Models\NewsletterSubscriber;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\UserInfoBackup;
@@ -57,6 +58,7 @@ class AdminDashboardController extends Controller
                 'concierge' => ConciergeRequest::count(),
                 'subscribers' => NewsletterSubscriber::count(),
                 'products' => Product::count(),
+                'orders' => Order::count(),
             ],
             'filters' => [
                 'status' => $validated['status'] ?? '',
@@ -71,13 +73,14 @@ class AdminDashboardController extends Controller
             'categories' => Category::withCount('products')->orderBy('cat_id')->get(),
             'latestProducts' => Product::with('category:cat_id,cat_title')->latest('product_id')->take(8)->get(),
             'latestSubscribers' => NewsletterSubscriber::latest()->take(8)->get(),
+            'latestOrders' => Order::with('user:id,name,email')->latest('id')->take(15)->get(),
         ]);
     }
 
     public function updateConcierge(Request $request, ConciergeRequest $concierge): RedirectResponse
     {
         $validated = $request->validate([
-            'status' => ['required', Rule::in(['new', 'contacted', 'confirmed', 'completed', 'cancelled'])],
+            'status' => ['required', Rule::in(ConciergeRequest::TRANSITIONS[$concierge->status] ?? [])],
         ]);
 
         $concierge->update($validated);

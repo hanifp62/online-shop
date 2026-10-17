@@ -18,13 +18,13 @@ class AdminAuthController extends Controller
     {
         $validated = $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required'],
+            'password' => ['required', 'string'],
         ]);
 
         if (Auth::guard('admin')->attempt($validated, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            return redirect()->intended(route('admin.dashboard'))
+            return redirect()->route('admin.dashboard')
                 ->with('success', 'Selamat datang kembali, Admin.');
         }
 
@@ -41,8 +41,10 @@ class AdminAuthController extends Controller
         // masih login di browser yang sama (kompatibilitas admin/user).
         if (! Auth::guard('web')->check()) {
             $request->session()->invalidate();
-            $request->session()->regenerateToken();
+        } else {
+            $request->session()->migrate(true);
         }
+        $request->session()->regenerateToken();
 
         return redirect()->route('admin.login')
             ->with('success', 'Anda berhasil keluar dari panel admin.');
