@@ -21,8 +21,30 @@ use App\Http\Middleware\EnsureAdminTotp;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
-RateLimiter::for('login', fn ($job) => Limit::perMinute(10)->by($job->ip()));
+// Dua batas terpisah: per akun (lintas IP) DAN per IP (lintas akun).
+// Kunci menyertakan path agar panel admin dan storefront tidak saling mengunci.
+RateLimiter::for('login', function ($request) {
+    $respond = fn ($request, array $headers) => response(
+        'Terlalu banyak percobaan masuk. Coba lagi dalam '.($headers['Retry-After'] ?? 60).' detik.',
+        429,
+        $headers,
+    );
+    $scope = $request->path();
+    $email = $request->input('email');
+    $account = is_string($email) ? Str::lower(trim($email)) : '';
+
+    $limits = [
+        Limit::perMinute(10)->by($scope.'|ip|'.$request->ip())->response($respond),
+    ];
+
+    if ($account !== '') {
+        array_unshift($limits, Limit::perMinute(10)->by($scope.'|account|'.$account)->response($respond));
+    }
+
+    return $limits;
+});
 RateLimiter::for('register', fn ($job) => Limit::perHour(5)->by($job->ip()));
 RateLimiter::for('concierge', fn ($job) => Limit::perHour(3)->by($job->ip()));
 RateLimiter::for('newsletter', fn ($job) => Limit::perDay(5)->by($job->ip()));

@@ -39,6 +39,7 @@ docs/
 │   ├── DATABASE_DESIGN.md                    # Desain database terpadu, ERD, & kamus data
 │   ├── ARCHITECTURE_DECISIONS.md             # Architecture Decision Records (ADR-001 s/d ADR-011)
 │   ├── ADMIN_TOTP_2FA.md                     # TOTP 2FA admin: kebijakan K5/K6, bukti, mutasi M1-M5, risiko terbuka
+│   ├── SESSION_HARDENING_86c14287.md         # Rotasi sesi, limiter akun+IP, cookie aman, error produksi
 │   ├── DESIGN.md                             # Semantic Design System ZAFIRA untuk Google Stitch
 │   └── ENVIRONMENT_AND_RUNTIME.md            # Konfigurasi runtime & panduan deployment lokal
 ├── 04-implementation/
