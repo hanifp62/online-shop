@@ -432,6 +432,61 @@ class AuthEventFlowsTest extends TestCase
         $this->assertClean([$secret, $code, self::PW]);
     }
 
+    #[\PHPUnit\Framework\Attributes\DataProvider('sessionFailureFlows')]
+    public function test_session_marker_write_failure_does_not_record_completion(string $flow): void
+    {
+        [$admin, $secret] = $this->admin($flow !== 'enrol');
+        $codes = app(TotpService::class)->generateRecoveryCodes();
+        if ($flow === 'recovery') {
+            app(TotpService::class)->replaceRecoveryCodes($admin, $codes);
+        }
+        $session = new class('audit_failure', new \Illuminate\Session\ArraySessionHandler(120)) extends \Illuminate\Session\Store
+        {
+            public function put($key, $value = null)
+            {
+                if ($key === \App\Http\Middleware\EnsureAdminTotp::SESSION_KEY) {
+                    throw new \RuntimeException('session marker unavailable');
+                }
+                parent::put($key, $value);
+            }
+        };
+        $session->start();
+        if ($flow === 'enrol') {
+            $session->put(AdminTotpEnrolController::PENDING_SECRET, Crypt::encryptString($secret));
+        }
+        $field = $flow === 'recovery' ? 'recovery_code' : 'code';
+        $value = $flow === 'recovery' ? $codes[0] : (new Google2FA)->getCurrentOtp($secret);
+        $request = \Illuminate\Http\Request::create('/admin/totp', 'POST', [$field => $value]);
+        $request->setLaravelSession($session);
+        $request->setUserResolver(fn () => $admin);
+        $before = AuthEvent::count();
+
+        try {
+            if ($flow === 'enrol') {
+                app(AdminTotpEnrolController::class)->store($request);
+            } else {
+                $controller = app(\App\Http\Controllers\AdminTotpController::class);
+                $flow === 'recovery' ? $controller->recovery($request) : $controller->verify($request);
+            }
+            $this->fail('The injected session marker failure must be reached.');
+        } catch (\RuntimeException $exception) {
+            $this->assertSame('session marker unavailable', $exception->getMessage());
+        }
+
+        $this->assertNull($session->get(\App\Http\Middleware\EnsureAdminTotp::SESSION_KEY));
+        $this->assertSame(0, AuthEvent::whereIn('event', ['LOGIN_SUCCESS', 'ENROL_CONFIRMED', 'SESSION_ROTATED'])->count());
+        // Recovery consumption precedes session completion and is still audited.
+        $this->assertSame($before + ($flow === 'recovery' ? 1 : 0), AuthEvent::count());
+        $this->assertSame($flow === 'recovery' ? 1 : 0, AuthEvent::where('event', 'RECOVERY_CODE_USED')->count());
+        $this->assertNotNull($admin->fresh()->totp_last_used_at);
+        $this->assertClean([$secret, $value, self::PW]);
+    }
+
+    public static function sessionFailureFlows(): array
+    {
+        return [['totp'], ['recovery'], ['enrol']];
+    }
+
     public static function exceptionClasses(): array
     {
         return [
