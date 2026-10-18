@@ -26,4 +26,4 @@ Homestead.yaml
 Thumbs.db
 
 # Local database dumps
-database/zafira_ecommerce_20260921.sql
+database/zafira_ecommerce_20260921*.sql
