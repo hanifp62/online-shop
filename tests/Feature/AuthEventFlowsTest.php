@@ -57,7 +57,7 @@ class AuthEventFlowsTest extends TestCase
     }
 
     /** Simulate a new request without retaining a previous request's guard or session attributes. */
-    private function http(string $method, string $uri, array $data = [], ?string $sid = null, string $ip = '127.0.0.1'): array
+    private function http(string $method, string $uri, array $data = [], #[\SensitiveParameter] ?string $sid = null, string $ip = '127.0.0.1'): array
     {
         $this->app['session']->driver()->flush();
         Auth::forgetGuards();
@@ -479,7 +479,80 @@ class AuthEventFlowsTest extends TestCase
         $this->assertSame($before + ($flow === 'recovery' ? 1 : 0), AuthEvent::count());
         $this->assertSame($flow === 'recovery' ? 1 : 0, AuthEvent::where('event', 'RECOVERY_CODE_USED')->count());
         $this->assertNotNull($admin->fresh()->totp_last_used_at);
+        if ($flow === 'enrol') {
+            $this->assertNotNull($admin->fresh()->totp_secret);
+            $this->assertNotNull($admin->fresh()->totp_required_at);
+            $this->assertSame(8, $admin->fresh()->totpRecoveryCodes()->count());
+        }
         $this->assertClean([$secret, $value, self::PW]);
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('sessionFailureFlows')]
+    public function test_http_session_put_exception_is_reported_without_leaking_secrets(string $flow): void
+    {
+        [$admin, $secret] = $this->admin($flow !== 'enrol');
+        $codes = app(TotpService::class)->generateRecoveryCodes();
+        if ($flow === 'recovery') {
+            app(TotpService::class)->replaceRecoveryCodes($admin, $codes);
+        }
+        $sid = $this->login($admin);
+        if ($flow === 'enrol') {
+            [, $sid] = $this->http('GET', '/admin/totp/enrol', [], $sid);
+            $secret = Crypt::decryptString(session(AdminTotpEnrolController::PENDING_SECRET));
+        }
+
+        $handler = $this->app['session']->driver()->getHandler();
+        $manager = new class($this->app, $handler) extends \Illuminate\Session\SessionManager
+        {
+            public function __construct($app, private \SessionHandlerInterface $originalHandler)
+            {
+                parent::__construct($app);
+            }
+
+            protected function createArrayDriver()
+            {
+                return new class(
+                    $this->config->get('session.cookie'),
+                    $this->originalHandler,
+                    null,
+                    $this->config->get('session.serialization', 'php')
+                ) extends \Illuminate\Session\Store
+                {
+                    public function put($key, #[\SensitiveParameter] $value = null)
+                    {
+                        if ($key === \App\Http\Middleware\EnsureAdminTotp::SESSION_KEY) {
+                            throw new \RuntimeException('http session marker put failed');
+                        }
+                        parent::put($key, $value);
+                    }
+                };
+            }
+        };
+        $this->app->instance('session', $manager);
+        $this->app->instance(\Illuminate\Session\SessionManager::class, $manager);
+        $this->app->forgetInstance('session.store');
+        $this->app->forgetInstance(\Illuminate\Session\Middleware\StartSession::class);
+        \Illuminate\Support\Facades\Facade::clearResolvedInstance('session');
+        \Illuminate\Support\Facades\Facade::clearResolvedInstance('session.store');
+        Auth::forgetGuards();
+        Auth::shouldUse('web');
+
+        $uri = match ($flow) {
+            'totp' => '/admin/totp',
+            'recovery' => '/admin/totp/recovery',
+            'enrol' => '/admin/totp/enrol',
+        };
+        $field = $flow === 'recovery' ? 'recovery_code' : 'code';
+        $value = $flow === 'recovery' ? $codes[0] : (new Google2FA)->getCurrentOtp($secret);
+        $loginSuccessBefore = AuthEvent::where('event', 'LOGIN_SUCCESS')->count();
+
+        [$response, $rotatedSid] = $this->http('POST', $uri, [$field => $value], $sid);
+        $response->assertStatus(500);
+
+        $this->assertStringContainsString('http session marker put failed', file_get_contents($this->logPath));
+        $this->assertSame($loginSuccessBefore, AuthEvent::where('event', 'LOGIN_SUCCESS')->count());
+        $this->assertSame(0, AuthEvent::where('event', 'ENROL_CONFIRMED')->count());
+        $this->assertClean([$secret, $value, self::PW, $sid, $rotatedSid]);
     }
 
     public static function sessionFailureFlows(): array
