@@ -555,6 +555,82 @@ class AuthEventFlowsTest extends TestCase
         $this->assertClean([$secret, $value, self::PW, $sid, $rotatedSid]);
     }
 
+    #[\PHPUnit\Framework\Attributes\DataProvider('sessionFailureFlows')]
+    public function test_http_session_handler_write_failure_after_controller_does_not_persist_session(string $flow): void
+    {
+        [$admin, $secret] = $this->admin($flow !== 'enrol');
+        $codes = app(TotpService::class)->generateRecoveryCodes();
+        if ($flow === 'recovery') {
+            app(TotpService::class)->replaceRecoveryCodes($admin, $codes);
+        }
+        $sid = $this->login($admin);
+        if ($flow === 'enrol') {
+            [, $sid] = $this->http('GET', '/admin/totp/enrol', [], $sid);
+            $secret = Crypt::decryptString(session(AdminTotpEnrolController::PENDING_SECRET));
+        }
+
+        // Wrap the real array handler only after setup; read/destroy still hit real storage.
+        $store = $this->app['session']->driver();
+        $original = $store->getHandler();
+        $handler = new class($original) implements \SessionHandlerInterface
+        {
+            public bool $armed = true;
+
+            public int $failures = 0;
+
+            public function __construct(private \SessionHandlerInterface $inner) {}
+
+            public function open(string $path, string $name): bool { return $this->inner->open($path, $name); }
+
+            public function close(): bool { return $this->inner->close(); }
+
+            public function read(#[\SensitiveParameter] string $id): string|false { return $this->inner->read($id); }
+
+            public function destroy(#[\SensitiveParameter] string $id): bool { return $this->inner->destroy($id); }
+
+            public function gc(int $lifetime): int|false { return $this->inner->gc($lifetime); }
+
+            public function write(#[\SensitiveParameter] string $id, #[\SensitiveParameter] string $data): bool
+            {
+                if ($this->armed) {
+                    $this->armed = false;
+                    $this->failures++;
+                    throw new \RuntimeException('session handler write failed');
+                }
+
+                return $this->inner->write($id, $data);
+            }
+        };
+        $store->setHandler($handler);
+
+        $uri = match ($flow) {
+            'totp' => '/admin/totp',
+            'recovery' => '/admin/totp/recovery',
+            'enrol' => '/admin/totp/enrol',
+        };
+        $field = $flow === 'recovery' ? 'recovery_code' : 'code';
+        $value = $flow === 'recovery' ? $codes[0] : (new Google2FA)->getCurrentOtp($secret);
+        $loginSuccessBefore = AuthEvent::where('event', 'LOGIN_SUCCESS')->count();
+        $rotatedBefore = AuthEvent::where('event', 'SESSION_ROTATED')->count();
+
+        [$response, $rotatedSid] = $this->http('POST', $uri, [$field => $value], $sid);
+        $response->assertStatus(500);
+
+        $this->assertSame(1, $handler->failures);
+        $this->assertStringContainsString('session handler write failed', file_get_contents($this->logPath));
+        // Characterization: the controller finished before the driver save, so completion events already exist.
+        $this->assertSame($rotatedBefore + 1, AuthEvent::where('event', 'SESSION_ROTATED')->count());
+        $this->assertSame($loginSuccessBefore + ($flow === 'enrol' ? 0 : 1), AuthEvent::where('event', 'LOGIN_SUCCESS')->count());
+        $this->assertSame($flow === 'enrol' ? 1 : 0, AuthEvent::where('event', 'ENROL_CONFIRMED')->count());
+        $this->assertSame($flow === 'recovery' ? 1 : 0, AuthEvent::where('event', 'RECOVERY_CODE_USED')->count());
+        $this->assertNotSame($sid, $rotatedSid);
+        $this->assertSame('', $original->read($rotatedSid));
+        $this->assertSame('', $original->read($sid));
+
+        $this->http('GET', '/admin', [], $rotatedSid)[0]->assertRedirect('/admin/login');
+        $this->assertClean([$secret, $value, self::PW, $sid, $rotatedSid, ...$codes]);
+    }
+
     public static function sessionFailureFlows(): array
     {
         return [['totp'], ['recovery'], ['enrol']];
