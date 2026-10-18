@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="theme-color" content="#17263f">
-    <title>Dashboard Admin — ZAFIRA</title>
-    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=bodoni-moda:400,400i,500,500i,600&family=manrope:300,400,500,600&display=swap" rel="stylesheet">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+@extends('admin.layouts.app', ['pageTitle' => 'Dashboard Maison.', 'activePage' => 'dashboard'])
+@section('title', 'Dashboard Admin')
+@section('styles')
     <style>
         .admin-shell { max-width: 1100px; margin: 0 auto; padding: 40px 24px 60px; }
         .admin-top { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
@@ -36,8 +27,8 @@
         .admin-actions { display: flex; gap: 10px; align-items: center; }
         .admin-actions .button { padding: 10px 22px; font-size: 12px; }
         .status-form { display: flex; gap: 6px; align-items: center; }
-        .status-form select, .status-form input { padding: 6px 8px; font-size: 12px; border: 1px solid var(--line); background: var(--white); color: var(--ink); }
-        .status-form button { padding: 6px 12px; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; background: var(--sapphire); color: #fff; cursor: pointer; }
+        .status-form select, .status-form input { min-height: 44px; padding: 6px 8px; font-size: 12px; border: 1px solid var(--line); background: var(--white); color: var(--ink); }
+        .status-form button { min-height: 44px; padding: 6px 12px; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; background: var(--sapphire); color: #fff; cursor: pointer; }
         .status-form button.danger { background: #8c2f2f; }
         .badge-status { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
         .badge-new { background: #e0f2fe; color: #0284c7; }
@@ -52,28 +43,13 @@
         @media (max-width: 900px) { .stat-grid { grid-template-columns: 1fr 1fr 1fr; } .inline-form { grid-template-columns: 1fr 1fr; } }
         @media (max-width: 640px) { .stat-grid { grid-template-columns: 1fr 1fr; } .inline-form { grid-template-columns: 1fr; } .admin-top { flex-direction: column; align-items: start; } }
     </style>
-</head>
-<body class="storefront">
-<a class="skip-link" href="#panel-concierge">Lewati ke concierge</a>
-<div class="announcement-bar">
-    <p>Administration · ZAFIRA Maison</p>
-    <a href="{{ route('home') }}" style="position:absolute;right:42px;color:#fff;border-bottom:1px solid rgba(255,255,255,.45);font-size:inherit;letter-spacing:inherit;text-transform:inherit">Lihat toko</a>
-</div>
-<main class="admin-shell">
-    <div class="admin-top">
-        <div>
-            <span class="eyebrow">Administration</span>
-            <h1>Dashboard Maison.</h1>
-            <p>Masuk sebagai {{ auth('admin')->user()->email }} · Seluruh pembaruan data tersinkronisasi langsung ke storefront, katalog kriya, dan riwayat akun klien.</p>
-        </div>
-        <div class="admin-actions">
-            <form method="POST" action="{{ route('admin.logout') }}">@csrf<button class="button button-dark" type="submit">Keluar</button></form>
-        </div>
-    </div>
-
+@endsection
+@section('content')
+    <p style="margin-bottom: 16px; color: var(--zafira-muted);">Seluruh pembaruan data tersinkronisasi langsung ke storefront, katalog kriya, dan riwayat akun klien.</p>
     <nav class="admin-nav" aria-label="Navigasi panel admin">
         <a href="#panel-kategori">Kategori</a>
         <a href="#panel-produk">Produk</a>
+        <a href="#panel-pesanan">Pesanan &amp; Laporan</a>
         <a href="#panel-user">User</a>
         <a href="#panel-audit">Arsip audit</a>
         <a href="#panel-concierge">Concierge</a>
@@ -87,8 +63,8 @@
         </div>
     @endif
 
-    @if (session('success'))
-        <div class="auth-errors" role="status" style="margin-bottom:16px"><ul><li>{{ session('success') }}</li></ul></div>
+    @if ($errors->any())
+        <div class="auth-errors" role="alert" style="margin-bottom:16px"><ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
     @endif
 
     <div class="stat-grid">
@@ -125,7 +101,7 @@
                     </td>
                     <td class="num">{{ $category->products_count }}</td>
                     <td>
-                        <form method="POST" action="{{ route('admin.categories.destroy', $category->cat_id) }}" onsubmit="return confirm('Hapus kategori {{ $category->cat_title }}?')">
+                        <form method="POST" action="{{ route('admin.categories.destroy', $category->cat_id) }}" onsubmit="return confirm(@js('Hapus kategori '.$category->cat_title.'?'))">
                             @csrf
                             @method('DELETE')
                             <button class="status-form button danger" type="submit">Hapus</button>
@@ -155,6 +131,8 @@
                     </select>
                 </div>
                 <div class="field"><label for="product_price">Harga (Rp)</label><input id="product_price" name="product_price" type="number" min="0" required placeholder="cth: 15000000"></div>
+                <div class="field"><label for="product_stock">Stok</label><input id="product_stock" name="stock" type="number" min="0" max="100000" step="1" value="{{ old('stock', 0) }}" required></div>
+                <div class="field"><label for="product_active">Tampil di katalog</label><select id="product_active" name="is_active"><option value="1" @selected(old('is_active', '1') == '1')>Aktif</option><option value="0" @selected(old('is_active', '1') == '0')>Nonaktif</option></select></div>
                 <div class="field"><label for="product_image">URL Gambar</label><input id="product_image" name="product_image" type="url" required placeholder="https://images.unsplash.com/..."></div>
                 <div class="field"><label for="product_color">Warna</label><input id="product_color" name="product_color" type="text" placeholder="cth: Noir Ébène"></div>
                 <div class="field"><label for="product_badge">Badge</label><input id="product_badge" name="product_badge" type="text" placeholder="cth: Édition Limitée"></div>
@@ -185,11 +163,13 @@
                                     <option value="{{ $category->cat_id }}" @selected($product->product_cat == $category->cat_id)>{{ $category->cat_title }}</option>
                                 @endforeach
                             </select>
-                            <button type="submit">Pindah</button>
+                            <input name="stock" type="number" min="0" max="100000" step="1" value="{{ $product->stock }}" required aria-label="Stok {{ $product->product_title }}" style="width:90px">
+                            <select name="is_active" aria-label="Visibilitas {{ $product->product_title }}"><option value="1" @selected($product->is_active)>Aktif</option><option value="0" @selected(! $product->is_active)>Nonaktif</option></select>
+                            <button type="submit">Simpan</button>
                         </form>
                     </td>
                     <td>
-                        <form method="POST" action="{{ route('admin.products.destroy', $product->product_id) }}" onsubmit="return confirm('Hapus produk {{ $product->product_title }}?')">
+                        <form method="POST" action="{{ route('admin.products.destroy', $product->product_id) }}" onsubmit="return confirm(@js('Hapus produk '.$product->product_title.'?'))">
                             @csrf
                             @method('DELETE')
                             <button class="status-form button danger" type="submit" style="padding: 5px 10px; font-size: 10px;">Hapus</button>
@@ -200,6 +180,45 @@
             </tbody>
         </table>
         </div>
+    </section>
+
+    <section class="admin-panel" id="panel-pesanan">
+        <h2>Pesanan &amp; Laporan</h2>
+        <p class="panel-hint">{{ $stats['orders'] }} pesanan tercatat. Status administratif bukan bukti pembayaran. Menampilkan 15 pesanan terbaru.</p>
+        <form class="inline-form" method="GET" action="{{ route('admin.orders.report') }}">
+            <div class="field"><label for="report-period">Periode laporan</label><select id="report-period" name="period"><option value="today">Hari ini</option><option value="7d">7 hari terakhir</option><option value="30d">30 hari terakhir</option><option value="custom">Rentang tanggal</option></select></div>
+            <div class="field"><label for="report-from">Dari (UTC, untuk rentang)</label><input id="report-from" type="date" name="from"></div>
+            <div class="field"><label for="report-to">Sampai (UTC, untuk rentang)</label><input id="report-to" type="date" name="to"></div>
+            <button class="button button-sapphire" type="submit">Unduh PDF</button>
+        </form>
+        <div class="admin-table-wrap"><table class="admin-table">
+            <thead><tr><th>Pesanan</th><th>Klien</th><th>Nilai tercatat</th><th>Status administratif</th><th>Dokumen</th></tr></thead>
+            <tbody>
+            @forelse ($latestOrders as $order)
+                <tr>
+                    <td>#{{ $order->id }}<br>{{ $order->created_at->format('d M Y H:i') }} UTC</td>
+                    <td>{{ $order->user?->name ?? 'Akun tidak tersedia' }}</td>
+                    <td>Rp {{ number_format($order->total, 0, ',', '.') }}</td>
+                    <td><strong>{{ $order->status }}</strong>
+                        @if (!empty(\App\Models\Order::STATUS_FLOW[$order->status]))
+                            <form class="status-form" method="POST" action="{{ route('admin.orders.update', $order->id) }}">
+                                @csrf @method('PATCH')
+                                <select name="status" aria-label="Status pesanan #{{ $order->id }}">
+                                    @foreach (array_diff(\App\Models\Order::STATUS_FLOW[$order->status], \App\Models\Order::MANUAL_BLOCKED) as $nextStatus)
+                                        <option value="{{ $nextStatus }}">{{ $nextStatus }}</option>
+                                    @endforeach
+                                </select>
+                                <button type="submit">Simpan</button>
+                            </form>
+                        @endif
+                    </td>
+                    <td><a href="{{ route('admin.orders.invoice', $order->id) }}">Slip pesanan (HTML)</a></td>
+                </tr>
+            @empty
+                <tr><td colspan="5">Belum ada pesanan.</td></tr>
+            @endforelse
+            </tbody>
+        </table></div>
     </section>
 
     <section class="admin-panel" id="panel-user">
@@ -282,16 +301,19 @@
                         <td class="num">{{ $item->preferred_date?->format('d M Y') ?? '—' }} {{ $item->preferred_time ?? '' }}</td>
                         <td>
                             <span class="badge-status badge-{{ $item->status }}">{{ $item->status }}</span>
-                            <form class="status-form" method="POST" action="{{ route('admin.concierge.update', $item) }}">
-                                @csrf
-                                @method('PATCH')
-                                <select name="status" aria-label="Status permintaan #{{ $item->id }}">
-                                    @foreach (['new', 'contacted', 'confirmed', 'completed', 'cancelled'] as $status)
-                                        <option value="{{ $status }}" @selected($item->status === $status)>{{ $status }}</option>
-                                    @endforeach
-                                </select>
-                                <button type="submit">Simpan</button>
-                            </form>
+                            @php($available = $item->availableTransitions())
+                            @if (!empty($available))
+                                <form class="status-form" method="POST" action="{{ route('admin.concierge.update', $item) }}">
+                                    @csrf
+                                    @method('PATCH')
+                                    <select name="status" aria-label="Status permintaan #{{ $item->id }}">
+                                        @foreach ($available as $status)
+                                            <option value="{{ $status }}" @selected($item->status === $status)>{{ $status }}</option>
+                                        @endforeach
+                                    </select>
+                                    <button type="submit">Simpan</button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
@@ -315,7 +337,7 @@
                         <td style="overflow-wrap:anywhere">{{ $subscriber->email }}</td>
                         <td class="num">{{ $subscriber->created_at?->format('d M Y') }}</td>
                         <td>
-                            <form method="POST" action="{{ route('admin.subscribers.destroy', $subscriber->id) }}" onsubmit="return confirm('Hapus subscriber {{ $subscriber->email }}?')">
+                            <form method="POST" action="{{ route('admin.subscribers.destroy', $subscriber->id) }}" onsubmit="return confirm(@js('Hapus subscriber '.$subscriber->email.'?'))">
                                 @csrf
                                 @method('DELETE')
                                 <button class="status-form button danger" type="submit" style="padding: 5px 10px; font-size: 10px;">Hapus</button>
@@ -350,31 +372,8 @@
             <span>Kembali ke Maison</span>
         </a>
     </p>
-</main>
-
-<!-- Floating Luxury Navigation Dock -->
-<nav class="floating-luxury-dock" style="position:fixed; bottom:20px; left:50%; transform:translateX(-50%); display:inline-flex; align-items:center; gap:4px; background:rgba(8, 16, 29, 0.94); backdrop-filter:blur(16px); border:1px solid rgba(182, 154, 100, 0.45); border-radius:9999px; padding:5px 10px; z-index:999; box-shadow:0 16px 36px rgba(0,0,0,0.35);" aria-label="Navigasi Cepat Atelier">
-    <a class="dock-btn" href="{{ route('home') }}" style="background:transparent; border:none; color:rgba(255,255,255,0.78); font-size:11px; font-weight:500; padding:7px 12px; border-radius:9999px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; text-decoration:none;" title="Storefront Utama">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-        <span>Storefront</span>
-    </a>
-    @unless(app()->environment('production'))
-    <a class="dock-btn" href="/prototype/#studio-view" style="background:transparent; border:none; color:rgba(255,255,255,0.78); font-size:11px; font-weight:500; padding:7px 12px; border-radius:9999px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; text-decoration:none;" title="Studio Produk">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-        <span>Studio Z</span>
-    </a>
-    @endunless
-    <a class="dock-btn" href="{{ route('account.show') }}" style="background:transparent; border:none; color:rgba(255,255,255,0.78); font-size:11px; font-weight:500; padding:7px 12px; border-radius:9999px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; text-decoration:none;" title="Portal Akun Klien VIP">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        <span>Akun VIP</span>
-    </a>
-    <a class="dock-btn active" href="/admin" style="background:rgba(182, 154, 100, 0.22); color:#fff; border:none; font-size:11px; font-weight:500; padding:7px 12px; border-radius:9999px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; text-decoration:none;" title="Konsol Admin Atelier">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-        <span>Admin Atelier</span>
-    </a>
-</nav>
-
+@endsection
+@section('after-content')
 <div class="toast" role="status" aria-live="polite" @if(session('success')) data-flash="{{ session('success') }}" @endif><span><svg aria-hidden="true"><use href="#icon-check"/></svg></span><p data-toast-message></p></div>
 <svg class="icon-sprite" aria-hidden="true"><symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol></svg>
-</body>
-</html>
+@endsection

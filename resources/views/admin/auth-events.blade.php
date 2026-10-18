@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="theme-color" content="#17263f">
-    <title>Log Peristiwa Autentikasi — ZAFIRA</title>
-    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=bodoni-moda:400,600,700,900|manrope:300,400,500,600,700&display=swap" rel="stylesheet" />
+@extends('admin.layouts.app', ['pageTitle' => 'Log Peristiwa Autentikasi', 'activePage' => 'auth-events'])
+@section('title', 'Log Peristiwa Autentikasi')
+@section('styles')
     <style>
         :root {
             --zafira-sapphire: #17263f;
@@ -20,38 +12,38 @@
             --zafira-border: #e6ded2;
             --zafira-danger: #8a2be2;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Manrope', -apple-system, sans-serif;
-            background: var(--zafira-ivory);
-            color: var(--zafira-charcoal);
-            padding: 32px;
-            font-size: 14px;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--zafira-border);
-            padding-bottom: 20px;
-            margin-bottom: 24px;
-        }
-        h1 {
+        .admin-work-main *, .admin-work-main *::before, .admin-work-main *::after { box-sizing: border-box; }
+        .admin-work-main { font-family: 'Manrope', -apple-system, sans-serif; color: var(--zafira-charcoal); font-size: 14px; }
+        .admin-work-main h1 {
             font-family: 'Bodoni Moda', serif;
             font-size: 28px;
             color: var(--zafira-sapphire);
             font-weight: 600;
         }
-        .filters {
+        .admin-work-main .filters {
             display: flex;
+            flex-wrap: wrap;
             gap: 12px;
             margin-bottom: 20px;
             background: #fff;
             padding: 16px;
             border-radius: 4px;
             border: 1px solid var(--zafira-border);
+            align-items: flex-end;
         }
-        select, button {
+        .admin-work-main .filter-field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .admin-work-main .filter-field label {
+            font-size: 11px;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            color: var(--zafira-muted);
+            font-weight: 600;
+        }
+        .admin-work-main select, .admin-work-main button {
             font-family: inherit;
             padding: 8px 12px;
             border: 1px solid var(--zafira-border);
@@ -59,31 +51,36 @@
             background: #fff;
             font-size: 13px;
         }
-        button {
+        .admin-work-main button {
             background: var(--zafira-sapphire);
             color: #fff;
             cursor: pointer;
             border: none;
         }
-        table {
+        .admin-work-main .auth-events-table-wrap {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid var(--zafira-border);
+            background: #fff;
+        }
+        .admin-work-main table {
             width: 100%;
             border-collapse: collapse;
             background: #fff;
-            border: 1px solid var(--zafira-border);
         }
-        th, td {
+        .admin-work-main th, .admin-work-main td {
             padding: 12px 16px;
             text-align: left;
             border-bottom: 1px solid var(--zafira-border);
         }
-        th {
+        .admin-work-main th {
             background: var(--zafira-linen);
             font-size: 12px;
             letter-spacing: 0.05em;
             text-transform: uppercase;
             color: var(--zafira-muted);
         }
-        .badge {
+        .admin-work-main .badge {
             display: inline-block;
             padding: 3px 8px;
             border-radius: 3px;
@@ -91,47 +88,61 @@
             font-weight: 600;
             text-transform: uppercase;
         }
-        .badge-success { background: #e6f4ea; color: #137333; }
-        .badge-failure { background: #fce8e6; color: #c5221f; }
+        .admin-work-main .badge-success { background: #e6f4ea; color: #137333; }
+        .admin-work-main .badge-failure { background: #fce8e6; color: #c5221f; }
         .pagination-container {
             margin-top: 20px;
         }
-        a.back-btn {
-            color: var(--zafira-sapphire);
-            text-decoration: none;
-            font-weight: 600;
+        @media (max-width: 640px) {
+            .admin-work-main .filters { flex-direction: column; align-items: stretch; }
+            .admin-work-main .filters select, .admin-work-main .filters button { width: 100%; }
         }
     </style>
-</head>
-<body>
-    <div class="header">
-        <div>
-            <h1>Log Peristiwa Autentikasi</h1>
-            <p style="color: var(--zafira-muted); font-size: 13px; margin-top: 4px;">Pencatatan resmi keamanan & sesi konsol Maison ZAFIRA</p>
+@endsection
+@section('content')
+    <p style="margin-bottom: 16px; color: var(--zafira-muted);">Pencatatan resmi keamanan &amp; sesi konsol Maison ZAFIRA</p>
+    @php
+        $activeFilters = array_filter([
+            'event' => request('event'),
+            'outcome' => request('outcome'),
+        ]);
+    @endphp
+    @if (!empty($activeFilters))
+        <div class="active-filters-box" style="margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+            <span style="font-size: 12px; color: var(--zafira-muted); text-transform: uppercase; letter-spacing: 0.05em;">Filter aktif:</span>
+            @foreach ($activeFilters as $key => $val)
+                <span class="badge" data-active-filter="{{ $key }}: {{ $val }}" style="background: var(--zafira-linen); color: var(--zafira-charcoal); border: 1px solid var(--zafira-border);">
+                    {{ $key }}: {{ $val }}
+                </span>
+            @endforeach
         </div>
-        <div>
-            <a href="{{ route('admin.dashboard') }}" class="back-btn">&larr; Kembali ke Dashboard</a>
-        </div>
-    </div>
+    @endif
 
     <form method="GET" action="{{ route('admin.auth-events.index') }}" class="filters">
-        <select name="event">
-            <option value="">Semua Peristiwa</option>
-            @foreach(\App\Enums\AuthEventName::ALL as $ev)
-                <option value="{{ $ev }}" {{ request('event') === $ev ? 'selected' : '' }}>{{ $ev }}</option>
-            @endforeach
-        </select>
-        <select name="outcome">
-            <option value="">Semua Hasil</option>
-            <option value="success" {{ request('outcome') === 'success' ? 'selected' : '' }}>Success</option>
-            <option value="failure" {{ request('outcome') === 'failure' ? 'selected' : '' }}>Failure</option>
-        </select>
+        <div class="filter-field">
+            <label for="auth-event-filter">Peristiwa</label>
+            <select id="auth-event-filter" name="event">
+                <option value="">Semua Peristiwa</option>
+                @foreach(\App\Enums\AuthEventName::ALL as $ev)
+                    <option value="{{ $ev }}" {{ request('event') === $ev ? 'selected' : '' }}>{{ $ev }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="filter-field">
+            <label for="auth-outcome-filter">Hasil</label>
+            <select id="auth-outcome-filter" name="outcome">
+                <option value="">Semua Hasil</option>
+                <option value="success" {{ request('outcome') === 'success' ? 'selected' : '' }}>Success</option>
+                <option value="failure" {{ request('outcome') === 'failure' ? 'selected' : '' }}>Failure</option>
+            </select>
+        </div>
         <button type="submit">Filter</button>
         @if(request()->hasAny(['event', 'outcome']))
             <a href="{{ route('admin.auth-events.index') }}" style="align-self: center; margin-left: 8px; font-size: 13px; color: var(--zafira-muted);">Reset</a>
         @endif
     </form>
 
+    <div class="auth-events-table-wrap">
     <table>
         <thead>
             <tr>
@@ -179,9 +190,9 @@
             @endforelse
         </tbody>
     </table>
+    </div>
 
     <div class="pagination-container">
         {{ $events->links() }}
     </div>
-</body>
-</html>
+@endsection
