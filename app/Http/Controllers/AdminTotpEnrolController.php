@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\EnsureAdminTotp;
+use App\Services\AuthEventRecorder;
 use App\Services\TotpService;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\RedirectResponse;
@@ -26,7 +27,11 @@ class AdminTotpEnrolController extends Controller
 
     private const MAX_ATTEMPTS = 5;
 
-    public function __construct(private readonly TotpService $totp, private readonly Google2FA $google2fa) {}
+    public function __construct(
+        private readonly TotpService $totp,
+        private readonly Google2FA $google2fa,
+        private readonly AuthEventRecorder $events,
+    ) {}
 
     public function show(Request $request): Response|RedirectResponse
     {
@@ -75,41 +80,58 @@ class AdminTotpEnrolController extends Controller
                 $timestamp = false;
             }
         } catch (DecryptException|Google2FAException $e) {
-            Log::critical('Admin TOTP enrolment secret unreadable or invalid', [
-                'admin_id' => $admin->id,
-                'exception' => $e::class,
-            ]);
+            $this->events->recordTotpFailure($admin->id, $request->ip(), 'corrupt_secret');
+            try {
+                Log::critical('Admin TOTP enrolment secret unreadable or invalid', [
+                    'admin_id' => $admin->id,
+                    'exception' => $e::class,
+                ]);
+            } catch (\Throwable) {
+                // Logger failure must not expose the verification trace.
+            }
+            $request->session()->forget([self::PENDING_SECRET, self::PENDING_URI]);
+
+            return back()->withErrors(['code' => 'Pendaftaran dua langkah sedang tidak tersedia. Hubungi pengelola sistem.']);
+        } catch (\Throwable $e) {
+            $this->events->recordTotpFailure($admin->id, $request->ip(), 'operational_error');
+            try {
+                Log::critical('Admin TOTP enrolment verification failed', [
+                    'admin_id' => $admin->id,
+                    'exception' => $e::class,
+                ]);
+            } catch (\Throwable) {
+                // Logger failure must not expose the verification trace.
+            }
             $request->session()->forget([self::PENDING_SECRET, self::PENDING_URI]);
 
             return back()->withErrors(['code' => 'Pendaftaran dua langkah sedang tidak tersedia. Hubungi pengelola sistem.']);
         }
 
         if ($timestamp === false) {
+            $this->events->recordTotpFailure($admin->id, $request->ip(), 'invalid_code');
             RateLimiter::hit($key, 60);
+            if (RateLimiter::tooManyAttempts($key, self::MAX_ATTEMPTS)) {
+                $this->events->recordLockout('admin', $admin->id, $request->ip(), 'enrol');
+            }
 
             return back()->withErrors(['code' => 'Kode tidak cocok. Periksa jam perangkat Anda.']);
         }
 
         $codes = $this->totp->generateRecoveryCodes();
 
-        // CAS on totp_secret IS NULL: two concurrent enrol POSTs cannot both win.
-        $won = DB::transaction(function () use ($admin, $secret, $timestamp, $codes): bool {
-            $updated = DB::table('admins')
-                ->where('id', $admin->id)
-                ->whereNull('totp_secret')
-                ->update([
-                    'totp_secret' => Crypt::encryptString($secret),
-                    'totp_required_at' => now(),
-                    'totp_last_used_at' => (int) $timestamp,
-                    'updated_at' => now(),
-                ]);
-            if ($updated !== 1) {
-                return false;
+        try {
+            $won = $this->persistEnrolment($admin, $secret, (int) $timestamp, $codes);
+        } catch (\Throwable $e) {
+            // Transaction rolled back; log class only (messages/traces may carry the secret or codes).
+            $this->events->recordTotpFailure($admin->id, $request->ip(), 'operational_error');
+            try {
+                Log::critical('Admin TOTP enrolment transaction failed', ['admin_id' => $admin->id, 'exception' => $e::class]);
+            } catch (\Throwable) {
+                // Logger down must not escalate into an unhandled, trace-logging error.
             }
-            $this->totp->replaceRecoveryCodes($admin, $codes);
 
-            return true;
-        });
+            return back()->withErrors(['code' => 'Pendaftaran dua langkah sedang tidak tersedia. Coba lagi nanti.']);
+        }
 
         if (! $won) {
             $request->session()->forget([self::PENDING_SECRET, self::PENDING_URI]);
@@ -127,8 +149,34 @@ class AdminTotpEnrolController extends Controller
             'last_used_at' => (int) $timestamp,
         ]);
         $request->session()->put(self::FRESH_CODES, Crypt::encryptString(json_encode($codes)));
+        $this->events->recordEnrolConfirmed($admin->id, $request->ip());
+        // No LOGIN_SUCCESS here: console access was already granted (and recorded) at the password step.
+        $this->events->recordSessionRotated('admin', $admin->id, $request->ip(), 'enrol');
 
         return redirect()->route('admin.totp.enrol.recovery');
+    }
+
+    /** @param list<string> $codes */
+    private function persistEnrolment($admin, #[\SensitiveParameter] string $secret, int $timestamp, #[\SensitiveParameter] array $codes): bool
+    {
+        // CAS on totp_secret IS NULL: two concurrent enrol POSTs cannot both win.
+        return DB::transaction(function () use ($admin, $secret, $timestamp, $codes): bool {
+            $updated = DB::table('admins')
+                ->where('id', $admin->id)
+                ->whereNull('totp_secret')
+                ->update([
+                    'totp_secret' => Crypt::encryptString($secret),
+                    'totp_required_at' => now(),
+                    'totp_last_used_at' => (int) $timestamp,
+                    'updated_at' => now(),
+                ]);
+            if ($updated !== 1) {
+                return false;
+            }
+            $this->totp->replaceRecoveryCodes($admin, $codes);
+
+            return true;
+        });
     }
 
     public function recovery(Request $request): Response|RedirectResponse

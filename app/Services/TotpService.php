@@ -71,7 +71,29 @@ class TotpService
         }
     }
 
-    public function verifyAndAdvance(int $adminId, string $code): array
+    /** Logs only the class and admin id: exception messages/traces may carry codes or secrets. */
+    private function alarm(string $message, int $adminId, \Throwable $e): void
+    {
+        try {
+            Log::critical($message, ['admin_id' => $adminId, 'exception' => $e::class]);
+        } catch (\Throwable) {
+            // Logger down must never turn a denial into an unhandled (trace-logging) error.
+        }
+    }
+
+    public function verifyAndAdvance(int $adminId, #[\SensitiveParameter] string $code): array
+    {
+        try {
+            return $this->verifyInTransaction($adminId, $code);
+        } catch (\Throwable $e) {
+            // DB::transaction already rolled back before rethrowing; deny, never allow.
+            $this->alarm('Admin TOTP operation failed', $adminId, $e);
+
+            return ['ok' => false, 'reason' => 'operational_error', 'timestamp' => null];
+        }
+    }
+
+    private function verifyInTransaction(int $adminId, #[\SensitiveParameter] string $code): array
     {
         return DB::transaction(function () use ($adminId, $code): array {
             // Defense-in-depth lock; anti-replay relies on CAS below.
@@ -122,13 +144,25 @@ class TotpService
             ->update(['totp_last_used_at' => $newTimestamp]);
     }
 
-    public function consumeRecoveryCode(int $adminId, string $code): array
+    public function consumeRecoveryCode(int $adminId, #[\SensitiveParameter] string $code): array
     {
         $normalized = self::normalizeRecoveryCode($code);
         if ($normalized === '') {
             return ['ok' => false, 'timestamp' => null];
         }
 
+        try {
+            return $this->consumeInTransaction($adminId, $normalized);
+        } catch (\Throwable $e) {
+            // Rollback keeps the recovery code unconsumed; deny, never allow.
+            $this->alarm('Admin TOTP recovery operation failed', $adminId, $e);
+
+            return ['ok' => false, 'reason' => 'operational_error', 'timestamp' => null];
+        }
+    }
+
+    private function consumeInTransaction(int $adminId, #[\SensitiveParameter] string $normalized): array
+    {
         return DB::transaction(function () use ($adminId, $normalized): array {
             $admin = Admin::whereKey($adminId)->lockForUpdate()->first();
             if (! $admin || ! $admin->requiresTotp()) {

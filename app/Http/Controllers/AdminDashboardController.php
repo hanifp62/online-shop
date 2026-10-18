@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\UserInfoBackup;
 use App\Http\Middleware\EnsureAdminTotp;
+use App\Services\AuthEventRecorder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -121,6 +122,7 @@ class AdminDashboardController extends Controller
             Auth::guard('admin')->logout();
             $request->session()->forget(EnsureAdminTotp::SESSION_KEY);
             $request->session()->regenerate(true);
+            app(AuthEventRecorder::class)->recordSessionRotated('admin', $admin->id, $request->ip(), 'password_update');
 
             return redirect()->route('admin.login')
                 ->with('success', 'Password diganti. Masuk lagi; kode cadangan lama sudah dicabut.');

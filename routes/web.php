@@ -19,6 +19,10 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\StorefrontController;
 use App\Http\Middleware\EnsureAdminTotp;
 use Illuminate\Cache\RateLimiting\Limit;
+use App\Http\Controllers\AdminAuthEventController;
+use App\Services\AuthEventRecorder;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
@@ -26,21 +30,37 @@ use Illuminate\Support\Str;
 // Dua batas terpisah: per akun (lintas IP) DAN per IP (lintas akun).
 // Kunci menyertakan path agar panel admin dan storefront tidak saling mengunci.
 RateLimiter::for('login', function ($request) {
-    $respond = fn ($request, array $headers) => response(
-        'Terlalu banyak percobaan masuk. Coba lagi dalam '.($headers['Retry-After'] ?? 60).' detik.',
-        429,
-        $headers,
-    );
+    $respond = fn (string $key, string $kind) => function ($request, array $headers) use ($key, $kind) {
+        $retryAfter = (int) ($headers['Retry-After'] ?? 60);
+        // One LOCKOUT_TRIGGERED per limiter episode; a cache failure must never break the 429 itself.
+        try {
+            if (Cache::add('auth-lockout:'.hash('sha256', $key), 1, max(1, $retryAfter))) {
+                $guard = $request->segment(1) === 'admin' ? 'admin' : 'web';
+                app(AuthEventRecorder::class)->recordLockout($guard, null, $request->ip(), $kind);
+            }
+        } catch (\Throwable $e) {
+            try {
+                // Warning, not critical: unauthenticated traffic can reach this path repeatedly.
+                Log::warning('Auth lockout dedup failed', ['exception' => $e::class]);
+            } catch (\Throwable) {
+                // The 429 response must survive audit and logging failures.
+            }
+        }
+
+        return response('Terlalu banyak percobaan masuk. Coba lagi dalam '.$retryAfter.' detik.', 429, $headers);
+    };
     $scope = $request->path();
     $email = $request->input('email');
     $account = is_string($email) ? Str::lower(trim($email)) : '';
 
+    $ipKey = $scope.'|ip|'.$request->ip();
     $limits = [
-        Limit::perMinute(10)->by($scope.'|ip|'.$request->ip())->response($respond),
+        Limit::perMinute(10)->by($ipKey)->response($respond($ipKey, 'ip')),
     ];
 
     if ($account !== '') {
-        array_unshift($limits, Limit::perMinute(10)->by($scope.'|account|'.$account)->response($respond));
+        $accountKey = $scope.'|account|'.$account;
+        array_unshift($limits, Limit::perMinute(10)->by($accountKey)->response($respond($accountKey, 'account')));
     }
 
     return $limits;
@@ -140,4 +160,5 @@ Route::middleware(['auth:admin', EnsureAdminTotp::class])->group(function () {
     Route::patch('/admin/orders/{id}', [AdminOrderController::class, 'updateStatus'])->whereNumber('id')->name('admin.orders.update');
     Route::get('/admin/orders/{id}/invoice', [AdminOrderController::class, 'invoice'])->whereNumber('id')->name('admin.orders.invoice');
     Route::get('/admin/reports/orders.pdf', [AdminOrderController::class, 'report'])->name('admin.orders.report');
+    Route::get('/admin/auth-events', [AdminAuthEventController::class, 'index'])->name('admin.auth-events.index');
 });

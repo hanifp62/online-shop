@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\EnsureAdminTotp;
+use App\Services\AuthEventRecorder;
 use App\Services\TotpService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class AdminTotpController extends Controller
 {
     private const MAX_ATTEMPTS = 5;
 
-    public function __construct(private readonly TotpService $totp) {}
+    public function __construct(private readonly TotpService $totp, private readonly AuthEventRecorder $events) {}
 
     public function show(Request $request): View|RedirectResponse
     {
@@ -56,8 +57,12 @@ class AdminTotpController extends Controller
         $result = $check($admin->id);
 
         if (! $result['ok']) {
+            $this->events->recordTotpFailure($admin->id, $request->ip(), (string) ($result['reason'] ?? 'invalid_code'));
             RateLimiter::hit($key, 60);
-            $message = ($result['reason'] ?? null) === 'broken_secret'
+            if (RateLimiter::tooManyAttempts($key, self::MAX_ATTEMPTS)) {
+                $this->events->recordLockout('admin', $admin->id, $request->ip(), 'totp');
+            }
+            $message = in_array($result['reason'] ?? null, ['broken_secret', 'operational_error'], true)
                 ? 'Verifikasi dua langkah sedang tidak tersedia. Hubungi pengelola sistem.'
                 : 'Kode tidak cocok atau sudah dipakai.';
 
@@ -65,6 +70,9 @@ class AdminTotpController extends Controller
         }
 
         RateLimiter::clear($key);
+        if ($field === 'recovery_code') {
+            $this->events->recordRecoveryUsed($admin->id, $request->ip());
+        }
         // Second rotation: the pre-verification session id must not carry console access.
         $request->session()->regenerate(true);
         $request->session()->put(EnsureAdminTotp::SESSION_KEY, [
@@ -72,6 +80,8 @@ class AdminTotpController extends Controller
             'session_id' => $request->session()->getId(),
             'last_used_at' => (int) $result['timestamp'],
         ]);
+        $this->events->recordSessionRotated('admin', $admin->id, $request->ip(), $field === 'recovery_code' ? 'recovery' : 'totp');
+        $this->events->recordLoginSuccess($admin->id, $request->ip(), 'admin', $field === 'recovery_code' ? 'recovery' : 'totp');
 
         return redirect()->route('admin.dashboard')->with('success', 'Selamat datang kembali, Admin.');
     }
