@@ -818,6 +818,98 @@ PHP;
         $this->assertNull($a1->fresh()->totp_required_at);
     }
 
+    public function test_admin_totp_require_refusal_names_every_admin_without_secret(): void
+    {
+        $a1 = Admin::create(['name' => 'Tanpa Secret Satu', 'email' => 'nosecret-a@example.test', 'password' => self::PW]);
+        $a2 = Admin::create(['name' => 'Tanpa Secret Dua', 'email' => 'nosecret-b@example.test', 'password' => self::PW]);
+        [$ready] = $this->totpAdmin('siap@example.test');
+
+        $this->artisan('admin:totp-require', ['--all' => true])
+            ->expectsOutputToContain($a1->name.' <'.$a1->email.'>')
+            ->expectsOutputToContain($a2->name.' <'.$a2->email.'>')
+            ->doesntExpectOutputToContain($ready->email)
+            ->assertExitCode(1);
+
+        $this->assertNull($a1->fresh()->totp_required_at);
+        $this->assertNull($a2->fresh()->totp_required_at);
+    }
+
+    /**
+     * @return iterable<string,array{0:class-string<\Throwable>}>
+     */
+    public static function enrolSecretFailureProvider(): iterable
+    {
+        yield 'kunci terlalu pendek' => [\PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException::class];
+        yield 'karakter tidak valid' => [\PragmaRX\Google2FA\Exceptions\InvalidCharactersException::class];
+        yield 'tidak kompatibel google authenticator' => [\PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException::class];
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('enrolSecretFailureProvider')]
+    public function test_enrol_secret_exceptions_alarm_instead_of_reporting_wrong_code(string $exception): void
+    {
+        $admin = Admin::create(['name' => 'Enrol Alarm', 'email' => 'alarm-'.md5($exception).'@example.test', 'password' => self::PW]);
+        $this->instance(Google2FA::class, new class($exception) extends Google2FA
+        {
+            public function __construct(private readonly string $exception) {}
+
+            public function verifyKeyNewer($secret, $key, $oldTimestamp = null, $window = null, $timestamp = null): bool|int
+            {
+                throw new $this->exception;
+            }
+        });
+
+        $res = $this->actingAs($admin, 'admin')
+            ->withSession([
+                'totp_enrol_secret' => Crypt::encryptString(app(TotpService::class)->generateSecret()),
+            ])
+            ->post('/admin/totp/enrol', ['code' => '123456']);
+
+        $res->assertSessionHasErrors('code');
+        $message = session('errors')->first('code');
+        $this->assertStringContainsString('tidak tersedia', $message);
+        $this->assertStringNotContainsString('tidak cocok', $message);
+
+        $crit = array_values(array_filter($this->logs, fn ($l) => $l['level'] === 'critical'));
+        $this->assertCount(1, $crit);
+        $this->assertSame($admin->id, $crit[0]['context']['admin_id']);
+        $this->assertSame($exception, $crit[0]['context']['exception']);
+
+        $this->assertNull($admin->fresh()->totp_secret);
+        $this->assertNull($admin->fresh()->totp_required_at);
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('enrolSecretFailureProvider')]
+    public function test_challenge_secret_exceptions_raise_operational_alarm(string $exception): void
+    {
+        [$admin] = $this->totpAdmin();
+        $google2fa = $this->createMock(Google2FA::class);
+        $google2fa->expects($this->once())
+            ->method('verifyKeyNewer')
+            ->willThrowException(new $exception);
+
+        $result = (new TotpService($google2fa))->verifyAndAdvance($admin->id, '123456');
+
+        $this->assertSame(['ok' => false, 'reason' => 'broken_secret', 'timestamp' => null], $result);
+        $critical = array_values(array_filter($this->logs, fn ($log) => $log['level'] === 'critical'));
+        $this->assertCount(1, $critical);
+        $this->assertSame($admin->id, $critical[0]['context']['admin_id']);
+        $this->assertSame($exception, $critical[0]['context']['exception']);
+        $this->assertNull($admin->fresh()->totp_last_used_at);
+    }
+
+    public function test_flagged_admin_never_receives_console_session_marker_before_second_factor(): void
+    {
+        [$admin] = $this->totpAdmin('tanpa-marker@example.test');
+        $sid = $this->passwordLogin($admin);
+
+        foreach (['/admin', '/admin/orders'] as $uri) {
+            [$res] = $this->http('GET', $uri, [], $sid);
+            $res->assertStatus(302);
+            $res->assertRedirect('/admin/totp');
+            $this->assertNull($this->app['session']->driver()->get(EnsureAdminTotp::SESSION_KEY));
+        }
+    }
+
     public function test_admin_totp_require_command_succeeds_when_all_admins_have_secrets(): void
     {
         [$a1] = $this->totpAdmin('a1@example.test');

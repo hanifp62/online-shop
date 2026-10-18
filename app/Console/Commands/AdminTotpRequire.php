@@ -19,11 +19,11 @@ class AdminTotpRequire extends Command
             return self::FAILURE;
         }
 
-        $missing = Admin::whereNull('totp_secret')->orderBy('id')->pluck('email');
+        $missing = Admin::whereNull('totp_secret')->orderBy('id')->get(['name', 'email']);
         if ($missing->isNotEmpty()) {
             $this->error('Dibatalkan. Admin berikut belum memiliki secret TOTP:');
-            foreach ($missing as $email) {
-                $this->line('  '.$email);
+            foreach ($missing as $admin) {
+                $this->line('  '.$admin->name.' <'.$admin->email.'>');
             }
 
             return self::FAILURE;
