@@ -177,8 +177,17 @@ for (const loggedIn of [true, false]) {
         await flush();
         assert.match(h.$('checkout-summary').text, /Tas Kulit/);
         assert.match(h.$('checkout-summary').text, /Subtotal: Rp200/);
-        assert.doesNotMatch(h.$('checkout-summary').text, /\bTotal:|Diskon: Rp0/);
+        assert.doesNotMatch(h.$('checkout-summary').text, /\bPerkiraan total:|Ongkir:/);
         assert.match(h.$('checkout-summary').text, /pending \/ belum dibayar/);
+    });
+
+    test(`${who}: summary shows server breakdown when quote fields present`, async () => {
+        const h = shop({ loggedIn, responses: [{ items: [item], subtotal: 200, shipping_fee: 15000, discount: 0, tax: 0, total: 21500 }] });
+        await flush();
+        assert.match(h.$('checkout-summary').text, /Ongkir: Rp15\.000/);
+        assert.match(h.$('checkout-summary').text, /Diskon: Rp0/);
+        assert.match(h.$('checkout-summary').text, /Pajak: Rp0/);
+        assert.match(h.$('checkout-summary').text, /Perkiraan total: Rp21\.500/);
     });
 
     test(`${who}: checkout summary updates after cart reload`, async () => {
@@ -188,7 +197,7 @@ for (const loggedIn of [true, false]) {
         await flush();
         assert.match(h.$('checkout-summary').text, /× 2/);
         assert.match(h.$('checkout-summary').text, /Subtotal: Rp400/);
-        assert.doesNotMatch(h.$('checkout-summary').text, /\bTotal:|Diskon: Rp0/);
+        assert.doesNotMatch(h.$('checkout-summary').text, /\bPerkiraan total:|Ongkir:/);
     });
 
     test(`${who}: checkout summary shows empty state`, async () => {
