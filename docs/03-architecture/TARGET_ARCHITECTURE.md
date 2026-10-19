@@ -2,7 +2,7 @@
 
 **Proyek:** ZAFIRA (La Maison de Lumière — `online-shop`)  
 **Fase:** Fase 5 — System Architecture Design  
-**Framework:** Laravel 12.69.1  
+**Framework:** Laravel ^13.0 (lock v13.36.0), PHP ^8.4.1  
 **Tanggal:** 2026-10-10  
 
 ---

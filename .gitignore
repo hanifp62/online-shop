@@ -2,7 +2,9 @@
 .DS_Store
 .env
 .env.backup
+.env.manual
 .env.production
+.playwright-cli/
 .phpactor.json
 .phpunit.result.cache
 /.fleet
@@ -22,3 +24,6 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Local database dumps
+database/zafira_ecommerce_20260921*.sql

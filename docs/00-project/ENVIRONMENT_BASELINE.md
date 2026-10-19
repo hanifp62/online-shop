@@ -22,9 +22,9 @@
 
 | Software | Versi Terdeteksi | Lokasi Binary | Status Kompatibilitas |
 |---|---|---|---|
-| **PHP (CLI)** | `PHP 8.5.11 (cli) (built: Sep 22 2026)` dengan Zend OPcache v8.5.11 | `/opt/homebrew/bin/php` | Kompatibel penuh dengan Laravel 12.69.1 (49 test passing) |
+| **PHP (CLI)** | `PHP 8.5.11 (cli) (built: Sep 22 2026)` dengan Zend OPcache v8.5.11 | `/opt/homebrew/bin/php` | Kompatibel dengan Laravel ^13.0 (lock v13.36.0); 49 test passing adalah angka historis |
 | **Composer** | `Composer 2.10.3 (2026-08-27)` | `/opt/homebrew/bin/composer` | Kompatibel |
-| **Laravel Framework** | `Laravel Framework 12.69.1` | `artisan` / `composer.lock` | Framework aktif |
+| **Laravel Framework** | `Laravel ^13.0` (lock `v13.36.0`) | `artisan` / `composer.lock` | Framework aktif |
 | **Node.js** | `v24.21.0` | `/opt/homebrew/opt/node@24/bin/node` | Kompatibel dengan Vite 8 & Tailwind v4 |
 | **npm** | `11.19.0` | `/opt/homebrew/opt/node@24/bin/npm` | Kompatibel |
 | **Frontend Bundler** | `Vite 8.2.2` + `@tailwindcss/vite 4.0.0` | `node_modules/.bin/vite` | Membutuhkan bit eksekusi `chmod +x` |
@@ -41,7 +41,7 @@ Berdasarkan output `php -m`:
 - **Kompresi & Parser:** `zip`, `zlib`, `bz2`, `xml`, `SimpleXML`, `dom`
 - **Performa:** `Zend OPcache`
 
-*Catatan:* Semua ekstensi fundamental yang disyaratkan oleh Laravel 12 telah aktif secara native di lingkungan Homebrew PHP 8.5.11.
+*Catatan:* Semua ekstensi fundamental yang disyaratkan oleh Laravel 13 telah aktif secara native di lingkungan Homebrew PHP 8.5.11.
 
 ---
 

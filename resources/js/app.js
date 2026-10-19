@@ -1,16 +1,26 @@
-import './bootstrap';
+import "./bootstrap";
+import { initAdminTables } from "./admin-table";
+import { searchMatches } from "./search-match";
+
+initAdminTables();
 
 const select = (selector, scope = document) => scope.querySelector(selector);
-const selectAll = (selector, scope = document) => [...scope.querySelectorAll(selector)];
-const prefersReducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+const selectAll = (selector, scope = document) => [
+    ...scope.querySelectorAll(selector),
+];
+const prefersReducedMotion = () =>
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
 const smoothScrollTo = (element) => {
     if (!element) return;
-    element.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+    element.scrollIntoView({
+        behavior: prefersReducedMotion() ? "auto" : "smooth",
+    });
 };
 
-const STORAGE_VERSION = 'v1';
+const STORAGE_VERSION = "v1";
 const MONOGRAM_SANITIZE_RE = /[^a-zA-Z]/g; // js-hoist-regexp: jangan buat RegExp per keystroke
-const scheduleIdleWork = window.requestIdleCallback?.bind(window) ?? ((cb) => setTimeout(cb, 1)); // js-request-idle-callback
+const scheduleIdleWork =
+    window.requestIdleCallback?.bind(window) ?? ((cb) => setTimeout(cb, 1)); // js-request-idle-callback
 
 const storage = {
     // js-cache-storage: cache baca di memori, tulis tetap sync ke localStorage.
@@ -28,11 +38,20 @@ const storage = {
                 // Migrasi sekali dari kunci lama tanpa versi.
                 raw = localStorage.getItem(key);
                 if (raw !== null) {
-                    try { localStorage.setItem(namespaced, raw); } catch { /* abaikan */ }
-                    try { localStorage.removeItem(key); } catch { /* abaikan */ }
+                    try {
+                        localStorage.setItem(namespaced, raw);
+                    } catch {
+                        /* abaikan */
+                    }
+                    try {
+                        localStorage.removeItem(key);
+                    } catch {
+                        /* abaikan */
+                    }
                 }
             }
-            const value = raw === null ? fallback : (JSON.parse(raw) ?? fallback);
+            const value =
+                raw === null ? fallback : (JSON.parse(raw) ?? fallback);
             this._mem.set(namespaced, value);
             return value;
         } catch {
@@ -52,144 +71,304 @@ const storage = {
         this._mem.delete(this._key(key));
     },
 };
-if (typeof window !== 'undefined') {
-    window.addEventListener('storage', (e) => {
+if (typeof window !== "undefined") {
+    window.addEventListener("storage", (e) => {
         if (e.key) storage._mem.delete(e.key);
     });
 }
 
-const escapeHtml = (value) => String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+const escapeHtml = (value) =>
+    String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
-const storefront = select('.storefront');
+const storefront = select(".storefront");
 
 if (storefront) {
-    const overlay = select('[data-overlay]');
-    const cartDrawer = select('.cart-drawer');
-    const searchPanel = select('.search-panel');
-    const quickViewModal = select('.quick-view-modal');
-    const conciergeModal = select('.concierge-modal');
-    const mobileMenu = select('.mobile-menu');
-    const productCards = selectAll('[data-product-card]');
-    const productMap = new Map(productCards.map((card) => [card.dataset.id, readProduct(card)]));
+    const overlay = select("[data-overlay]");
+    const cartDrawer = select(".cart-drawer");
+    const searchPanel = select(".search-panel");
+    const quickViewModal = select(".quick-view-modal");
+    const conciergeModal = select(".concierge-modal");
+    const profileDrawer = select("#welcome-profile-drawer");
+    const sizeGuideDrawer = select("[data-size-guide]");
+    const shortcutsModal = select("#welcome-shortcuts-backdrop");
+    const mobileMenu = select(".mobile-menu");
+    [
+        cartDrawer,
+        searchPanel,
+        quickViewModal,
+        conciergeModal,
+        profileDrawer,
+        sizeGuideDrawer,
+        shortcutsModal,
+    ].forEach((element) => {
+        if (!element) return;
+        element.inert = true;
+        element.setAttribute("aria-hidden", "true");
+    });
+    const productCards = selectAll("[data-product-card]");
+    const productMap = new Map(
+        productCards.map((card) => [card.dataset.id, readProduct(card)]),
+    );
     // js-cache-function-results + js-index-maps: haystack search dihitung sekali,
     // bukan string-template per produk per keystroke.
     const productHaystack = new Map(
-        [...productMap.entries()].map(([id, p]) => [id, `${p.name} ${p.category} ${p.color} ${p.description}`.toLowerCase()]),
+        [...productMap.entries()].map(([id, p]) => [
+            id,
+            `${p.name} ${p.category} ${p.color} ${p.description} ${p.material} ${p.origin}`.toLowerCase(),
+        ]),
     );
     // js-cache-property-access: cache referensi DOM yang dipakai di hot path.
-    const cartCountEls = selectAll('.cart-count');
-    const wishlistCountEls = selectAll('.wishlist-count');
-    const cartCountTextEls = selectAll('.cart-count-text');
-    let cart = storage.get('zafira-cart', []);
-    let wishlist = storage.get('zafira-wishlist', []);
+    const cartCountEls = selectAll(".cart-count");
+    const wishlistCountEls = selectAll(".wishlist-count");
+    const cartCountTextEls = selectAll(".cart-count-text");
+    let cart = [];
+    let cartSubtotal = 0;
+    let cartRequests = Promise.resolve();
+    let inquiryItems = [];
+    // Legacy data is read-only: never migrate, rewrite, or automatically merge it.
+    for (const key of ["zafira-cart:v1", "zafira-cart"]) {
+        try {
+            const legacy = JSON.parse(localStorage.getItem(key) || "[]");
+            if (!Array.isArray(legacy) || !legacy.length) continue;
+            const panel = select("[data-legacy-cart]");
+            if (panel) panel.hidden = false;
+            const list = select("[data-legacy-lines]");
+            legacy.forEach((item) => {
+                if (!item || typeof item !== "object" || !list) return;
+                const line = document.createElement("li");
+                line.textContent = `${item.name || item.id || "Kreasi"} × ${item.quantity || 1}${item.size ? ` · Ukuran: ${item.size}` : ""}${item.monogram ? ` · Monogram: ${item.monogram}` : ""}`;
+                list.appendChild(line);
+            });
+        } catch {
+            /* Leave unreadable legacy data untouched. */
+        }
+    }
+    const catalogSearch = select("#live-catalog-search-input");
+    let activeCategory = "Semua";
+    let activeWishlistOnly = false;
+    let wishlist = storage.get("zafira-wishlist", []);
     // js-set-map-lookups: O(1) untuk includes() yang dipanggil di loop render/filter.
     let wishlistSet = new Set(wishlist);
     let currentQuickProduct = null;
     let toastTimer;
     let lastFocusedElement = null;
-    let checkoutMode = false;
 
     function readProduct(card) {
         return {
             id: card.dataset.id,
+            productId: Number(card.dataset.productId),
             name: card.dataset.name,
             category: card.dataset.category,
             price: Number(card.dataset.price),
+            stock: Number(card.dataset.stock),
             priceLabel: card.dataset.priceLabel,
             image: card.dataset.image,
             description: card.dataset.description,
             color: card.dataset.color,
-            material: card.dataset.material || '',
-            origin: card.dataset.origin || '',
+            material: card.dataset.material || "",
+            origin: card.dataset.origin || "",
         };
     }
 
     function rupiah(value) {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
+        return new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
             maximumFractionDigits: 0,
         }).format(value);
     }
 
+    let dismissToast = () => {};
+
     function showToast(message, action = null) {
-        const toast = select('.toast');
+        const toast = select(".toast");
         if (!toast) return;
-        const msg = select('[data-toast-message]', toast);
+        const home = toast._home || toast.parentNode;
+        toast._home = home;
+        const actionBtnBefore = select("[data-toast-action]", toast);
+        if (document.activeElement === actionBtnBefore) {
+            select("[data-close-cart]", cartDrawer)?.focus();
+        }
+        if (action && cartDrawer?.classList.contains("open"))
+            cartDrawer.appendChild(toast);
+        else if (toast.parentNode !== home) home.appendChild(toast);
+        const msg = select("[data-toast-message]", toast);
         if (msg) msg.textContent = message;
-        let actionBtn = select('[data-toast-action]', toast);
+        let actionBtn = select("[data-toast-action]", toast);
         if (action) {
             if (!actionBtn) {
-                actionBtn = document.createElement('button');
-                actionBtn.type = 'button';
-                actionBtn.dataset.toastAction = '';
-                actionBtn.style.cssText = 'margin-left:8px;color:#c7a665;background:transparent;cursor:pointer;font-size:12px;text-decoration:underline;';
+                actionBtn = document.createElement("button");
+                actionBtn.type = "button";
+                actionBtn.dataset.toastAction = "";
+                actionBtn.style.cssText =
+                    "margin-left:8px;color:#c7a665;background:transparent;cursor:pointer;font-size:12px;text-decoration:underline;";
                 toast.appendChild(actionBtn);
             }
             actionBtn.textContent = action.label;
             actionBtn.hidden = false;
-            actionBtn.onclick = () => { action.onClick(); toast.classList.remove('show'); };
+            actionBtn.onclick = () => {
+                dismissToast();
+                action.onClick();
+            };
         } else if (actionBtn) {
             actionBtn.hidden = true;
             actionBtn.onclick = null;
         }
-        toast.classList.add('show');
+        toast.classList.add("show");
         clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => toast.classList.remove('show'), action ? 6000 : 3500);
+        dismissToast = () => {
+            clearTimeout(toastTimer);
+            toast.classList.remove("show");
+            if (actionBtn) {
+                actionBtn.hidden = true;
+                actionBtn.onclick = null;
+            }
+            if (document.activeElement === actionBtn)
+                select("[data-close-cart]", cartDrawer)?.focus();
+            if (toast.parentNode !== home) home.appendChild(toast);
+        };
+        const expire = () => {
+            if (action && toast.contains(document.activeElement)) {
+                toastTimer = setTimeout(expire, 6000);
+                return;
+            }
+            dismissToast();
+        };
+        toastTimer = setTimeout(expire, action ? 6000 : 3500);
     }
 
     function syncOverlay() {
-        const somethingOpen = [cartDrawer, searchPanel, quickViewModal, conciergeModal]
-            .some((element) => element?.classList.contains('open'));
-        overlay?.classList.toggle('open', somethingOpen);
-        document.body.classList.toggle('no-scroll', somethingOpen || mobileMenu?.classList.contains('open'));
+        const somethingOpen = [
+            cartDrawer,
+            searchPanel,
+            quickViewModal,
+            conciergeModal,
+            profileDrawer,
+            sizeGuideDrawer,
+            shortcutsModal,
+        ].some((element) => element?.classList.contains("open"));
+        overlay?.classList.toggle("open", Boolean(somethingOpen));
+        document.body.classList.toggle(
+            "no-scroll",
+            Boolean(somethingOpen || mobileMenu?.classList.contains("open")),
+        );
     }
 
-    function openElement(element) {
+    function openElement(element, trigger = document.activeElement) {
         if (!element) return;
-        lastFocusedElement = document.activeElement;
-        element.classList.add('open');
-        element.setAttribute('aria-hidden', 'false');
-        syncOverlay();
-        setTimeout(() => {
-            const preferredFocus = element === searchPanel
-                ? select('[data-search-input]', element)
-                : select('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])', element);
-            preferredFocus?.focus();
-        }, 320);
-    }
-
-    function closeElement(element) {
-        if (!element) return;
-        const wasOpen = element.classList.contains('open');
-        element.classList.remove('open');
-        element.setAttribute('aria-hidden', 'true');
-        syncOverlay();
-        if (wasOpen && !select('.open[role="dialog"], .mobile-menu.open')) {
-            lastFocusedElement?.focus?.();
+        const parentDialog = [
+            cartDrawer,
+            searchPanel,
+            quickViewModal,
+            conciergeModal,
+            profileDrawer,
+            sizeGuideDrawer,
+            shortcutsModal,
+            mobileMenu,
+        ].find((layer) => layer !== element && layer?.contains?.(trigger));
+        element._opener = parentDialog?._opener || trigger;
+        lastFocusedElement = element._opener;
+        if (element === shortcutsModal) {
+            element.style.display = "flex";
+            select(".modal-window", element)?.classList.add("open");
         }
+        element.inert = false;
+        element.classList.add("open");
+        element.setAttribute("aria-hidden", "false");
+        syncOverlay();
+        const preferredFocus =
+            element === searchPanel
+                ? select("[data-search-input]", element)
+                : select(
+                      'button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+                      element,
+                  );
+        // Retry while opening transitions keep the target unfocusable.
+        const focusInside = (attempt = 0) => {
+            if (
+                !element.classList.contains("open") ||
+                !preferredFocus ||
+                element.contains(document.activeElement)
+            )
+                return;
+            preferredFocus.focus();
+            if (document.activeElement !== preferredFocus && attempt < 10) {
+                setTimeout(() => focusInside(attempt + 1), 50);
+            }
+        };
+        setTimeout(focusInside, 50);
     }
+
+    let cartDrawerEpoch = 0;
+
+    function closeElement(element, restoreFocus = true) {
+        if (!element) return;
+        const wasOpen = element.classList.contains("open");
+        if (element === cartDrawer) {
+            cartDrawerEpoch++;
+            if (wasOpen && select(".toast")?.parentNode === cartDrawer)
+                dismissToast();
+        }
+        element.classList.remove("open");
+        element.setAttribute("aria-hidden", "true");
+        element.inert = true;
+        if (element === shortcutsModal) {
+            select(".modal-window", element)?.classList.remove("open");
+            element.style.display = "none";
+        }
+        syncOverlay();
+        const opener = element._opener || lastFocusedElement;
+        if (
+            wasOpen &&
+            restoreFocus &&
+            !select('.open[role="dialog"], .mobile-menu.open')
+        )
+            opener?.focus?.();
+    }
+
+    function closeShortcuts() {
+        closeElement(shortcutsModal);
+    }
+
+    function openShortcuts(trigger = document.activeElement) {
+        openElement(shortcutsModal, trigger);
+    }
+
+    window.closeWelcomeShortcutsModal = closeShortcuts;
+    window.openWelcomeShortcutsModal = openShortcuts;
 
     function closeAll() {
-        [cartDrawer, searchPanel, quickViewModal, conciergeModal].forEach((element) => closeElement(element));
+        const layers = [
+            cartDrawer,
+            searchPanel,
+            quickViewModal,
+            conciergeModal,
+            profileDrawer,
+            sizeGuideDrawer,
+            shortcutsModal,
+        ];
+        const active = layers.find((element) =>
+            element?.classList.contains("open"),
+        );
+        const opener = active?._opener;
+        layers.forEach((element) => closeElement(element, false));
+        opener?.focus?.();
     }
 
     function updateCounts() {
-        // js-combine-iterations analog: satu reduce untuk total, lalu tulis ke
-        // daftar elemen yang sudah di-cache (tanpa querySelector per update).
         const quantity = cart.reduce((sum, item) => sum + item.quantity, 0);
         for (const count of cartCountEls) {
             count.textContent = quantity;
-            count.classList.toggle('has-items', quantity > 0);
+            count.classList.toggle("has-items", quantity > 0);
         }
         for (const count of wishlistCountEls) {
             count.textContent = wishlist.length;
-            count.classList.toggle('has-items', wishlist.length > 0);
+            count.classList.toggle("has-items", wishlist.length > 0);
         }
         for (const count of cartCountTextEls) {
             count.textContent = `(${quantity})`;
@@ -197,10 +376,12 @@ if (storefront) {
     }
 
     function syncWishlistButtons() {
-        for (const button of selectAll('[data-toggle-wishlist]')) {
-            const active = wishlistSet.has(button.closest('[data-product-card]').dataset.id);
-            button.classList.toggle('active', active);
-            button.setAttribute('aria-pressed', String(active));
+        for (const button of selectAll("[data-toggle-wishlist]")) {
+            const active = wishlistSet.has(
+                button.closest("[data-product-card]").dataset.id,
+            );
+            button.classList.toggle("active", active);
+            button.setAttribute("aria-pressed", String(active));
         }
         updateCounts();
     }
@@ -217,379 +398,696 @@ if (storefront) {
             wishlist.push(product.id);
             showToast(`${product.name} disimpan dalam favorit.`);
         }
-        storage.set('zafira-wishlist', wishlist);
+        storage.set("zafira-wishlist", wishlist);
         syncWishlistButtons();
     }
 
-    function setConciergeMode(asCheckout) {
-        const modal = select('.concierge-modal');
+    function setConciergeMode() {
+        const modal = select(".concierge-modal");
         if (!modal) return;
-        checkoutMode = Boolean(asCheckout);
-        modal.classList.toggle('is-checkout', checkoutMode);
-
-        const summary = select('[data-checkout-summary]', modal);
-        const title = select('#concierge-title, #concierge-title-pdp', modal);
-        const intro = select('.concierge-intro > p', modal);
-        const service = select('#concierge-service, #concierge-service-pdp, [name="service"]', modal);
-        const submit = select('.concierge-form [type="submit"]', modal);
-        const orderItemsInput = select('[data-order-items]', modal);
-
-        if (orderItemsInput) {
-            orderItemsInput.value = checkoutMode ? JSON.stringify(cart) : '';
+        modal.classList.remove("is-checkout");
+        const summary = select("[data-checkout-summary]", modal);
+        const orderItemsInput = select("[data-order-items]", modal);
+        const lines = summary && select("[data-checkout-lines]", summary);
+        if (orderItemsInput) orderItemsInput.value = "";
+        if (summary) summary.hidden = !inquiryItems.length;
+        if (lines) {
+            lines.replaceChildren();
+            inquiryItems.forEach((item) => {
+                const line = document.createElement("li");
+                line.textContent = `${item.name}${item.size ? ` · Ukuran: ${item.size}` : ""}${item.monogram ? ` · Monogram: ${item.monogram}` : ""}`;
+                lines.appendChild(line);
+            });
         }
-
-        if (!modal.dataset.defaultSubmit && submit) {
-            modal.dataset.defaultSubmit = submit.innerHTML;
-        }
-        if (!modal.dataset.defaultTitle && title) {
-            modal.dataset.defaultTitle = title.innerHTML;
-        }
-        if (!modal.dataset.defaultIntro && intro?.textContent) {
-            modal.dataset.defaultIntro = intro.textContent.replace(/\s+/g, ' ').trim();
-        }
-
-        if (summary) summary.hidden = !checkoutMode;
-        if (title) title.innerHTML = checkoutMode
-            ? 'Lanjutkan<br>pesanan Anda.'
-            : modal.dataset.defaultTitle;
-        if (intro && service && submit) {
-            if (checkoutMode) {
-                service.value = 'virtual-consultation';
-                intro.textContent = 'Client Advisor kami akan menghubungi Anda untuk mengonfirmasi pesanan, mengatur pembayaran, dan pengiriman.';
-                submit.innerHTML = 'Kirim permintaan pesanan <svg><use href="#icon-arrow"/></svg>';
-            } else {
-                intro.textContent = modal.dataset.defaultIntro;
-                submit.innerHTML = modal.dataset.defaultSubmit;
-            }
-        }
-
-        if (checkoutMode && summary) {
-            const lines = select('[data-checkout-lines]', summary);
-            const total = select('[data-checkout-total]', summary);
-            if (lines) lines.innerHTML = cart.map((item) => `
-                <li>${escapeHtml(item.name)} <span>× ${escapeHtml(item.quantity)}</span></li>
-            `).join('');
-            if (total) total.textContent = rupiah(cart.reduce((sum, item) => sum + (item.price * item.quantity), 0));
-        }
+        const title = select("[data-checkout-total]", modal);
+        if (title)
+            title.textContent = inquiryItems.length
+                ? "Permintaan personalisasi — harga dikonfirmasi advisor"
+                : "";
     }
 
-    function addToCart(product) {
-        // client-localstorage-schema: simpan snapshot minimal, bukan seluruh
-        // dataset DOM (hindari description panjang + duplikasi priceLabel).
-        const snapshot = {
-            id: product.id,
-            name: product.name,
-            category: product.category,
-            price: product.price,
-            priceLabel: product.priceLabel,
-            image: product.image,
-            color: product.color,
-        };
-        const existing = cart.find((item) => item.id === snapshot.id);
-        if (existing) {
-            existing.quantity += 1;
-        } else {
-            cart.push({ ...snapshot, quantity: 1 });
+    /** Ukuran dan monogram tidak pernah masuk tas server; keduanya jadi permintaan concierge eksplisit. */
+    function openInquiry(product, personalization, trigger) {
+        inquiryItems = [
+            {
+                name: product.name,
+                size: personalization.size,
+                monogram: personalization.monogram,
+            },
+        ];
+        setConciergeMode(false);
+        const notes = select('.concierge-modal [name="notes"]');
+        if (notes) {
+            notes.value =
+                `Permintaan personalisasi ${product.name}` +
+                (personalization.size
+                    ? ` · Ukuran: ${personalization.size}`
+                    : "") +
+                (personalization.monogram
+                    ? ` · Monogram: ${personalization.monogram}`
+                    : "");
         }
-        persistCart();
-        showToast(`${snapshot.name} ditambahkan ke tas Anda.`);
+        const service = select('.concierge-modal [name="service"]');
+        if (service) service.value = "atelier";
+        openElement(conciergeModal, trigger);
+        showToast(
+            "Ukuran dan monogram dikirim sebagai permintaan concierge, bukan pembelian standar.",
+        );
     }
 
-    function persistCart() {
-        storage.set('zafira-cart', cart);
-        renderCart();
-        updateCounts();
+    function cartRequest(url, method = "GET", body = null) {
+        const request = cartRequests
+            .catch(() => null)
+            .then(async () => {
+                const status = select("[data-cart-status]");
+                if (status) status.textContent = "Memproses…";
+                try {
+                    const fetchWithTimeout = async (requestUrl, options) => {
+                        // No AbortController (old runtime): send without a timeout rather than fail.
+                        if (typeof AbortController !== "function")
+                            return fetch(requestUrl, options);
+                        const controller = new AbortController();
+                        const timeout = setTimeout(() => controller.abort(), 10000);
+                        try {
+                            return await fetch(requestUrl, {
+                                ...options,
+                                signal: controller.signal,
+                            });
+                        } finally {
+                            clearTimeout(timeout);
+                        }
+                    };
+                    const parseResponse = async (response) => {
+                        try {
+                            return await response.json();
+                        } catch {
+                            throw new Error("Respons server tidak valid. Coba lagi.");
+                        }
+                    };
+                    const responseError = (response, data) => {
+                        if (response.status === 419)
+                            return "Sesi kedaluwarsa. Muat ulang halaman lalu coba lagi.";
+                        if (response.status >= 500)
+                            return "Layanan sedang bermasalah. Coba lagi sebentar lagi.";
+                        return data.message || "Tas belum dapat diperbarui.";
+                    };
+                    if (typeof url === "function") {
+                        const freshResponse = await fetchWithTimeout("/cart", {
+                            headers: { Accept: "application/json" },
+                        });
+                        const freshData = await parseResponse(freshResponse);
+                        if (!freshResponse.ok)
+                            throw new Error(responseError(freshResponse, freshData));
+                        cart = freshData.items || [];
+                        cartSubtotal = freshData.subtotal || 0;
+                        renderCart();
+                        updateCounts();
+                        const intent = await url();
+                        if (!intent) {
+                            if (status)
+                                status.textContent = "Tas belanja diperbarui.";
+                            return null;
+                        }
+                        [url, method, body = null] = intent;
+                    }
+                    const response = await fetchWithTimeout(url, {
+                        method,
+                        headers: {
+                            Accept: "application/json",
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN":
+                                select('meta[name="csrf-token"]')?.content ||
+                                "",
+                        },
+                        body: body ? JSON.stringify(body) : null,
+                    });
+                    const data = await parseResponse(response);
+                    if (!response.ok)
+                        throw new Error(responseError(response, data));
+                    cart = data.items || [];
+                    cartSubtotal = data.subtotal || 0;
+                    renderCart();
+                    updateCounts();
+                    if (status) {
+                        const count = cart.reduce(
+                            (sum, entry) => sum + Number(entry.quantity || 0),
+                            0,
+                        );
+                        status.textContent = cart.length
+                            ? `Tas belanja diperbarui: ${count} barang, subtotal ${rupiah(cartSubtotal)}.`
+                            : "Tas belanja kosong.";
+                    }
+                    return data;
+                } catch (error) {
+                    const knownMessages = new Set([
+                        "Respons server tidak valid. Coba lagi.",
+                        "Sesi kedaluwarsa. Muat ulang halaman lalu coba lagi.",
+                        "Layanan sedang bermasalah. Coba lagi sebentar lagi.",
+                        "Tas belum dapat diperbarui.",
+                    ]);
+                    const message =
+                        error?.name === "AbortError"
+                            ? "Permintaan terlalu lama. Coba lagi."
+                            : knownMessages.has(error?.message)
+                              ? error.message
+                              : "Jaringan bermasalah. Periksa koneksi lalu coba lagi.";
+                    if (status) status.textContent = message;
+                    showToast(message);
+                    return null;
+                }
+            });
+        cartRequests = request;
+        return request;
     }
+
+    // Relative change: the server applies it under its cart lock, so another tab's write is not overwritten.
+    const cartDelta = (productId, delta) => [
+        `/cart/items/${productId}/delta`,
+        "POST",
+        { delta },
+    ];
+
+    const addToCart = (product) =>
+        cartRequest(() => cartDelta(product.productId, 1)).then((data) => {
+            if (data) showToast(`${product.name} ditambahkan ke tas Anda.`);
+            return data;
+        });
 
     function renderCart() {
-        const container = select('[data-cart-items]');
-        const empty = select('[data-cart-empty]');
-        const footer = select('[data-cart-footer]');
+        const container = select("[data-cart-items]");
+        const empty = select("[data-cart-empty]");
+        const footer = select("[data-cart-footer]");
         if (!container || !empty || !footer) return;
 
-        container.innerHTML = '';
+        const active = document.activeElement;
+        const focusedCartId =
+            active?.closest?.("[data-cart-id]")?.dataset?.cartId;
+        const hadFocus = !!focusedCartId;
+        const focusedAction =
+            active?.dataset?.quantity ??
+            (active?.closest?.("[data-remove-cart]") ? "remove" : null);
+        container.replaceChildren();
         empty.hidden = cart.length > 0;
         footer.hidden = cart.length === 0;
 
         cart.forEach((item) => {
-            const element = document.createElement('article');
-            element.className = 'cart-item';
-            element.dataset.cartId = item.id;
+            const element = document.createElement("article");
+            element.className = "cart-item";
+            element.dataset.cartId = String(item.product_id);
             element.innerHTML = `
-                <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" width="100" height="125" loading="lazy">
                 <div class="cart-item-info">
-                    <span>${escapeHtml(item.category)}</span>
-                    <h3><a href="/produk/${encodeURIComponent(item.id)}">${escapeHtml(item.name)}</a></h3>
-                    <p translate="no">${escapeHtml(item.priceLabel)}</p>
-                    <div class="quantity-control" aria-label="Jumlah ${escapeHtml(item.name)}">
+                    <h3>${escapeHtml(item.product_title)}</h3>
+                    <p translate="no">${escapeHtml(rupiah(item.unit_price))}</p>
+                    ${item.available ? "" : "<p>Stok tidak tersedia. Hapus kreasi ini sebelum checkout.</p>"}
+                    <div class="quantity-control" aria-label="Jumlah ${escapeHtml(item.product_title)}">
                         <button type="button" data-quantity="minus" aria-label="Kurangi jumlah"><svg><use href="#icon-minus"/></svg></button>
                         <span>${escapeHtml(item.quantity)}</span>
                         <button type="button" data-quantity="plus" aria-label="Tambah jumlah"><svg><use href="#icon-plus"/></svg></button>
                     </div>
                 </div>
-                <button class="cart-remove" type="button" data-remove-cart aria-label="Hapus ${escapeHtml(item.name)}"><svg><use href="#icon-close"/></svg></button>
+                <button class="cart-remove" type="button" data-remove-cart aria-label="Hapus ${escapeHtml(item.product_title)}"><svg><use href="#icon-close"/></svg></button>
             `;
             container.appendChild(element);
         });
 
-        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const totalElement = select('[data-cart-total]');
-        if (totalElement) totalElement.textContent = rupiah(total);
+        const totalElement = select("[data-cart-total]");
+        if (totalElement) totalElement.textContent = rupiah(cartSubtotal);
+
+        if (hadFocus) {
+            const actionSelector =
+                focusedAction === "remove"
+                    ? "[data-remove-cart]"
+                    : `[data-quantity="${focusedAction}"]`;
+            // Row gone (deleted): fall back to the drawer close button so keyboard focus is not lost to <body>.
+            const target =
+                (focusedCartId &&
+                    focusedAction &&
+                    select(
+                        `[data-cart-id="${focusedCartId}"] ${actionSelector}`,
+                        container,
+                    )) ||
+                select("[data-close-cart]", cartDrawer);
+            target?.focus?.();
+        }
     }
 
-    function changeQuantity(id, direction) {
-        const item = cart.find((entry) => entry.id === id);
-        if (!item) return;
-        item.quantity += direction === 'plus' ? 1 : -1;
-        if (item.quantity < 1) cart = cart.filter((entry) => entry.id !== id);
-        persistCart();
+    function changeQuantity(productId, direction) {
+        cartRequest(() => {
+            const item = cart.find(
+                (entry) => String(entry.product_id) === productId,
+            );
+            if (!item) return null;
+            return cartDelta(item.product_id, direction === "plus" ? 1 : -1);
+        });
     }
 
     function showQuickView(card) {
         const product = readProduct(card);
         currentQuickProduct = product;
-        select('[data-quick-image]').src = product.image;
-        select('[data-quick-image]').alt = product.name;
-        select('[data-quick-category]').textContent = product.category;
-        select('[data-quick-name]').textContent = product.name;
-        select('[data-quick-price]').textContent = product.priceLabel;
-        select('[data-quick-description]').textContent = product.description;
-        select('[data-quick-color]').textContent = product.color;
-        const materialRow = select('[data-quick-material-row]', quickViewModal);
-        const originRow = select('[data-quick-origin-row]', quickViewModal);
+        select("[data-quick-image]").src = product.image;
+        select("[data-quick-image]").alt = product.name;
+        select("[data-quick-category]").textContent = product.category;
+        select("[data-quick-name]").textContent = product.name;
+        select("[data-quick-price]").textContent = product.priceLabel;
+        select("[data-quick-description]").textContent = product.description;
+        select("[data-quick-color]").textContent = product.color;
+        const materialRow = select("[data-quick-material-row]", quickViewModal);
+        const originRow = select("[data-quick-origin-row]", quickViewModal);
         if (materialRow) {
             materialRow.hidden = !product.material;
-            select('[data-quick-material]', quickViewModal).textContent = product.material;
+            select("[data-quick-material]", quickViewModal).textContent =
+                product.material;
         }
         if (originRow) {
             originRow.hidden = !product.origin;
-            select('[data-quick-origin]', quickViewModal).textContent = product.origin;
+            select("[data-quick-origin]", quickViewModal).textContent =
+                product.origin;
         }
+        const soldOut = product.stock <= 0;
+        selectAll("[data-quick-add]", quickViewModal).forEach((button) => {
+            button.disabled = soldOut;
+            button.firstChild.textContent = soldOut
+                ? "Stok habis "
+                : "Tambahkan ke tas ";
+        });
+        const availability = select(
+            "[data-quick-availability]",
+            quickViewModal,
+        );
+        if (availability)
+            availability.lastChild.textContent = soldOut
+                ? "Stok habis"
+                : "Tersedia";
         openElement(quickViewModal);
     }
 
-    function applyFilter(category, wishlistOnly = false, { syncUrl = true } = {}) {
-        // js-early-exit: wishlist kosong → langsung sembunyikan semua tanpa loop cocok.
-        if (wishlistOnly && wishlistSet.size === 0) {
-            for (const card of productCards) card.hidden = true;
-            const c = select('[data-product-count]');
-            if (c) c.textContent = '0';
-            const e = select('.empty-products');
-            if (e) e.hidden = false;
-            if (syncUrl) {
-                const u = new URL(window.location.href);
-                u.searchParams.set('tampilkan', 'favorit');
-                u.searchParams.delete('kategori');
-                history.replaceState(null, '', u);
-            }
-            return;
-        }
+    // Satu-satunya mekanisme filter katalog: kategori/favorit ∩ kata kunci, selalu via `hidden`.
+    function applyFilter(
+        category = activeCategory,
+        wishlistOnly = activeWishlistOnly,
+        { syncUrl = true } = {},
+    ) {
+        activeCategory = category || "Semua";
+        activeWishlistOnly = Boolean(wishlistOnly);
+        const query = (catalogSearch?.value || "").trim().toLowerCase();
         let visible = 0;
-        const showAll = !wishlistOnly && category === 'Semua';
-        for (const card of productCards) {
-            const matches = wishlistOnly
+        const showAll = !activeWishlistOnly && activeCategory === "Semua";
+        let scopedCards = productCards.filter((card) => {
+            const inGroup = activeWishlistOnly
                 ? wishlistSet.has(card.dataset.id)
-                : showAll || card.dataset.category === category;
+                : showAll || card.dataset.category === activeCategory;
+            return inGroup;
+        });
+        let typoFallback = false;
+        if (query) {
+            const normalizedQuery = query.normalize("NFC");
+            const scope = scopedCards.map((card) => ({
+                card,
+                haystack: productHaystack.get(card.dataset.id),
+            }));
+            const matched = searchMatches(scope, normalizedQuery);
+            const matchedIds = new Set(
+                matched.map((entry) => entry.card.dataset.id),
+            );
+            const hadSubstring = scope.some((entry) =>
+                (entry.haystack || "")
+                    .normalize("NFC")
+                    .toLowerCase()
+                    .includes(normalizedQuery),
+            );
+            typoFallback = !hadSubstring && matched.length > 0;
+            scopedCards = scopedCards.filter((card) =>
+                matchedIds.has(card.dataset.id),
+            );
+        }
+        for (const card of productCards) {
+            const matches = scopedCards.includes(card);
             card.hidden = !matches;
             if (matches) visible += 1;
         }
-        const count = select('[data-product-count]');
+        const strip = select("#welcome-feedback-strip");
+        if (strip) {
+            const filtering =
+                Boolean(query) ||
+                activeWishlistOnly ||
+                activeCategory !== "Semua";
+            strip.hidden = !filtering;
+            if (filtering) {
+                const scope = activeWishlistOnly
+                    ? "Favorit Anda"
+                    : activeCategory === "Semua"
+                      ? "Semua Kategori"
+                      : activeCategory;
+                strip.textContent = `Menampilkan ${visible} kreasi hasil penyaringan (${scope}${query ? ` · kata kunci "${query}"${typoFallback ? " — menampilkan saran mirip" : ""}` : ""})`;
+            }
+        }
+        const count = select("[data-product-count]");
         if (count) count.textContent = visible;
-        const empty = select('.empty-products');
+        const empty = select(".empty-products");
         if (empty) empty.hidden = visible > 0;
         if (syncUrl) {
             const url = new URL(window.location.href);
             if (wishlistOnly) {
-                url.searchParams.set('tampilkan', 'favorit');
-                url.searchParams.delete('kategori');
-            } else if (category && category !== 'Semua') {
-                url.searchParams.set('kategori', category);
-                url.searchParams.delete('tampilkan');
+                url.searchParams.set("tampilkan", "favorit");
+                url.searchParams.delete("kategori");
+            } else if (category && category !== "Semua") {
+                url.searchParams.set("kategori", category);
+                url.searchParams.delete("tampilkan");
             } else {
-                url.searchParams.delete('kategori');
-                url.searchParams.delete('tampilkan');
+                url.searchParams.delete("kategori");
+                url.searchParams.delete("tampilkan");
             }
-            history.replaceState(null, '', url);
+            const search = (catalogSearch?.value || "").trim();
+            if (search) url.searchParams.set("cari", search);
+            else url.searchParams.delete("cari");
+            history.replaceState(null, "", url);
         }
     }
 
     function setActiveFilter(category) {
-        selectAll('[data-filter]').forEach((button) => {
-            button.classList.toggle('active', button.dataset.filter === category);
+        selectAll("[data-filter]").forEach((button) => {
+            const isActive = button.dataset.filter === category;
+            button.classList.toggle("active", isActive);
+            button.setAttribute("aria-pressed", String(isActive));
         });
     }
 
-    function searchProducts(query) {
+    function searchProducts(query, { syncUrl = true } = {}) {
         // js-early-exit + js-length-check-first: cek murah dulu sebelum
         // menyentuh Map / DOM / URL (hindari kerja saat query < 2 char).
-        const resultContainers = selectAll('[data-search-results]');
-        if (!resultContainers.length) return;
-        const trimmed = query.trim();
+        const resultContainers = selectAll("[data-search-results]");
+        const statusContainers = selectAll("[data-search-status]");
+        if (!resultContainers.length && !statusContainers.length) return;
+        const trimmed = (query || "").trim();
         if (trimmed.length < 2) {
-            resultContainers.forEach((el) => { el.innerHTML = ''; });
-            const url = new URL(window.location.href);
-            url.searchParams.delete('cari');
-            history.replaceState(null, '', url);
+            resultContainers.forEach((el) => {
+                el.innerHTML = "";
+            });
+            statusContainers.forEach((el) => {
+                el.textContent = "";
+            });
+            if (syncUrl) {
+                const url = new URL(window.location.href);
+                url.searchParams.delete("cari");
+                history.replaceState(null, "", url);
+            }
             return;
         }
-        const normalized = trimmed.toLowerCase();
-        // js-flatmap-filter analog: satu pass tanpa array perantara .filter().map().
-        const results = [];
-        for (const [id, haystack] of productHaystack) {
-            if (haystack.includes(normalized)) {
-                results.push(productMap.get(id));
-                if (results.length >= 4) break; // cukup untuk 4 slot UI
-            }
-        }
+        const normalized = trimmed.normalize("NFC").toLowerCase();
+        const scope = [...productHaystack].map(([id, haystack]) => ({
+            id,
+            haystack,
+        }));
+        const matched = searchMatches(scope, normalized, 4);
+        const results = matched.map((entry) => productMap.get(entry.id));
+        const hadSubstring = scope.some((entry) =>
+            (entry.haystack || "")
+                .normalize("NFC")
+                .toLowerCase()
+                .includes(normalized),
+        );
+        const typoFallback = !hadSubstring && results.length > 0;
         const html = results.length
-            ? results.map((product) => `
+            ? results
+                  .map(
+                      (product) => `
                 <button class="search-result" type="button" data-search-product="${escapeHtml(product.id)}">
                     <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" width="55" height="68" loading="lazy">
                     <span><strong>${escapeHtml(product.name)}</strong><span translate="no">${escapeHtml(product.priceLabel)}</span></span>
                 </button>
-            `).join('')
-            : '<p>Tidak ada kreasi yang ditemukan.</p>';
-        resultContainers.forEach((el) => { el.innerHTML = html; });
-        const url = new URL(window.location.href);
-        url.searchParams.set('cari', trimmed);
-        history.replaceState(null, '', url);
+            `,
+                  )
+                  .join("")
+            : "<p>Tidak ada kreasi yang ditemukan. Coba kata lain atau hapus pencarian untuk mulai kembali.</p>";
+        resultContainers.forEach((el) => {
+            el.innerHTML = html;
+        });
+        const statusText = results.length
+            ? `Menampilkan ${results.length} kreasi${typoFallback ? " — menampilkan saran mirip" : ""}`
+            : "Tidak ada kreasi yang ditemukan.";
+        statusContainers.forEach((el) => {
+            el.textContent = statusText;
+        });
+        if (syncUrl) {
+            const url = new URL(window.location.href);
+            url.searchParams.set("cari", trimmed);
+            history.replaceState(null, "", url);
+        }
     }
 
-    selectAll('[data-open-cart]').forEach((button) => button.addEventListener('click', () => openElement(cartDrawer)));
-    selectAll('[data-close-cart]').forEach((button) => button.addEventListener('click', () => closeElement(cartDrawer)));
-    selectAll('[data-open-search]').forEach((button) => button.addEventListener('click', () => {
-        openElement(searchPanel);
-        setTimeout(() => select('[data-search-input]')?.focus(), 300);
-    }));
-    selectAll('[data-close-search]').forEach((button) => button.addEventListener('click', () => closeElement(searchPanel)));
-    selectAll('[data-open-concierge]').forEach((button) => button.addEventListener('click', () => {
-        setConciergeMode(false);
-        closeElement(quickViewModal);
-        closeElement(mobileMenu);
-        openElement(conciergeModal);
-    }));
-    selectAll('[data-close-modal]').forEach((button) => button.addEventListener('click', () => closeElement(button.closest('.modal'))));
-    overlay?.addEventListener('click', closeAll);
+    catalogSearch?.addEventListener("input", () => applyFilter());
+    selectAll("[data-open-size-guide]").forEach((button) =>
+        button.addEventListener("click", () =>
+            openElement(sizeGuideDrawer, button),
+        ),
+    );
+    selectAll("[data-close-size-guide]").forEach((button) =>
+        button.addEventListener("click", () => closeElement(sizeGuideDrawer)),
+    );
+    selectAll("[data-open-profile]").forEach((button) =>
+        button.addEventListener("click", () =>
+            openElement(profileDrawer, button),
+        ),
+    );
+    selectAll("[data-close-profile]").forEach((button) =>
+        button.addEventListener("click", () => closeElement(profileDrawer)),
+    );
+    selectAll("[data-open-cart]").forEach((button) =>
+        button.addEventListener("click", () => {
+            openElement(cartDrawer, button);
+            cartRequest("/cart");
+        }),
+    );
+    selectAll("[data-close-cart]").forEach((button) =>
+        button.addEventListener("click", () => closeElement(cartDrawer)),
+    );
+    selectAll("[data-open-search]").forEach((button) =>
+        button.addEventListener("click", () =>
+            openElement(searchPanel, button),
+        ),
+    );
+    selectAll("[data-close-search]").forEach((button) =>
+        button.addEventListener("click", () => closeElement(searchPanel)),
+    );
+    selectAll("[data-open-shortcuts]").forEach((button) =>
+        button.addEventListener("click", () => openShortcuts(button)),
+    );
+    selectAll("[data-close-shortcuts]").forEach((button) =>
+        button.addEventListener("click", () => closeShortcuts()),
+    );
+    selectAll("[data-open-concierge]").forEach((button) =>
+        button.addEventListener("click", () => {
+            setConciergeMode(false);
+            closeElement(profileDrawer);
+            closeElement(quickViewModal);
+            closeElement(mobileMenu);
+            openElement(conciergeModal, button);
+        }),
+    );
+    selectAll("[data-close-modal]").forEach((button) =>
+        button.addEventListener("click", () =>
+            closeElement(button.closest(".modal")),
+        ),
+    );
+    overlay?.addEventListener("click", closeAll);
 
-    selectAll('[data-quick-view]').forEach((button) => {
-        button.addEventListener('click', () => showQuickView(button.closest('[data-product-card]')));
+    selectAll("[data-quick-view]").forEach((button) => {
+        button.addEventListener("click", () =>
+            showQuickView(button.closest("[data-product-card]")),
+        );
     });
-    selectAll('[data-toggle-wishlist]').forEach((button) => {
-        button.addEventListener('click', () => toggleWishlist(button.closest('[data-product-card]')));
+    selectAll("[data-toggle-wishlist]").forEach((button) => {
+        button.addEventListener("click", () =>
+            toggleWishlist(button.closest("[data-product-card]")),
+        );
     });
-    selectAll('[data-card-add]').forEach((button) => {
-        button.addEventListener('click', () => {
-            addToCart(readProduct(button.closest('[data-product-card]')));
+    selectAll("[data-card-add]").forEach((button) => {
+        button.addEventListener("click", () => {
+            const product = readProduct(button.closest("[data-product-card]"));
+            if (product.stock <= 0) return;
+            if (product.category === "Busana") {
+                window.location.href = `/produk/${encodeURIComponent(product.id)}`;
+                return;
+            }
+            addToCart(product);
             if (!prefersReducedMotion() && button.animate) {
                 button.animate(
-                    [{ transform: 'scale(1)' }, { transform: 'scale(.88)' }, { transform: 'scale(1)' }],
-                    { duration: 260, easing: 'ease-out' },
+                    [
+                        { transform: "scale(1)" },
+                        { transform: "scale(.88)" },
+                        { transform: "scale(1)" },
+                    ],
+                    { duration: 260, easing: "ease-out" },
                 );
             }
         });
     });
-    selectAll('[data-quick-add]').forEach((button) => {
-        button.addEventListener('click', () => {
-            if (!currentQuickProduct) return;
+    selectAll("[data-quick-add]").forEach((button) => {
+        button.addEventListener("click", () => {
+            if (!currentQuickProduct || currentQuickProduct.stock <= 0) return;
+            if (currentQuickProduct.category === "Busana") {
+                window.location.href = `/produk/${encodeURIComponent(currentQuickProduct.id)}`;
+                return;
+            }
             addToCart(currentQuickProduct);
             closeElement(quickViewModal);
             setTimeout(() => openElement(cartDrawer), 180);
         });
     });
 
-    selectAll('[data-cart-items]').forEach((container) => {
-        container.addEventListener('click', (event) => {
-            const item = event.target.closest('[data-cart-id]');
+    selectAll("[data-cart-items]").forEach((container) => {
+        container.addEventListener("click", (event) => {
+            const item = event.target.closest("[data-cart-id]");
             if (!item) return;
-            if (event.target.closest('[data-remove-cart]')) {
-                const removedIndex = cart.findIndex((entry) => entry.id === item.dataset.cartId);
-                if (removedIndex === -1) return;
-                const [removed] = cart.splice(removedIndex, 1);
-                persistCart();
-                showToast('Kreasi dihapus dari tas Anda.', {
-                    label: 'Urungkan',
-                    onClick: () => {
-                        cart.splice(Math.min(removedIndex, cart.length), 0, removed);
-                        persistCart();
-                    },
+            if (event.target.closest("[data-remove-cart]")) {
+                let removed = null;
+                const requestEpoch = cartDrawerEpoch;
+                cartRequest(() => {
+                    // Read the line when the request runs, so undo restores the quantity after earlier queued edits.
+                    removed = cart.find(
+                        (entry) =>
+                            String(entry.product_id) === item.dataset.cartId,
+                    );
+                    return removed
+                        ? [`/cart/items/${removed.product_id}`, "DELETE"]
+                        : null;
+                }).then((data) => {
+                    // removed_quantity 0 means another tab already removed it: a delta of 0 would be rejected.
+                    if (!data || !removed || !data.removed_quantity) return;
+                    if (requestEpoch !== cartDrawerEpoch) return;
+                    showToast("Kreasi dihapus dari tas Anda.", {
+                        label: "Urungkan",
+                        onClick: () =>
+                            cartRequest(() =>
+                                cartDelta(
+                                    removed.product_id,
+                                    data.removed_quantity,
+                                ),
+                            ).then((restored) => {
+                                // cartRequest already reported the cause. Another tab may have re-added the line, so do not claim it is absent.
+                                const status = select("[data-cart-status]");
+                                if (!restored && status)
+                                    status.textContent = `Penghapusan ${removed.product_title} belum berhasil diurungkan. ${status.textContent}`;
+                            }),
+                    });
                 });
             }
-            const quantityButton = event.target.closest('[data-quantity]');
-            if (quantityButton) changeQuantity(item.dataset.cartId, quantityButton.dataset.quantity);
+            const quantityButton = event.target.closest("[data-quantity]");
+            if (quantityButton)
+                changeQuantity(
+                    item.dataset.cartId,
+                    quantityButton.dataset.quantity,
+                );
         });
     });
 
-    selectAll('[data-checkout]').forEach((button) => {
-        button.addEventListener('click', () => {
-            if (!cart.length) return;
-            setConciergeMode(true);
-            closeElement(cartDrawer);
-            setTimeout(() => openElement(conciergeModal), 180);
+    const pdpMonogram = select("#pdp-monogram-input");
+    if (pdpMonogram) {
+        pdpMonogram.addEventListener("input", () => {
+            pdpMonogram.value = pdpMonogram.value
+                .replace(MONOGRAM_SANITIZE_RE, "")
+                .slice(0, 3)
+                .toUpperCase();
+            const badge = select("#pdp-monogram-badge");
+            const counter = select("#pdp-monogram-counter");
+            if (badge) badge.textContent = pdpMonogram.value || "Z";
+            if (counter)
+                counter.textContent = `${pdpMonogram.value.length} / 3`;
         });
-    });
+    }
 
-    selectAll('[data-product-add]').forEach((button) => {
-        button.addEventListener('click', () => {
-            addToCart({
-                id: button.dataset.id,
+    selectAll("[data-product-add]").forEach((button) => {
+        button.addEventListener("click", () => {
+            const product = {
                 name: button.dataset.name,
-                category: button.dataset.category,
-                price: Number(button.dataset.price),
-                priceLabel: button.dataset.priceLabel,
-                image: button.dataset.image,
-                description: button.dataset.description,
-                color: button.dataset.color,
+                productId: Number(button.dataset.productId),
+            };
+            const size = select("#pdp-size")?.value || "";
+            const monogram =
+                select("#pdp-monogram-input")
+                    ?.value.replace(MONOGRAM_SANITIZE_RE, "")
+                    .slice(0, 3)
+                    .toUpperCase() || "";
+            // Personalisasi tidak pernah masuk tas server; jadi inquiry concierge eksplisit.
+            if (size || monogram) {
+                openInquiry(product, { size, monogram }, button);
+                return;
+            }
+            addToCart(product).then((data) => {
+                if (data)
+                    setTimeout(() => openElement(cartDrawer, button), 180);
             });
-            setTimeout(() => openElement(cartDrawer), 180);
         });
     });
 
-    selectAll('[data-filter]').forEach((button) => {
-        button.addEventListener('click', () => {
+    selectAll("[data-filter]").forEach((button) => {
+        button.addEventListener("click", () => {
             setActiveFilter(button.dataset.filter);
-            applyFilter(button.dataset.filter);
+            applyFilter(button.dataset.filter, false);
         });
     });
 
-    selectAll('[data-category-link]').forEach((link) => {
-        link.addEventListener('click', () => {
+    selectAll("[data-category-link]").forEach((link) => {
+        link.addEventListener("click", () => {
             const category = link.dataset.categoryLink;
             setActiveFilter(category);
-            applyFilter(category);
+            applyFilter(category, false);
         });
     });
 
-    selectAll('[data-show-wishlist]').forEach((button) => button.addEventListener('click', () => {
-        selectAll('[data-filter]').forEach((filter) => filter.classList.remove('active'));
-        applyFilter('', true);
-        closeElement(mobileMenu);
-        menuButton?.setAttribute('aria-expanded', 'false');
-        smoothScrollTo(select('#new-arrivals'));
-        showToast(wishlist.length ? 'Menampilkan kreasi favorit Anda.' : 'Belum ada kreasi dalam favorit Anda.');
-    }));
+    selectAll("[data-show-wishlist]").forEach((button) =>
+        button.addEventListener("click", () => {
+            selectAll("[data-filter]").forEach((filter) =>
+                filter.classList.remove("active"),
+            );
+            applyFilter("", true);
+            closeElement(mobileMenu);
+            menuButton?.setAttribute("aria-expanded", "false");
+            smoothScrollTo(select("#new-arrivals"));
+            showToast(
+                wishlist.length
+                    ? "Menampilkan kreasi favorit Anda."
+                    : "Belum ada kreasi dalam favorit Anda.",
+            );
+        }),
+    );
 
-    selectAll('[data-search-input]').forEach((input) => {
-        input.addEventListener('input', () => searchProducts(input.value));
+    selectAll("[data-search-input]").forEach((input) => {
+        input.addEventListener("input", () => searchProducts(input.value));
     });
-    selectAll('[data-clear-search]').forEach((button) => {
-        button.addEventListener('click', () => {
-            selectAll('[data-search-input]').forEach((input) => { input.value = ''; });
-            searchProducts('');
-            selectAll('[data-search-input]')[0]?.focus();
+    selectAll("[data-clear-catalog-search]").forEach((button) => {
+        button.addEventListener("click", () => {
+            if (!catalogSearch) return;
+            catalogSearch.value = "";
+            applyFilter();
+            catalogSearch.focus();
         });
     });
-    selectAll('[data-search-term]').forEach((button) => {
-        button.addEventListener('click', () => {
-            selectAll('[data-search-input]').forEach((input) => { input.value = button.dataset.searchTerm; });
+    selectAll("[data-clear-search]").forEach((button) => {
+        button.addEventListener("click", () => {
+            selectAll("[data-search-input]").forEach((input) => {
+                input.value = "";
+            });
+            searchProducts("");
+            selectAll("[data-search-input]")[0]?.focus();
+        });
+    });
+    selectAll("[data-search-term]").forEach((button) => {
+        button.addEventListener("click", () => {
+            selectAll("[data-search-input]").forEach((input) => {
+                input.value = button.dataset.searchTerm;
+            });
             searchProducts(button.dataset.searchTerm);
         });
     });
-    selectAll('[data-search-results]').forEach((container) => {
-        container.addEventListener('click', (event) => {
-            const button = event.target.closest('[data-search-product]');
+    selectAll("[data-search-results]").forEach((container) => {
+        container.addEventListener("click", (event) => {
+            const button = event.target.closest("[data-search-product]");
             if (!button) return;
             const productId = button.dataset.searchProduct;
-            const card = productCards.find((entry) => entry.dataset.id === productId);
+            const card = productCards.find(
+                (entry) => entry.dataset.id === productId,
+            );
             closeElement(searchPanel);
             if (card) {
                 setTimeout(() => showQuickView(card), 180);
@@ -599,100 +1097,112 @@ if (storefront) {
         });
     });
 
-    const menuButton = select('.mobile-menu-button');
-    menuButton?.addEventListener('click', () => {
+    const menuButton = select(".mobile-menu-button");
+    menuButton?.addEventListener("click", () => {
         openElement(mobileMenu);
-        menuButton.setAttribute('aria-expanded', 'true');
+        menuButton.setAttribute("aria-expanded", "true");
     });
-    select('[data-close-menu]')?.addEventListener('click', () => {
+    select("[data-close-menu]")?.addEventListener("click", () => {
         closeElement(mobileMenu);
-        menuButton?.setAttribute('aria-expanded', 'false');
+        menuButton?.setAttribute("aria-expanded", "false");
     });
-    selectAll('.mobile-menu a').forEach((link) => link.addEventListener('click', () => {
-        closeElement(mobileMenu);
-        menuButton?.setAttribute('aria-expanded', 'false');
-    }));
+    selectAll(".mobile-menu a").forEach((link) =>
+        link.addEventListener("click", () => {
+            closeElement(mobileMenu);
+            menuButton?.setAttribute("aria-expanded", "false");
+        }),
+    );
 
-    const accountButton = select('.account-button');
-    accountButton?.addEventListener('click', () => {
-        const menu = select('.account-menu');
-        const open = menu.classList.toggle('open');
-        accountButton.setAttribute('aria-expanded', String(open));
+    const accountButton = select(".account-button");
+    accountButton?.addEventListener("click", () => {
+        const menu = select(".account-menu");
+        const open = menu.classList.toggle("open");
+        accountButton.setAttribute("aria-expanded", String(open));
     });
 
-    const monogramInput = select('#monogram-input');
-    monogramInput?.addEventListener('input', () => {
-        monogramInput.value = monogramInput.value.replace(MONOGRAM_SANITIZE_RE, '').slice(0, 3).toUpperCase();
-        select('[data-monogram-preview]').textContent = monogramInput.value || 'Z';
+    const monogramInput = select("#monogram-input");
+    monogramInput?.addEventListener("input", () => {
+        monogramInput.value = monogramInput.value
+            .replace(MONOGRAM_SANITIZE_RE, "")
+            .slice(0, 3)
+            .toUpperCase();
+        select("[data-monogram-preview]").textContent =
+            monogramInput.value || "Z";
     });
-    selectAll('[data-foil]').forEach((button) => {
-        button.addEventListener('click', () => {
-            selectAll('[data-foil]').forEach((foil) => {
-                foil.classList.remove('active');
-                foil.setAttribute('aria-pressed', 'false');
+    selectAll("[data-foil]").forEach((button) => {
+        button.addEventListener("click", () => {
+            selectAll("[data-foil]").forEach((foil) => {
+                foil.classList.remove("active");
+                foil.setAttribute("aria-pressed", "false");
             });
-            button.classList.add('active');
-            button.setAttribute('aria-pressed', 'true');
-            select('[data-monogram-preview]').style.color = button.dataset.foil;
+            button.classList.add("active");
+            button.setAttribute("aria-pressed", "true");
+            select("[data-monogram-preview]").style.color = button.dataset.foil;
         });
     });
 
-    selectAll('[data-ajax-form]').forEach((form) => {
-        form.addEventListener('submit', async (event) => {
+    selectAll("[data-ajax-form]").forEach((form) => {
+        form.addEventListener("submit", async (event) => {
             event.preventDefault();
-            if (checkoutMode) {
-                const orderItemsInput = select('[data-order-items]', form);
-                if (orderItemsInput) {
-                    orderItemsInput.value = JSON.stringify(cart);
-                }
-            }
-            selectAll('.form-error', form).forEach((error) => error.remove());
+            selectAll(".form-error", form).forEach((error) => error.remove());
             const submitButton = select('[type="submit"]', form);
             const originalText = submitButton.innerHTML;
             submitButton.disabled = true;
-            submitButton.setAttribute('aria-busy', 'true');
-            submitButton.innerHTML = '<span aria-hidden="true" class="spinner"></span> Mengirim…';
+            submitButton.setAttribute("aria-busy", "true");
+            submitButton.innerHTML =
+                '<span aria-hidden="true" class="spinner"></span> Mengirim…';
 
             try {
                 const response = await fetch(form.action, {
-                    method: 'POST',
+                    method: "POST",
                     headers: {
-                        Accept: 'application/json',
-                        'X-CSRF-TOKEN': select('meta[name="csrf-token"]').content,
+                        Accept: "application/json",
+                        "X-CSRF-TOKEN": select('meta[name="csrf-token"]')
+                            .content,
                     },
                     body: new FormData(form),
                 });
                 const data = await response.json();
                 if (!response.ok) {
                     if (data.errors) {
-                        Object.entries(data.errors).forEach(([fieldName, messages]) => {
-                            const field = select(`[name="${fieldName}"]`, form);
-                            if (!field) return;
-                            const error = document.createElement('p');
-                            error.className = 'form-error';
-                            error.setAttribute('role', 'alert');
-                            error.textContent = messages[0];
-                            field.closest('.field')?.appendChild(error) || field.parentElement.appendChild(error);
-                            field.setAttribute('aria-invalid', 'true');
-                        });
-                        const firstInvalid = select('[aria-invalid="true"]', form);
+                        Object.entries(data.errors).forEach(
+                            ([fieldName, messages]) => {
+                                const field = select(
+                                    `[name="${fieldName}"]`,
+                                    form,
+                                );
+                                if (!field) return;
+                                const error = document.createElement("p");
+                                error.className = "form-error";
+                                error.setAttribute("role", "alert");
+                                error.textContent = messages[0];
+                                field.closest(".field")?.appendChild(error) ||
+                                    field.parentElement.appendChild(error);
+                                field.setAttribute("aria-invalid", "true");
+                            },
+                        );
+                        const firstInvalid = select(
+                            '[aria-invalid="true"]',
+                            form,
+                        );
                         firstInvalid?.focus();
                     }
-                    throw new Error(data.message || 'Periksa kembali informasi Anda.');
+                    throw new Error(
+                        data.message || "Periksa kembali informasi Anda.",
+                    );
                 }
-                if (form.hasAttribute('data-success-reset')) form.reset();
-                closeElement(form.closest('.modal'));
-                if (checkoutMode) {
-                    cart = [];
-                    persistCart();
-                    setConciergeMode(false);
-                }
+                if (form.hasAttribute("data-success-reset")) form.reset();
+                closeElement(form.closest(".modal"));
+                setConciergeMode(false);
+                inquiryItems = [];
                 showToast(data.message);
             } catch (error) {
-                showToast(error.message || 'Terjadi kendala. Silakan coba kembali.');
+                showToast(
+                    error.message || "Terjadi kendala. Silakan coba kembali.",
+                );
             } finally {
                 submitButton.disabled = false;
-                submitButton.removeAttribute('aria-busy');
+                submitButton.removeAttribute("aria-busy");
                 submitButton.innerHTML = originalText;
             }
         });
@@ -703,37 +1213,52 @@ if (storefront) {
     scheduleIdleWork(() => {
         try {
             const params = new URLSearchParams(window.location.search);
-            const initialCategory = params.get('kategori');
-            const showFav = params.get('tampilkan') === 'favorit';
-            const initialSearch = params.get('cari');
+            const initialCategory = params.get("kategori");
+            const showFav = params.get("tampilkan") === "favorit";
+            const initialSearch = params.get("cari");
             if (showFav) {
-                applyFilter('', true, { syncUrl: false });
+                applyFilter("", true, { syncUrl: false });
             } else if (initialCategory) {
                 setActiveFilter(initialCategory);
                 applyFilter(initialCategory, false, { syncUrl: false });
             }
-            if (initialSearch && searchInput) {
-                searchInput.value = initialSearch;
-                searchProducts(initialSearch);
+            if (initialSearch) {
+                if (catalogSearch) catalogSearch.value = initialSearch;
+                selectAll("[data-search-input]").forEach((input) => {
+                    input.value = initialSearch;
+                });
+                applyFilter(undefined, undefined, { syncUrl: false });
+                searchProducts(initialSearch, { syncUrl: false });
             }
         } catch {
             // URL sync is progressive enhancement.
         }
     });
 
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
             closeAll();
             closeElement(mobileMenu);
-            select('.account-menu')?.classList.remove('open');
+            menuButton?.setAttribute("aria-expanded", "false");
+            select(".account-menu")?.classList.remove("open");
         }
 
-        if (event.key === 'Tab') {
-            const activeLayer = [conciergeModal, quickViewModal, searchPanel, cartDrawer, mobileMenu]
-                .find((element) => element?.classList.contains('open'));
+        if (event.key === "Tab") {
+            const activeLayer = [
+                shortcutsModal,
+                sizeGuideDrawer,
+                conciergeModal,
+                quickViewModal,
+                searchPanel,
+                cartDrawer,
+                profileDrawer,
+                mobileMenu,
+            ].find((element) => element?.classList.contains("open"));
             if (!activeLayer) return;
-            const focusable = selectAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])', activeLayer)
-                .filter((element) => element.offsetParent !== null);
+            const focusable = selectAll(
+                'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+                activeLayer,
+            ).filter((element) => element.offsetParent !== null);
             if (!focusable.length) return;
             const first = focusable[0];
             const last = focusable[focusable.length - 1];
@@ -747,70 +1272,91 @@ if (storefront) {
         }
     });
 
-    const header = select('#site-header');
+    const header = select("#site-header");
     let lastScroll = 0;
-    window.addEventListener('scroll', () => {
-        const position = window.scrollY;
-        header?.classList.toggle('is-fixed', position > 110);
-        header?.classList.toggle('is-hidden', position > 450 && position > lastScroll + 8);
-        if (position < lastScroll) header?.classList.remove('is-hidden');
-        lastScroll = position;
-    }, { passive: true });
+    window.addEventListener(
+        "scroll",
+        () => {
+            const position = window.scrollY;
+            header?.classList.toggle("is-fixed", position > 110);
+            header?.classList.toggle(
+                "is-hidden",
+                position > 450 && position > lastScroll + 8,
+            );
+            if (position < lastScroll) header?.classList.remove("is-hidden");
+            lastScroll = position;
+        },
+        { passive: true },
+    );
 
     // rendering-content-visibility analog di sisi JS: tunda observasi reveal
     // sampai browser idle agar tidak bersaing dengan first paint.
     scheduleIdleWork(() => {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.12, rootMargin: '0px 0px -40px' });
-        selectAll('.reveal:not(.is-visible)').forEach((element) => observer.observe(element));
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("is-visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.12, rootMargin: "0px 0px -40px" },
+        );
+        selectAll(".reveal:not(.is-visible)").forEach((element) =>
+            observer.observe(element),
+        );
     });
 
     renderCart();
     syncWishlistButtons();
+    cartRequest("/cart");
+    // Refresh on return to the tab so changes from other tabs/devices show up; no polling.
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") cartRequest("/cart");
+    });
 
     // Flash Laravel (redirect with('success')) ke toast agar terasa di UI —
     // halaman auth/akun/admin tanpa komponen toast tetap aman (select null-safe).
-    const flashToast = select('[data-flash]');
+    const flashToast = select("[data-flash]");
     if (flashToast?.dataset.flash) {
         showToast(flashToast.dataset.flash);
     }
 }
 
-selectAll('[data-password-toggle]').forEach((button) => {
-    button.addEventListener('click', () => {
-        const input = button.closest('.password-wrap').querySelector('input');
-        const show = input.type === 'password';
-        input.type = show ? 'text' : 'password';
-        button.textContent = show ? 'Sembunyikan' : 'Lihat';
-        button.setAttribute('aria-pressed', String(show));
-        button.setAttribute('aria-label', show ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
+selectAll("[data-password-toggle]").forEach((button) => {
+    button.addEventListener("click", () => {
+        const input = button.closest(".password-wrap").querySelector("input");
+        const show = input.type === "password";
+        input.type = show ? "text" : "password";
+        button.textContent = show ? "Sembunyikan" : "Lihat";
+        button.setAttribute("aria-pressed", String(show));
+        button.setAttribute(
+            "aria-label",
+            show ? "Sembunyikan kata sandi" : "Tampilkan kata sandi",
+        );
     });
 });
 
 // Auth forms: spinner + focus first server error (progressive enhancement)
-selectAll('[data-auth-form]').forEach((form) => {
-    const errBox = select('.auth-errors', form);
+selectAll("[data-auth-form]").forEach((form) => {
+    const errBox = select(".auth-errors", form);
     if (errBox) {
-        if (!errBox.hasAttribute('tabindex')) errBox.setAttribute('tabindex', '-1');
+        if (!errBox.hasAttribute("tabindex"))
+            errBox.setAttribute("tabindex", "-1");
         errBox.focus({ preventScroll: false });
     }
-    form.addEventListener('submit', () => {
+    form.addEventListener("submit", () => {
         const btn = select('[type="submit"]', form);
         if (!btn || btn.disabled) return;
         btn.disabled = true;
-        btn.setAttribute('aria-busy', 'true');
-        btn.textContent = 'Mengirim…';
+        btn.setAttribute("aria-busy", "true");
+        btn.textContent = "Mengirim…";
     });
 });
 
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/sw.js").catch(() => {});
     });
 }

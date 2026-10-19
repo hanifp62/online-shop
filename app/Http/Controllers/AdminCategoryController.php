@@ -46,12 +46,24 @@ class AdminCategoryController extends Controller
         return back()->with('success', "Kategori {$category->cat_title} dihapus.");
     }
 
-    public static function flushStorefrontCache(): void
+    /**
+     * Hapus hanya key katalog storefront; jangan Cache::flush(), karena store
+     * yang sama menyimpan penghitung rate limiter.
+     *
+     * @param  iterable<Product>  $stale  Produk sebelum diubah/dihapus (slug atau kategori lama).
+     */
+    public static function flushStorefrontCache(iterable $stale = []): void
     {
-        // Detail produk di-cache per-slug (storefront:product:{slug}:v1) dan
-        // relasi per-kategori, jadi mutasi kategori/produk harus flush semua
-        // cache storefront. Cache::flush hanya menyentuh tabel cache, aman
-        // untuk sesi database dan antrean jobs.
-        Cache::flush();
+        $keys = ['storefront:products:v3', 'storefront:categories:v2'];
+
+        $products = Product::get(['product_id', 'product_cat', 'product_slug']);
+        foreach ([...$products, ...$stale] as $product) {
+            $keys[] = "storefront:product:{$product->product_slug}:v2";
+            $keys[] = "storefront:related:{$product->product_cat}:{$product->product_id}:v3";
+        }
+
+        foreach (array_unique($keys) as $key) {
+            Cache::forget($key);
+        }
     }
 }

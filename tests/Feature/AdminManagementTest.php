@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\UserInfoBackup;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\CategorySeeder;
+use Database\Seeders\ProductSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -89,10 +90,11 @@ class AdminManagementTest extends TestCase
     public function test_concierge_checkout_with_order_items_stores_and_displays_in_admin(): void
     {
         $admin = Admin::first();
+        $this->seed(ProductSeeder::class);
 
         $cart = [
-            ['id' => 'sac-seraphine', 'name' => 'Sac Séraphine', 'price' => 24500000, 'quantity' => 1],
-            ['id' => 'ceinture-zafira', 'name' => 'Ceinture ZAFIRA', 'price' => 6500000, 'quantity' => 2],
+            ['id' => 'sac-seraphine', 'quantity' => 1],
+            ['id' => 'echarpe-eclat', 'quantity' => 2],
         ];
 
         $response = $this->postJson(route('concierge.store'), [
@@ -108,7 +110,7 @@ class AdminManagementTest extends TestCase
 
         $concierge = ConciergeRequest::where('email', 'valerie@maison.id')->firstOrFail();
         $this->assertStringContainsString('Sac Séraphine (1x)', $concierge->notes);
-        $this->assertStringContainsString('Ceinture ZAFIRA (2x)', $concierge->notes);
+        $this->assertStringContainsString('Écharpe Éclat (2x)', $concierge->notes);
         $this->assertStringContainsString('Total: Rp', $concierge->notes);
 
         $adminView = $this->actingAs($admin, 'admin')

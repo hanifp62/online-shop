@@ -18,7 +18,10 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-        $middleware->trustProxies(at: '*');
+        // Kernel dapat di-resolve sebelum konfigurasi dimuat; baca setelah bootstrap selesai.
+        app()->booted(function () use ($middleware): void {
+            $middleware->trustProxies(at: config('trustedproxy.proxies', []));
+        });
 
         $middleware->redirectGuestsTo(fn ($request) => $request->is('admin*')
             ? route('admin.login')

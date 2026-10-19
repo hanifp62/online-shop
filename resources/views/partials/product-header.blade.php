@@ -54,10 +54,10 @@
         <button class="icon-button" type="button" data-close-menu aria-label="Tutup menu"><svg aria-hidden="true"><use href="#icon-close"/></svg></button>
     </div>
     <nav>
-        <a href="{{ route('home') }}#collection"><span>01</span>Koleksi</a>
-        <a href="{{ route('home') }}#new-arrivals"><span>02</span>Terbaru</a>
-        <a href="{{ route('home') }}#heritage"><span>03</span>Warisan</a>
-        <a href="{{ route('home') }}#maison"><span>04</span>La Maison</a>
+        <a href="{{ route('home') }}#collection"><span class="mobile-menu-ordinal" aria-hidden="true">01</span>Koleksi</a>
+        <a href="{{ route('home') }}#new-arrivals"><span class="mobile-menu-ordinal" aria-hidden="true">02</span>Terbaru</a>
+        <a href="{{ route('home') }}#heritage"><span class="mobile-menu-ordinal" aria-hidden="true">03</span>Warisan</a>
+        <a href="{{ route('home') }}#maison"><span class="mobile-menu-ordinal" aria-hidden="true">04</span>La Maison</a>
     </nav>
     <div class="mobile-utilities">
         @auth

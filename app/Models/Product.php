@@ -25,6 +25,13 @@ class Product extends Model
         'product_origin',
         'product_care',
         'product_craft',
+        'stock',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'stock' => 'integer',
+        'is_active' => 'boolean',
     ];
 
     public function category(): BelongsTo

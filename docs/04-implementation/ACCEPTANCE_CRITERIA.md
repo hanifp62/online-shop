@@ -33,7 +33,7 @@
 ### AC-005 (Alur Checkout Concierge)
 - [x] Menekan tombol "Lanjut bersama Client Advisor" di tas belanja mengubah modal ke mode ringkasan pesanan.
 - [x] Formulir checkout menampilkan ringkasan produk (nama kreasi × kuantitas + total harga).
-- [x] Pengiriman formulir menyimpan pesanan ke `concierge_requests` dan mengosongkan isi tas belanja.
+- [x] Pengiriman formulir menyimpan pesanan ke `orders`/`order_items` dan mengosongkan isi tas belanja. *(Koreksi 2026-10-19: klaim lama `concierge_requests` sudah basi.)*
 - [x] Menampilkan toast konfirmasi sukses berwarna emas safir.
 
 ---
@@ -47,7 +47,7 @@
 
 ### AC-007 (Manajemen Produk Komprehensif)
 - [x] Formulir tambah produk memungkinkan pengisian judul, kategori, harga, URL foto, badge, warna, deskripsi, dan seluruh narasi kriya.
-- [x] Jika slug produk dikosongkan, sistem secara otomatis menghasilkan slug unik yang ramah SEO.
+- [ ] Jika slug produk dikosongkan, sistem secara otomatis menghasilkan slug unik yang ramah SEO. *(Belum terbukti: race condition dan update slug nullable.)*
 - [x] Pengubahan atau penghapusan produk memicu pembersihan cache storefront secara otomatis.
 
 ### AC-008 (Manajemen Pesanan & Alur Status)

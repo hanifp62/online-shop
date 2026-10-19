@@ -54,7 +54,7 @@ Aplikasi ini dibangun menggunakan arsitektur Laravel versi 12 dengan struktur mo
 
 ## 3. Database & Skema Saat Ini
 
-1. **Migration Files (17 Migrasi):**
+1. **Migration Files (29 Migrasi):**
    - 3 migrasi default Laravel (`users`, `cache`, `jobs`).
    - `concierge_requests` dan `newsletter_subscribers`.
    - `categories` dan `products` (termasuk kolom detail: `product_slug`, `product_badge`, `product_color`, `product_alt`, `product_description`, `product_material`, `product_composition`, `product_origin`, `product_care`, `product_craft`).

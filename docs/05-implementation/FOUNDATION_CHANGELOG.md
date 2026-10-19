@@ -37,8 +37,8 @@
 - **Solusi yang Dipilih:** Membungkus perintah DDL `DROP PROCEDURE` dan `CREATE PROCEDURE` dalam blok `try...catch (\Throwable $e)` yang aman. Seluruh kode aplikasi menggunakan metode portabel `Category::getById($cid)` sehingga keberadaan stored procedure bersifat opsional.
 - **Alternatif yang Ditolak:** Menghapus file migrasi (akan merusak riwayat batch migrasi warisan).
 - **Risiko & Strategi Rollback:** Risiko nihil karena tidak ada controller yang memanggil stored procedure secara langsung. Rollback via git commit.
-- **Kriteria Penerimaan:** `php artisan migrate` menyelesaikan seluruh 17 migrasi tanpa melempar fatal exception.
-- **Hasil Pengujian:** **Lolos.** Seluruh 17 migrasi berstatus `[Ran]` dan `php artisan db:seed` berhasil mengisi 12 produk, 8 kategori, dan 1 admin akun.
+- **Kriteria Penerimaan:** `php artisan migrate` menyelesaikan seluruh 29 file migrasi tanpa melempar fatal exception.
+- **Hasil Pengujian:** **Lolos (historis).** Pada snapshot tersebut seluruh migrasi berstatus `[Ran]`; kini ada 29 file migrasi dan statusnya perlu diverifikasi ulang. `php artisan db:seed` saat itu berhasil mengisi 12 produk, 8 kategori, dan 1 admin akun.
 
 ---
 

@@ -3,7 +3,7 @@
 **Proyek:** ZAFIRA (La Maison de Lumière — `online-shop`)  
 **Domain:** Luxury Fashion & Heritage E-Commerce Atelier  
 **Tanggal:** 2026-10-10  
-**Disusun Oleh:** Senior Software Architect, Human-Computer Interaction (HCI) Researcher, dan UI/UX Designer  
+**Audit catatan 2026-10-11:** Dokumen historis 2026-10-10. Judul "Komprehensif" dan daftar penyusun di bawah adalah metadata tidak terverifikasi — anggap dokumen internal tanpa klaim review ahli independen. Klaim kompetitor yang tidak punya URL diperlakukan sebagai hipotesis, bukan fakta benchmark. Bukti akses primer: [metodologi](../research/RESEARCH_METHODOLOGY.md); hanya Hermès (L8) dan Mytheresa (L2) teksnya berhasil diambil; NET-A-PORTER, Farfetch, SSENSE, Louis Vuitton, Dior gagal (HTTP 403) dan Gucci timeout. Prinsip ahli (Norman, Nielsen, dll.) dipakai sebagai lensa analisis, bukan sebagai review individu oleh para ahli tersebut.
 
 ---
 
@@ -13,16 +13,20 @@ Untuk memahami posisi ZAFIRA dalam ekosistem digital, kami membandingkannya deng
 
 | Parameter Evaluasi | ZAFIRA (Kondisi Saat Ini) | Global Luxury (Hermès / Chanel / Cartier) | Indonesian Couture (Iwan Tirta / Danar Hadi) | Rekomendasi Pengembangan ZAFIRA |
 |---|---|---|---|---|
-| **Tone & Visual Atmosphere** | Editorial klasik, palet Biru Safir Pekat (`#17263f`) & Emas Champagne (`#b69a64`), tipografi *Bodoni Moda* & *Manrope*. | Sangat minimalis, monokromatik dengan aksen tembaga/emas, ruang putih sangat lapang (*gallery airy*). | Hangat, dominasi ornamen etnik cokelat tanah/sogan, visual padat tradisi. | **Pertahankan & Tajamkan:** Perpaduan siluet Prancis dan kriya Nusantara adalah *unique selling proposition* (USP). Jangan gunakan ornamen murahan; gunakan layout asimetris modern. |
-| **Katalog & Penemuan Produk** | Filter pill dinamis kategori (Koleksi, Warisan Nusantara, Kapsul) tanpa reload halaman. | Navigasi berbasis koleksi musim (*Spring-Summer / Métiers d'Art*), tanpa filter agresif. | Berdasarkan kategori busana tradisional (Kemeja Batik, Kain Panjang, Selendang). | **Tingkatkan:** Tambahkan pengelompokan berdasarkan "Karakter Wastra" (Sutra Lyon, Batik Solo, Tenun Flores, Songket Palembang) selain kategori jenis pakaian. |
-| **Transparansi Kriya (*Savoir-Faire*)** | Detail mencantumkan *Provenance* (asal kain), *Craft* (teknik jahit/bordir), dan *Care* (perawatan). | Menampilkan jam pengerjaan tangan, sertifikat keaslian, nomor edisi terbatas (*limited edition*). | Menampilkan profil empu pembatik / penenun dan filosofi motif tradisi. | **Kembangkan:** Sajikan jam kerja tangan (misal: "60 jam bordir tangan oleh 3 pengrajin") sebagai metrik visual kriya yang terstruktur. |
-| **Tas Belanja & Personalisasi** | Cart Drawer geser dari kanan, penghitungan subtotal real-time, input monogram inisial (2–3 huruf). | Fitur monogram gratis (*hot stamping* inisial), penambahan pesan kado (*complimentary gift card*). | Pemesanan ukuran custom (*made-to-measure*) melalui kontak manual. | **Kembangkan:** Integrasikan personalisasi monogram langsung dengan preview visual inisial di atas tas belanja. |
-| **Model Checkout / Transaksi** | Dual-mode Concierge: Konsultasi tatap muka atau pemesanan langsung via Client Advisor. | Pembayaran kartu kredit instan 3D-Secure + opsi "Pesan Janji Temu Butik". | Pemesanan melalui formulir kontak atau admin WhatsApp langsung. | **Kembangkan:** Pertahankan model Concierge untuk busana adibusana puluhan juta, dan siapkan arsitektur relasional `orders` & `order_items` untuk pembayaran instan. |
-| **Antarmuka Pengelola (Admin)** | Dasbor terpadu dengan sidebar, KPI overview, manajemen produk, kategori, dan pesanan concierge. | Dashboard e-commerce korporat terpisah (SAP Commerce / Shopify Plus / Salesforce B2C). | Dasbor WooCommerce / CMS standar tanpa fitur manajemen kriya khusus. | **Kembangkan:** Hadirkan sistem tata kelola atelier mewah (*Atelier Admin Workspace*) yang konsisten dengan estetika storefront. |
+| **Tone & Visual Atmosphere** | Editorial klasik, palet Biru Safir Pekat (`#17263f`) & Emas Champagne (`#b69a64`), tipografi *Bodoni Moda* & *Manrope*. | Hermès terobservasi; klaim umum "Global Luxury" lainnya tak bersumber. | Klaim detil Indonesia tak bersumber. | **Pertahankan & Tajamkan (hipotesis):** Perpaduan siluet Prancis dan kriya Nusantara sebagai diferensiasi yang diklaim internal. Klaim "USP" belum didukung riset pengguna; tidak ada riset preferensi yang tercatat. |
+| **Katalog & Penemuan Produk** | Filter kategori lokal; status interaksi lintas viewport perlu tes. | Detail filter kompetitor tidak diuji. | Detail kategori kompetitor tidak diuji. | **Investigate:** Uji kebutuhan filter karakter wastra sebelum membuat requirement. |
+| **Transparansi Kriya (*Savoir-Faire*)** | Field kriya/perawatan ada di source; akurasi isi perlu validasi data. | Jam kerja, sertifikat, dan edisi terbatas belum terverifikasi. | Profil pengrajin dan filosofi motif belum terverifikasi. | **Investigate:** Jangan tampilkan jam kerja atau sertifikat tanpa data terverifikasi. |
+| **Tas Belanja & Personalisasi** | Cart drawer dan monogram tersedia di source; cek browser diperlukan. | Harga atau ketersediaan monogram/hadiah belum diverifikasi. | Ukuran kustom dan kontak manual belum diverifikasi. | **Investigate:** Preview visual memerlukan evaluasi manfaat dan sumber data. |
+| **Model Checkout / Transaksi** | Form concierge membuat permintaan, bukan transaksi pembayaran. | Metode pembayaran/appointment lintas brand belum diverifikasi. | Kanal WhatsApp kompetitor belum diverifikasi pada merek yang disebut. | **Pertahankan:** Alur concierge FR-203; pembayaran instan dan OMS di luar scope MVP kanonis. |
+| **Antarmuka Pengelola (Admin)** | Modul admin lokal perlu uji browser. | Sistem internal kompetitor tidak dapat disimpulkan dari storefront publik. | CMS internal kompetitor tidak terverifikasi. | **Investigate:** Ukur alur kerja atelier sebelum redesign admin. |
 
 ---
 
 ## 2. Kajian Mendalam HCI (Human-Computer Interaction) & UX
+
+**Koreksi audit 2026-10-11:** Bagian ini mencatat interpretasi dan target desain historis, bukan hasil uji pengguna atau sertifikasi. Angka kontras 11.4:1, seluruh target 44×44px, durasi toast, jumlah filter, dan perilaku fokus belum diukur ulang. WCAG 2.2 AA SC 2.5.8 menetapkan 24×24px dengan pengecualian; 44×44px adalah target proyek yang lebih ketat. Klaim AAA memerlukan pemeriksaan semua kriteria relevan, bukan satu pasangan warna.
+
+Kolom kompetitor pada tabel sebelumnya tidak membuktikan CMS internal, pembayaran 3D-Secure, sertifikat, jam kriya, atau monogram gratis. Klaim tersebut ditarik sebagai fakta dan hanya menjadi pertanyaan riset. Rekomendasi pembayaran/OMS bukan scope MVP; [sintesis kanonis](benchmark/SINTESIS_KOMPARATIF_ZAFIRA.md) mengungguli roadmap historis ini. Diagram arsitektur konseptual bukan bukti konfigurasi database aktif, kebijakan LRU, atau sinkronisasi real-time.
 
 ### 2.1 Prinsip Fundamental Don Norman (*The Design of Everyday Things*)
 
@@ -55,7 +59,7 @@ Untuk memahami posisi ZAFIRA dalam ekosistem digital, kami membandingkannya deng
 | **7. Fleksibilitas & Efisiensi Penggunaan** | Pengguna mahir dapat beralih cepat antar mode. | Bar atas prototype memungkinkan peralihan satu-klik antara Storefront, Portal Klien, dan Admin Workspace. |
 | **8. Desain Estetik & Minimalis** | Hindari dekorasi berlebihan dan informasi yang tidak relevan. | Menghapus elemen "slop" AI (tidak ada emoji kartun, tidak ada gradien neon ungu, tidak ada countdown timer palsu). |
 | **9. Membantu Pengguna Mengenali & Memperbaiki Error** | Pesan error harus jelas dan solutif. | Jika kategori tidak bisa dihapus, sistem menjelaskan: "Kategori sedang digunakan oleh produk, pindahkan produk terlebih dahulu." |
-| **10. Bantuan & Dokumentasi** | Dokumentasi panduan operasional tersedia lengkap. | Tersedia dokumen panduan interaktif [docs/06-prototype/PROTOTYPE_GUIDE.md](file:///Users/hanifpriyambodo/Documents/online-shop/docs/06-prototype/PROTOTYPE_GUIDE.md). |
+| **10. Bantuan & Dokumentasi** | Dokumentasi panduan operasional tersedia lengkap. | Tersedia dokumen panduan interaktif [panduan prototype](../06-prototype/PROTOTYPE_GUIDE.md). |
 
 ---
 

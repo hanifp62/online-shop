@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class StorefrontController extends Controller
@@ -22,13 +23,13 @@ class StorefrontController extends Controller
     {
         // server-cache-lru: katalog jarang berubah, cache lintas-request 5 menit.
         // server-serialization: select kolom yang dipakai view saja.
-        // Cache di-flush oleh AdminCategoryController setiap mutasi kategori.
-        $products = Cache::remember('storefront:products:v1', 300, fn () => Product::with(['category:cat_id,cat_title'])
-            ->select(['product_id', 'product_cat', 'product_brand', 'product_title', 'product_slug', 'product_price', 'product_image', 'product_badge', 'product_color', 'product_alt', 'product_description', 'product_material', 'product_composition', 'product_origin', 'product_care', 'product_craft'])
+        // Key katalog dihapus oleh AdminCategoryController setelah mutasi kategori/produk.
+        $products = Cache::remember('storefront:products:v3', 300, fn () => Product::where('is_active', true)->with(['category:cat_id,cat_title'])
+            ->select(['product_id', 'product_cat', 'product_brand', 'product_title', 'product_slug', 'product_price', 'stock', 'product_image', 'product_badge', 'product_color', 'product_alt', 'product_description', 'product_material', 'product_composition', 'product_origin', 'product_care', 'product_craft'])
             ->orderBy('product_id')
             ->get());
 
-        $categories = Cache::remember('storefront:categories:v1', 300, fn () => Category::orderBy('cat_id')->get(['cat_id', 'cat_title']));
+        $categories = Cache::remember('storefront:categories:v2', 300, fn () => Category::orderBy('cat_id')->get(['cat_id', 'cat_title']));
 
         return view('welcome', [
             'categories' => $categories,
@@ -36,6 +37,7 @@ class StorefrontController extends Controller
                 return [
                     'id' => $product->product_slug ?? 'product-'.$product->product_id,
                     'name' => $product->product_title,
+                    'stock' => max(0, (int) $product->stock),
                     'category' => $product->category?->cat_title ?? 'Koleksi',
                     'price' => (int) $product->product_price,
                     'price_label' => 'Rp'.number_format($product->product_price, 0, ',', '.'),
@@ -57,29 +59,25 @@ class StorefrontController extends Controller
                 'url' => url('/'),
                 'logo' => asset('favicon.svg'),
                 'sameAs' => [],
-            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG),
         ]);
     }
 
     public function show(string $slug): View
     {
-        // async-dependencies analog: $related bergantung pada $product, jadi
-        // rantai berurutan tidak bisa dihindari; yang dioptimalkan adalah
-        // select minimal + cache per-produk (server-serialization, server-cache-lru).
-        $product = Cache::remember(
-            "storefront:product:{$slug}:v1",
-            300,
-            fn () => Product::with(['category:cat_id,cat_title'])
-                ->select(['product_id', 'product_cat', 'product_brand', 'product_title', 'product_slug', 'product_price', 'product_image', 'product_badge', 'product_color', 'product_alt', 'product_description', 'product_material', 'product_composition', 'product_origin', 'product_care', 'product_craft'])
-                ->where('product_slug', $slug)
-                ->firstOrFail()
-        );
+        // server-cache-lru: produk per-PDP tidak di-cache — stok dan is_active
+        // harus segar tiap request setelah checkout/cancel/admin, agar penanda
+        // schema.org InStock/OutOfStock tidak menyajikan stok usang.
+        $product = Product::where('is_active', true)->with(['category:cat_id,cat_title'])
+            ->select(['product_id', 'product_cat', 'product_brand', 'product_title', 'product_slug', 'product_price', 'stock', 'is_active', 'product_image', 'product_badge', 'product_color', 'product_alt', 'product_description', 'product_material', 'product_composition', 'product_origin', 'product_care', 'product_craft'])
+            ->where('product_slug', $slug)
+            ->firstOrFail();
 
         $related = Cache::remember(
-            "storefront:related:{$product->product_cat}:{$product->product_id}:v1",
+            "storefront:related:{$product->product_cat}:{$product->product_id}:v3",
             300,
-            fn () => Product::with(['category:cat_id,cat_title'])
-                ->select(['product_id', 'product_cat', 'product_brand', 'product_title', 'product_slug', 'product_price', 'product_image', 'product_badge', 'product_color', 'product_alt', 'product_description', 'product_material', 'product_composition', 'product_origin', 'product_care', 'product_craft'])
+            fn () => Product::where('is_active', true)->with(['category:cat_id,cat_title'])
+                ->select(['product_id', 'product_cat', 'product_brand', 'product_title', 'product_slug', 'product_price', 'stock', 'product_image', 'product_badge', 'product_color', 'product_alt', 'product_description', 'product_material', 'product_composition', 'product_origin', 'product_care', 'product_craft'])
                 ->where('product_cat', $product->product_cat)
                 ->where('product_id', '!=', $product->product_id)
                 ->take(3)
@@ -103,9 +101,12 @@ class StorefrontController extends Controller
                     'url' => route('products.show', $product->product_slug),
                     'price' => (int) $product->product_price,
                     'priceCurrency' => 'IDR',
-                    'availability' => 'https://schema.org/InStock',
+                    // Stok dan status aktif berasal dari kueri request ini.
+                    'availability' => $product->is_active === true && (int) $product->stock > 0
+                        ? 'https://schema.org/InStock'
+                        : 'https://schema.org/OutOfStock',
                 ],
-            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG),
         ]);
     }
 
@@ -115,7 +116,7 @@ class StorefrontController extends Controller
         // berisi URL publik yang boleh di-crawl: home + produk.
         $urls = [route('home')];
 
-        foreach (Product::orderBy('product_id')->get(['product_slug']) as $product) {
+        foreach (Product::where('is_active', true)->orderBy('product_id')->get(['product_slug']) as $product) {
             $urls[] = route('products.show', $product->product_slug);
         }
 
@@ -128,7 +129,15 @@ class StorefrontController extends Controller
 
     public function bookConcierge(Request $request): JsonResponse|RedirectResponse
     {
-        $request->merge(['email' => mb_strtolower((string) $request->input('email'))]);
+        $this->normalizeEmail($request);
+
+        $rawItems = $request->input('order_items');
+        if (is_string($rawItems) && trim($rawItems) === '') {
+            $request->merge(['order_items' => null]);
+        } elseif (is_string($rawItems)) {
+            $decoded = json_decode($rawItems, true);
+            $request->merge(['order_items' => is_array($decoded) ? $decoded : $rawItems]);
+        }
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:100'],
@@ -138,25 +147,33 @@ class StorefrontController extends Controller
             'preferred_date' => ['nullable', 'date', 'after_or_equal:today'],
             'preferred_time' => ['nullable', 'date_format:H:i'],
             'notes' => ['nullable', 'string', 'max:1000'],
-            'order_items' => ['nullable'],
+            'order_items' => ['nullable', 'array', 'max:20'],
+            'order_items.*' => ['array'],
+            'order_items.*.id' => ['required', 'string', 'max:255', Rule::exists('products', 'product_slug')->where('is_active', true)],
+            'order_items.*.quantity' => ['required', 'integer', 'min:1', 'max:10'],
+            'order_items.*.size' => ['nullable', 'string', 'max:50'],
+            'order_items.*.monogram' => ['nullable', 'string', 'regex:/^[A-Z]{1,3}$/'],
         ]);
 
         if (! empty($validated['order_items'])) {
-            $orderData = is_string($validated['order_items']) ? json_decode($validated['order_items'], true) : $validated['order_items'];
-            if (is_array($orderData) && count($orderData) > 0) {
-                $lines = [];
-                $total = 0;
-                foreach ($orderData as $item) {
-                    $name = $item['name'] ?? 'Item';
-                    $qty = (int) ($item['quantity'] ?? $item['qty'] ?? 1);
-                    $price = (int) ($item['price'] ?? 0);
-                    $priceStr = 'Rp'.number_format($price, 0, ',', '.');
-                    $lines[] = "- {$name} ({$qty}x) {$priceStr}";
-                    $total += $price * $qty;
-                }
-                $summary = "[Pesanan Checkout]\n".implode("\n", $lines)."\nTotal: Rp".number_format($total, 0, ',', '.');
-                $validated['notes'] = trim($summary.($validated['notes'] ? "\n\nCatatan: ".$validated['notes'] : ''));
+            $lines = [];
+            $total = 0;
+            foreach ($validated['order_items'] as $item) {
+                $product = Product::where('is_active', true)->where('product_slug', $item['id'])->firstOrFail();
+                $qty = (int) $item['quantity'];
+                $price = (int) $product->product_price;
+                $priceStr = 'Rp'.number_format($price, 0, ',', '.');
+                $details = array_filter([
+                    ! empty($item['size']) ? 'Ukuran: '.$item['size'] : null,
+                    ! empty($item['monogram']) ? 'Monogram: '.$item['monogram'] : null,
+                ]);
+                $suffix = $details ? ' · '.implode(' · ', $details) : '';
+                $lines[] = "- {$product->product_title} ({$qty}x) {$priceStr}{$suffix}";
+                $total += $price * $qty;
             }
+            $existingNotes = trim((string) ($validated['notes'] ?? ''));
+            $summary = "[Pesanan Checkout]\n".implode("\n", $lines)."\nTotal: Rp".number_format($total, 0, ',', '.');
+            $validated['notes'] = trim($summary.($existingNotes !== '' ? "\n\nCatatan: ".$existingNotes : ''));
         }
         unset($validated['order_items']);
 
@@ -174,7 +191,7 @@ class StorefrontController extends Controller
 
     public function subscribe(Request $request): JsonResponse|RedirectResponse
     {
-        $request->merge(['email' => mb_strtolower((string) $request->input('email'))]);
+        $this->normalizeEmail($request);
 
         $validated = $request->validate([
             'email' => ['required', 'email', 'max:255'],
@@ -186,12 +203,10 @@ class StorefrontController extends Controller
             Mail::to($subscriber->email)->queue(new NewsletterWelcome($subscriber));
         }
 
-        $message = $subscriber->wasRecentlyCreated
-            ? 'Selamat datang di La Lettre ZAFIRA.'
-            : 'Email Anda telah terdaftar di La Lettre ZAFIRA.';
+        $message = 'Terima kasih telah berlangganan La Lettre ZAFIRA.';
 
         if ($request->expectsJson()) {
-            return response()->json(['message' => $message], $subscriber->wasRecentlyCreated ? 201 : 200);
+            return response()->json(['message' => $message]);
         }
 
         return back()->with('success', $message);

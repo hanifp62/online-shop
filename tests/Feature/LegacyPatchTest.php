@@ -11,11 +11,66 @@ use Database\Seeders\AdminSeeder;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\ProductSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class LegacyPatchTest extends TestCase
 {
     use RefreshDatabase;
+
+    private string $adminSeedPassword;
+
+    /** @var array{server: mixed, env: mixed, getenv: string|false} */
+    private array $originalSeedPassword;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->originalSeedPassword = [
+            'server' => $_SERVER['ADMIN_SEED_PASSWORD'] ?? null,
+            'env' => $_ENV['ADMIN_SEED_PASSWORD'] ?? null,
+            'getenv' => getenv('ADMIN_SEED_PASSWORD'),
+        ];
+        $this->adminSeedPassword = Str::password();
+        $this->setSeedPassword($this->adminSeedPassword);
+    }
+
+    protected function tearDown(): void
+    {
+        // Restore whatever .env/dotenv provided so other tests see the original state.
+        $original = $this->originalSeedPassword;
+        $this->setSeedPassword(null);
+        if ($original['server'] !== null) {
+            $_SERVER['ADMIN_SEED_PASSWORD'] = $original['server'];
+        }
+        if ($original['env'] !== null) {
+            $_ENV['ADMIN_SEED_PASSWORD'] = $original['env'];
+        }
+        if ($original['getenv'] !== false) {
+            putenv('ADMIN_SEED_PASSWORD='.$original['getenv']);
+        }
+
+        parent::tearDown();
+    }
+
+    /**
+     * env() reads $_SERVER, then $_ENV, then getenv(); dotenv fills the first two,
+     * so all three must be overridden (or cleared) for the seeder to see the test value.
+     */
+    private function setSeedPassword(?string $value): void
+    {
+        if ($value === null) {
+            unset($_SERVER['ADMIN_SEED_PASSWORD'], $_ENV['ADMIN_SEED_PASSWORD']);
+            putenv('ADMIN_SEED_PASSWORD');
+
+            return;
+        }
+
+        $_SERVER['ADMIN_SEED_PASSWORD'] = $value;
+        $_ENV['ADMIN_SEED_PASSWORD'] = $value;
+        putenv('ADMIN_SEED_PASSWORD='.$value);
+    }
 
     public function test_register_with_legacy_profile_fields_creates_backup(): void
     {
@@ -49,6 +104,20 @@ class LegacyPatchTest extends TestCase
         $this->seed(AdminSeeder::class);
 
         $this->assertDatabaseHas('admins', ['email' => 'admin@gmail.com']);
+        $this->assertTrue(Hash::check($this->adminSeedPassword, Admin::firstOrFail()->password));
+        $this->assertDatabaseHas('newsletter_subscribers', ['email' => 'admin@gmail.com']);
+    }
+
+    public function test_admin_seeder_creates_random_password_when_env_absent(): void
+    {
+        $this->setSeedPassword(null);
+        $this->assertNull(env('ADMIN_SEED_PASSWORD'));
+
+        $this->seed(AdminSeeder::class);
+
+        $admin = Admin::firstOrFail();
+        $this->assertFalse(Hash::check('12345678', $admin->password));
+        $this->assertFalse(Hash::check($this->adminSeedPassword, $admin->password));
         $this->assertDatabaseHas('newsletter_subscribers', ['email' => 'admin@gmail.com']);
     }
 
@@ -111,7 +180,7 @@ class LegacyPatchTest extends TestCase
 
         $this->post('/admin/login', [
             'email' => 'admin@gmail.com',
-            'password' => '12345678',
+            'password' => $this->adminSeedPassword,
         ])->assertRedirect('/admin');
 
         $this->get('/admin')->assertOk()->assertSee('Dashboard Maison');
@@ -142,7 +211,7 @@ class LegacyPatchTest extends TestCase
 
         $this->actingAs($admin, 'admin')
             ->patch(route('admin.password.update'), [
-                'current_password' => '12345678',
+                'current_password' => $this->adminSeedPassword,
                 'password' => 'Saphir#2026',
                 'password_confirmation' => 'Saphir#2026',
             ])->assertRedirect();
@@ -158,6 +227,7 @@ class LegacyPatchTest extends TestCase
     {
         $user = User::factory()->create(['email' => 'pune@gmail.com']);
         ConciergeRequest::create([
+            'user_id' => $user->id,
             'name' => 'Punee Red',
             'email' => 'pune@gmail.com',
             'phone' => '9448121558',
@@ -170,6 +240,25 @@ class LegacyPatchTest extends TestCase
             ->assertSee('Riwayat Concierge')
             ->assertSee('gifting')
             ->assertSee('confirmed');
+    }
+
+    public function test_account_history_excludes_guest_and_other_user_rows_with_matching_email(): void
+    {
+        $user = User::factory()->create();
+        $other = User::factory()->create();
+
+        foreach ([null, $other->id] as $owner) {
+            ConciergeRequest::create([
+                'user_id' => $owner,
+                'name' => 'Klien lain',
+                'email' => $user->email,
+                'phone' => '0812340000',
+                'service' => 'gifting',
+            ]);
+        }
+
+        $this->actingAs($user)->get('/akun')->assertOk()
+            ->assertViewHas('history', fn ($history) => $history->isEmpty());
     }
 
     public function test_concierge_links_to_logged_in_user(): void

@@ -14,7 +14,7 @@
 | **PASSED** | Code Style Linting (Laravel Pint) | `vendor/bin/pint --test` lulus dengan format standar |
 | **PASSED** | Production Frontend Build | Vite v8.2.2 memproduksi aset produksi dalam 303ms |
 | **PASSED** | macOS Binary Permissions | Izin `+x` aktif di `vendor/bin/*` dan `node_modules/.bin/*` |
-| **PASSED** | Database & Migration Status | 17 migrasi `Ran` pada MariaDB port 3306; seeder mengisi 12 produk |
+| **PASSED** | Database & Migration Status | 29 file migrasi terdeteksi; status `Ran` perlu diverifikasi ulang pada MariaDB port 3306; seeder mengisi 12 produk |
 | **PASSED** | HTTP Security Headers | `nosniff`, `SAMEORIGIN`, `strict-origin-when-cross-origin` aktif |
 | **PASSED** | Multi-Guard Auth Separation | Guard `web` dan `admin` terisolasi; logout pelanggan menjaga sesi admin |
 | **PASSED** | Storefront Caching & Invalidation | Cache LRU 300s aktif dan ter-flush otomatis saat mutasi katalog |

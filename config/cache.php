@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Category;
+use App\Models\Product;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
 return [
@@ -16,6 +19,13 @@ return [
     */
 
     'default' => env('CACHE_STORE', 'database'),
+
+    // Storefront caches Eloquent collections with eager-loaded categories.
+    'serializable_classes' => [
+        Collection::class,
+        Product::class,
+        Category::class,
+    ],
 
     /*
     |--------------------------------------------------------------------------
