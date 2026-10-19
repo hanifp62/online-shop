@@ -12,7 +12,9 @@ class CartController extends Controller
 {
     public function show(Request $request): JsonResponse
     {
-        return response()->json(CheckoutService::priced(CheckoutService::cart($request)));
+        $priced = CheckoutService::priced(CheckoutService::cart($request));
+
+        return response()->json($priced + CheckoutService::baseQuote($priced));
     }
 
     public function store(Request $request): JsonResponse
@@ -35,7 +37,9 @@ class CartController extends Controller
             return CartStore::items($id);
         }, create: true);
 
-        return response()->json(CheckoutService::priced($cart));
+        $priced = CheckoutService::priced($cart);
+
+        return response()->json($priced + CheckoutService::baseQuote($priced));
     }
 
     public function adjust(Request $request, int $productId): JsonResponse
@@ -65,7 +69,9 @@ class CartController extends Controller
             return $id === null ? [] : CartStore::items($id);
         }, create: $delta > 0);
 
-        return response()->json(CheckoutService::priced($cart));
+        $priced = CheckoutService::priced($cart);
+
+        return response()->json($priced + CheckoutService::baseQuote($priced));
     }
 
     public function destroy(Request $request, int $productId): JsonResponse
@@ -79,7 +85,9 @@ class CartController extends Controller
             return [CartStore::items($id), $items[$productId] ?? 0];
         });
 
-        return response()->json(CheckoutService::priced($cart) + ['removed_quantity' => $removedQuantity]);
+        $priced = CheckoutService::priced($cart);
+
+        return response()->json($priced + CheckoutService::baseQuote($priced) + ['removed_quantity' => $removedQuantity]);
     }
 
     public function clear(Request $request): JsonResponse

@@ -23,7 +23,7 @@
 <div class="checkout-layout">
 <aside id="checkout-summary" class="checkout-summary" aria-live="polite" aria-labelledby="checkout-summary-heading">
 <h3 id="checkout-summary-heading">Ringkasan pesanan</h3><strong id="checkout-estimate" role="status" aria-live="polite">Memuat ringkasan pesanan…</strong>
-<p class="muted">Voucher belum diperhitungkan. Ongkir Rp0. Total akhir dikonfirmasi server setelah pesanan dibuat.</p>
+<p class="muted">Diskon voucher dihitung server setelah kode diterapkan. Total memakai tarif server terbaru.</p>
 </aside>
 <div class="checkout-fields" role="region" aria-label="Formulir checkout">
 @auth<form id="checkout-form" class="stack"><label>Alamat tersimpan<select id="checkout-address" name="address_id" required></select></label><label>Kode voucher (opsional)<input name="voucher_code" maxlength="40"></label><button id="checkout-button">Buat pesanan pending</button></form>@else<p>Sudah punya akun? <a href="{{ route('login') }}">Masuk</a>. Atau lengkapi kontak dan alamat untuk memesan sebagai tamu.</p><form id="guest-checkout-form" class="stack" method="post"><fieldset class="stack"><legend>Langkah 1/2 · Kontak</legend><label>Nama lengkap<input name="customer_name" required maxlength="120" autocomplete="name"></label><label>Email<input type="email" name="customer_email" required maxlength="255" autocomplete="email"></label><label>Telepon<input type="tel" name="customer_phone" required maxlength="30" autocomplete="tel" placeholder="+62 812 3456 7890"></label></fieldset><fieldset class="stack"><legend>Langkah 2/2 · Alamat pengiriman</legend><label>Label<input name="label" required maxlength="50" value="Utama"></label><label>Nama penerima<input name="recipient_name" required maxlength="120" autocomplete="shipping name"></label><label>Telepon penerima<input type="tel" name="phone" required maxlength="30" autocomplete="shipping tel"></label><label>Alamat jalan<input name="line1" required maxlength="255" autocomplete="shipping address-line1"></label><label>Detail tambahan<input name="line2" maxlength="255" autocomplete="shipping address-line2"></label><div class="field-pair"><label>Kota<input name="city" required maxlength="120" autocomplete="shipping address-level2"></label><label>Provinsi<input name="province" required maxlength="120" autocomplete="shipping address-level1"></label><label>Kode pos<input name="postal_code" required maxlength="20" autocomplete="shipping postal-code"></label></div></fieldset><button id="guest-checkout-button" disabled>Buat pesanan tamu</button></form>@endauth
@@ -110,16 +110,29 @@
         if (!available) {
             estimate.textContent = 'Subtotal belum tersedia';
             content.append(text('p', 'Ringkasan tidak tersedia. Muat ulang sebelum checkout.'));
-            summary.replaceChildren(heading, estimate, content, text('p', 'Voucher dan total akhir dikonfirmasi server setelah pesanan dibuat.'));
+            summary.replaceChildren(heading, estimate, content, text('p', 'Diskon voucher dan total akhir dikonfirmasi server setelah pesanan dibuat.'));
             return;
         }
         const count = cart.items.reduce((sum, item) => sum + Number(item.quantity), 0);
         estimate.textContent = `${count} barang · Subtotal: ${money(cart.subtotal)}`;
         for (const item of cart.items) content.append(text('p', `${item.product_title} × ${item.quantity} · ${money(item.subtotal)}`));
         if (!cart.items.length) content.append(text('p', 'Tas kosong. Tambahkan kreasi dari katalog.'));
-        // Jumlah dan subtotal sudah tampil di estimate, jadi tidak diulang di rincian.
-        // Diskon dan ongkir belum dapat dihitung di klien, jadi tidak ada total final di sini.
-        content.append(text('p', 'Diskon dan ongkir dihitung server saat pesanan dibuat'), text('p', 'Status: pending / belum dibayar'));
+
+        // Rincian hanya dari angka server; klien tidak pernah menebak ongkir, pajak, atau total.
+        const quoted = cart.items.length && ['shipping_fee', 'discount', 'tax', 'total'].every(k => Number.isInteger(cart[k]));
+        if (quoted) {
+            const breakdown = text('div', ''); breakdown.className = 'stack';
+            breakdown.append(
+                text('p', `Ongkir: ${money(cart.shipping_fee)}`),
+                text('p', `Diskon: ${money(cart.discount)} (voucher dihitung saat pesanan dibuat)`),
+                text('p', `Pajak: ${money(cart.tax)}`),
+                text('strong', `Perkiraan total: ${money(cart.total)}`)
+            );
+            content.append(breakdown);
+        } else {
+            content.append(text('p', 'Diskon dan ongkir dihitung server saat pesanan dibuat'));
+        }
+        content.append(text('p', 'Status: pending / belum dibayar'));
         summary.replaceChildren(heading, estimate, content, text('p', 'Total akhir dikonfirmasi server setelah pesanan dibuat.'));
     }
     async function loadAddresses() {
