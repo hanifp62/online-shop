@@ -84,7 +84,7 @@ test('shared aside stays visible before both forms, sticky on desktop and above 
         assert.ok(checkout.indexOf('id="checkout-summary"') < checkout.indexOf(`id="${id}"`));
     }
     assert.doesNotMatch(checkout, /<details|<summary/);
-    assert.match(checkout, /Voucher belum diperhitungkan/);
+    assert.match(checkout, /Diskon voucher dihitung server/);
     assert.match(blade, /\.checkout-summary\{[^}]*position:sticky/);
     const mobile = blade.slice(blade.indexOf('@media(max-width:760px)'), blade.indexOf('</style>'));
     assert.match(mobile, /\.checkout-summary\{[^}]*position:sticky[^}]*top:/);
