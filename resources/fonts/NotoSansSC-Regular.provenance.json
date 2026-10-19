@@ -1,0 +1,80 @@
+{
+  "output": {
+    "file": "NotoSansSC-Regular.ttf",
+    "sha256": "09e1417d9e3ae2fc7db6f136d51905f10f3ec10851da7383c60c5ed38c20c31a",
+    "bytes": 10595868,
+    "format": "static TrueType (glyf), no fvar/gvar/avar/HVAR",
+    "family": "Noto Sans SC",
+    "style": "Regular",
+    "postscript_name": "NotoSansSC-Regular",
+    "usWeightClass": 400,
+    "glyphs": 31036
+  },
+  "source": {
+    "file": "NotoSansSC-VF.ttf",
+    "sha256": "a3041811a78c361b1de50f953c805e0244951c21c5bd412f7232ef0d899af0da",
+    "upstream": {
+      "repository": "https://github.com/google/fonts",
+      "commit": "a85815a42757630ce188fdad368c2dfc444d4773",
+      "path": "ofl/notosanssc/NotoSansSC[wght].ttf",
+      "git_blob_sha1": "fb0637bafbcd804fe32152370a1225990745b4bc",
+      "licence_path": "ofl/notosanssc/OFL.txt",
+      "licence_git_blob_sha1": "1c9f43281b8f216c5461fe9ac729afbade7724e4"
+    }
+  },
+  "tool": {
+    "name": "fontTools.varLib.instancer.instantiateVariableFont",
+    "fonttools_version": "4.66.1",
+    "python": "3.14.8",
+    "script": "scripts/amadis/prepare-pdf-font.py"
+  },
+  "parameters": {
+    "axes": {
+      "wght": 400
+    },
+    "static": true,
+    "recalcTimestamp": false,
+    "name_table": "family/style/full/postscript set to Regular; IDs 16, 17, 25 removed"
+  },
+  "licence": {
+    "file": "OFL.txt",
+    "sha256": "1c05c68c34f9708415aada51f17e1b0092d2cea709bf4a94cd38114f9e73d7d9",
+    "name": "SIL Open Font License 1.1",
+    "copyright": "Copyright 2014-2021 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'",
+    "note": "Modified Version under OFL 1.1; ship OFL.txt with the font; primary name does not use \"Source\"."
+  },
+  "coverage": {
+    "cmap_codepoints": 30890,
+    "cjk_unified_U4E00_U9FFF": 20976,
+    "samples": {
+      "digits": {
+        "checked": 10,
+        "missing": []
+      },
+      "ascii_letters": {
+        "checked": 52,
+        "missing": []
+      },
+      "ascii_punctuation": {
+        "checked": 32,
+        "missing": []
+      },
+      "latin_accents": {
+        "checked": 39,
+        "missing": []
+      },
+      "typographic_punctuation": {
+        "checked": 13,
+        "missing": []
+      },
+      "chinese": {
+        "checked": 31,
+        "missing": []
+      },
+      "cjk_punctuation": {
+        "checked": 14,
+        "missing": []
+      }
+    }
+  }
+}

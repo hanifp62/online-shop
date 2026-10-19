@@ -1,0 +1,200 @@
+{
+  "platform": "Linux container",
+  "image": "composer@sha256:af98f42dfff7c68ba8d53c2164fd9fde1087b7d449514baa38c418b1f6bc4bac",
+  "stage": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-23bdbb01260e",
+  "root": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-23bdbb01260e",
+  "predicates": {
+    "source_modes": {
+      "status": "PASS",
+      "returncode": 0,
+      "detail": {
+        "executable_count": 22
+      }
+    },
+    "topology": {
+      "status": "PASS",
+      "returncode": 0,
+      "detail": {
+        "proxy_networks": [
+          "amadis-stage-composer-23bdbb01260e",
+          "amadis-stage-sentinel-23bdbb01260e",
+          "bridge"
+        ],
+        "composer_networks": [
+          "amadis-stage-composer-23bdbb01260e"
+        ],
+        "sentinel_networks": [
+          "amadis-stage-sentinel-23bdbb01260e"
+        ]
+      }
+    },
+    "allowed_proxy": {
+      "status": "PASS",
+      "returncode": 0,
+      "detail": {
+        "returncode": 0,
+        "bytes": 888,
+        "stderr": "",
+        "valid": true
+      }
+    },
+    "sentinel_direct_isolation": {
+      "status": "PASS",
+      "returncode": 0,
+      "detail": {
+        "reachable": false,
+        "error": "[Errno 101] Network unreachable"
+      }
+    },
+    "direct_egress": {
+      "status": "PASS",
+      "returncode": 0,
+      "detail": [
+        {
+          "target": "1.1.1.1:443",
+          "connected": false,
+          "errno": 101,
+          "error": "[Errno 101] Network unreachable"
+        },
+        {
+          "target": "8.8.8.8:443",
+          "connected": false,
+          "errno": 101,
+          "error": "[Errno 101] Network unreachable"
+        },
+        {
+          "target": "9.9.9.9:443",
+          "connected": false,
+          "errno": 101,
+          "error": "[Errno 101] Network unreachable"
+        }
+      ]
+    },
+    "private_targets": {
+      "status": "PASS",
+      "returncode": 0,
+      "detail": {
+        "host.docker.internal": "HTTP/1.1 403 Forbidden",
+        "172.17.0.1": "HTTP/1.1 403 Forbidden",
+        "10.0.0.1": "HTTP/1.1 403 Forbidden",
+        "192.168.1.1": "HTTP/1.1 403 Forbidden",
+        "169.254.169.254": "HTTP/1.1 403 Forbidden"
+      }
+    },
+    "parallel_tls": {
+      "status": "PASS",
+      "returncode": 0,
+      "detail": [
+        {
+          "returncode": 0,
+          "bytes": 888,
+          "stderr": "",
+          "valid": true
+        },
+        {
+          "returncode": 0,
+          "bytes": 888,
+          "stderr": "",
+          "valid": true
+        },
+        {
+          "returncode": 0,
+          "bytes": 888,
+          "stderr": "",
+          "valid": true
+        },
+        {
+          "returncode": 0,
+          "bytes": 888,
+          "stderr": "",
+          "valid": true
+        },
+        {
+          "returncode": 0,
+          "bytes": 888,
+          "stderr": "",
+          "valid": true
+        },
+        {
+          "returncode": 0,
+          "bytes": 888,
+          "stderr": "",
+          "valid": true
+        },
+        {
+          "returncode": 0,
+          "bytes": 888,
+          "stderr": "",
+          "valid": true
+        },
+        {
+          "returncode": 0,
+          "bytes": 888,
+          "stderr": "",
+          "valid": true
+        }
+      ]
+    },
+    "forbidden_proxy": {
+      "status": "PASS",
+      "returncode": 0,
+      "detail": "HTTP/1.1 403 Forbidden"
+    },
+    "sentinel_proxy": {
+      "status": "PASS",
+      "returncode": 0,
+      "detail": "HTTP/1.1 403 Forbidden"
+    },
+    "control_direct_egress": {
+      "status": "PASS",
+      "returncode": 0,
+      "detail": [
+        {
+          "target": "1.1.1.1:443",
+          "connected": true
+        },
+        {
+          "target": "8.8.8.8:443",
+          "connected": true
+        },
+        {
+          "target": "9.9.9.9:443",
+          "connected": true
+        }
+      ]
+    },
+    "runtime_sentinel": {
+      "status": "PASS",
+      "returncode": 0,
+      "detail": {
+        "uid": 501,
+        "gid": 20,
+        "sentinels": {
+          "stage": {
+            "owner_uid": 501,
+            "owner_gid": 20,
+            "mode": "0o644",
+            "read_write": true
+          },
+          "root": {
+            "owner_uid": 501,
+            "owner_gid": 20,
+            "mode": "0o644",
+            "read_write": true
+          }
+        },
+        "security": {
+          "CapEff": "0000000000000000",
+          "NoNewPrivs": "1"
+        },
+        "rootfs_write_denied": true,
+        "source_visible": false,
+        "mountinfo": "218 160 0:57 / / ro,relatime - overlay overlay rw,lowerdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/295/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/48/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/47/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/46/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/45/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/44/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/43/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/42/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/41/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/40/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/39/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/38/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/37/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/36/fs:/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/35/fs,upperdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/296/fs,workdir=/var/lib/desktop-containerd/daemon/io.containerd.snapshotter.v1.overlayfs/snapshots/296/work,nouserxattr\n220 218 0:82 / /proc rw,nosuid,nodev,noexec,relatime - proc proc rw\n221 218 0:83 / /dev rw,nosuid - tmpfs tmpfs rw,size=65536k,mode=755\n222 221 0:84 / /dev/pts rw,nosuid,noexec,relatime - devpts devpts rw,gid=5,mode=620,ptmxmode=666\n223 218 0:85 / /sys ro,nosuid,nodev,noexec,relatime - sysfs sysfs ro\n224 223 0:41 / /sys/fs/cgroup ro,nosuid,nodev,noexec,relatime - cgroup2 cgroup rw\n225 221 0:80 / /dev/mqueue rw,nosuid,nodev,noexec,relatime - mqueue mqueue rw\n226 221 0:86 / /dev/shm rw,nosuid,nodev,noexec,relatime - tmpfs shm rw,size=65536k\n227 218 0:87 / /tmp rw,nosuid,nodev,noexec,relatime - tmpfs tmpfs rw,size=262144k\n228 218 254:1 /docker/containers/06dd801dd75612f74536459c549496027d0e5da9bd03d5ed92ae1021eece2cf3/hostname /etc/hostname ro,relatime - ext4 /dev/vda1 rw,discard\n229 218 254:1 /docker/containers/06dd801dd75612f74536459c549496027d0e5da9bd03d5ed92ae1021eece2cf3/hosts /etc/hosts ro,relatime - ext4 /dev/vda1 rw,discard\n230 218 254:1 /docker/containers/06dd801dd75612f74536459c549496027d0e5da9bd03d5ed92ae1021eece2cf3/resolv.conf /etc/resolv.conf ro,relatime - ext4 /dev/vda1 rw,discard\n231 218 0:46 /var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-23bdbb01260e /private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-23bdbb01260e rw,nosuid,nodev,relatime - virtiofs virtiofs2 rw,ignore_atime,no_xattr\n232 218 0:46 /var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-23bdbb01260e /private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-23bdbb01260e rw,nosuid,nodev,relatime - virtiofs virtiofs2 rw,ignore_atime,no_xattr\n161 220 0:82 /bus /proc/bus ro,nosuid,nodev,noexec,relatime - proc proc rw\n162 220 0:82 /fs /proc/fs ro,nosuid,nodev,noexec,relatime - proc proc rw\n163 220 0:82 /irq /proc/irq ro,nosuid,nodev,noexec,relatime - proc proc rw\n164 220 0:82 /sys /proc/sys ro,nosuid,nodev,noexec,relatime - proc proc rw\n165 220 0:82 /sysrq-trigger /proc/sysrq-trigger ro,nosuid,nodev,noexec,relatime - proc proc rw\n166 220 0:83 /null /proc/interrupts rw,nosuid - tmpfs tmpfs rw,size=65536k,mode=755\n167 220 0:83 /null /proc/kcore rw,nosuid - tmpfs tmpfs rw,size=65536k,mode=755\n168 220 0:83 /null /proc/keys rw,nosuid - tmpfs tmpfs rw,size=65536k,mode=755\n169 220 0:88 / /proc/scsi ro,relatime - tmpfs tmpfs ro,size=4k,nr_inodes=1\n170 220 0:83 /null /proc/timer_list rw,nosuid - tmpfs tmpfs rw,size=65536k,mode=755\n173 223 0:88 / /sys/firmware ro,relatime - tmpfs tmpfs ro,size=4k,nr_inodes=1\n",
+        "status": "PASS"
+      }
+    }
+  },
+  "applied_to_mac": false,
+  "install_gate": true,
+  "returncode": 0
+}

@@ -1,0 +1,5 @@
+{
+  "command": "docker exec amadis-stage-composer-5328339b1e33 python3 /private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-5328339b1e33/probe.py amadis-proxy 172.19.0.3 172.17.0.1",
+  "returncode": 0,
+  "platform": "Linux container"
+}

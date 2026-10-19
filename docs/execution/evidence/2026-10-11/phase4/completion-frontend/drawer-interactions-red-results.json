@@ -1,0 +1,56 @@
+{
+  "results": {
+    "repeatedOpen": {
+      "reopenStillOpen": true,
+      "restoredTo": "BODY",
+      "pass": false
+    },
+    "switchDrawer": {
+      "profileOpen": true,
+      "backOnOpener": false,
+      "pass": false
+    },
+    "rerender": {
+      "afterRender": false,
+      "afterTab": true,
+      "pass": true
+    },
+    "outsideShortcut": {
+      "afterSlash": false,
+      "afterTab": false,
+      "pass": false
+    },
+    "outsideFocus": {
+      "pass": false
+    },
+    "endpointWrap": {
+      "backward": true,
+      "lastIsActive": true,
+      "forward": true,
+      "pass": true
+    },
+    "escBackdrop": {
+      "esc": true,
+      "backdrop": true,
+      "pass": true
+    },
+    "contrast": {
+      "selector": ".cat-pill.active",
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(8, 16, 29)",
+      "backgroundImage": "none",
+      "fontSize": "11px",
+      "fontWeight": "600",
+      "ratio": 19.05,
+      "threshold": 4.5,
+      "solid": true,
+      "pass": true
+    }
+  },
+  "failures": [
+    "repeatedOpen",
+    "switchDrawer",
+    "outsideShortcut",
+    "outsideFocus"
+  ]
+}

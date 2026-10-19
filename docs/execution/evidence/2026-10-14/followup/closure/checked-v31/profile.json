@@ -1,0 +1,31 @@
+{
+  "root": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-manual-v31-20261015",
+  "port": 8018,
+  "database": "isolated SQLite; PHPUnit :memory:",
+  "operational_env_read": false,
+  "relevant_source_files": 175,
+  "setup_manifest_entries": 280,
+  "setup_manifest_mismatches": 0,
+  "node_test_files": 18,
+  "node_test_paths": [
+    "tests/amadis-layout.test.mjs",
+    "tests/cart-concurrency.test.mjs",
+    "tests/catalog-replacement.test.mjs",
+    "tests/hit-hero-run12.test.mjs",
+    "tests/phase4-a11y.test.mjs",
+    "tests/prototype-currency.test.mjs",
+    "tests/prototype-dock.test.mjs",
+    "tests/prototype-drawer.test.mjs",
+    "tests/prototype-header-1025.test.mjs",
+    "tests/prototype-mobile-lang.test.mjs",
+    "tests/prototype-security.test.mjs",
+    "tests/sw.test.mjs",
+    "tests/sweep10-repairs.test.mjs",
+    "tests/task3.test.mjs",
+    "tests/task4-focus.test.mjs",
+    "tests/task4.test.mjs",
+    "tests/zafira-i18n.test.mjs",
+    "tests/zafira-theme.test.mjs"
+  ],
+  "drift": 0
+}

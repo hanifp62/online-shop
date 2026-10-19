@@ -1,0 +1,913 @@
+[
+ {
+  "name": "home",
+  "w": 320,
+  "h": 568,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/",
+  "hOverflow": false,
+  "fixed": [
+   {
+    "sel": "A.skip-link",
+    "x": 12,
+    "y": -73,
+    "w": 184,
+    "h": 42,
+    "z": "1000"
+   },
+   {
+    "sel": "DIV.mobile-menu#mobile-menu",
+    "x": -330,
+    "y": 0,
+    "w": 320,
+    "h": 568,
+    "z": "120"
+   },
+   {
+    "sel": "NAV.floating-luxury-dock",
+    "x": 21,
+    "y": 500,
+    "w": 278,
+    "h": 54,
+    "z": "100"
+   }
+  ],
+  "overlaps": []
+ },
+ {
+  "name": "home",
+  "w": 390,
+  "h": 844,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/",
+  "hOverflow": false,
+  "fixed": [
+   {
+    "sel": "A.skip-link",
+    "x": 12,
+    "y": -73,
+    "w": 184,
+    "h": 42,
+    "z": "1000"
+   },
+   {
+    "sel": "DIV.mobile-menu#mobile-menu",
+    "x": -402,
+    "y": 0,
+    "w": 390,
+    "h": 844,
+    "z": "120"
+   },
+   {
+    "sel": "NAV.floating-luxury-dock",
+    "x": 56,
+    "y": 776,
+    "w": 278,
+    "h": 54,
+    "z": "100"
+   }
+  ],
+  "overlaps": []
+ },
+ {
+  "name": "home",
+  "w": 768,
+  "h": 1024,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/",
+  "hOverflow": false,
+  "fixed": [
+   {
+    "sel": "A.skip-link",
+    "x": 12,
+    "y": -73,
+    "w": 184,
+    "h": 42,
+    "z": "1000"
+   },
+   {
+    "sel": "DIV.mobile-menu#mobile-menu",
+    "x": -791,
+    "y": 0,
+    "w": 768,
+    "h": 1024,
+    "z": "120"
+   },
+   {
+    "sel": "NAV.floating-luxury-dock",
+    "x": 111,
+    "y": 952,
+    "w": 547,
+    "h": 58,
+    "z": "100"
+   }
+  ],
+  "overlaps": []
+ },
+ {
+  "name": "home",
+  "w": 1024,
+  "h": 768,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/",
+  "hOverflow": false,
+  "fixed": [
+   {
+    "sel": "A.skip-link",
+    "x": 12,
+    "y": -73,
+    "w": 184,
+    "h": 42,
+    "z": "1000"
+   },
+   {
+    "sel": "NAV.floating-luxury-dock",
+    "x": 180,
+    "y": 677,
+    "w": 664,
+    "h": 67,
+    "z": "100"
+   }
+  ],
+  "overlaps": []
+ },
+ {
+  "name": "home",
+  "w": 1366,
+  "h": 768,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/",
+  "hOverflow": false,
+  "fixed": [
+   {
+    "sel": "A.skip-link",
+    "x": 12,
+    "y": -73,
+    "w": 184,
+    "h": 42,
+    "z": "1000"
+   },
+   {
+    "sel": "NAV.floating-luxury-dock",
+    "x": 342,
+    "y": 677,
+    "w": 683,
+    "h": 67,
+    "z": "100"
+   }
+  ],
+  "overlaps": []
+ },
+ {
+  "name": "home",
+  "w": 1440,
+  "h": 900,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/",
+  "hOverflow": false,
+  "fixed": [
+   {
+    "sel": "A.skip-link",
+    "x": 12,
+    "y": -73,
+    "w": 184,
+    "h": 42,
+    "z": "1000"
+   },
+   {
+    "sel": "NAV.floating-luxury-dock",
+    "x": 360,
+    "y": 809,
+    "w": 720,
+    "h": 67,
+    "z": "100"
+   }
+  ],
+  "overlaps": []
+ },
+ {
+  "name": "home",
+  "w": 1650,
+  "h": 927,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/",
+  "hOverflow": false,
+  "fixed": [
+   {
+    "sel": "A.skip-link",
+    "x": 12,
+    "y": -73,
+    "w": 184,
+    "h": 42,
+    "z": "1000"
+   },
+   {
+    "sel": "NAV.floating-luxury-dock",
+    "x": 427,
+    "y": 851,
+    "w": 796,
+    "h": 52,
+    "z": "100"
+   }
+  ],
+  "overlaps": []
+ },
+ {
+  "name": "login",
+  "w": 320,
+  "h": 568,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/login",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "login",
+  "w": 390,
+  "h": 844,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/login",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "login",
+  "w": 768,
+  "h": 1024,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/login",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "login",
+  "w": 1024,
+  "h": 768,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/login",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "login",
+  "w": 1366,
+  "h": 768,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/login",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "login",
+  "w": 1440,
+  "h": 900,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/login",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "login",
+  "w": 1650,
+  "h": 927,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/login",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "register",
+  "w": 320,
+  "h": 568,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/register",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "register",
+  "w": 390,
+  "h": 844,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/register",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "register",
+  "w": 768,
+  "h": 1024,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/register",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "register",
+  "w": 1024,
+  "h": 768,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/register",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "register",
+  "w": 1366,
+  "h": 768,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/register",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "register",
+  "w": 1440,
+  "h": 900,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/register",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "register",
+  "w": 1650,
+  "h": 927,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/register",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "adminlogin",
+  "w": 320,
+  "h": 568,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/admin/login",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "adminlogin",
+  "w": 390,
+  "h": 844,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/admin/login",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "adminlogin",
+  "w": 768,
+  "h": 1024,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/admin/login",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "adminlogin",
+  "w": 1024,
+  "h": 768,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/admin/login",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "adminlogin",
+  "w": 1366,
+  "h": 768,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/admin/login",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "adminlogin",
+  "w": 1440,
+  "h": 900,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/admin/login",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "adminlogin",
+  "w": 1650,
+  "h": 927,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/admin/login",
+  "hOverflow": false,
+  "fixed": [],
+  "overlaps": []
+ },
+ {
+  "name": "prototype",
+  "w": 320,
+  "h": 568,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/prototype/",
+  "hOverflow": false,
+  "fixed": [
+   {
+    "sel": "DIV.film-grain-overlay",
+    "x": 0,
+    "y": 0,
+    "w": 320,
+    "h": 568,
+    "z": "9998"
+   },
+   {
+    "sel": "HEADER.sf-header",
+    "x": 0,
+    "y": 33,
+    "w": 320,
+    "h": 74,
+    "z": "100"
+   },
+   {
+    "sel": "DIV.drawer-backdrop#drawer-backdrop",
+    "x": 0,
+    "y": 0,
+    "w": 320,
+    "h": 568,
+    "z": "2000"
+   },
+   {
+    "sel": "NAV.floating-luxury-dock",
+    "x": 44,
+    "y": 502,
+    "w": 232,
+    "h": 54,
+    "z": "9999"
+   },
+   {
+    "sel": "DIV.toast-container#toast-container",
+    "x": 12,
+    "y": 76,
+    "w": 296,
+    "h": 0,
+    "z": "9999"
+   }
+  ],
+  "overlaps": [
+   [
+    "DIV.film-grain-overlay",
+    "HEADER.sf-header"
+   ],
+   [
+    "DIV.film-grain-overlay",
+    "DIV.drawer-backdrop#drawer-backdrop"
+   ],
+   [
+    "DIV.film-grain-overlay",
+    "NAV.floating-luxury-dock"
+   ],
+   [
+    "DIV.film-grain-overlay",
+    "DIV.toast-container#toast-container"
+   ],
+   [
+    "HEADER.sf-header",
+    "DIV.drawer-backdrop#drawer-backdrop"
+   ],
+   [
+    "HEADER.sf-header",
+    "DIV.toast-container#toast-container"
+   ],
+   [
+    "DIV.drawer-backdrop#drawer-backdrop",
+    "NAV.floating-luxury-dock"
+   ],
+   [
+    "DIV.drawer-backdrop#drawer-backdrop",
+    "DIV.toast-container#toast-container"
+   ]
+  ]
+ },
+ {
+  "name": "prototype",
+  "w": 390,
+  "h": 844,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/prototype/",
+  "hOverflow": false,
+  "fixed": [
+   {
+    "sel": "DIV.film-grain-overlay",
+    "x": 0,
+    "y": 0,
+    "w": 390,
+    "h": 844,
+    "z": "9998"
+   },
+   {
+    "sel": "HEADER.sf-header",
+    "x": 0,
+    "y": 33,
+    "w": 390,
+    "h": 65,
+    "z": "100"
+   },
+   {
+    "sel": "DIV.drawer-backdrop#drawer-backdrop",
+    "x": 0,
+    "y": 0,
+    "w": 390,
+    "h": 844,
+    "z": "2000"
+   },
+   {
+    "sel": "NAV.floating-luxury-dock",
+    "x": 79,
+    "y": 778,
+    "w": 232,
+    "h": 54,
+    "z": "9999"
+   },
+   {
+    "sel": "DIV.toast-container#toast-container",
+    "x": 12,
+    "y": 76,
+    "w": 366,
+    "h": 0,
+    "z": "9999"
+   }
+  ],
+  "overlaps": [
+   [
+    "DIV.film-grain-overlay",
+    "HEADER.sf-header"
+   ],
+   [
+    "DIV.film-grain-overlay",
+    "DIV.drawer-backdrop#drawer-backdrop"
+   ],
+   [
+    "DIV.film-grain-overlay",
+    "NAV.floating-luxury-dock"
+   ],
+   [
+    "DIV.film-grain-overlay",
+    "DIV.toast-container#toast-container"
+   ],
+   [
+    "HEADER.sf-header",
+    "DIV.drawer-backdrop#drawer-backdrop"
+   ],
+   [
+    "HEADER.sf-header",
+    "DIV.toast-container#toast-container"
+   ],
+   [
+    "DIV.drawer-backdrop#drawer-backdrop",
+    "NAV.floating-luxury-dock"
+   ],
+   [
+    "DIV.drawer-backdrop#drawer-backdrop",
+    "DIV.toast-container#toast-container"
+   ]
+  ]
+ },
+ {
+  "name": "prototype",
+  "w": 768,
+  "h": 1024,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/prototype/",
+  "hOverflow": false,
+  "fixed": [
+   {
+    "sel": "DIV.film-grain-overlay",
+    "x": 0,
+    "y": 0,
+    "w": 768,
+    "h": 1024,
+    "z": "9998"
+   },
+   {
+    "sel": "HEADER.sf-header",
+    "x": 0,
+    "y": 33,
+    "w": 768,
+    "h": 69,
+    "z": "100"
+   },
+   {
+    "sel": "DIV.drawer-backdrop#drawer-backdrop",
+    "x": 0,
+    "y": 0,
+    "w": 768,
+    "h": 1024,
+    "z": "2000"
+   },
+   {
+    "sel": "NAV.floating-luxury-dock",
+    "x": 174,
+    "y": 966,
+    "w": 419,
+    "h": 46,
+    "z": "9999"
+   }
+  ],
+  "overlaps": [
+   [
+    "DIV.film-grain-overlay",
+    "HEADER.sf-header"
+   ],
+   [
+    "DIV.film-grain-overlay",
+    "DIV.drawer-backdrop#drawer-backdrop"
+   ],
+   [
+    "DIV.film-grain-overlay",
+    "NAV.floating-luxury-dock"
+   ],
+   [
+    "HEADER.sf-header",
+    "DIV.drawer-backdrop#drawer-backdrop"
+   ],
+   [
+    "DIV.drawer-backdrop#drawer-backdrop",
+    "NAV.floating-luxury-dock"
+   ]
+  ]
+ },
+ {
+  "name": "prototype",
+  "w": 1024,
+  "h": 768,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/prototype/",
+  "hOverflow": false,
+  "fixed": [
+   {
+    "sel": "DIV.film-grain-overlay",
+    "x": 0,
+    "y": 0,
+    "w": 1024,
+    "h": 768,
+    "z": "9998"
+   },
+   {
+    "sel": "HEADER.sf-header",
+    "x": 0,
+    "y": 47,
+    "w": 1024,
+    "h": 68,
+    "z": "100"
+   },
+   {
+    "sel": "DIV.drawer-backdrop#drawer-backdrop",
+    "x": 0,
+    "y": 0,
+    "w": 1024,
+    "h": 768,
+    "z": "2000"
+   },
+   {
+    "sel": "NAV.floating-luxury-dock",
+    "x": 228,
+    "y": 673,
+    "w": 567,
+    "h": 71,
+    "z": "9999"
+   }
+  ],
+  "overlaps": [
+   [
+    "DIV.film-grain-overlay",
+    "HEADER.sf-header"
+   ],
+   [
+    "DIV.film-grain-overlay",
+    "DIV.drawer-backdrop#drawer-backdrop"
+   ],
+   [
+    "DIV.film-grain-overlay",
+    "NAV.floating-luxury-dock"
+   ],
+   [
+    "HEADER.sf-header",
+    "DIV.drawer-backdrop#drawer-backdrop"
+   ],
+   [
+    "DIV.drawer-backdrop#drawer-backdrop",
+    "NAV.floating-luxury-dock"
+   ]
+  ]
+ },
+ {
+  "name": "prototype",
+  "w": 1366,
+  "h": 768,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/prototype/",
+  "hOverflow": false,
+  "fixed": [
+   {
+    "sel": "DIV.film-grain-overlay",
+    "x": 0,
+    "y": 0,
+    "w": 1366,
+    "h": 768,
+    "z": "9998"
+   },
+   {
+    "sel": "HEADER.sf-header",
+    "x": 0,
+    "y": 47,
+    "w": 1366,
+    "h": 83,
+    "z": "100"
+   },
+   {
+    "sel": "DIV.drawer-backdrop#drawer-backdrop",
+    "x": 0,
+    "y": 0,
+    "w": 1366,
+    "h": 768,
+    "z": "2000"
+   },
+   {
+    "sel": "NAV.floating-luxury-dock",
+    "x": 348,
+    "y": 701,
+    "w": 671,
+    "h": 43,
+    "z": "9999"
+   }
+  ],
+  "overlaps": [
+   [
+    "DIV.film-grain-overlay",
+    "HEADER.sf-header"
+   ],
+   [
+    "DIV.film-grain-overlay",
+    "DIV.drawer-backdrop#drawer-backdrop"
+   ],
+   [
+    "DIV.film-grain-overlay",
+    "NAV.floating-luxury-dock"
+   ],
+   [
+    "HEADER.sf-header",
+    "DIV.drawer-backdrop#drawer-backdrop"
+   ],
+   [
+    "DIV.drawer-backdrop#drawer-backdrop",
+    "NAV.floating-luxury-dock"
+   ]
+  ]
+ },
+ {
+  "name": "prototype",
+  "w": 1440,
+  "h": 900,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/prototype/",
+  "hOverflow": false,
+  "fixed": [
+   {
+    "sel": "DIV.film-grain-overlay",
+    "x": 0,
+    "y": 0,
+    "w": 1440,
+    "h": 900,
+    "z": "9998"
+   },
+   {
+    "sel": "HEADER.sf-header",
+    "x": 0,
+    "y": 47,
+    "w": 1440,
+    "h": 83,
+    "z": "100"
+   },
+   {
+    "sel": "DIV.drawer-backdrop#drawer-backdrop",
+    "x": 0,
+    "y": 0,
+    "w": 1440,
+    "h": 900,
+    "z": "2000"
+   },
+   {
+    "sel": "NAV.floating-luxury-dock",
+    "x": 385,
+    "y": 833,
+    "w": 671,
+    "h": 43,
+    "z": "9999"
+   }
+  ],
+  "overlaps": [
+   [
+    "DIV.film-grain-overlay",
+    "HEADER.sf-header"
+   ],
+   [
+    "DIV.film-grain-overlay",
+    "DIV.drawer-backdrop#drawer-backdrop"
+   ],
+   [
+    "DIV.film-grain-overlay",
+    "NAV.floating-luxury-dock"
+   ],
+   [
+    "HEADER.sf-header",
+    "DIV.drawer-backdrop#drawer-backdrop"
+   ],
+   [
+    "DIV.drawer-backdrop#drawer-backdrop",
+    "NAV.floating-luxury-dock"
+   ]
+  ]
+ },
+ {
+  "name": "prototype",
+  "w": 1650,
+  "h": 927,
+  "errs": [],
+  "url": "http://127.0.0.1:8014/prototype/",
+  "hOverflow": false,
+  "fixed": [
+   {
+    "sel": "DIV.film-grain-overlay",
+    "x": 0,
+    "y": 0,
+    "w": 1650,
+    "h": 927,
+    "z": "9998"
+   },
+   {
+    "sel": "HEADER.sf-header",
+    "x": 0,
+    "y": 47,
+    "w": 1650,
+    "h": 83,
+    "z": "100"
+   },
+   {
+    "sel": "DIV.drawer-backdrop#drawer-backdrop",
+    "x": 0,
+    "y": 0,
+    "w": 1650,
+    "h": 927,
+    "z": "2000"
+   },
+   {
+    "sel": "NAV.floating-luxury-dock",
+    "x": 490,
+    "y": 860,
+    "w": 671,
+    "h": 43,
+    "z": "9999"
+   }
+  ],
+  "overlaps": [
+   [
+    "DIV.film-grain-overlay",
+    "HEADER.sf-header"
+   ],
+   [
+    "DIV.film-grain-overlay",
+    "DIV.drawer-backdrop#drawer-backdrop"
+   ],
+   [
+    "DIV.film-grain-overlay",
+    "NAV.floating-luxury-dock"
+   ],
+   [
+    "HEADER.sf-header",
+    "DIV.drawer-backdrop#drawer-backdrop"
+   ],
+   [
+    "DIV.drawer-backdrop#drawer-backdrop",
+    "NAV.floating-luxury-dock"
+   ]
+  ]
+ }
+]

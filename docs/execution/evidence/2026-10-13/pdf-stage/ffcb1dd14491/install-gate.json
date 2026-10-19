@@ -1,0 +1,154 @@
+{
+  "source_modes": {
+    "status": "PASS",
+    "returncode": 0,
+    "detail": {
+      "executable_count": 21
+    }
+  },
+  "topology": {
+    "status": "PASS",
+    "returncode": 0,
+    "detail": {
+      "proxy_networks": [
+        "amadis-stage-composer-ffcb1dd14491",
+        "amadis-stage-sentinel-ffcb1dd14491",
+        "bridge"
+      ],
+      "composer_networks": [
+        "amadis-stage-composer-ffcb1dd14491"
+      ],
+      "sentinel_networks": [
+        "amadis-stage-sentinel-ffcb1dd14491"
+      ]
+    }
+  },
+  "sentinel_proxy": {
+    "status": "PASS",
+    "returncode": 0,
+    "detail": "HTTP/1.1 403 Forbidden"
+  },
+  "direct_egress": {
+    "status": "PASS",
+    "returncode": 0,
+    "detail": {
+      "returncode": 6,
+      "bytes": 0,
+      "stderr": "curl: (6) Could not resolve host: repo.packagist.org (DNS server returned general failure)\n",
+      "valid": false
+    }
+  },
+  "sentinel_direct_isolation": {
+    "status": "PASS",
+    "returncode": 0,
+    "detail": {
+      "reachable": false,
+      "error": "[Errno 101] Network unreachable"
+    }
+  },
+  "private_targets": {
+    "status": "PASS",
+    "returncode": 0,
+    "detail": {
+      "host.docker.internal": "HTTP/1.1 403 Forbidden",
+      "172.17.0.1": "HTTP/1.1 403 Forbidden",
+      "10.0.0.1": "HTTP/1.1 403 Forbidden",
+      "192.168.1.1": "HTTP/1.1 403 Forbidden",
+      "169.254.169.254": "HTTP/1.1 403 Forbidden"
+    }
+  },
+  "forbidden_proxy": {
+    "status": "PASS",
+    "returncode": 0,
+    "detail": "HTTP/1.1 403 Forbidden"
+  },
+  "allowed_proxy": {
+    "status": "PASS",
+    "returncode": 0,
+    "detail": {
+      "returncode": 0,
+      "bytes": 888,
+      "stderr": "",
+      "valid": true
+    }
+  },
+  "parallel_tls": {
+    "status": "PASS",
+    "returncode": 0,
+    "detail": [
+      {
+        "returncode": 0,
+        "bytes": 888,
+        "stderr": "",
+        "valid": true
+      },
+      {
+        "returncode": 0,
+        "bytes": 888,
+        "stderr": "",
+        "valid": true
+      },
+      {
+        "returncode": 0,
+        "bytes": 888,
+        "stderr": "",
+        "valid": true
+      },
+      {
+        "returncode": 0,
+        "bytes": 888,
+        "stderr": "",
+        "valid": true
+      },
+      {
+        "returncode": 0,
+        "bytes": 888,
+        "stderr": "",
+        "valid": true
+      },
+      {
+        "returncode": 0,
+        "bytes": 888,
+        "stderr": "",
+        "valid": true
+      },
+      {
+        "returncode": 0,
+        "bytes": 888,
+        "stderr": "",
+        "valid": true
+      },
+      {
+        "returncode": 0,
+        "bytes": 888,
+        "stderr": "",
+        "valid": true
+      }
+    ]
+  },
+  "init": {
+    "status": "PASS",
+    "returncode": 0,
+    "detail": null
+  },
+  "platform": {
+    "status": "PASS",
+    "returncode": 0,
+    "detail": "Checking platform requirements using the lock file\n"
+  },
+  "platform-no-dev": {
+    "status": "PASS",
+    "returncode": 0,
+    "detail": "Checking non-dev platform requirements using the lock file\n"
+  },
+  "sqlite": {
+    "status": "PASS",
+    "returncode": 0,
+    "detail": null
+  },
+  "artisan": {
+    "status": "PASS",
+    "returncode": 0,
+    "detail": null
+  }
+}

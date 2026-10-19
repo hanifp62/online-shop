@@ -1,0 +1,203 @@
+
+   PASS  Tests\Unit\ComposerHooksTest
+  ✓ guard accepts the launcher root and fails closed on a moved cache    0.01s  
+  ✓ composer scripts route through guarded adapter
+  ✓ cache override without amadis markers fails closed before framework callback
+
+   PASS  Tests\Unit\ExampleTest
+  ✓ that true is true                                                    0.01s  
+
+   PASS  Tests\Feature\StorefrontTest
+  ✓ newsletter subscription is idempotent with uniform response          0.20s  
+  ✓ product detail page 404 for unknown slug                             0.02s  
+  ✓ sitemap is accessible                                                0.01s  
+  ✓ authenticated concierge with alternate contact email stays in accou… 0.37s  
+  ✓ product detail page is accessible                                    0.01s  
+  ✓ storefront displays zafira brand                                     0.01s  
+  ✓ concierge request can be created                                     0.01s  
+  ✓ concierge accepts empty hidden order items                           0.01s  
+  ✓ checkout request without schedule is valid                           0.01s  
+  ✓ concierge rejects invalid order items                                0.02s  
+  ✓ concierge order items use server side name and price                 0.01s  
+
+   PASS  Tests\Feature\AdminOrderReportTest
+  ✓ report boundary rows and cancelled orders excluded from value        0.62s  
+  ✓ pdf service paginates and escapes special characters                 0.30s  
+  ✓ report is a parseable pdf with period totals                         0.56s  
+  ✓ today bounds follow utc even when now is expressed in another zone   0.56s  
+  ✓ report rejects more than 500 orders with clear 422                   0.87s  
+  ✓ pdf service wraps long lines before pagination and marks non ascii   0.88s  
+  ✓ empty period still renders valid pdf without revenue claim           0.54s  
+  ✓ report does not query customer relation per order                    0.50s  
+  ✓ report falls back when customer name is blank or missing             0.55s  
+  ✓ report wraps long customer names without losing amounts              0.56s  
+  ✓ pdf service embeds unicode font and sanitizes html and unicode       0.21s  
+  ✓ report uses each orders related customer name and preserves unicode  0.55s  
+  ✓ custom period validates dates and range                              0.51s  
+  ✓ admin can transition order status from dashboard form                0.36s  
+  ✓ report requires admin authentication
+  ✓ dashboard lists orders and report controls                           0.35s  
+
+   PASS  Tests\Feature\BrandHeritageTest
+  ✓ admin can store product quality fields                               0.37s  
+  ✓ legacy products without quality still render                         0.36s  
+  ✓ product detail shows provenance                                      0.36s  
+  ✓ storefront shows three heritages                                     0.36s  
+  ✓ product json ld includes material                                    0.36s  
+  ✓ product detail shows craft for heritage piece                        0.36s  
+  ✓ home carries quick view quality data                                 0.36s  
+  ✓ storefront lists nusantara and capsule categories                    0.36s  
+
+   PASS  Tests\Feature\CspReportOnlyTest
+  ✓ policy is strict and matches current assets                          0.01s  
+  ✓ report only header present when enabled
+  ✓ report only header absent by default
+  ✓ config reads process env flag
+  ✓ enforcing csp header is never sent
+
+   PASS  Tests\Feature\TrustProxyTest
+  ✓ header forwarded palsu diabaikan tanpa proxy tepercaya
+  ✓ host forge tidak memercayai header tanpa konfigurasi proxy
+  ✓ forwarded proto dihormati bila proxy tepercaya with data set "alamat i p"
+  ✓ forwarded proto dihormati bila proxy tepercaya with data set "rentang c i d r"
+
+   PASS  Tests\Feature\BackendPermissionAuditTest
+  ✓ customer cannot change email password or other users concierge hist… 0.03s  
+  ✓ dashboard only offers allowed concierge transitions                  0.36s  
+  ✓ array email input is rejected without a server error                 0.01s  
+  ✓ every admin endpoint rejects guests and customer sessions            0.01s  
+  ✓ product json ld escapes html tags but stays valid json               0.01s  
+  ✓ confirmed concierge cannot move backward but can be cancelled        0.35s  
+  ✓ newsletter endpoint is rate limited                                  0.01s  
+  ✓ admin dashboard does not inject stored names into inline javascript  0.35s  
+  ✓ login password must be a string                                      0.35s  
+  ✓ concierge cannot skip directly from new to completed                 0.35s  
+  ✓ public concierge cannot set owner or status                          0.01s  
+  ✓ full valid concierge lifecycle remains allowed                       0.35s  
+  ✓ completed concierge request cannot be reopened                       0.35s  
+
+   PASS  Tests\Feature\AuthTest
+  ✓ weak password is rejected                                            0.01s  
+  ✓ user can login and logout                                            0.69s  
+  ✓ new user can register                                                0.35s  
+  ✓ account page offers csrf logout                                      0.01s  
+  ✓ register page is accessible
+  ✓ login page is accessible
+
+   PASS  Tests\Feature\ExampleTest
+  ✓ the application returns a successful response                        0.01s  
+
+   PASS  Tests\Feature\AmadisOrderTest
+  ✓ voucher global and per user quotas                                   0.02s  
+  ✓ invalid session cart cannot place or replay order with data set "ne… 0.01s  
+  ✓ invalid session cart cannot place or replay order with data set "ex… 0.01s  
+  ✓ invalid session cart cannot place or replay order with data set "ze… 0.01s  
+  ✓ invalid session cart cannot place or replay order with data set "ar… 0.01s  
+  ✓ invalid session cart cannot place or replay order with data set "bo… 0.01s  
+  ✓ invalid session cart cannot place or replay order with data set "fr… 0.01s  
+  ✓ invalid session cart cannot place or replay order with data set "ma… 0.01s  
+  ✓ stock failure rolls back order and voucher                           0.01s  
+  ✓ cart validation and guest checkout                                   0.01s  
+  ✓ checkout reprices and snapshots then replays without double stock    0.01s  
+  ✓ changed payload cannot reuse key                                     0.01s  
+  ✓ favorites are owner scoped and idempotent                            0.01s  
+  ✓ only admin can transition and completed owner can review once        0.36s  
+  ✓ owner boundaries and cancel restores stock once                      0.01s  
+
+   PASS  Tests\Feature\Task3RemediationTest
+  ✓ storefront hides prototype navigation in production but keeps asset… 0.02s  
+  ✓ customer navigation never routes to demo or admin and keeps shortcu… 0.01s  
+  ✓ product and account pages do not claim fake certificates or profile… 0.36s  
+  ✓ role pages keep native navigation without demo docks                 0.36s  
+  ✓ checkout persists valid size and monogram and rejects invalid monog… 0.01s  
+
+   PASS  Tests\Feature\StorefrontInactiveProductTest
+  ✓ inactive product is hidden from home detail related and concierge    0.36s  
+  ✓ admin deactivation invalidates cached storefront responses           0.36s  
+  ✓ admin can set bounded stock and active flag                          0.36s  
+
+   PASS  Tests\Feature\RescueBackendAuditTest
+  ✓ admin destructive category delete prevents orphan products           0.35s  
+  ✓ register rate limiting triggers after five attempts                  1.73s  
+  ✓ sitemap returns valid xml with proper headers and no private routes
+  ✓ authenticated customer is redirected to admin login on admin routes
+  ✓ concierge validation handles xss safely in notes and names           0.35s  
+  ✓ admin logout requires post and preserves customer if both active     0.35s  
+  ✓ customer logout requires post and invalidates session                0.01s  
+  ✓ security headers are present on web responses
+  ✓ concierge order items enforces max quantity and monogram format      0.01s  
+  ✓ account update validates duplicate name for other users              0.01s  
+  ✓ account update sanitizes mass assignment and prevents idor
+  ✓ customer guest routes redirect authenticated customer away
+  ✓ guest is redirected to customer login for customer routes
+  ✓ concierge order items rejects nonexistent product slug
+  ✓ concierge rate limiting triggers after three attempts                0.01s  
+  ✓ web write routes reject requests without csrf token
+  ✓ customer logout preserves admin session if both active               0.35s  
+  ✓ guest is redirected to admin login for admin routes
+  ✓ login rate limiting triggers after ten attempts                      2.09s  
+  ✓ admin login ignores customer intended route                          0.69s  
+  ✓ admin guest routes redirect authenticated admin away                 0.35s  
+
+   PASS  Tests\Feature\AmadisShopTest
+  ✓ shop page discloses old browser cart is separate                     0.01s  
+  ✓ form values are captured before controls are disabled
+  ✓ shop page renders for guest and discloses pending checkout
+  ✓ logged in shop page shows checkout form and catalog shows favorite   0.01s  
+  ✓ cart add from catalog is server scoped
+  ✓ catalog displays localized stock count                               0.01s  
+  ✓ catalog links to shop and discloses cart limits
+
+   PASS  Tests\Feature\AdminManagementTest
+  ✓ admin can delete product                                             0.35s  
+  ✓ admin can delete subscriber                                          0.35s  
+  ✓ concierge checkout with order items stores and displays in admin     0.43s  
+  ✓ admin can create new product                                         0.35s  
+  ✓ user profile update creates audit backup                             0.35s  
+
+   PASS  Tests\Feature\StorefrontCacheTest
+  ✓ category update invalidates catalog without resetting newsletter li… 0.37s  
+  ✓ product rename and delete invalidate old detail keys                 0.36s  
+
+   PASS  Tests\Feature\AdminProductStockUiTest
+  ✓ admin can update product stock and visibility                        0.36s  
+  ✓ admin can create product with stock and is active                    0.35s  
+
+   PASS  Tests\Feature\LegacyPatchTest
+  ✓ home renders dynamic category pills                                  0.01s  
+  ✓ admin can move product category visible to user                      0.36s  
+  ✓ checkout form prefills logged in profile                             0.01s  
+  ✓ admin can change password                                            1.38s  
+  ✓ category get by id matches getcat procedure
+  ✓ category mutation flushes storefront cache                           0.35s  
+  ✓ admin seeder creates random password when env absent                 1.03s  
+  ✓ admin cannot delete category in use                                  0.35s  
+  ✓ user can view and update profile                                     0.01s  
+  ✓ admin dashboard shows user compatible panels                         0.35s  
+  ✓ admin can manage categories                                          0.36s  
+  ✓ admin can update concierge status                                    0.35s  
+  ✓ register with legacy profile fields creates backup                   0.35s  
+  ✓ sitemap only lists public urls                                       0.01s  
+  ✓ admin seeder preserves dump data                                     0.69s  
+  ✓ user logout keeps admin session                                      0.35s  
+  ✓ admin can search users                                               0.35s  
+  ✓ admin dashboard filters concierge                                    0.35s  
+  ✓ concierge links to logged in user                                    0.01s  
+  ✓ admin can login and view dashboard                                   0.70s  
+  ✓ account page shows concierge history                                 0.01s  
+  ✓ account history excludes guest and other user rows with matching em… 0.01s  
+  ✓ account history prefers user id link                                 0.01s  
+  ✓ checkout email is normalized to lowercase                            0.01s  
+
+   PASS  Tests\Feature\AmadisCatalogTest
+  ✓ locale is validated and labels localized                             0.02s  
+  ✓ like wildcards are literal                                           0.01s  
+  ✓ lists eight per page in id order with product links                  0.01s  
+  ✓ search and attribute filters persist in pagination                   0.01s  
+  ✓ output is escaped and cart form uses convention                      0.01s  
+  ✓ out of range page redirects to last page keeping query               0.01s  
+
+  Tests:    158 passed (1252 assertions)
+  Duration: 34.69s
+  Random Order Seed: 20261013
+

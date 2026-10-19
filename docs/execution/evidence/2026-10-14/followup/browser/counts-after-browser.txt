@@ -1,0 +1,13 @@
+categories_manual=0
+products=3
+users=1
+admins=1
+addresses=5
+vouchers=1
+orders=6
+order_items=6
+identity_products=manual-synthetic-out:125000:1,manual-synthetic-retired:125000:0,manual-synthetic-sapphire:125000:1
+identity_accounts=manual-customer@example.test:Manual Synthetic Customer|manual-admin@example.test:Manual Synthetic Admin
+identity_category=1:MANUAL — Synthetic
+identity_addresses=MANUAL:Manual Synthetic Customer:0000000000:Jalan Fiktif 1:Kota Fiktif:Provinsi Fiktif:00000,Synthetic:Manual Synthetic:0800000000:Synthetic test address:Jakarta:DKI Jakarta:12345,Kantor:Manual Synthetic 2:0811111111:Jalan Kantor 2:Jakarta:DKI Jakarta:12345,Synthetic:Manual Synthetic:0800000000:Synthetic test address:Jakarta:DKI Jakarta:12345,Kantor:Manual Synthetic 2:0811111111:Jalan Kantor 2:Jakarta:DKI Jakarta:12345
+identity_vouchers=MANUAL-ONLY:1000:20:1:1

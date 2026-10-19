@@ -1,0 +1,7 @@
+{
+  "command": "docker logs amadis-stage-proxy-b6abd070ecc8",
+  "returncode": 0,
+  "platform": "Linux container",
+  "start": "2026-10-13T03:56:03Z",
+  "finish": "2026-10-13T03:56:03Z"
+}

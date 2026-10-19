@@ -1,0 +1,10 @@
+{
+  "command": [
+    "php",
+    "--version"
+  ],
+  "cwd": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-manual-closure-20261015",
+  "utc_start": "2026-10-14T17:13:00.996668+00:00",
+  "utc_end": "2026-10-14T17:13:01.044399+00:00",
+  "returncode": 0
+}

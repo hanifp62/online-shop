@@ -1,0 +1,188 @@
+[
+  {
+    "label": "desktop",
+    "name": "home",
+    "http": 200,
+    "title": "ZAFIRA: La Maison de Lumière - Haute Couture Flagship v3.9",
+    "scrollWidth": 1365,
+    "clientWidth": 1365,
+    "focusable": 413,
+    "reducedMotion": false
+  },
+  {
+    "label": "desktop",
+    "name": "catalog",
+    "http": 200,
+    "title": "Koleksi — ZAFIRA: La Maison de Lumière",
+    "scrollWidth": 1365,
+    "clientWidth": 1365,
+    "focusable": 68,
+    "reducedMotion": false
+  },
+  {
+    "label": "desktop",
+    "name": "cart",
+    "http": 200,
+    "title": "Belanja — ZAFIRA La Maison de Lumière",
+    "scrollWidth": 1365,
+    "clientWidth": 1365,
+    "focusable": 12,
+    "reducedMotion": false
+  },
+  {
+    "label": "desktop",
+    "name": "login",
+    "http": 200,
+    "title": "Masuk — ZAFIRA",
+    "scrollWidth": 1365,
+    "clientWidth": 1365,
+    "focusable": 9,
+    "reducedMotion": false
+  },
+  {
+    "label": "desktop",
+    "name": "admin-login",
+    "http": 200,
+    "title": "Masuk Admin — ZAFIRA",
+    "scrollWidth": 1365,
+    "clientWidth": 1365,
+    "focusable": 7,
+    "reducedMotion": false
+  },
+  {
+    "label": "desktop",
+    "errors": [
+      "console error",
+      "console error",
+      "console error",
+      "console error",
+      "console error",
+      "console error",
+      "console error"
+    ]
+  },
+  {
+    "label": "mobile",
+    "name": "home",
+    "http": 200,
+    "title": "ZAFIRA: La Maison de Lumière - Haute Couture Flagship v3.9",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "focusable": 413,
+    "reducedMotion": true
+  },
+  {
+    "label": "mobile",
+    "name": "catalog",
+    "http": 200,
+    "title": "Koleksi — ZAFIRA: La Maison de Lumière",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "focusable": 68,
+    "reducedMotion": true
+  },
+  {
+    "label": "mobile",
+    "name": "cart",
+    "http": 200,
+    "title": "Belanja — ZAFIRA La Maison de Lumière",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "focusable": 12,
+    "reducedMotion": true
+  },
+  {
+    "label": "mobile",
+    "name": "login",
+    "http": 200,
+    "title": "Masuk — ZAFIRA",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "focusable": 9,
+    "reducedMotion": true
+  },
+  {
+    "label": "mobile",
+    "name": "admin-login",
+    "http": 200,
+    "title": "Masuk Admin — ZAFIRA",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "focusable": 7,
+    "reducedMotion": true
+  },
+  {
+    "label": "mobile",
+    "errors": [
+      "console error",
+      "console error",
+      "console error",
+      "console error",
+      "console error",
+      "console error",
+      "console error"
+    ]
+  },
+  {
+    "label": "zoom-reflow",
+    "name": "home",
+    "http": 200,
+    "title": "ZAFIRA: La Maison de Lumière - Haute Couture Flagship v3.9",
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "focusable": 413,
+    "reducedMotion": true
+  },
+  {
+    "label": "zoom-reflow",
+    "name": "catalog",
+    "http": 200,
+    "title": "Koleksi — ZAFIRA: La Maison de Lumière",
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "focusable": 68,
+    "reducedMotion": true
+  },
+  {
+    "label": "zoom-reflow",
+    "name": "cart",
+    "http": 200,
+    "title": "Belanja — ZAFIRA La Maison de Lumière",
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "focusable": 12,
+    "reducedMotion": true
+  },
+  {
+    "label": "zoom-reflow",
+    "name": "login",
+    "http": 200,
+    "title": "Masuk — ZAFIRA",
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "focusable": 9,
+    "reducedMotion": true
+  },
+  {
+    "label": "zoom-reflow",
+    "name": "admin-login",
+    "http": 200,
+    "title": "Masuk Admin — ZAFIRA",
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "focusable": 7,
+    "reducedMotion": true
+  },
+  {
+    "label": "zoom-reflow",
+    "errors": [
+      "console error",
+      "console error",
+      "console error",
+      "console error",
+      "console error",
+      "console error",
+      "console error"
+    ]
+  }
+]

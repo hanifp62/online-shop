@@ -1,0 +1,12 @@
+{
+  "label": "fonttools-version",
+  "command": [
+    "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/ft-venv/bin/python3",
+    "-c",
+    "import fontTools,sys; print(fontTools.version); print(sys.version); assert fontTools.version == \"4.66.1\""
+  ],
+  "start": "2026-10-13T05:22:32.886279+00:00",
+  "finish": "2026-10-13T05:22:32.964115+00:00",
+  "seconds": 0.07786837499588728,
+  "returncode": 0
+}

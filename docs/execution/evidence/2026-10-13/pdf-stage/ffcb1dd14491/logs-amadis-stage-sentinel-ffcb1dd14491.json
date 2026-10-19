@@ -1,0 +1,5 @@
+{
+  "command": "docker logs amadis-stage-sentinel-ffcb1dd14491",
+  "returncode": 0,
+  "platform": "Linux container"
+}

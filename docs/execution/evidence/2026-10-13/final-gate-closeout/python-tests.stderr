@@ -1,0 +1,49 @@
+................................................API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+.API_TOKEN=[REDACTED] [REDACTED]
+........................................./Users/hanifpriyambodo/Documents/online-shop/scripts/amadis/launch.py:230: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10d7257b0>
+  PDF_CLOSURE = set(PDF_PINS)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/hanifpriyambodo/Documents/online-shop/scripts/amadis/launch.py:230: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10d725030>
+  PDF_CLOSURE = set(PDF_PINS)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/hanifpriyambodo/Documents/online-shop/scripts/amadis/launch.py:230: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10d726200>
+  PDF_CLOSURE = set(PDF_PINS)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/hanifpriyambodo/Documents/online-shop/scripts/amadis/launch.py:230: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10d726c50>
+  PDF_CLOSURE = set(PDF_PINS)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/hanifpriyambodo/Documents/online-shop/scripts/amadis/launch.py:230: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10d727010>
+  PDF_CLOSURE = set(PDF_PINS)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/hanifpriyambodo/Documents/online-shop/scripts/amadis/launch.py:230: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10d7274c0>
+  PDF_CLOSURE = set(PDF_PINS)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/hanifpriyambodo/Documents/online-shop/scripts/amadis/launch.py:230: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10d7275b0>
+  PDF_CLOSURE = set(PDF_PINS)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/hanifpriyambodo/Documents/online-shop/scripts/amadis/launch.py:230: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10d727a60>
+  PDF_CLOSURE = set(PDF_PINS)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.........................
+----------------------------------------------------------------------
+Ran 133 tests in 11.428s
+
+OK

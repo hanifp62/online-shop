@@ -1,0 +1,198 @@
+ M .agents/skills/design-taste-frontend/SKILL.md
+ M .agents/skills/impeccable/SKILL.md
+ M .agents/skills/impeccable/agents/impeccable_asset_producer.toml
+ M .agents/skills/impeccable/agents/impeccable_finish_reviewer.toml
+ M .agents/skills/impeccable/reference/adapt.md
+ M .agents/skills/impeccable/reference/audit.md
+ M .agents/skills/impeccable/reference/degraded/asset-producer.md
+ M .agents/skills/impeccable/reference/degraded/finish-reviewer.md
+ M .agents/skills/impeccable/reference/doctor.md
+ M .agents/skills/impeccable/reference/harden.md
+ M .agents/skills/impeccable/reference/hooks.md
+ M .agents/skills/impeccable/reference/init.md
+ M .agents/skills/impeccable/reference/new-work.md
+ M .agents/skills/impeccable/reference/routing.md
+ M .agents/skills/impeccable/reference/visualize.md
+ M .agents/skills/impeccable/scripts/VERSION
+ M .agents/skills/impeccable/scripts/command-metadata.json
+ M .agents/skills/impeccable/scripts/impeccable
+ M .agents/skills/impeccable/scripts/impeccable.cmd
+ M .agents/skills/impeccable/scripts/live-browser-dom.js
+ M .agents/skills/impeccable/scripts/live-browser-session.js
+ M .agents/skills/impeccable/scripts/live-browser.js
+ M .claude/agents/impeccable-asset-producer.md
+ M .claude/agents/impeccable-finish-reviewer.md
+ M .claude/skills/impeccable/SKILL.md
+ M .claude/skills/impeccable/reference/adapt.md
+ M .claude/skills/impeccable/reference/audit.md
+ M .claude/skills/impeccable/reference/degraded/asset-producer.md
+ M .claude/skills/impeccable/reference/degraded/finish-reviewer.md
+ M .claude/skills/impeccable/reference/doctor.md
+ M .claude/skills/impeccable/reference/harden.md
+ M .claude/skills/impeccable/reference/hooks.md
+ M .claude/skills/impeccable/reference/init.md
+ M .claude/skills/impeccable/reference/new-work.md
+ M .claude/skills/impeccable/reference/routing.md
+ M .claude/skills/impeccable/reference/visualize.md
+ M .claude/skills/impeccable/scripts/VERSION
+ M .claude/skills/impeccable/scripts/command-metadata.json
+ M .claude/skills/impeccable/scripts/impeccable
+ M .claude/skills/impeccable/scripts/impeccable.cmd
+ M .claude/skills/impeccable/scripts/live-browser-dom.js
+ M .claude/skills/impeccable/scripts/live-browser-session.js
+ M .claude/skills/impeccable/scripts/live-browser.js
+ M .gitignore
+ M .superpowers/sdd/2026-10-10-audit-and-benchmark-remediation-plan/task-3-report.md
+ M app/Http/Controllers/AdminAuthController.php
+ M app/Http/Controllers/AdminDashboardController.php
+ M app/Http/Controllers/AdminProductController.php
+ M app/Http/Controllers/AuthController.php
+ M app/Http/Controllers/Controller.php
+ M app/Http/Controllers/StorefrontController.php
+ M app/Http/Middleware/SecurityHeaders.php
+ M app/Models/ConciergeRequest.php
+ M app/Models/Product.php
+ M composer.json
+ M composer.lock
+ M docs/02-product/HCI_RPL_UX_RESEARCH_AND_COMPARISON.md
+ M docs/02-product/LUXURY_ECOMMERCE_HCI_UX_RESEARCH_AND_ATM_BENCHMARK.md
+ M docs/02-product/PRD.md
+ M docs/02-product/REQUIREMENTS_TRACEABILITY.md
+ M docs/02-product/RESEARCH_LOG.md
+ M docs/02-product/USER_JOURNEYS.md
+ M docs/02-product/benchmark/SINTESIS_KOMPARATIF_ZAFIRA.md
+ M docs/README.md
+ M prototype/app.css
+ M prototype/app.js
+ M prototype/index.html
+ M prototype/zafira-core.js
+ M public/js/zafira-core.js
+ M resources/css/app.css
+ M resources/js/app.js
+ M resources/views/account/show.blade.php
+ M resources/views/admin/dashboard.blade.php
+ M resources/views/partials/product-header.blade.php
+ M resources/views/products/show.blade.php
+ M resources/views/welcome.blade.php
+ M routes/web.php
+ M skills-lock.json
+ M tests/Feature/AuthTest.php
+ M tests/Feature/LegacyPatchTest.php
+ M tests/Feature/StorefrontTest.php
+ M tests/Feature/Task3RemediationTest.php
+?? .agents/skills/banner-design/
+?? .agents/skills/brand/
+?? .agents/skills/design-system/
+?? .agents/skills/design/
+?? .agents/skills/hyperframes-animation/
+?? .agents/skills/hyperframes-audio/
+?? .agents/skills/hyperframes-cli/
+?? .agents/skills/hyperframes-core/
+?? .agents/skills/hyperframes-creative/
+?? .agents/skills/hyperframes-keyframes/
+?? .agents/skills/hyperframes-registry/
+?? .agents/skills/hyperframes-studio/
+?? .agents/skills/hyperframes/
+?? .agents/skills/impeccable/reference/component-review.md
+?? .agents/skills/impeccable/reference/generate.md
+?? .agents/skills/impeccable/reference/mode-operate.md
+?? .agents/skills/impeccable/reference/mode-persuade.md
+?? .agents/skills/impeccable/reference/mode-read.md
+?? .agents/skills/impeccable/reference/region-map.md
+?? .agents/skills/impeccable/scripts/bin/darwin-arm64/
+?? .agents/skills/slides/
+?? .agents/skills/ui-styling/
+?? .agents/skills/ui-ux-pro-max/
+?? .amadis-pdf-dependency.lock
+?? .claude/skills/impeccable/reference/component-review.md
+?? .claude/skills/impeccable/reference/generate.md
+?? .claude/skills/impeccable/reference/mode-operate.md
+?? .claude/skills/impeccable/reference/mode-persuade.md
+?? .claude/skills/impeccable/reference/mode-read.md
+?? .claude/skills/impeccable/reference/region-map.md
+?? .claude/skills/impeccable/scripts/bin/darwin-arm64/
+?? app/Http/Controllers/AddressController.php
+?? app/Http/Controllers/AdminOrderController.php
+?? app/Http/Controllers/CartController.php
+?? app/Http/Controllers/CatalogController.php
+?? app/Http/Controllers/FavoriteController.php
+?? app/Http/Controllers/OrderController.php
+?? app/Http/Controllers/ReviewController.php
+?? app/Http/Controllers/ShopController.php
+?? app/Models/Address.php
+?? app/Models/Favorite.php
+?? app/Models/Order.php
+?? app/Models/OrderItem.php
+?? app/Models/Review.php
+?? app/Models/Voucher.php
+?? app/Services/
+?? app/Support/
+?? capture_additional_v41.py
+?? config/amadis.php
+?? config/security.php
+?? database/migrations/2026_10_12_000001_add_stock_and_active_to_products_table.php
+?? database/migrations/2026_10_12_000002_create_vouchers_table.php
+?? database/migrations/2026_10_12_000003_create_orders_table.php
+?? database/migrations/2026_10_12_000004_create_order_items_table.php
+?? database/migrations/2026_10_12_000005_create_addresses_table.php
+?? database/migrations/2026_10_12_000006_create_reviews_table.php
+?? database/migrations/2026_10_12_000007_create_favorites_table.php
+?? database/seeders/AmadisDemoSeeder.php
+?? docs/06-prototype/eval_v44_account_dark.png
+?? docs/06-prototype/eval_v44_account_light.png
+?? docs/06-prototype/eval_v44_admin_dashboard.png
+?? docs/06-prototype/eval_v44_admin_login_view.png
+?? docs/06-prototype/eval_v44_cart_drawer.png
+?? docs/06-prototype/eval_v44_certificate_modal.png
+?? docs/06-prototype/eval_v44_dark_prices_account.png
+?? docs/06-prototype/eval_v44_dark_prices_catalog.png
+?? docs/06-prototype/eval_v44_dark_prices_catalog_grid.png
+?? docs/06-prototype/eval_v44_dark_prices_studio.png
+?? docs/06-prototype/eval_v44_login_view.png
+?? docs/06-prototype/eval_v44_pdp_desktop.png
+?? docs/06-prototype/eval_v44_profile_drawer.png
+?? docs/06-prototype/eval_v44_prototype_studio_view.png
+?? docs/06-prototype/eval_v44_shortcuts_modal.png
+?? docs/06-prototype/eval_v44_storefront_desktop.png
+?? docs/06-prototype/eval_v44_storefront_mobile.png
+?? docs/06-prototype/eval_v44_work_order_modal.png
+?? docs/06-prototype/eval_v45_dark_prices_cart_drawer.png
+?? docs/06-prototype/eval_v45_dark_prices_editorial_diptych.png
+?? docs/06-prototype/eval_v45_dark_prices_gallery_grid.png
+?? docs/06-prototype/eval_v45_dark_prices_pdp.png
+?? docs/06-prototype/eval_v45_dark_prices_storefront.png
+?? docs/06-prototype/eval_v45_dark_prices_studio_pdp.png
+?? docs/audit/
+?? docs/demo/
+?? docs/execution/
+?? docs/research/
+?? resources/fonts/
+?? resources/views/catalog/
+?? resources/views/shop/
+?? scratch/
+?? scripts/
+?? test_theme_lang_v41.py
+?? tests/Feature/AdminOrderReportTest.php
+?? tests/Feature/AdminProductStockUiTest.php
+?? tests/Feature/AmadisCatalogTest.php
+?? tests/Feature/AmadisOrderTest.php
+?? tests/Feature/AmadisShopTest.php
+?? tests/Feature/BackendPermissionAuditTest.php
+?? tests/Feature/CspReportOnlyTest.php
+?? tests/Feature/RescueBackendAuditTest.php
+?? tests/Feature/StorefrontInactiveProductTest.php
+?? tests/Support/
+?? tests/Unit/ComposerHooksTest.php
+?? tests/amadis-layout.test.mjs
+?? tests/hit-hero-run12.test.mjs
+?? tests/phase4-a11y.test.mjs
+?? tests/prototype-currency.test.mjs
+?? tests/prototype-dock.test.mjs
+?? tests/prototype-drawer.test.mjs
+?? tests/prototype-header-1025.test.mjs
+?? tests/prototype-mobile-lang.test.mjs
+?? tests/prototype-security.test.mjs
+?? tests/python/
+?? tests/sweep10-repairs.test.mjs
+?? tests/zafira-i18n.test.mjs
+?? tests/zafira-theme.test.mjs

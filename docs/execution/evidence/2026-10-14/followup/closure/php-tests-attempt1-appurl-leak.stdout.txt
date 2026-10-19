@@ -1,0 +1,102 @@
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.5.11
+Configuration: /private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-manual-closure-20261015/phpunit.xml
+
+..S............................................................  63 / 176 ( 35%)
+............................................................... 126 / 176 ( 71%)
+.............................F....................              176 / 176 (100%)
+
+Time: 00:05.673, Memory: 104.50 MB
+
+There was 1 failure:
+
+1) Tests\Feature\StorefrontTest::test_sitemap_is_accessible
+Failed asserting that '<?xml version="1.0" encoding="UTF-8"?>\n
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n
+    <url>\n
+        <loc>http://127.0.0.1:8018</loc>\n
+        <lastmod>2026-10-14</lastmod>\n
+        <changefreq>weekly</changefreq>\n
+        <priority>0.8</priority>\n
+    </url>\n
+    <url>\n
+        <loc>http://127.0.0.1:8018/produk/sac-seraphine</loc>\n
+        <lastmod>2026-10-14</lastmod>\n
+        <changefreq>weekly</changefreq>\n
+        <priority>0.8</priority>\n
+    </url>\n
+    <url>\n
+        <loc>http://127.0.0.1:8018/produk/celeste-trench</loc>\n
+        <lastmod>2026-10-14</lastmod>\n
+        <changefreq>weekly</changefreq>\n
+        <priority>0.8</priority>\n
+    </url>\n
+    <url>\n
+        <loc>http://127.0.0.1:8018/produk/elan-dress</loc>\n
+        <lastmod>2026-10-14</lastmod>\n
+        <changefreq>weekly</changefreq>\n
+        <priority>0.8</priority>\n
+    </url>\n
+    <url>\n
+        <loc>http://127.0.0.1:8018/produk/riva-loafer</loc>\n
+        <lastmod>2026-10-14</lastmod>\n
+        <changefreq>weekly</changefreq>\n
+        <priority>0.8</priority>\n
+    </url>\n
+    <url>\n
+        <loc>http://127.0.0.1:8018/produk/saphir-clutch</loc>\n
+        <lastmod>2026-10-14</lastmod>\n
+        <changefreq>weekly</changefreq>\n
+        <priority>0.8</priority>\n
+    </url>\n
+    <url>\n
+        <loc>http://127.0.0.1:8018/produk/firenze-coat</loc>\n
+        <lastmod>2026-10-14</lastmod>\n
+        <changefreq>weekly</changefreq>\n
+        <priority>0.8</priority>\n
+    </url>\n
+    <url>\n
+        <loc>http://127.0.0.1:8018/produk/lumiere-scarf</loc>\n
+        <lastmod>2026-10-14</lastmod>\n
+        <changefreq>weekly</changefreq>\n
+        <priority>0.8</priority>\n
+    </url>\n
+    <url>\n
+        <loc>http://127.0.0.1:8018/produk/nocturne-watch</loc>\n
+        <lastmod>2026-10-14</lastmod>\n
+        <changefreq>weekly</changefreq>\n
+        <priority>0.8</priority>\n
+    </url>\n
+    <url>\n
+        <loc>http://127.0.0.1:8018/produk/kebaya-lumiere</loc>\n
+        <lastmod>2026-10-14</lastmod>\n
+        <changefreq>weekly</changefreq>\n
+        <priority>0.8</priority>\n
+    </url>\n
+    <url>\n
+        <loc>http://127.0.0.1:8018/produk/chemise-riviere</loc>\n
+        <lastmod>2026-10-14</lastmod>\n
+        <changefreq>weekly</changefreq>\n
+        <priority>0.8</priority>\n
+    </url>\n
+    <url>\n
+        <loc>http://127.0.0.1:8018/produk/echarpe-eclat</loc>\n
+        <lastmod>2026-10-14</lastmod>\n
+        <changefreq>weekly</changefreq>\n
+        <priority>0.8</priority>\n
+    </url>\n
+    <url>\n
+        <loc>http://127.0.0.1:8018/produk/robe-aurore</loc>\n
+        <lastmod>2026-10-14</lastmod>\n
+        <changefreq>weekly</changefreq>\n
+        <priority>0.8</priority>\n
+    </url>\n
+</urlset>' [ASCII](length: 2607) contains "http://localhost" [ASCII](length: 16).
+
+/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-manual-closure-20261015/vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-manual-closure-20261015/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:710
+/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-manual-closure-20261015/tests/Feature/StorefrontTest.php:55
+
+FAILURES!
+Tests: 176, Assertions: 1361, Failures: 1, Skipped: 1.

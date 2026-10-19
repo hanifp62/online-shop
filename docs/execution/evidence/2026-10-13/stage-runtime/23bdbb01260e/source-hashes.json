@@ -1,0 +1,4 @@
+{
+  "scripts/amadis/docker_stage.py": "0c992b683167f996d6c45c70bfe7121e1b32fa9211602fb914d8155fd548257b",
+  "tests/python/test_amadis_docker_stage.py": "12a600bbea550c63a79aa4af9cde965bc12cf29955d1c5e3c83f944ccccc72e4"
+}

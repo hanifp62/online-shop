@@ -1,0 +1,6 @@
+Loading composer repositories with package information
+Updating dependencies
+Lock file operations: 0 installs, 1 update, 0 removals
+  - Upgrading league/commonmark (2.10.0 => 2.10.3)
+Writing lock file
+Class App\Support\ComposerHooks is not autoloadable, can not call post-update-cmd script

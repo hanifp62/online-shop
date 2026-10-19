@@ -1,0 +1,218 @@
+[
+    {
+        "assertion": "customer fixation",
+        "result": "PASS",
+        "details": {
+            "before_sha256": "e157705ff7e0326e10adefd2c46158dbaacef9719e43b729ce15b6f88a806b5b",
+            "after_sha256": "199f02334a6f9f9d240b0d73ea7bd44640bde2c623f4306c8d40c2eb51c3971f",
+            "post_code": 302
+        }
+    },
+    {
+        "assertion": "customer authenticated",
+        "result": "PASS",
+        "details": {
+            "code": 200
+        }
+    },
+    {
+        "assertion": "customer logout rotates ID",
+        "result": "PASS",
+        "details": {
+            "post_code": 302
+        }
+    },
+    {
+        "assertion": "customer logout rotates CSRF",
+        "result": "PASS",
+        "details": []
+    },
+    {
+        "assertion": "customer old cookie rejected",
+        "result": "PASS",
+        "details": {
+            "code": 302,
+            "location": "http://127.0.0.1:8017/login"
+        }
+    },
+    {
+        "assertion": "admin fixation",
+        "result": "PASS",
+        "details": {
+            "before_sha256": "8c6ec8798726ac85f89a5f2d7e190a18259592cf501479db1a4638420cda8fe4",
+            "after_sha256": "5fcb4c66a8af036a28e86e98fa4bf85c62cfafff2ba092c7ec0d6263af8c9e5f",
+            "post_code": 302
+        }
+    },
+    {
+        "assertion": "admin authenticated",
+        "result": "PASS",
+        "details": {
+            "code": 200
+        }
+    },
+    {
+        "assertion": "admin logout rotates ID",
+        "result": "PASS",
+        "details": {
+            "post_code": 302
+        }
+    },
+    {
+        "assertion": "admin logout rotates CSRF",
+        "result": "PASS",
+        "details": []
+    },
+    {
+        "assertion": "admin old cookie rejected",
+        "result": "PASS",
+        "details": {
+            "code": 302,
+            "location": "http://127.0.0.1:8017/admin/login"
+        }
+    },
+    {
+        "assertion": "customer fixation",
+        "result": "PASS",
+        "details": {
+            "before_sha256": "b636d56124c5c847db18628b68ba45a515240be7728668b864324f7bc8b69db1",
+            "after_sha256": "9011f5edfbe45bd681a4c20c26241679b1b20b9f5a79bdb72f8a3090198eac10",
+            "post_code": 302
+        }
+    },
+    {
+        "assertion": "customer authenticated",
+        "result": "PASS",
+        "details": {
+            "code": 200
+        }
+    },
+    {
+        "assertion": "admin fixation",
+        "result": "PASS",
+        "details": {
+            "before_sha256": "9011f5edfbe45bd681a4c20c26241679b1b20b9f5a79bdb72f8a3090198eac10",
+            "after_sha256": "ce99bd3ec91acf512d3dbedbab2a378f833d50702af411fa27eb154e61af4e9e",
+            "post_code": 302
+        }
+    },
+    {
+        "assertion": "admin authenticated",
+        "result": "PASS",
+        "details": {
+            "code": 200
+        }
+    },
+    {
+        "assertion": "dual logout customer rotates ID",
+        "result": "PASS",
+        "details": []
+    },
+    {
+        "assertion": "dual logout customer rotates CSRF",
+        "result": "PASS",
+        "details": []
+    },
+    {
+        "assertion": "dual logout customer preserves other guard",
+        "result": "PASS",
+        "details": {
+            "code": 200
+        }
+    },
+    {
+        "assertion": "dual logout customer removes own guard",
+        "result": "PASS",
+        "details": {
+            "code": 302
+        }
+    },
+    {
+        "assertion": "dual logout customer old cookie rejected /akun",
+        "result": "PASS",
+        "details": {
+            "code": 302,
+            "location": "http://127.0.0.1:8017/login"
+        }
+    },
+    {
+        "assertion": "dual logout customer old cookie rejected /admin",
+        "result": "PASS",
+        "details": {
+            "code": 302,
+            "location": "http://127.0.0.1:8017/admin/login"
+        }
+    },
+    {
+        "assertion": "customer fixation",
+        "result": "PASS",
+        "details": {
+            "before_sha256": "759e94b51c4d72b53d279c64a86989c3a05dd0445a43a47feee896495c6be761",
+            "after_sha256": "5529aa389d3f7f2c75b8b6b77639c603445bfaaa8a86d5a5fb7756647b240746",
+            "post_code": 302
+        }
+    },
+    {
+        "assertion": "customer authenticated",
+        "result": "PASS",
+        "details": {
+            "code": 200
+        }
+    },
+    {
+        "assertion": "admin fixation",
+        "result": "PASS",
+        "details": {
+            "before_sha256": "5529aa389d3f7f2c75b8b6b77639c603445bfaaa8a86d5a5fb7756647b240746",
+            "after_sha256": "5329b45c62dd0813340d3d73c2060b7b666b51f0ed5d5962a0589916f692eae3",
+            "post_code": 302
+        }
+    },
+    {
+        "assertion": "admin authenticated",
+        "result": "PASS",
+        "details": {
+            "code": 200
+        }
+    },
+    {
+        "assertion": "dual logout admin rotates ID",
+        "result": "PASS",
+        "details": []
+    },
+    {
+        "assertion": "dual logout admin rotates CSRF",
+        "result": "PASS",
+        "details": []
+    },
+    {
+        "assertion": "dual logout admin preserves other guard",
+        "result": "PASS",
+        "details": {
+            "code": 200
+        }
+    },
+    {
+        "assertion": "dual logout admin removes own guard",
+        "result": "PASS",
+        "details": {
+            "code": 302
+        }
+    },
+    {
+        "assertion": "dual logout admin old cookie rejected /akun",
+        "result": "PASS",
+        "details": {
+            "code": 302,
+            "location": "http://127.0.0.1:8017/login"
+        }
+    },
+    {
+        "assertion": "dual logout admin old cookie rejected /admin",
+        "result": "PASS",
+        "details": {
+            "code": 302,
+            "location": "http://127.0.0.1:8017/admin/login"
+        }
+    }
+]

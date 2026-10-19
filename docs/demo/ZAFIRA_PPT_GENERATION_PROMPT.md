@@ -1,0 +1,31 @@
+# Prompt pembuatan PPT ZAFIRA AMADIS
+
+Tanggal: 2026-10-12.
+
+Salin blok berikut ke generator presentasi. Isi `docs/demo/ZAFIRA_PRESENTATION_CONTENT.md` adalah sumber isi.
+
+```text
+Buat 10 slide PPT 16:9 dalam Bahasa Indonesia untuk demo ZAFIRA AMADIS.
+
+Sumber tunggal: docs/demo/ZAFIRA_PRESENTATION_CONTENT.md. Gunakan docs/demo/ZAFIRA_ACCEPTANCE_MATRIX.csv untuk status. Jangan menambah fakta, angka, hasil tes, screenshot, tanggal, atau klaim.
+
+Aturan kebenaran:
+- Pertahankan status PASS/FAIL/BLOCKED/NOT RUN/TBD persis seperti sumber.
+- Status AM mengikuti `docs/demo/ZAFIRA_ACCEPTANCE_MATRIX.csv`: AM-01/02/06/10 PASS terisolasi (AM-10 SQLite saja); lainnya PASS feature test saja per 13 Oktober. Jangan menyebut acceptance rubrik resmi lulus.
+- NFR-003 harus menampilkan riwayat: 2026-10-11 FAIL, 2026-10-12 scope update, isolated enforcement NOT RUN, operational DB BLOCKED.
+- Jelaskan bahwa pemetaan AM adalah usulan jika rubrik resmi belum ada.
+- Jangan menyebut siap produksi.
+- Jangan menampilkan secret, path DB operasional, token, atau data pribadi.
+
+Desain:
+- Identitas luxury ZAFIRA: Sapphire, Linen, Gold, Ivory; Bodoni Moda untuk judul, Manrope untuk isi.
+- Satu pesan utama per slide, maksimal 5 bullet pendek, ruang kosong generous.
+- Kontras tinggi, teks minimal 24 pt, alt text untuk setiap visual, urutan baca jelas.
+- Tabel hanya untuk status; pakai label teks, bukan warna saja.
+- Jangan membuat produk, screenshot, grafik, atau testimoni palsu. Placeholder diberi label "Bukti TBD".
+- Speaker notes memuat batas bukti dan pertanyaan keputusan.
+
+Struktur: 1 Judul, 2 Masalah, 3 Fixture, 4 Pengaman data, 5 AM-01–AM-17, 6 AM-10, 7 NFR-003, 8 Audit pengalaman, 9 Bukti, 10 Keputusan.
+
+Keluaran: PPTX atau outline slide-by-slide jika generator tidak dapat membuat PPTX. Akhiri dengan daftar asumsi yang tidak diisi.
+```

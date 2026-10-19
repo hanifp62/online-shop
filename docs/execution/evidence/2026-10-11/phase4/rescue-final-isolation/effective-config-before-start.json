@@ -1,0 +1,11 @@
+{
+    "database.default": "sqlite",
+    "database.sqlite.database": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-qa/db.sqlite",
+    "database.sqlite.url": null,
+    "session.driver": "file",
+    "session.files": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-qa/storage/framework/sessions",
+    "cache.default": "array",
+    "storage": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-qa/storage",
+    "view.compiled": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-qa/storage/framework/views",
+    "logging.single.path": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-qa/storage/logs/laravel.log"
+}

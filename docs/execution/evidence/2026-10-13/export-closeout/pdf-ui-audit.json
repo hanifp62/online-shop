@@ -1,0 +1,406 @@
+{
+  "bundle": "docs/execution/evidence/2026-10-13/pdf-ui",
+  "files": {
+    "README.md": {
+      "class": "narrative",
+      "bytes": 2127,
+      "sha256": "cd8222f4cecf9a2019e2793f9bda0a1154866733b8e6371e86d662fa8fc79110",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o644",
+      "secret_hits": {}
+    },
+    "commands.json": {
+      "class": "run-metadata",
+      "bytes": 187,
+      "sha256": "fbfcdb472d778d4d496e6a30c423f672c4a1fad1883e53301405b834aeaae6e8",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o600",
+      "secret_hits": {},
+      "json_keys": [
+        "command",
+        "pid"
+      ]
+    },
+    "download.json": {
+      "class": "run-metadata",
+      "bytes": 288,
+      "sha256": "79bc05df7bfcee90f3749adab1d61b54ad8ca0a43cb014dcaa3e9f1a70073d46",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o600",
+      "secret_hits": {},
+      "json_keys": [
+        "downloaded_at_utc",
+        "file_size",
+        "from",
+        "period",
+        "sha256",
+        "suggested_filename",
+        "to"
+      ]
+    },
+    "extracted-text.txt": {
+      "class": "pdf-derivative",
+      "bytes": 4730,
+      "sha256": "15216925bd3637913a1f6b88f5a7f52a0aa93cace37b99710bdc417fca4b2c7f",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o644",
+      "secret_hits": {}
+    },
+    "history/pdf-download-20261012T201907688Z/commands.json": {
+      "class": "history-failed-run",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o600",
+      "secret_hits": {},
+      "json_keys": []
+    },
+    "history/pdf-download-20261012T201907688Z/result.json": {
+      "class": "history-failed-run",
+      "bytes": 94,
+      "sha256": "afda989e54307792cd7f63c38a09db51bf7600a346707795baa76774bb53cc9d",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o600",
+      "secret_hits": {},
+      "json_keys": [
+        "error_type",
+        "path",
+        "phase",
+        "status"
+      ]
+    },
+    "history/pdf-download-20261012T201907688Z/sha256.json": {
+      "class": "history-failed-run",
+      "bytes": 175,
+      "sha256": "f0588fb608492377c70ebd8a2c516932784c8f9c5f201ac1c547a510a8cff030",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o600",
+      "secret_hits": {},
+      "json_keys": [
+        "commands.json",
+        "result.json"
+      ]
+    },
+    "history/pdf-download-20261012T201942273Z/failure.png": {
+      "class": "history-failed-run",
+      "bytes": 87033,
+      "sha256": "f6432eb061b6970d29c7fd1fb643f4b649be73250846b35cc58cebdc9bf4d2ec",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o644",
+      "secret_hits": {},
+      "png": {
+        "ihdr": {
+          "width": 1365,
+          "height": 1000,
+          "bit_depth": 8,
+          "color_type": 2
+        },
+        "chunk_types": [
+          "IDAT",
+          "IEND",
+          "IHDR"
+        ],
+        "metadata_chunks": []
+      }
+    },
+    "history/pdf-download-20261012T202006740Z/commands.json": {
+      "class": "history-failed-run",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o600",
+      "secret_hits": {},
+      "json_keys": []
+    },
+    "history/pdf-download-20261012T202006740Z/result.json": {
+      "class": "history-failed-run",
+      "bytes": 90,
+      "sha256": "d01e74d81b45dc879b40619a8a36a282344fe778ac41808ccfec788a0863e892",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o600",
+      "secret_hits": {},
+      "json_keys": [
+        "error_type",
+        "path",
+        "phase",
+        "status"
+      ]
+    },
+    "history/pdf-download-20261012T202006740Z/sha256.json": {
+      "class": "history-failed-run",
+      "bytes": 175,
+      "sha256": "63de6fe79e6148b8ced65931717dba9da98a76febd2809d56d0fd0ebb5ef78a7",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o600",
+      "secret_hits": {},
+      "json_keys": [
+        "commands.json",
+        "result.json"
+      ]
+    },
+    "history/pdf-download-20261012T202348360Z/commands.json": {
+      "class": "history-failed-run",
+      "bytes": 187,
+      "sha256": "bf009716cac4e3bad00f371549ed843f0e629e9cd43c0a3e073a2e6cb3415ac8",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o600",
+      "secret_hits": {},
+      "json_keys": [
+        "command",
+        "pid"
+      ]
+    },
+    "history/pdf-download-20261012T202348360Z/failure.png": {
+      "class": "history-failed-run",
+      "bytes": 87040,
+      "sha256": "5276e028f5e116b44081c264fecc8f50f1710e5ec94c7760092999baf2021804",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o644",
+      "secret_hits": {},
+      "png": {
+        "ihdr": {
+          "width": 1365,
+          "height": 1000,
+          "bit_depth": 8,
+          "color_type": 2
+        },
+        "chunk_types": [
+          "IDAT",
+          "IEND",
+          "IHDR"
+        ],
+        "metadata_chunks": []
+      }
+    },
+    "history/pdf-download-20261012T202348360Z/result.json": {
+      "class": "history-failed-run",
+      "bytes": 626,
+      "sha256": "76be871e3abb76df7a28080d93fee20a560ce558a94938e0a2a8c86ae2f44d6d",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o600",
+      "secret_hits": {},
+      "json_keys": [
+        "error_type",
+        "message",
+        "path",
+        "phase",
+        "status"
+      ]
+    },
+    "history/pdf-download-20261012T202348360Z/sha256.json": {
+      "class": "history-failed-run",
+      "bytes": 260,
+      "sha256": "eb5aa41aeae14ea44618f2e417e07e9265f47e27df95f0e24928210f1186de6e",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o600",
+      "secret_hits": {},
+      "json_keys": [
+        "commands.json",
+        "failure.png",
+        "result.json"
+      ]
+    },
+    "orders-20261013.pdf": {
+      "class": "primary-artifact",
+      "bytes": 10199,
+      "sha256": "ad3b849ce4add80d44096ace6d40a22fd3adba0b353636dea205268dd18925bc",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o600",
+      "secret_hits": {},
+      "pdf": {
+        "header": "%PDF-1.7",
+        "eof_marker": true,
+        "incremental_updates": 1,
+        "objects": 17,
+        "streams": [
+          {
+            "bytes": 1015,
+            "inflated": 7187
+          },
+          {
+            "bytes": 345,
+            "inflated": null
+          },
+          {
+            "bytes": 239,
+            "inflated": 59160
+          },
+          {
+            "bytes": 712,
+            "inflated": 5382
+          },
+          {
+            "bytes": 5003,
+            "inflated": 7268
+          }
+        ],
+        "active_or_hidden_keys_present": [],
+        "fonts": [
+          "SUBAAB+NotoSansSC-Regular"
+        ],
+        "font_keys": [
+          "Type0",
+          "CIDFontType2",
+          "FontFile2",
+          "ToUnicode"
+        ],
+        "images": 0,
+        "producer": "þÿ\u0000d\u0000o\u0000m\u0000p\u0000d\u0000f\u0000 \u00003\u0000.\u00001\u0000.\u00006\u0000 \u0000+\u0000 \u0000C\u0000P\u0000D\u0000F",
+        "secret_hits_raw_and_inflated": {}
+      },
+      "sha256_matches_expected": true
+    },
+    "render/page-1.png": {
+      "class": "pdf-derivative",
+      "bytes": 285456,
+      "sha256": "28f462badce8b37d50cfcf11058a53a3011ae0e9b08c2d803ab1b8eae2dc8dbf",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o644",
+      "secret_hits": {},
+      "png": {
+        "ihdr": {
+          "width": 952,
+          "height": 1347,
+          "bit_depth": 8,
+          "color_type": 6
+        },
+        "chunk_types": [
+          "IDAT",
+          "IEND",
+          "IHDR",
+          "cICP",
+          "eXIf",
+          "iCCP"
+        ],
+        "metadata_chunks": [
+          {
+            "chunk": "iCCP",
+            "key": "ICC Profile",
+            "bytes": 3156
+          },
+          {
+            "chunk": "eXIf",
+            "key": "MM",
+            "bytes": 56
+          }
+        ]
+      }
+    },
+    "render/page-2.png": {
+      "class": "pdf-derivative",
+      "bytes": 223237,
+      "sha256": "c77bc3516fdb058f4e727ce0d9ff677f33d2f823eb85be385b9fdafa66bb69bf",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o644",
+      "secret_hits": {},
+      "png": {
+        "ihdr": {
+          "width": 952,
+          "height": 1347,
+          "bit_depth": 8,
+          "color_type": 6
+        },
+        "chunk_types": [
+          "IDAT",
+          "IEND",
+          "IHDR",
+          "cICP",
+          "eXIf",
+          "iCCP"
+        ],
+        "metadata_chunks": [
+          {
+            "chunk": "iCCP",
+            "key": "ICC Profile",
+            "bytes": 3156
+          },
+          {
+            "chunk": "eXIf",
+            "key": "MM",
+            "bytes": 56
+          }
+        ]
+      }
+    },
+    "result.json": {
+      "class": "run-metadata",
+      "bytes": 331,
+      "sha256": "8940e01578cdcbe6ed0281683141fe16c194962f583ff16a233262851fd2072e",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o600",
+      "secret_hits": {},
+      "json_keys": [
+        "downloaded_at_utc",
+        "file_size",
+        "from",
+        "period",
+        "phase",
+        "sha256",
+        "status",
+        "suggested_filename",
+        "to"
+      ]
+    },
+    "sha256.json": {
+      "class": "run-metadata",
+      "bytes": 355,
+      "sha256": "68f1a0a4cc45432bfac17fc8c59fff17d4f2bdfa8f6c81854329ae22877e12fc",
+      "symlink": false,
+      "nlink": 1,
+      "mode": "0o600",
+      "secret_hits": {},
+      "json_keys": [
+        "commands.json",
+        "download.json",
+        "orders-20261013.pdf",
+        "result.json"
+      ]
+    }
+  },
+  "unexpected": [],
+  "missing": [],
+  "recorded_hash_checks": {
+    "history/pdf-download-20261012T201907688Z/sha256.json:commands.json": "match",
+    "history/pdf-download-20261012T201907688Z/sha256.json:result.json": "match",
+    "history/pdf-download-20261012T202006740Z/sha256.json:commands.json": "match",
+    "history/pdf-download-20261012T202006740Z/sha256.json:result.json": "match",
+    "history/pdf-download-20261012T202348360Z/sha256.json:commands.json": "match",
+    "history/pdf-download-20261012T202348360Z/sha256.json:failure.png": "match",
+    "history/pdf-download-20261012T202348360Z/sha256.json:result.json": "match",
+    "sha256.json:commands.json": "match",
+    "sha256.json:download.json": "match",
+    "sha256.json:orders-20261013.pdf": "match",
+    "sha256.json:result.json": "match"
+  },
+  "extracted_text_checks": {
+    "rows": 48,
+    "row_ids_1_to_48": true,
+    "cancelled": 8,
+    "cjk_name_count": 12,
+    "blank_fallback_rows": 12,
+    "summary_total_line": true,
+    "pages_footer": [
+      "Halaman 1 dari 2",
+      "Halaman 2 dari 2"
+    ]
+  }
+}

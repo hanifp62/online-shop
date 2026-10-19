@@ -1,0 +1,289 @@
+{
+  "cases": [
+    {
+      "path": "/",
+      "width": 390,
+      "initial": [
+        {
+          "s": ".overlay",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": ".drawer",
+          "visible": false,
+          "ariaHidden": "true",
+          "inert": true
+        },
+        {
+          "s": ".search-panel",
+          "visible": false,
+          "ariaHidden": "true",
+          "inert": true
+        },
+        {
+          "s": ".modal",
+          "visible": false,
+          "ariaHidden": "true",
+          "inert": true
+        },
+        {
+          "s": ".toast-container",
+          "absent": true
+        }
+      ],
+      "opened": true,
+      "trap": false,
+      "escaped": true,
+      "errors": []
+    },
+    {
+      "path": "/",
+      "width": 1366,
+      "initial": [
+        {
+          "s": ".overlay",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": ".drawer",
+          "visible": false,
+          "ariaHidden": "true",
+          "inert": true
+        },
+        {
+          "s": ".search-panel",
+          "visible": false,
+          "ariaHidden": "true",
+          "inert": true
+        },
+        {
+          "s": ".modal",
+          "visible": false,
+          "ariaHidden": "true",
+          "inert": true
+        },
+        {
+          "s": ".toast-container",
+          "absent": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "path": "/prototype/",
+      "width": 390,
+      "initial": [
+        {
+          "s": "#drawer-backdrop",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": "#mobile-nav-drawer",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": "#cart-drawer",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": "#profile-drawer",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": ".modal-overlay",
+          "absent": true
+        },
+        {
+          "s": ".toast-container",
+          "visible": true,
+          "ariaHidden": null,
+          "inert": false
+        }
+      ],
+      "opened": false,
+      "trap": true,
+      "escaped": true,
+      "restored": true,
+      "errors": []
+    },
+    {
+      "path": "/prototype/",
+      "width": 1366,
+      "initial": [
+        {
+          "s": "#drawer-backdrop",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": "#mobile-nav-drawer",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": "#cart-drawer",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": "#profile-drawer",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": ".modal-overlay",
+          "absent": true
+        },
+        {
+          "s": ".toast-container",
+          "visible": true,
+          "ariaHidden": null,
+          "inert": false
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "failures": [
+    {
+      "path": "/",
+      "width": 390,
+      "initial": [
+        {
+          "s": ".overlay",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": ".drawer",
+          "visible": false,
+          "ariaHidden": "true",
+          "inert": true
+        },
+        {
+          "s": ".search-panel",
+          "visible": false,
+          "ariaHidden": "true",
+          "inert": true
+        },
+        {
+          "s": ".modal",
+          "visible": false,
+          "ariaHidden": "true",
+          "inert": true
+        },
+        {
+          "s": ".toast-container",
+          "absent": true
+        }
+      ],
+      "opened": true,
+      "trap": false,
+      "escaped": true,
+      "errors": []
+    },
+    {
+      "path": "/prototype/",
+      "width": 390,
+      "initial": [
+        {
+          "s": "#drawer-backdrop",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": "#mobile-nav-drawer",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": "#cart-drawer",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": "#profile-drawer",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": ".modal-overlay",
+          "absent": true
+        },
+        {
+          "s": ".toast-container",
+          "visible": true,
+          "ariaHidden": null,
+          "inert": false
+        }
+      ],
+      "opened": false,
+      "trap": true,
+      "escaped": true,
+      "restored": true,
+      "errors": []
+    },
+    {
+      "path": "/prototype/",
+      "width": 1366,
+      "initial": [
+        {
+          "s": "#drawer-backdrop",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": "#mobile-nav-drawer",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": "#cart-drawer",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": "#profile-drawer",
+          "visible": false,
+          "ariaHidden": null,
+          "inert": false
+        },
+        {
+          "s": ".modal-overlay",
+          "absent": true
+        },
+        {
+          "s": ".toast-container",
+          "visible": true,
+          "ariaHidden": null,
+          "inert": false
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

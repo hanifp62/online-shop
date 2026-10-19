@@ -1,0 +1,15 @@
+{
+  "label": "python-tests",
+  "command": [
+    "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/ft-venv/bin/python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests/python"
+  ],
+  "start": "2026-10-13T05:24:38.087437+00:00",
+  "finish": "2026-10-13T05:24:49.773165+00:00",
+  "seconds": 11.68575737500214,
+  "returncode": 0
+}

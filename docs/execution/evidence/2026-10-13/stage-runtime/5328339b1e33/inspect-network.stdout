@@ -1,0 +1,116 @@
+[
+    {
+        "Name": "amadis-stage-composer-5328339b1e33",
+        "Id": "62cb25d6322c429b49000202eaebacb277727ea47d9fcc40123c5b57c3aa175e",
+        "Created": "2026-10-13T03:43:22.916133501Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+            ]
+        },
+        "Internal": true,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {
+            "com.docker.network.enable_ipv4": "true",
+            "com.docker.network.enable_ipv6": "false"
+        },
+        "Labels": {},
+        "Containers": {
+            "1aaebe65128e46787f0fd4e8b54477027df60ead013a84815755c8b0c72655b3": {
+                "Name": "amadis-stage-proxy-5328339b1e33",
+                "EndpointID": "fff2fb7543cf15fc1f6d3d7dea4c732dbdea5a9abfe39a37d8debb13ef4125b1",
+                "MacAddress": "5a:20:5c:18:84:18",
+                "IPv4Address": "172.18.0.2/16",
+                "IPv6Address": ""
+            },
+            "6b9f2123bf3afc6f29176bf4a93cdddde4d4d01deee711d345ce09accc89a664": {
+                "Name": "amadis-stage-composer-5328339b1e33",
+                "EndpointID": "4e8fec9f9a636edf2371639128087b74f998a4f711019fa0fa2c125913f064a6",
+                "MacAddress": "ce:17:9a:bb:04:f8",
+                "IPv4Address": "172.18.0.3/16",
+                "IPv6Address": ""
+            }
+        },
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "172.18.0.0/16": {
+                        "IPsInUse": 5,
+                        "DynamicIPsAvailable": 65531
+                    }
+                }
+            }
+        }
+    },
+    {
+        "Name": "amadis-stage-sentinel-5328339b1e33",
+        "Id": "6f11cec35c637ccfd523d9e2183e4dfee14807a2366e2b379de507ea9ce55119",
+        "Created": "2026-10-13T03:43:22.962808751Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.19.0.0/16",
+                    "Gateway": "172.19.0.1"
+                }
+            ]
+        },
+        "Internal": true,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {
+            "com.docker.network.enable_ipv4": "true",
+            "com.docker.network.enable_ipv6": "false"
+        },
+        "Labels": {},
+        "Containers": {
+            "1aaebe65128e46787f0fd4e8b54477027df60ead013a84815755c8b0c72655b3": {
+                "Name": "amadis-stage-proxy-5328339b1e33",
+                "EndpointID": "e1c6ebf5aadf9aa74cc8509d6134e4bb279cde23f86c258994eb9d2ea424661e",
+                "MacAddress": "7e:81:64:8b:69:54",
+                "IPv4Address": "172.19.0.2/16",
+                "IPv6Address": ""
+            },
+            "48fe73fbc7574b72cb8dacd581d816859dc8fafa8899906b161a5d99a0e4c866": {
+                "Name": "amadis-stage-sentinel-5328339b1e33",
+                "EndpointID": "f063c94b10542804a6c0bd0cc6b1cf0004075ddcacbfaf8a5d53268990ad0b75",
+                "MacAddress": "6e:4d:a5:45:5a:88",
+                "IPv4Address": "172.19.0.3/16",
+                "IPv6Address": ""
+            }
+        },
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "172.19.0.0/16": {
+                        "IPsInUse": 5,
+                        "DynamicIPsAvailable": 65531
+                    }
+                }
+            }
+        }
+    }
+]

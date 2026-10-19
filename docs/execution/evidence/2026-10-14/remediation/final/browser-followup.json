@@ -1,0 +1,28 @@
+[
+  {
+    "name": "home-add-toast-count",
+    "status": "FAIL",
+    "utc": "2026-10-14T13:26:06.996Z",
+    "error": "Expected values to be strictly equal:\n\n'' !== '1'\n"
+  },
+  {
+    "name": "catalog-toast-count-dom",
+    "status": "PASS",
+    "utc": "2026-10-14T13:26:06.996Z",
+    "evidence": {
+      "toastCount": 0,
+      "badgeCount": 0,
+      "feedbackCount": 1
+    }
+  },
+  {
+    "name": "admin-login-pdf-download",
+    "status": "PASS",
+    "utc": "2026-10-14T13:26:07.046Z",
+    "evidence": {
+      "contentType": "application/pdf",
+      "status": 200,
+      "bytes": 7822
+    }
+  }
+]

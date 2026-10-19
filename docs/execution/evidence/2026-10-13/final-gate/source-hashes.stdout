@@ -1,0 +1,6 @@
+{
+  "scripts/amadis/launch.py": "0d640be8294c7e65f0d41e56d17c5032b4083d3909251b5b494381f57f7338f2",
+  "scripts/amadis/browser-lifecycle.cjs": "41cd0690a8ce6a1c26d4f36ee9760a263e8923f748be5b3f669ec6ac4212e9e4",
+  "scripts/amadis/guard.php": "d1d517e00c1b87e45f335b6749e71e10abae30234c14b10f3e092e7685f4af11",
+  "scripts/amadis/server.php": "1254553c95596c675748ea3dc035bd6bf54a23db2d454d2cbfee744038594467"
+}

@@ -1,0 +1,5 @@
+{
+  "command": "docker inspect amadis-stage-proxy-55b70eebaa84 amadis-stage-sentinel-55b70eebaa84 amadis-stage-composer-55b70eebaa84",
+  "returncode": 0,
+  "platform": "Linux container"
+}

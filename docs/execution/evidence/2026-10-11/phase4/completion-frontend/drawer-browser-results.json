@@ -1,0 +1,38 @@
+{
+  "open": true,
+  "backwardTrap": true,
+  "forwardTrap": true,
+  "escapeReturn": true,
+  "backdropReturn": true,
+  "geometry": {
+    "dock": {
+      "x": 69,
+      "y": 778,
+      "width": 252,
+      "height": 54,
+      "bottom": 832
+    },
+    "hero": {
+      "x": 0,
+      "y": 620.203125,
+      "width": 390,
+      "height": 420.578125,
+      "bottom": 1040.78125
+    },
+    "paragraph": {
+      "x": 25,
+      "y": 828.59375,
+      "width": 341,
+      "height": 52.1875,
+      "bottom": 880.78125
+    }
+  },
+  "contrast": {
+    "selector": ".cat-pill",
+    "foreground": "rgb(255, 255, 255)",
+    "background": "rgb(8, 16, 29)",
+    "fontSize": "11px",
+    "fontWeight": "600",
+    "backgroundImage": "none"
+  }
+}

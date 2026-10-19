@@ -1,0 +1,14 @@
+test_raw_audit_returncode_is_propagated (test_amadis_composer_audit.ComposerAuditTests.test_raw_audit_returncode_is_propagated) ... ok
+test_raw_run_still_blocks_composer (test_amadis_composer_audit.ComposerAuditTests.test_raw_run_still_blocks_composer) ... ok
+test_refuses_any_other_arguments_before_bootstrap (test_amadis_composer_audit.ComposerAuditTests.test_refuses_any_other_arguments_before_bootstrap) ... ok
+test_refuses_identity_mismatch (test_amadis_composer_audit.ComposerAuditTests.test_refuses_identity_mismatch) ... ok
+test_refuses_repo_identity_mismatch (test_amadis_composer_audit.ComposerAuditTests.test_refuses_repo_identity_mismatch) ... ok
+test_refuses_root_outside_approved_base (test_amadis_composer_audit.ComposerAuditTests.test_refuses_root_outside_approved_base) ... ok
+test_refuses_when_manifests_change (test_amadis_composer_audit.ComposerAuditTests.test_refuses_when_manifests_change) ... ok
+test_refuses_wrong_cwd (test_amadis_composer_audit.ComposerAuditTests.test_refuses_wrong_cwd) ... ok
+test_runs_only_fixed_argv_in_isolated_env (test_amadis_composer_audit.ComposerAuditTests.test_runs_only_fixed_argv_in_isolated_env) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.089s
+
+OK

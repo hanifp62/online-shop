@@ -1,0 +1,35 @@
+{
+  "result": "PASS",
+  "checks": {
+    "/": {
+      "status": 200,
+      "bytes": 77568
+    },
+    "/koleksi": {
+      "status": 200,
+      "bytes": 31451
+    },
+    "/produk/manual-synthetic-sapphire": {
+      "status": 200,
+      "bytes": 26766
+    },
+    "soldout-jsonld": "OutOfStock",
+    "inactive-pdp": 404,
+    "customer-login": 200,
+    "cart": 200,
+    "checkout": {
+      "status": 201,
+      "order_id": 1
+    },
+    "http_idempotent_replay": 200,
+    "http_idempotent_conflict_409": 409,
+    "persisted_prior_orders_visible": 0,
+    "double_cancel_idempotent": 200,
+    "admin-pdf": {
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 7801
+    }
+  },
+  "provenance": "Synthetic isolated data only"
+}

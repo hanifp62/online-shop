@@ -1,0 +1,1 @@
+vendor/bin/pint --test app/Support/ComposerHooks.php app/Http/Controllers/AdminOrderController.php tests/Unit/ComposerHooksTest.php tests/Feature/AdminOrderReportTest.php scripts/amadis/server.php scripts/amadis/connect_proxy.php scripts/amadis/artisan.php scripts/amadis/pdf-ui-fixture.php

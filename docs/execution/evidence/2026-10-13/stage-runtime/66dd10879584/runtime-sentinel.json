@@ -1,0 +1,7 @@
+{
+  "command": "docker exec amadis-stage-composer-66dd10879584 python3 /private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-66dd10879584/runtime.py /private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-66dd10879584 /private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-66dd10879584 /Users/hanifpriyambodo/Documents/online-shop 501 20",
+  "returncode": 0,
+  "platform": "Linux container",
+  "start": "2026-10-13T05:15:49Z",
+  "finish": "2026-10-13T05:15:49Z"
+}

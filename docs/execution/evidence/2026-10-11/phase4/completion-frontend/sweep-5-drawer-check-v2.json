@@ -1,0 +1,312 @@
+{
+  "results": [
+    {
+      "lang": "id",
+      "drawerOpen": true,
+      "htmlLang": "id",
+      "pressed": [
+        "id"
+      ],
+      "rawKeys": [],
+      "drawerAria": "Navigasi Kriya Mobile",
+      "closeAria": "Tutup Navigasi",
+      "toggleAria": "Buka Menu Navigasi",
+      "heading": "Navigasi Kriya",
+      "collection": "Koleksi",
+      "langLabel": "Bahasa",
+      "frHeading": "Navigation des créations",
+      "frDrawerAria": "Navigation mobile des créations",
+      "afterReload": {
+        "lang": "fr",
+        "stored": "fr",
+        "heading": "Navigation des créations"
+      },
+      "errors": [],
+      "pass": true,
+      "texts": [
+        {
+          "key": "mobile_nav_heading",
+          "text": "Navigasi Kriya"
+        },
+        {
+          "key": "nav_collection",
+          "text": "Koleksi"
+        },
+        {
+          "key": "nav_heritage",
+          "text": "Warisan"
+        },
+        {
+          "key": "nav_arrivals",
+          "text": "Terbaru"
+        },
+        {
+          "key": "nav_packaging",
+          "text": "L'Art d'Offrir"
+        },
+        {
+          "key": "nav_services",
+          "text": "Layanan"
+        },
+        {
+          "key": "dock_studio",
+          "text": "Studio PDP"
+        },
+        {
+          "key": "dock_account",
+          "text": "Akun VIP"
+        },
+        {
+          "key": "lang_selector",
+          "text": "Bahasa"
+        },
+        {
+          "key": "mobile_currency_heading",
+          "text": "Mata Uang"
+        },
+        {
+          "key": "mobile_currency_description",
+          "text": "Seluruh harga ditampilkan dalam IDR (Rp)."
+        },
+        {
+          "key": "rendezvous_btn",
+          "text": "Rendez-vous privat"
+        }
+      ]
+    },
+    {
+      "lang": "en",
+      "drawerOpen": true,
+      "htmlLang": "en",
+      "pressed": [
+        "en"
+      ],
+      "rawKeys": [],
+      "drawerAria": "Mobile Craft Navigation",
+      "closeAria": "Close Navigation",
+      "toggleAria": "Buka Menu Navigasi",
+      "heading": "Craft Navigation",
+      "collection": "Collections",
+      "langLabel": "Language",
+      "frHeading": "Navigation des créations",
+      "frDrawerAria": "Navigation mobile des créations",
+      "afterReload": {
+        "lang": "fr",
+        "stored": "fr",
+        "heading": "Navigation des créations"
+      },
+      "errors": [],
+      "pass": true,
+      "texts": [
+        {
+          "key": "mobile_nav_heading",
+          "text": "Craft Navigation"
+        },
+        {
+          "key": "nav_collection",
+          "text": "Collections"
+        },
+        {
+          "key": "nav_heritage",
+          "text": "Heritage"
+        },
+        {
+          "key": "nav_arrivals",
+          "text": "New Arrivals"
+        },
+        {
+          "key": "nav_packaging",
+          "text": "L'Art d'Offrir"
+        },
+        {
+          "key": "nav_services",
+          "text": "Services"
+        },
+        {
+          "key": "dock_studio",
+          "text": "Studio PDP"
+        },
+        {
+          "key": "dock_account",
+          "text": "VIP Account"
+        },
+        {
+          "key": "lang_selector",
+          "text": "Language"
+        },
+        {
+          "key": "mobile_currency_heading",
+          "text": "Currency"
+        },
+        {
+          "key": "mobile_currency_description",
+          "text": "All prices are displayed in IDR (Rp)."
+        },
+        {
+          "key": "rendezvous_btn",
+          "text": "Private Rendez-vous"
+        }
+      ]
+    },
+    {
+      "lang": "fr",
+      "drawerOpen": true,
+      "htmlLang": "fr",
+      "pressed": [
+        "fr"
+      ],
+      "rawKeys": [],
+      "drawerAria": "Navigation mobile des créations",
+      "closeAria": "Fermer la navigation",
+      "toggleAria": "Buka Menu Navigasi",
+      "heading": "Navigation des créations",
+      "collection": "Collections",
+      "langLabel": "Langue",
+      "frHeading": "Navigation des créations",
+      "frDrawerAria": "Navigation mobile des créations",
+      "afterReload": {
+        "lang": "fr",
+        "stored": "fr",
+        "heading": "Navigation des créations"
+      },
+      "errors": [],
+      "pass": true,
+      "texts": [
+        {
+          "key": "mobile_nav_heading",
+          "text": "Navigation des créations"
+        },
+        {
+          "key": "nav_collection",
+          "text": "Collections"
+        },
+        {
+          "key": "nav_heritage",
+          "text": "Héritage"
+        },
+        {
+          "key": "nav_arrivals",
+          "text": "Nouveautés"
+        },
+        {
+          "key": "nav_packaging",
+          "text": "L'Art d'Offrir"
+        },
+        {
+          "key": "nav_services",
+          "text": "Services"
+        },
+        {
+          "key": "dock_studio",
+          "text": "Studio PDP"
+        },
+        {
+          "key": "dock_account",
+          "text": "Espace Client"
+        },
+        {
+          "key": "lang_selector",
+          "text": "Langue"
+        },
+        {
+          "key": "mobile_currency_heading",
+          "text": "Devise"
+        },
+        {
+          "key": "mobile_currency_description",
+          "text": "Tous les prix sont affichés en IDR (Rp)."
+        },
+        {
+          "key": "rendezvous_btn",
+          "text": "Rendez-vous Privé"
+        }
+      ]
+    },
+    {
+      "lang": "it",
+      "drawerOpen": true,
+      "htmlLang": "it",
+      "pressed": [
+        "it"
+      ],
+      "rawKeys": [],
+      "drawerAria": "Navigazione mobile dell'artigianato",
+      "closeAria": "Chiudi la navigazione",
+      "toggleAria": "Buka Menu Navigasi",
+      "heading": "Navigazione dell'artigianato",
+      "collection": "Collezioni",
+      "langLabel": "Lingua",
+      "frHeading": "Navigation des créations",
+      "frDrawerAria": "Navigation mobile des créations",
+      "afterReload": {
+        "lang": "fr",
+        "stored": "fr",
+        "heading": "Navigation des créations"
+      },
+      "errors": [],
+      "pass": true,
+      "texts": [
+        {
+          "key": "mobile_nav_heading",
+          "text": "Navigazione dell'artigianato"
+        },
+        {
+          "key": "nav_collection",
+          "text": "Collezioni"
+        },
+        {
+          "key": "nav_heritage",
+          "text": "Eredità"
+        },
+        {
+          "key": "nav_arrivals",
+          "text": "Novità"
+        },
+        {
+          "key": "nav_packaging",
+          "text": "L'Art d'Offrir"
+        },
+        {
+          "key": "nav_services",
+          "text": "Servizi"
+        },
+        {
+          "key": "dock_studio",
+          "text": "Studio PDP"
+        },
+        {
+          "key": "dock_account",
+          "text": "Spazio Clienti"
+        },
+        {
+          "key": "lang_selector",
+          "text": "Lingua"
+        },
+        {
+          "key": "mobile_currency_heading",
+          "text": "Valuta"
+        },
+        {
+          "key": "mobile_currency_description",
+          "text": "Tutti i prezzi sono indicati in IDR (Rp)."
+        },
+        {
+          "key": "rendezvous_btn",
+          "text": "Appuntamento Privato"
+        }
+      ]
+    }
+  ],
+  "distinctHeadings": [
+    "Navigasi Kriya",
+    "Craft Navigation",
+    "Navigation des créations",
+    "Navigazione dell'artigianato"
+  ],
+  "distinctDrawerAria": [
+    "Navigasi Kriya Mobile",
+    "Mobile Craft Navigation",
+    "Navigation mobile des créations",
+    "Navigazione mobile dell'artigianato"
+  ]
+}

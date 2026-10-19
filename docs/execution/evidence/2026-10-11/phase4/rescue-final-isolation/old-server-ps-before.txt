@@ -1,0 +1,1 @@
+  685 /opt/homebrew/Cellar/php/8.5.11/bin/php -S 127.0.0.1:8015 /Users/hanifpriyambodo/Documents/online-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/../resources/server.php

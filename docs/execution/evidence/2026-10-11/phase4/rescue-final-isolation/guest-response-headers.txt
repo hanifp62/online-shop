@@ -1,0 +1,14 @@
+HTTP/1.1 200 OK
+Host: 127.0.0.1:8015
+Connection: close
+X-Powered-By: PHP/8.5.11
+Content-Type: text/html; charset=utf-8
+Cache-Control: no-cache, private
+Date: Sun, 11 Oct 2026 13:07:13 GMT
+Link: <http://127.0.0.1:8015/build/assets/app-WhYmZ0bD.css>; rel="preload"; as="style", <http://127.0.0.1:8015/build/assets/app-BFM_3I-g.js>; rel="modulepreload"; as="script"
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: camera=(), microphone=(), geolocation=()
+X-XSS-Protection: 0
+

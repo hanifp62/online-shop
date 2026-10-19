@@ -1,0 +1,371 @@
+{
+  "audit_metadata": {
+    "timestamp": "2026-10-14T08:33:47+07:00",
+    "directory": "/Users/hanifpriyambodo/Documents/online-shop/docs/execution/evidence/2026-10-14/architecture-assessment",
+    "repo_head": "2f355e1624306d7277f7828ee319321b21bee0ea",
+    "branch": "fix/audit-benchmark-remediation",
+    "isolation_verdict": "PARTIAL: manual DB separate, storage/views/logs shared; coordinator reported two 8016 GET before gate proof",
+    "updated_at": "2026-10-14T09:18:04.108440+07:00",
+    "assessment_status": "INCOMPLETE (static scope only; runtime and browser not verified)",
+    "operational_db_target": "UNKNOWN (default env driver MySQL; target never connected)"
+  },
+  "files": {
+    "ARCHITECTURE_AS_IS.md": {
+      "size": 13893,
+      "sha256": "4583bbd6babf6548d3c1567f7126f98b3619108d6d36691f85770a05ff39de52"
+    },
+    "AUDIT_HANDOFF.md": {
+      "size": 8213,
+      "sha256": "60e578c2bc3aef0105fb90257ae761265648ee4f8365fc9e6efae68ae40a4e8b"
+    },
+    "GAP_MATRIX.csv": {
+      "size": 12527,
+      "sha256": "7779d150f0620efa3a43beb8261f88fa2b2445758d1a36fb0e233ec457708e73"
+    },
+    "SOURCE_EXCERPTS.md": {
+      "size": 77329,
+      "sha256": "9e2bf6dc477eca9fd094964cde66617a6d1d86b74c9c0be7dcd808ca29c29fc7"
+    },
+    "TEST_RESULTS.md": {
+      "size": 5367,
+      "sha256": "f958a34730d53388b00eb1c9a13ac862b2eadb73f7bc4ca69a28b3dcfd901b4e"
+    },
+    "evidence/_srcset.txt": {
+      "size": 8042,
+      "sha256": "8421f37a89f9797e18914a9f90ec45015e00a0c6a6e6c348019c3c03c8296081"
+    },
+    "evidence/benchmark_collect.py": {
+      "size": 5984,
+      "sha256": "79e0e3a0d8a919ca907cd6307db4005185413ccce3f542dd92172246c24c8bdd"
+    },
+    "evidence/build_packet.py": {
+      "size": 2420,
+      "sha256": "1cafde55efcda16a2e9161eddbeaeb2019d4b3ef36f4925b32313fa01da55502"
+    },
+    "evidence/collect.py": {
+      "size": 3963,
+      "sha256": "38b6f15d91a77ebfb25faaacf075bc0dda68d6571ca8d6f73dcf57fbd97874ae"
+    },
+    "evidence/finalize_packet.py": {
+      "size": 23220,
+      "sha256": "b64590dd5d3bd887edd6d63b1e49108e5680cc6bc2d7f09e3479457dd7ac5661"
+    },
+    "evidence/git-status-before.txt": {
+      "size": 8505,
+      "sha256": "8cf3515bca1b0d47b017a217d16cebc8108686b0146b0409822274d35c04751a"
+    },
+    "evidence/public-benchmarks.json": {
+      "size": 31546,
+      "sha256": "e58edb43827c2b28f1148ebfca7c2aae924cd3bcdf47bb405ed05c1f2424ab34"
+    },
+    "evidence/reviewed-runtime-files.json": {
+      "size": 2260,
+      "sha256": "aa96c5d0d541d293665c71c420f8341f778994125b1bc26c38789f6ff9fd88f2"
+    },
+    "evidence/runtime-profile-addendum.json": {
+      "size": 2700,
+      "sha256": "35c22c3601651d03659f1795ad53fe82b3fa8d0e4d759bb0a6e37266c5284341"
+    },
+    "evidence/skills-inventory.md": {
+      "size": 1500,
+      "sha256": "454bec52204f40fc7453fb8dd69aa2acd304b9f270be3734b3b1183447fe5aba"
+    },
+    "evidence/source-hash-comparison.txt": {
+      "size": 52,
+      "sha256": "091143d8d5ab312089498950f5fac0548ffbd48ec5f3ebf430fb2e39c52f8c6a"
+    },
+    "evidence/source-hashes-after.txt": {
+      "size": 21968,
+      "sha256": "008f35ab6375347e6186f1f51dab40eb28cfbab4d4ab7f0e4ffff7b0f5925921"
+    },
+    "evidence/source-hashes-before.txt": {
+      "size": 21968,
+      "sha256": "008f35ab6375347e6186f1f51dab40eb28cfbab4d4ab7f0e4ffff7b0f5925921"
+    },
+    "evidence/stack-isolation.json": {
+      "size": 18605,
+      "sha256": "7af54a913581a04a314347d12e9de8de29d791f1479da2d6ad4e35bccea2972e"
+    },
+    "evidence/isolated-acceptance-20261014/am01.log": {
+      "size": 185,
+      "sha256": "75c9e2a91c0dbb05fb10e2c2d0957a5bc10f5d3f4ba05d36d6fe0214ba8e46cd"
+    },
+    "evidence/isolated-acceptance-20261014/am06_escape_phpunit.log": {
+      "size": 518,
+      "sha256": "56c9c2a5f37ef802c28b171d4bb8816ff89853e09a36b1be232cb9f90be68bcb"
+    },
+    "evidence/isolated-acceptance-20261014/am10_db.log": {
+      "size": 28,
+      "sha256": "feb32488b2846c1970d26198adae48411f2c95e40dff8fe46d40a97715d5ba86"
+    },
+    "evidence/isolated-acceptance-20261014/browser-results.json": {
+      "size": 1025,
+      "sha256": "fff6a814985e6dbad1580e6e65064faa4b414e58993c87e0464c35ad28f62d0a"
+    },
+    "evidence/isolated-acceptance-20261014/browser.log": {
+      "size": 27,
+      "sha256": "ff3a471b7fdd3de0f7f29a3c932dffb5236484b1ecbde4a013699cff458dc14d"
+    },
+    "evidence/isolated-acceptance-20261014/commands.tsv": {
+      "size": 1477,
+      "sha256": "ca0399149d37e6b521213361c1b6b612f2641ef4ccedb5b7fe30a760062e00c5"
+    },
+    "evidence/isolated-acceptance-20261014/invariants.json": {
+      "size": 68,
+      "sha256": "752be7729c211febde11b1d70b0be64a1feccd7ae44b7d64d5626c8ef787cb36"
+    },
+    "evidence/runtime-20261014/RUNTIME_REPORT.md": {
+      "size": 6094,
+      "sha256": "9db301cc0e1f1ebcbce7e658a2e81f1488496a9ff2bbcf146a476ecffe4f318a"
+    },
+    "evidence/runtime-20261014/console-check.cjs.txt": {
+      "size": 1561,
+      "sha256": "c37d86af95b0c34407b36f45293780a40a59aa90cdf3d39eb849ba7387e204b3"
+    },
+    "evidence/runtime-20261014/console-check.json": {
+      "size": 842,
+      "sha256": "29a1e2acc6b7914ff615b866f32eaa8bcfa62b49d70688575fd40d8c0529177a"
+    },
+    "evidence/runtime-20261014/guard-test.txt": {
+      "size": 25,
+      "sha256": "066a3d41bfab74c473528334737bb1df39bfb39afcba0ba2a692b227b4a5f7c2"
+    },
+    "evidence/runtime-20261014/lifecycle-S0-catalog.png": {
+      "size": 43583,
+      "sha256": "0a7331466beb71e81cf750ed37c39c018ead754e999661d260509ea516a23071"
+    },
+    "evidence/runtime-20261014/lifecycle-S0-snapshot.json": {
+      "size": 131,
+      "sha256": "805b1b6d75305eecf004a642fcb21117af4ef329d8c7f061e3e7fba42ee0d408"
+    },
+    "evidence/runtime-20261014/lifecycle-S0-ui.json": {
+      "size": 73,
+      "sha256": "0a6001a607bd79c37e411120bf2a35b1a5ab4e7bad12ede99fa48c2ffc6e6941"
+    },
+    "evidence/runtime-20261014/lifecycle-S1-cart.png": {
+      "size": 22919,
+      "sha256": "335f5659ff6e374d42bb5acfb536fed889703ecfb8aeac6e447f9aadc4781b04"
+    },
+    "evidence/runtime-20261014/lifecycle-S1-ui.json": {
+      "size": 125,
+      "sha256": "af13c253147e235cabbb42db12588eaa8597fe215cd7d901428a4501521f69ee"
+    },
+    "evidence/runtime-20261014/lifecycle-S2-pending.png": {
+      "size": 19889,
+      "sha256": "cc0656808c96a5164a9e91ff6ceae5ec2153fa59c2b1b09860ee038c5bf6faa9"
+    },
+    "evidence/runtime-20261014/lifecycle-S2-snapshot.json": {
+      "size": 419,
+      "sha256": "0393e70df151838b9079a7ccb4ee1a86610b43f1ae0899b8b0072e421daaed4e"
+    },
+    "evidence/runtime-20261014/lifecycle-S2-ui.json": {
+      "size": 80,
+      "sha256": "ecccabd85978c7002972431a4a10021539b4e413fc385b10e8a1067fa08dda9a"
+    },
+    "evidence/runtime-20261014/lifecycle-S3-cancelled.png": {
+      "size": 16639,
+      "sha256": "2c863f0c9a9cc06dac70373f305d2552f962c2b97282c7d40d51cf47e31465e3"
+    },
+    "evidence/runtime-20261014/lifecycle-S3-catalog.json": {
+      "size": 59,
+      "sha256": "9a2289c2805fc3897fe40528a39ba0785999a618f1d2c45d9f1e3981421e568e"
+    },
+    "evidence/runtime-20261014/lifecycle-S3-snapshot.json": {
+      "size": 421,
+      "sha256": "9af8d560d500f64f5e3ac1c7651eb61230ee9b3fc5d440436ba9445e7ac9a048"
+    },
+    "evidence/runtime-20261014/lifecycle-S4-replay.json": {
+      "size": 67,
+      "sha256": "e10ef4bb391428a9aa05d18063db252b61f4764f17cbb48264a6826d5c74ef7e"
+    },
+    "evidence/runtime-20261014/lifecycle-S4-replay.png": {
+      "size": 16639,
+      "sha256": "2c863f0c9a9cc06dac70373f305d2552f962c2b97282c7d40d51cf47e31465e3"
+    },
+    "evidence/runtime-20261014/lifecycle-S4-snapshot.json": {
+      "size": 421,
+      "sha256": "9af8d560d500f64f5e3ac1c7651eb61230ee9b3fc5d440436ba9445e7ac9a048"
+    },
+    "evidence/runtime-20261014/lifecycle-S5-admin.png": {
+      "size": 32092,
+      "sha256": "9e975999a2228fea99a927fca4e007f1c9ad8b4dae77b9daf0b3978c3bea9e28"
+    },
+    "evidence/runtime-20261014/lifecycle-S5-catalog.png": {
+      "size": 39789,
+      "sha256": "bf1d45e1b7d74b2f35332a9d0e9694336b6c1c871e04b40bacee52d4ffe6745d"
+    },
+    "evidence/runtime-20261014/lifecycle-S5-history.png": {
+      "size": 16639,
+      "sha256": "2c863f0c9a9cc06dac70373f305d2552f962c2b97282c7d40d51cf47e31465e3"
+    },
+    "evidence/runtime-20261014/lifecycle-S5-snapshot.json": {
+      "size": 421,
+      "sha256": "9af8d560d500f64f5e3ac1c7651eb61230ee9b3fc5d440436ba9445e7ac9a048"
+    },
+    "evidence/runtime-20261014/lifecycle-S5-ui.json": {
+      "size": 121,
+      "sha256": "cc32c0494058d2bee209f006b495d685924b1599d6fa1b55d5699934765df5ac"
+    },
+    "evidence/runtime-20261014/lifecycle-commands.json": {
+      "size": 1338,
+      "sha256": "416d86522e1f603dfc86ad431debe27a238275d65a60e607238463af9095af26"
+    },
+    "evidence/runtime-20261014/lifecycle-result.json": {
+      "size": 168,
+      "sha256": "7bc24b18078168c31e8cf589ae5b86ccbce1640769827a9af2f38cee4b59835f"
+    },
+    "evidence/runtime-20261014/lifecycle-sha256.json": {
+      "size": 1838,
+      "sha256": "bcb1c91f6205e4b1d40e2990c5ddb89227e6199e28613de2b57f00f2b03c3059"
+    },
+    "evidence/runtime-20261014/mobile-check.cjs.txt": {
+      "size": 2124,
+      "sha256": "4d4ba53f3906cedbf5487e4007d6ce20274ddd752de14a9314e6591631b685c0"
+    },
+    "evidence/runtime-20261014/mobile-check.json": {
+      "size": 3975,
+      "sha256": "f8b114541ddbe40a89cf96d1fbe45cc45368d1831436ecd797d228a93345661a"
+    },
+    "evidence/runtime-20261014/pdf-commands.json": {
+      "size": 187,
+      "sha256": "39fd0913a2134c8b1116575a0e900011be01ece1c82a23fe13fe5c9a95961c1d"
+    },
+    "evidence/runtime-20261014/pdf-download.json": {
+      "size": 288,
+      "sha256": "9a4461a7bc82f9df23431ae423db3239dd05fb65e0a6d24ce0855afe61cdc655"
+    },
+    "evidence/runtime-20261014/pdf-result.json": {
+      "size": 331,
+      "sha256": "6f1e775053f897c1d68f1ca493e6b4642e01ca9ad727dc6e9207fbcda5651858"
+    },
+    "evidence/runtime-20261014/pdf-sha256.json": {
+      "size": 355,
+      "sha256": "26c5d6df23ff1d853314f819931b5b22844e6c7cade083a0f467638dfb282f98"
+    },
+    "evidence/runtime-20261014/phpunit-isolated.txt": {
+      "size": 13310,
+      "sha256": "bcc99b402fa325f7b74bb08cff1017a8a8b26bd833e29f4658f31feb6592af8c"
+    },
+    "evidence/runtime-20261014/viewport-desktop-cart.png": {
+      "size": 78173,
+      "sha256": "d6c679a4fb803044d99110a2bc92a6aa16247b2185b12c2a345b421df29c3a9e"
+    },
+    "evidence/runtime-20261014/viewport-desktop-catalog.png": {
+      "size": 40467,
+      "sha256": "67b829292f4b2112082cbe456354388787f4604fe0b56b6afa8864b46fa97fe5"
+    },
+    "evidence/runtime-20261014/viewport-desktop-home.png": {
+      "size": 862825,
+      "sha256": "27a4cac4064c98592b6aab3e6778e6b40eb8f241be6832692985a56c8b230cbc"
+    },
+    "evidence/runtime-20261014/viewport-mobile-cart.png": {
+      "size": 51693,
+      "sha256": "08b4c90c997f8fd09eae7dd2dbb81178471fb3b9c7841365c85ea652e9ea7090"
+    },
+    "evidence/runtime-20261014/viewport-mobile-catalog.png": {
+      "size": 25003,
+      "sha256": "077e0dfcf7acdbca35b1d4059d95f2964753d496743275945d03f94322814bf3"
+    },
+    "evidence/runtime-20261014/viewport-mobile-home.png": {
+      "size": 328382,
+      "sha256": "ce8f84ec558eb48e6869b4b57310f28535c2728267aa4fb640c622cb5ef69f6a"
+    },
+    "evidence/runtime-20261014/viewport-zoom-reflow-cart.png": {
+      "size": 94717,
+      "sha256": "642aa705212cd5ced24adc28d0d678b85c5282cfdb08ac73773de77c00b8f624"
+    },
+    "evidence/runtime-20261014/viewport-zoom-reflow-catalog.png": {
+      "size": 45595,
+      "sha256": "4e6175cec5f2253c05df20673c0cb69aaba93ac542da08abc2ed31ce9b684068"
+    },
+    "evidence/runtime-20261014/viewport-zoom-reflow-home.png": {
+      "size": 665514,
+      "sha256": "352cd82628da36f340e46af30262de8e910236aa0570d89262bcfc9a467975ea"
+    }
+  },
+  "mappings": {
+    "routes": {
+      "catalog": "GET /koleksi -> CatalogController::index",
+      "pdp": "GET /produk/{product:product_slug} -> StorefrontController::show",
+      "cart_show": "GET /cart -> CartController::show",
+      "cart_store": "POST /cart/items -> CartController::store",
+      "cart_destroy": "DELETE /cart/items/{productId} -> CartController::destroy",
+      "checkout": "POST /checkout -> OrderController::store",
+      "orders_index": "GET /orders -> OrderController::index",
+      "orders_show": "GET /orders/{id} -> OrderController::show",
+      "orders_cancel": "POST /orders/{id}/cancel -> OrderController::cancel",
+      "admin_orders": "GET /admin/orders -> AdminOrderController::index",
+      "admin_order_status": "PATCH /admin/orders/{id} -> AdminOrderController::updateStatus",
+      "admin_invoice": "GET /admin/orders/{id}/invoice -> AdminOrderController::invoice",
+      "admin_report_pdf": "GET /admin/reports/orders.pdf -> AdminOrderController::report"
+    },
+    "critical_sources": {
+      "routes": "routes/web.php",
+      "catalog": "app/Http/Controllers/CatalogController.php",
+      "storefront": "app/Http/Controllers/StorefrontController.php",
+      "cart": "app/Http/Controllers/CartController.php",
+      "order": "app/Http/Controllers/OrderController.php",
+      "checkout_service": "app/Services/CheckoutService.php",
+      "order_model": "app/Models/Order.php",
+      "admin_order": "app/Http/Controllers/AdminOrderController.php",
+      "pdf_service": "app/Services/PdfDocumentService.php",
+      "security_headers": "app/Http/Middleware/SecurityHeaders.php",
+      "ui_static": [
+        "resources/views/welcome.blade.php",
+        "resources/views/catalog/index.blade.php",
+        "resources/views/shop/index.blade.php",
+        "resources/views/admin/dashboard.blade.php",
+        "resources/js/app.js",
+        "resources/css/app.css"
+      ]
+    },
+    "test_coverage_status": {
+      "automated_suite_file_count": 20,
+      "automated_suite_execution": "NOT RUN",
+      "historical_claim": "158 tests / 1253 assertions (REPORTED, not valid for this snapshot)",
+      "concurrency_status": "NOT RUN (requires overlapping independent processes on target engine)",
+      "wcag_browser_status": "NOT RUN; static Blade/CSS/JS inspection only",
+      "http_incident": "REPORTED: two 8016 GET before sink proof; no browser PASS",
+      "benchmark_comparative_score": "NOT RUN"
+    },
+    "gap_items": [
+      "GAP-001",
+      "GAP-002",
+      "GAP-003",
+      "GAP-004",
+      "GAP-005",
+      "GAP-006",
+      "GAP-007",
+      "GAP-008",
+      "GAP-009",
+      "GAP-010",
+      "GAP-011",
+      "GAP-012",
+      "GAP-013",
+      "GAP-014",
+      "GAP-015",
+      "GAP-016",
+      "GAP-017",
+      "GAP-018",
+      "GAP-019",
+      "GAP-020",
+      "GAP-021",
+      "GAP-022",
+      "GAP-023"
+    ],
+    "test_items": [
+      "T-001",
+      "T-002",
+      "T-003",
+      "T-004",
+      "T-005",
+      "T-006",
+      "T-007",
+      "T-008",
+      "T-009",
+      "T-010",
+      "T-011",
+      "T-012"
+    ]
+  }
+}

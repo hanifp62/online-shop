@@ -1,0 +1,13 @@
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.5.11
+Configuration: /private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-manual-v31-20261015/phpunit.xml
+
+..S............................................................  63 / 176 ( 35%)
+............................................................... 126 / 176 ( 71%)
+..................................................              176 / 176 (100%)
+
+Time: 00:05.650, Memory: 100.50 MB
+
+OK, but some tests were skipped!
+Tests: 176, Assertions: 1362, Skipped: 1.

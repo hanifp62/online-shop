@@ -1,0 +1,31 @@
+{
+  "result": "PASS",
+  "checks": {
+    "/": {
+      "status": 200,
+      "bytes": 75260
+    },
+    "/koleksi": {
+      "status": 200,
+      "bytes": 26674
+    },
+    "/produk/manual-synthetic-sapphire": {
+      "status": 200,
+      "bytes": 24282
+    },
+    "customer-login": 200,
+    "cart": 200,
+    "checkout": {
+      "status": 201,
+      "order_id": 2
+    },
+    "persisted_prior_orders_visible": 1,
+    "cancel": 200,
+    "admin-pdf": {
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 7799
+    }
+  },
+  "provenance": "Synthetic isolated data only"
+}

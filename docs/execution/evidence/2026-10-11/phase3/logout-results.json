@@ -1,0 +1,90 @@
+{
+  "base": "http://127.0.0.1:8013",
+  "failures": 0,
+  "results": [
+    {
+      "label": "desktop anonymous account redirect",
+      "actual": "/login",
+      "expected": "/login",
+      "pass": true
+    },
+    {
+      "label": "desktop authenticated account",
+      "actual": "/akun",
+      "expected": "/akun",
+      "pass": true
+    },
+    {
+      "label": "desktop logout form present",
+      "actual": true,
+      "expected": true,
+      "pass": true
+    },
+    {
+      "label": "desktop csrf token present",
+      "actual": true,
+      "expected": true,
+      "pass": true
+    },
+    {
+      "label": "desktop logout leaves account page",
+      "actual": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "label": "desktop session revoked after logout",
+      "actual": "/login",
+      "expected": "/login",
+      "pass": true
+    },
+    {
+      "label": "desktop session token rotated",
+      "actual": true,
+      "expected": true,
+      "pass": true
+    },
+    {
+      "label": "mobile anonymous account redirect",
+      "actual": "/login",
+      "expected": "/login",
+      "pass": true
+    },
+    {
+      "label": "mobile authenticated account",
+      "actual": "/akun",
+      "expected": "/akun",
+      "pass": true
+    },
+    {
+      "label": "mobile logout form present",
+      "actual": true,
+      "expected": true,
+      "pass": true
+    },
+    {
+      "label": "mobile csrf token present",
+      "actual": true,
+      "expected": true,
+      "pass": true
+    },
+    {
+      "label": "mobile logout leaves account page",
+      "actual": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "label": "mobile session revoked after logout",
+      "actual": "/login",
+      "expected": "/login",
+      "pass": true
+    },
+    {
+      "label": "mobile session token rotated",
+      "actual": true,
+      "expected": true,
+      "pass": true
+    }
+  ]
+}

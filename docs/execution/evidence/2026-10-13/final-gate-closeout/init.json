@@ -1,0 +1,11 @@
+{
+  "label": "init",
+  "command": [
+    "scripts/amadis/launch.sh",
+    "init"
+  ],
+  "start": "2026-10-13T05:22:33.042565+00:00",
+  "finish": "2026-10-13T05:22:37.303607+00:00",
+  "seconds": 4.261083334014984,
+  "returncode": 0
+}

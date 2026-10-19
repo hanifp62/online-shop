@@ -1,0 +1,43 @@
+
+   PASS  Tests\Feature\AdminManagementTest
+  ✓ concierge checkout with order items stores and displays in admin     0.67s  
+
+   PASS  Tests\Feature\BackendPermissionAuditTest
+  ✓ customer cannot change email password or other users concierge hist… 0.37s  
+  ✓ public concierge cannot set owner or status                          0.02s  
+  ✓ dashboard only offers allowed concierge transitions                  0.37s  
+  ✓ concierge cannot skip directly from new to completed                 0.36s  
+  ✓ full valid concierge lifecycle remains allowed                       0.36s  
+  ✓ confirmed concierge cannot move backward but can be cancelled        0.35s  
+  ✓ newsletter endpoint is rate limited                                  0.01s  
+  ✓ completed concierge request cannot be reopened                       0.35s  
+
+   PASS  Tests\Feature\LegacyPatchTest
+  ✓ admin can update concierge status                                    0.35s  
+  ✓ account page shows concierge history                                 0.01s  
+  ✓ concierge links to logged in user                                    0.01s  
+  ✓ admin dashboard filters concierge                                    0.35s  
+
+   PASS  Tests\Feature\RescueBackendAuditTest
+  ✓ concierge rate limiting triggers after three attempts                0.01s  
+  ✓ concierge validation handles xss safely in notes and names           0.36s  
+  ✓ concierge order items rejects nonexistent product slug               0.01s  
+  ✓ concierge order items enforces max quantity and monogram format      0.01s  
+
+   PASS  Tests\Feature\StorefrontCacheTest
+  ✓ category update invalidates catalog without resetting newsletter li… 0.38s  
+
+   PASS  Tests\Feature\StorefrontInactiveProductTest
+  ✓ inactive product is hidden from home detail related and concierge    0.37s  
+
+   PASS  Tests\Feature\StorefrontTest
+  ✓ concierge request can be created                                     0.01s  
+  ✓ newsletter subscription is idempotent with uniform response          0.01s  
+  ✓ concierge order items use server side name and price                 0.01s  
+  ✓ concierge accepts empty hidden order items                           0.01s  
+  ✓ authenticated concierge with alternate contact email stays in accou… 0.01s  
+  ✓ concierge rejects invalid order items                                0.02s  
+
+  Tests:    25 passed (138 assertions)
+  Duration: 4.87s
+

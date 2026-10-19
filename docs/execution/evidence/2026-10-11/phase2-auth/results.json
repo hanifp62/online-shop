@@ -1,0 +1,242 @@
+{
+  "cases": 34,
+  "failures": 0,
+  "results": [
+    {
+      "label": "desktop anonymous account redirect",
+      "actual": "/login",
+      "expected": "/login",
+      "pass": true
+    },
+    {
+      "label": "desktop anonymous admin redirect",
+      "actual": "/admin/login",
+      "expected": "/admin/login",
+      "pass": true
+    },
+    {
+      "label": "desktop wrong user password stays login",
+      "actual": "/login",
+      "expected": "/login",
+      "pass": true
+    },
+    {
+      "label": "desktop wrong password no user session",
+      "actual": "/login",
+      "expected": "/login",
+      "pass": true
+    },
+    {
+      "label": "desktop wrong admin password stays login",
+      "actual": "/admin/login",
+      "expected": "/admin/login",
+      "pass": true
+    },
+    {
+      "label": "desktop wrong password no admin session",
+      "actual": "/admin/login",
+      "expected": "/admin/login",
+      "pass": true
+    },
+    {
+      "label": "desktop user login destination",
+      "actual": "/",
+      "expected": "/",
+      "pass": true
+    },
+    {
+      "label": "desktop user account",
+      "actual": "/akun",
+      "expected": "/akun",
+      "pass": true
+    },
+    {
+      "label": "desktop user cannot access admin",
+      "actual": "/admin/login",
+      "expected": "/admin/login",
+      "pass": true
+    },
+    {
+      "label": "desktop admin login destination",
+      "actual": "/admin",
+      "expected": "/admin",
+      "pass": true
+    },
+    {
+      "label": "desktop admin dashboard",
+      "actual": "/admin",
+      "expected": "/admin",
+      "pass": true
+    },
+    {
+      "label": "desktop dual guard account survives admin login",
+      "actual": "/akun",
+      "expected": "/akun",
+      "pass": true
+    },
+    {
+      "label": "desktop admin logout destination",
+      "actual": "/admin/login",
+      "expected": "/admin/login",
+      "pass": true
+    },
+    {
+      "label": "desktop admin logout revoked",
+      "actual": "/admin/login",
+      "expected": "/admin/login",
+      "pass": true
+    },
+    {
+      "label": "desktop user survives admin logout",
+      "actual": "/akun",
+      "expected": "/akun",
+      "pass": true
+    },
+    {
+      "label": "desktop user logout",
+      "status": "NOT RUN",
+      "reason": "No logout form on account page; three runner attempts exhausted."
+    },
+    {
+      "label": "desktop admin-only cannot access account",
+      "actual": "/login",
+      "expected": "/login",
+      "pass": true
+    },
+    {
+      "label": "mobile anonymous account redirect",
+      "actual": "/login",
+      "expected": "/login",
+      "pass": true
+    },
+    {
+      "label": "mobile anonymous admin redirect",
+      "actual": "/admin/login",
+      "expected": "/admin/login",
+      "pass": true
+    },
+    {
+      "label": "mobile wrong user password stays login",
+      "actual": "/login",
+      "expected": "/login",
+      "pass": true
+    },
+    {
+      "label": "mobile wrong password no user session",
+      "actual": "/login",
+      "expected": "/login",
+      "pass": true
+    },
+    {
+      "label": "mobile wrong admin password stays login",
+      "actual": "/admin/login",
+      "expected": "/admin/login",
+      "pass": true
+    },
+    {
+      "label": "mobile wrong password no admin session",
+      "actual": "/admin/login",
+      "expected": "/admin/login",
+      "pass": true
+    },
+    {
+      "label": "mobile user login destination",
+      "actual": "/",
+      "expected": "/",
+      "pass": true
+    },
+    {
+      "label": "mobile user account",
+      "actual": "/akun",
+      "expected": "/akun",
+      "pass": true
+    },
+    {
+      "label": "mobile user cannot access admin",
+      "actual": "/admin/login",
+      "expected": "/admin/login",
+      "pass": true
+    },
+    {
+      "label": "mobile admin login destination",
+      "actual": "/admin",
+      "expected": "/admin",
+      "pass": true
+    },
+    {
+      "label": "mobile admin dashboard",
+      "actual": "/admin",
+      "expected": "/admin",
+      "pass": true
+    },
+    {
+      "label": "mobile dual guard account survives admin login",
+      "actual": "/akun",
+      "expected": "/akun",
+      "pass": true
+    },
+    {
+      "label": "mobile admin logout destination",
+      "actual": "/admin/login",
+      "expected": "/admin/login",
+      "pass": true
+    },
+    {
+      "label": "mobile admin logout revoked",
+      "actual": "/admin/login",
+      "expected": "/admin/login",
+      "pass": true
+    },
+    {
+      "label": "mobile user survives admin logout",
+      "actual": "/akun",
+      "expected": "/akun",
+      "pass": true
+    },
+    {
+      "label": "mobile user logout",
+      "status": "NOT RUN",
+      "reason": "No logout form on account page; three runner attempts exhausted."
+    },
+    {
+      "label": "mobile admin-only cannot access account",
+      "actual": "/login",
+      "expected": "/login",
+      "pass": true
+    }
+  ],
+  "layout": [
+    {
+      "shot": "desktop-account-redacted",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "overflowX": 0
+    },
+    {
+      "shot": "desktop-admin-redacted",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "overflowX": 0
+    },
+    {
+      "shot": "mobile-account-redacted",
+      "viewport": {
+        "width": 320,
+        "height": 568
+      },
+      "overflowX": 0
+    },
+    {
+      "shot": "mobile-admin-redacted",
+      "viewport": {
+        "width": 320,
+        "height": 568
+      },
+      "overflowX": 0
+    }
+  ]
+}

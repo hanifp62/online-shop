@@ -1,0 +1,399 @@
+
+   FAIL  Tests\Feature\AdminManagementTest
+  ⨯ concierge checkout with order items stores and displays in admin     0.30s  
+
+   FAIL  Tests\Feature\BackendPermissionAuditTest
+  ⨯ customer cannot change email password or other users concierge hist… 0.09s  
+  ⨯ public concierge cannot set owner or status                          0.02s  
+  ✓ dashboard only offers allowed concierge transitions                  0.10s  
+  ⨯ concierge cannot skip directly from new to completed                 0.02s  
+  ⨯ full valid concierge lifecycle remains allowed                       0.02s  
+  ⨯ confirmed concierge cannot move backward but can be cancelled        0.02s  
+  ⨯ newsletter endpoint is rate limited                                  0.01s  
+  ⨯ completed concierge request cannot be reopened                       0.01s  
+
+   FAIL  Tests\Feature\LegacyPatchTest
+  ⨯ admin can update concierge status                                    0.02s  
+  ✓ account page shows concierge history                                 0.01s  
+  ⨯ concierge links to logged in user                                    0.01s  
+  ✓ admin dashboard filters concierge                                    0.02s  
+
+   FAIL  Tests\Feature\RescueBackendAuditTest
+  ⨯ concierge rate limiting triggers after three attempts                0.01s  
+  ⨯ concierge validation handles xss safely in notes and names           0.01s  
+  ⨯ concierge order items rejects nonexistent product slug               0.01s  
+  ⨯ concierge order items enforces max quantity and monogram format      0.01s  
+
+   FAIL  Tests\Feature\StorefrontCacheTest
+  ⨯ category update invalidates catalog without resetting newsletter li… 0.03s  
+
+   FAIL  Tests\Feature\StorefrontInactiveProductTest
+  ⨯ inactive product is hidden from home detail related and concierge    0.03s  
+
+   FAIL  Tests\Feature\StorefrontTest
+  ⨯ concierge request can be created                                     0.02s  
+  ⨯ newsletter subscription is idempotent with uniform response          0.02s  
+  ⨯ concierge order items use server side name and price                 0.02s  
+  ⨯ concierge accepts empty hidden order items                           0.02s  
+  ⨯ authenticated concierge with alternate contact email stays in accou… 0.02s  
+  ⨯ concierge rejects invalid order items                                0.02s  
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\AdminManagementTest > concierge checkout with order…   
+  Expected response status code [201] but received 419.
+Failed asserting that 419 is identical to 201.
+
+  at tests/Feature/AdminManagementTest.php:109
+    105▕             'notes' => 'Tolong kirimkan invoice ke kantor.',
+    106▕             'order_items' => json_encode($cart),
+    107▕         ]);
+    108▕ 
+  ➜ 109▕         $response->assertCreated();
+    110▕ 
+    111▕         $concierge = ConciergeRequest::where('email', 'valerie@maison.id')->firstOrFail();
+    112▕         $this->assertStringContainsString('Sac Séraphine (1x)', $concierge->notes);
+    113▕         $this->assertStringContainsString('Écharpe Éclat (2x)', $concierge->notes);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\BackendPermissionAuditTest > customer cannot change…   
+  Expected response status code [201, 301, 302, 303, 307, 308] but received 419.
+Failed asserting that false is true.
+
+  at tests/Feature/BackendPermissionAuditTest.php:64
+     60▕             ->assertOk()->assertDontSee('other@example.test');
+     61▕         $this->patch(route('account.update'), [
+     62▕             'name' => 'Nama Baru', 'email' => 'stolen@example.test',
+     63▕             'password' => 'Compromised#123', 'user_id' => $other->id,
+  ➜  64▕         ])->assertRedirect();
+     65▕ 
+     66▕         $owner->refresh();
+     67▕         $this->assertSame($owner->id, auth()->id());
+     68▕         $this->assertSame('Nama Baru', $owner->name);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\BackendPermissionAuditTest > public concierge canno…   
+  Expected response status code [201] but received 419.
+Failed asserting that 419 is identical to 201.
+
+  at tests/Feature/BackendPermissionAuditTest.php:82
+     78▕         $other = User::factory()->create();
+     79▕         $this->postJson(route('concierge.store'), [
+     80▕             'name' => 'Tamu', 'email' => 'guest@example.test', 'phone' => '08123456789',
+     81▕             'service' => 'atelier', 'user_id' => $other->id, 'status' => 'completed',
+  ➜  82▕         ])->assertCreated();
+     83▕         $this->assertDatabaseHas('concierge_requests', [
+     84▕             'email' => 'guest@example.test', 'user_id' => null, 'status' => 'new',
+     85▕         ]);
+     86▕     }
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\BackendPermissionAuditTest > concierge cannot skip…    
+  Session is missing expected key [errors].
+Failed asserting that false is true.
+
+  at tests/Feature/BackendPermissionAuditTest.php:146
+    142▕         ]);
+    143▕ 
+    144▕         $this->actingAs($admin, 'admin')
+    145▕             ->patch(route('admin.concierge.update', $request), ['status' => 'completed'])
+  ➜ 146▕             ->assertSessionHasErrors('status');
+    147▕         $this->assertSame('new', $request->fresh()->status);
+    148▕     }
+    149▕ 
+    150▕     public function test_full_valid_concierge_lifecycle_remains_allowed(): void
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\BackendPermissionAuditTest > full valid concierge l…   
+  Failed asserting that two strings are identical.
+  -'contacted'
+  +'new'
+  
+
+  at tests/Feature/BackendPermissionAuditTest.php:162
+    158▕         foreach (['contacted', 'confirmed', 'completed'] as $status) {
+    159▕             $this->actingAs($admin, 'admin')
+    160▕                 ->patch(route('admin.concierge.update', $request), ['status' => $status])
+    161▕                 ->assertSessionHasNoErrors();
+  ➜ 162▕             $this->assertSame($status, $request->fresh()->status);
+    163▕         }
+    164▕     }
+    165▕ 
+    166▕     public function test_confirmed_concierge_cannot_move_backward_but_can_be_cancelled(): void
+
+  1   tests/Feature/BackendPermissionAuditTest.php:162
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\BackendPermissionAuditTest > confirmed concierge ca…   
+  Session is missing expected key [errors].
+Failed asserting that false is true.
+
+  at tests/Feature/BackendPermissionAuditTest.php:176
+    172▕         ]);
+    173▕ 
+    174▕         $this->actingAs($admin, 'admin')
+    175▕             ->patch(route('admin.concierge.update', $request), ['status' => 'contacted'])
+  ➜ 176▕             ->assertSessionHasErrors('status');
+    177▕         $this->assertSame('confirmed', $request->fresh()->status);
+    178▕ 
+    179▕         $this->patch(route('admin.concierge.update', $request), ['status' => 'cancelled'])
+    180▕             ->assertSessionHasNoErrors();
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\BackendPermissionAuditTest > newsletter endpoint is…   
+  Expected response status code [200] but received 419.
+Failed asserting that 419 is identical to 200.
+
+  at tests/Feature/BackendPermissionAuditTest.php:189
+    185▕     {
+    186▕         Mail::fake();
+    187▕ 
+    188▕         for ($i = 1; $i <= 5; $i++) {
+  ➜ 189▕             $this->postJson(route('newsletter.store'), ['email' => "subscriber{$i}@example.test"])->assertOk();
+    190▕         }
+    191▕ 
+    192▕         $this->postJson(route('newsletter.store'), ['email' => 'blocked@example.test'])
+    193▕             ->assertStatus(429);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\BackendPermissionAuditTest > completed concierge re…   
+  Session is missing expected key [errors].
+Failed asserting that false is true.
+
+  at tests/Feature/BackendPermissionAuditTest.php:207
+    203▕         ]);
+    204▕ 
+    205▕         $this->actingAs($admin, 'admin')
+    206▕             ->patch(route('admin.concierge.update', $request), ['status' => 'new'])
+  ➜ 207▕             ->assertSessionHasErrors('status');
+    208▕         $this->assertSame('completed', $request->fresh()->status);
+    209▕     }
+    210▕ 
+    211▕     public function test_product_json_ld_escapes_html_tags_but_stays_valid_json(): void
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\LegacyPatchTest > admin can update concierge status    
+  Expected response status code [201, 301, 302, 303, 307, 308] but received 419.
+Failed asserting that false is true.
+
+  at tests/Feature/LegacyPatchTest.php:202
+    198▕         ]);
+    199▕ 
+    200▕         $this->actingAs(Admin::first(), 'admin')
+    201▕             ->patch(route('admin.concierge.update', $concierge), ['status' => 'confirmed'])
+  ➜ 202▕             ->assertRedirect();
+    203▕ 
+    204▕         $this->assertDatabaseHas('concierge_requests', ['id' => $concierge->id, 'status' => 'confirmed']);
+    205▕     }
+    206▕
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\LegacyPatchTest > concierge links to logged in user    
+  Expected response status code [201, 301, 302, 303, 307, 308] but received 419.
+Failed asserting that false is true.
+
+  at tests/Feature/LegacyPatchTest.php:273
+    269▕             'name' => 'Punee Red',
+    270▕             'email' => 'pune@gmail.com',
+    271▕             'phone' => '9448121558',
+    272▕             'service' => 'virtual-consultation',
+  ➜ 273▕         ])->assertRedirect();
+    274▕ 
+    275▕         $this->assertDatabaseHas('concierge_requests', [
+    276▕             'email' => 'pune@gmail.com',
+    277▕             'user_id' => $user->id,
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\RescueBackendAuditTest > concierge rate limiting tr…   
+  Expected response status code [201] but received 419.
+Failed asserting that 419 is identical to 201.
+
+  at tests/Feature/RescueBackendAuditTest.php:295
+    291▕             'service' => 'private-styling',
+    292▕         ];
+    293▕ 
+    294▕         for ($i = 1; $i <= 3; $i++) {
+  ➜ 295▕             $this->postJson(route('concierge.store'), $payload)->assertCreated();
+    296▕         }
+    297▕ 
+    298▕         $this->postJson(route('concierge.store'), $payload)->assertStatus(429);
+    299▕     }
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\RescueBackendAuditTest > concierge validation handl…   
+  Expected response status code [201] but received 419.
+Failed asserting that 419 is identical to 201.
+
+  at tests/Feature/RescueBackendAuditTest.php:314
+    310▕             'service' => 'atelier',
+    311▕             'notes' => 'Catatan '.$xss,
+    312▕         ]);
+    313▕ 
+  ➜ 314▕         $response->assertCreated();
+    315▕ 
+    316▕         $this->assertDatabaseHas('concierge_requests', [
+    317▕             'email' => 'xss@maison.test',
+    318▕             'name' => 'Tester '.$xss,
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\RescueBackendAuditTest > concierge order items reje…   
+  Expected response status code [422] but received 419.
+Failed asserting that 419 is identical to 422.
+
+  at tests/Feature/RescueBackendAuditTest.php:348
+    344▕                 ['id' => 'non-existent-slug-xyz', 'quantity' => 1],
+    345▕             ]),
+    346▕         ]);
+    347▕ 
+  ➜ 348▕         $response->assertUnprocessable()
+    349▕             ->assertJsonValidationErrors('order_items.0.id');
+    350▕     }
+    351▕ 
+    352▕     public function test_concierge_order_items_enforces_max_quantity_and_monogram_format(): void
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\RescueBackendAuditTest > concierge order items enfo…   
+  Expected response status code [422] but received 419.
+Failed asserting that 419 is identical to 422.
+
+  at tests/Feature/RescueBackendAuditTest.php:373
+    369▕             'order_items' => json_encode([
+    370▕                 ['id' => $product->product_slug, 'quantity' => 50],
+    371▕             ]),
+    372▕         ]);
+  ➜ 373▕         $responseInvalidQty->assertUnprocessable()
+    374▕             ->assertJsonValidationErrors('order_items.0.quantity');
+    375▕ 
+    376▕         $responseInvalidMonogram = $this->postJson(route('concierge.store'), [
+    377▕             'name' => 'User Monogram',
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\StorefrontCacheTest > category update invalidates c…   
+  Expected response status code [200] but received 419.
+Failed asserting that 419 is identical to 200.
+
+  at tests/Feature/StorefrontCacheTest.php:30
+     26▕         ]);
+     27▕         $this->get('/')->assertOk();
+     28▕         $this->get(route('products.show', $product->product_slug))->assertOk();
+     29▕         Cache::put('unrelated:marker', 'keep', 300);
+  ➜  30▕         $this->postJson('/newsletter', ['email' => 'client@example.com'])->assertOk();
+     31▕ 
+     32▕         $this->actingAs(Admin::firstOrFail(), 'admin')
+     33▕             ->patch(route('admin.categories.update', $category), ['cat_title' => 'Atelier Baru'])
+     34▕             ->assertRedirect();
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\StorefrontInactiveProductTest > inactive product is…   
+  Expected response status code [422] but received 419.
+Failed asserting that 419 is identical to 422.
+
+  at tests/Feature/StorefrontInactiveProductTest.php:55
+     51▕         $this->postJson(route('concierge.store'), [
+     52▕             'name' => 'Klien', 'email' => 'klien@example.test', 'phone' => '0812345678',
+     53▕             'service' => 'private-styling',
+     54▕             'order_items' => json_encode([['id' => 'nonaktif-rahasia', 'quantity' => 1]]),
+  ➜  55▕         ])->assertUnprocessable()->assertJsonValidationErrors('order_items.0.id');
+     56▕     }
+     57▕ 
+     58▕     public function test_admin_deactivation_invalidates_cached_storefront_responses(): void
+     59▕     {
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\StorefrontTest > concierge request can be created      
+  Expected response status code [201] but received 419.
+Failed asserting that 419 is identical to 201.
+
+  at tests/Feature/StorefrontTest.php:79
+     75▕             'preferred_time' => '14:00',
+     76▕             'notes' => 'Mencari busana untuk gala dinner.',
+     77▕         ]);
+     78▕ 
+  ➜  79▕         $response->assertCreated();
+     80▕         $this->assertDatabaseHas('concierge_requests', [
+     81▕             'email' => 'alya@example.com',
+     82▕             'service' => 'private-styling',
+     83▕         ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\StorefrontTest > newsletter subscription is idempot…   
+  Expected response status code [200] but received 419.
+Failed asserting that 419 is identical to 200.
+
+  at tests/Feature/StorefrontTest.php:110
+    106▕ 
+    107▕         $first = $this->postJson('/newsletter', ['email' => 'maison@example.com']);
+    108▕         $second = $this->postJson('/newsletter', ['email' => 'maison@example.com']);
+    109▕ 
+  ➜ 110▕         $first->assertOk();
+    111▕         $second->assertOk();
+    112▕         $this->assertSame($first->json('message'), $second->json('message'));
+    113▕ 
+    114▕         $this->assertDatabaseCount('newsletter_subscribers', 1);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\StorefrontTest > concierge order items use server s…   
+  Expected response status code [201] but received 419.
+Failed asserting that 419 is identical to 201.
+
+  at tests/Feature/StorefrontTest.php:135
+    131▕         Mail::fake();
+    132▕ 
+    133▕         $this->postJson('/concierge', $this->conciergePayload([
+    134▕             ['id' => 'sac-seraphine', 'name' => 'Nama Palsu', 'price' => 1, 'quantity' => 2],
+  ➜ 135▕         ]))->assertCreated();
+    136▕ 
+    137▕         $notes = ConciergeRequest::where('email', 'valerie@maison.id')->firstOrFail()->notes;
+    138▕         $this->assertStringContainsString('Sac Séraphine (2x) Rp18.750.000', $notes);
+    139▕         $this->assertStringContainsString('Total: Rp37.500.000', $notes);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\StorefrontTest > concierge accepts empty hidden ord…   
+  Expected response status code [201] but received 419.
+Failed asserting that 419 is identical to 201.
+
+  at tests/Feature/StorefrontTest.php:149
+    145▕         Mail::fake();
+    146▕         $this->withoutMiddleware(ConvertEmptyStringsToNull::class);
+    147▕ 
+    148▕         $this->postJson('/concierge', $this->conciergePayload([], ['order_items' => '']))
+  ➜ 149▕             ->assertCreated();
+    150▕ 
+    151▕         $this->assertDatabaseHas('concierge_requests', [
+    152▕             'email' => 'valerie@maison.id',
+    153▕             'notes' => null,
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\StorefrontTest > authenticated concierge with alter…   
+  Expected response status code [201] but received 419.
+Failed asserting that 419 is identical to 201.
+
+  at tests/Feature/StorefrontTest.php:163
+    159▕         Mail::fake();
+    160▕         $user = User::factory()->create(['email' => 'owner@example.com']);
+    161▕         $this->actingAs($user)->postJson('/concierge', $this->conciergePayload([], [
+    162▕             'email' => 'contact@example.com', 'order_items' => null,
+  ➜ 163▕         ]))->assertCreated();
+    164▕ 
+    165▕         $this->assertDatabaseHas('concierge_requests', [
+    166▕             'email' => 'contact@example.com', 'user_id' => $user->id,
+    167▕         ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\StorefrontTest > concierge rejects invalid order it…   
+  Expected response status code [422] but received 419.
+Failed asserting that 419 is identical to 422.
+
+  at tests/Feature/StorefrontTest.php:195
+    191▕             $payload = $this->conciergePayload([]);
+    192▕             $payload['order_items'] = is_string($items) ? $items : json_encode($items);
+    193▕ 
+    194▕             $this->postJson('/concierge', $payload)
+  ➜ 195▕                 ->assertUnprocessable("Kasus '{$label}' seharusnya ditolak.");
+    196▕         }
+    197▕ 
+    198▕         $this->assertDatabaseCount('concierge_requests', 0);
+    199▕     }
+
+
+  Tests:    22 failed, 3 passed (58 assertions)
+  Duration: 0.97s
+

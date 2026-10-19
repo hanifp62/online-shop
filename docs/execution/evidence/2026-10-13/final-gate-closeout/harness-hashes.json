@@ -1,0 +1,9 @@
+{
+  "scripts/amadis/launch.sh": "4ac3f2fec6ce76d8f140679baefc8447b9d04079e18d4731e3bc0d5f4e7c366e",
+  "scripts/amadis/launch.py": "126848b8fa9b4a8e209b1aad8caf27b917203c6c37e9c1a26cc28be59fea1926",
+  "scripts/amadis/artisan.php": "b3a4524a4a11ffc131158c61b000c0071d676fac407c53b2d4056221c6f84dda",
+  "scripts/amadis/guard.php": "d1d517e00c1b87e45f335b6749e71e10abae30234c14b10f3e092e7685f4af11",
+  "scripts/amadis/server.php": "216daf6480ff126364a1b0f0bd727c803b7b6990f47a8f3fff1cf2870e9f9518",
+  "scripts/amadis/browser-lifecycle.cjs": "41cd0690a8ce6a1c26d4f36ee9760a263e8923f748be5b3f669ec6ac4212e9e4",
+  "docs/execution/evidence/2026-10-13/final-gate-closeout/execute-gate.py": "0b76da9ed977b6afb728812b613b77770130285c5148ab70c52b96abb8bc8187"
+}

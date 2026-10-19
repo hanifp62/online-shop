@@ -1,0 +1,27 @@
+const {chromium} = require('/opt/homebrew/lib/node_modules/@playwright/cli/node_modules/playwright');
+const fs = require('fs');
+const assert = require('assert/strict');
+const base = `http://127.0.0.1:${process.env.AM_PORT}`;
+const dir = process.env.AM_OUT;
+(async () => {
+ const browser = await chromium.launch({executablePath: `${process.env.HOME}/Library/Caches/ms-playwright/chromium-1228/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing`, headless:true});
+ const records=[];
+ try {
+  for (const [label,width,height,motion] of [['desktop',1365,900,'no-preference'],['mobile',390,844,'reduce'],['zoom-reflow',320,650,'reduce']]) {
+   const context=await browser.newContext({viewport:{width,height}, deviceScaleFactor:label==='zoom-reflow'?2:1, reducedMotion:motion, locale:'id-ID'});
+   await context.route('**/*', r => r.request().url().startsWith(base + '/') ? r.continue() : r.abort());
+   const page=await context.newPage(); const errors=[];
+   page.on('pageerror', e => errors.push(e.name));
+   page.on('console', m => {if(m.type()==='error') errors.push('console error');});
+   for(const [name,path] of [['home','/'],['catalog','/koleksi'],['cart','/belanja'],['login','/login'],['admin-login','/admin/login']]) {
+    const response=await page.goto(base+path,{waitUntil:'domcontentloaded'});
+    await page.waitForTimeout(150);
+    const state=await page.evaluate(() => ({title:document.title,scrollWidth:document.documentElement.scrollWidth,clientWidth:document.documentElement.clientWidth,focusable:document.querySelectorAll('button, a[href], input').length, reducedMotion:matchMedia('(prefers-reduced-motion: reduce)').matches}));
+    if(name !== 'login' && name !== 'admin-login') await page.screenshot({path:`${dir}/${label}-${name}.png`, animations:'disabled'});
+    records.push({label,name,http:response.status(),...state});
+   }
+   records.push({label,errors});
+   await context.close();
+  }
+ } finally {await browser.close();fs.writeFileSync(`${dir}/mobile-check.json`,JSON.stringify(records,null,2)+'\n');}
+})().catch(e=>{console.error(e.name);process.exitCode=1});

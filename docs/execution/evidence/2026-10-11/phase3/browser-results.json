@@ -1,0 +1,72 @@
+[
+  {
+    "width": 320,
+    "name": "literal",
+    "pass": true
+  },
+  {
+    "width": 320,
+    "name": "noHandlers",
+    "pass": true
+  },
+  {
+    "width": 320,
+    "name": "noActiveSrc",
+    "pass": true
+  },
+  {
+    "width": 320,
+    "name": "sizeRoundTrip",
+    "pass": true
+  },
+  {
+    "width": 320,
+    "name": "emptyLiteral",
+    "pass": true
+  },
+  {
+    "width": 320,
+    "name": "injected",
+    "pass": true
+  },
+  {
+    "width": 320,
+    "name": "injectedAfterEvents",
+    "pass": true
+  },
+  {
+    "width": 1440,
+    "name": "literal",
+    "pass": true
+  },
+  {
+    "width": 1440,
+    "name": "noHandlers",
+    "pass": true
+  },
+  {
+    "width": 1440,
+    "name": "noActiveSrc",
+    "pass": true
+  },
+  {
+    "width": 1440,
+    "name": "sizeRoundTrip",
+    "pass": true
+  },
+  {
+    "width": 1440,
+    "name": "emptyLiteral",
+    "pass": true
+  },
+  {
+    "width": 1440,
+    "name": "injected",
+    "pass": true
+  },
+  {
+    "width": 1440,
+    "name": "injectedAfterEvents",
+    "pass": true
+  }
+]

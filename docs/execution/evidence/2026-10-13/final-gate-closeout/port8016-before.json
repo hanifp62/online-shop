@@ -1,0 +1,13 @@
+{
+  "label": "port8016-before",
+  "command": [
+    "lsof",
+    "-nP",
+    "-iTCP:8016",
+    "-sTCP:LISTEN"
+  ],
+  "start": "2026-10-13T05:24:51.969646+00:00",
+  "finish": "2026-10-13T05:24:52.049039+00:00",
+  "seconds": 0.07939829200040549,
+  "returncode": 1
+}

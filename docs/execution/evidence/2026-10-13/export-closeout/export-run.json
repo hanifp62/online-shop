@@ -1,0 +1,70 @@
+{
+  "started": "2026-10-13T03:16:09.302179+00:00",
+  "sentinel_len": 25,
+  "commands": [
+    {
+      "step": "launch.capture (real subprocess)",
+      "time": "2026-10-13T03:16:09.304846+00:00",
+      "rc": 0
+    },
+    {
+      "step": "export_evidence.py CLI",
+      "time": "2026-10-13T03:16:09.347787+00:00",
+      "rc": 0,
+      "stdout": "{\"files\": [\"20261013T031609Z-sentinel-94b518.json\", \"20261013T031609Z-sentinel-94b518.stderr\", \"20261013T031609Z-sentinel-94b518.stdout\", \"manifest.json\"]}",
+      "stderr": ""
+    }
+  ],
+  "source_files": [
+    "20261013T031609Z-sentinel-94b518.extra",
+    "20261013T031609Z-sentinel-94b518.json",
+    "20261013T031609Z-sentinel-94b518.stderr",
+    "20261013T031609Z-sentinel-94b518.stdout",
+    "other.stdout",
+    "x.log"
+  ],
+  "exported": {
+    "20261013T031609Z-sentinel-94b518.json": {
+      "sha256": "be0963c1c64982fb319480eb698e6beced6a978deedb292521c01514513bd4c8",
+      "bytes": 284,
+      "mode": "0o600",
+      "sentinel_present": false,
+      "marker_present": true
+    },
+    "20261013T031609Z-sentinel-94b518.stderr": {
+      "sha256": "dcc6fd7f82492b4c784783493fc316c101997ac53bdfdc1dc1f38e57905c5c95",
+      "bytes": 32,
+      "mode": "0o600",
+      "sentinel_present": false,
+      "marker_present": false
+    },
+    "20261013T031609Z-sentinel-94b518.stdout": {
+      "sha256": "642ff0b0dc98ab9c10122c03ebbef980d8eb45080744fa76456bd830225b49ad",
+      "bytes": 43,
+      "mode": "0o600",
+      "sentinel_present": false,
+      "marker_present": true
+    },
+    "manifest.json": {
+      "sha256": "635e80d5d0108c8acb68cf9be6537272caaf43fa791f0d873307604f3667616a",
+      "bytes": 844,
+      "mode": "0o600",
+      "sentinel_present": false,
+      "marker_present": false
+    }
+  },
+  "expected_allowlist": [
+    "20261013T031609Z-sentinel-94b518.json",
+    "20261013T031609Z-sentinel-94b518.stderr",
+    "20261013T031609Z-sentinel-94b518.stdout"
+  ],
+  "exact_allowlist": true,
+  "manifest_hashes_match": true,
+  "sentinel_absent_everywhere": true,
+  "marker_in_stdout": true,
+  "forbidden_exported": [],
+  "exporter_source_sha256": "c20112f7f98ee036d262c11cefe13855e16c63d05b7a40fd28edc626e00b1d0e",
+  "launch_source_sha256": "126848b8fa9b4a8e209b1aad8caf27b917203c6c37e9c1a26cc28be59fea1926",
+  "pass": true,
+  "finished": "2026-10-13T03:16:09.436906+00:00"
+}

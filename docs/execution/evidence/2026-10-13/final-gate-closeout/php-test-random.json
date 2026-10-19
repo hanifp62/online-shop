@@ -1,0 +1,14 @@
+{
+  "label": "php-test-random",
+  "command": [
+    "scripts/amadis/launch.sh",
+    "test",
+    "--order-by=random",
+    "--random-order-seed=20261013",
+    "--log-junit=/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-b1c2b260873e62981566ae7f/evidence/php-test-random.xml"
+  ],
+  "start": "2026-10-13T05:24:02.047814+00:00",
+  "finish": "2026-10-13T05:24:37.512317+00:00",
+  "seconds": 35.464546875009546,
+  "returncode": 0
+}

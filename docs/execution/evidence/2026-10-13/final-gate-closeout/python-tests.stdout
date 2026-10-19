@@ -1,0 +1,135 @@
+{
+  "evidence": "/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/tmp1n4z5age/docs/execution/evidence/2026-10-13/pdf-stage/6ac0b4221806",
+  "returncode": 1,
+  "predicates": {
+    "direct_egress": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "control_direct_egress": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "platform-no-dev": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "source_modes": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "forbidden_proxy": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "pins": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "allowed_proxy": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "class_load": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "init": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "artisan": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "topology": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "sqlite": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "sentinel_direct_isolation": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "install": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "parallel_tls": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "sentinel_proxy": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "change_scope": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "private_targets": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "platform": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "runtime_sentinel": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "hooks": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    }
+  }
+}
+{"gate": "init", "category": "docker_missing", "returncode": 127, "root": "/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/tmp3_9rpnwx/amadis-6bf4c09f7ea39876c52df28b"}
+{"gate": "init", "category": "docker_unavailable", "returncode": 125, "root": "/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/tmpu6pvnkgx/amadis-f7b943ab3ec65b4872b7163f"}
+{"gate": "platform", "category": "passed", "returncode": 0, "root": "/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/tmpo_tmgbjd/amadis-6455bc6ee2179251b197e314"}
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+APP_KEY=[REDACTED] visible-export-marker
+PDF candidate validated; no repository file changed

@@ -1,0 +1,4 @@
+public/build/assets/app-WhYmZ0bD.css raw=  110330 gzip=   21514
+public/build/assets/app-BFM_3I-g.js raw=   19417 gzip=    6463
+public/prototype/app.css raw=   88720 gzip=   15800
+public/js/zafira-core.js raw=   76759 gzip=   21502

@@ -1,0 +1,8 @@
+{
+  "date": "2026-10-12",
+  "scope": "Targeted post-dock CSS verification; not a full PHP regression",
+  "prototype_css_sha256": "a264a1ce9a7ed5ae669f715462784c2e4386d6ea6fc40b5ab82f8e3eafc518a5",
+  "php": "NOT RUN; latest full PHP suite final-regression-3 predates dock CSS",
+  "database": "No database commands or writes",
+  "deployment": "NOT RUN"
+}

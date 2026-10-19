@@ -1,0 +1,56 @@
+[
+    {
+        "Name": "bridge",
+        "Id": "102c6cc94c80705335c675a2018310a2fec0e7fdd427fc4424dd27441068d81a",
+        "Created": "2026-10-12T19:19:26.477484583Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {
+            "com.docker.network.bridge.default_bridge": "true",
+            "com.docker.network.bridge.enable_icc": "true",
+            "com.docker.network.bridge.enable_ip_masquerade": "true",
+            "com.docker.network.bridge.host_binding_ipv4": "0.0.0.0",
+            "com.docker.network.bridge.name": "docker0",
+            "com.docker.network.driver.mtu": "65535"
+        },
+        "Labels": {},
+        "Containers": {
+            "bb3c6872660ea1b0a47c6883ef971a33e0eae9964d31582c908db5a179800400": {
+                "Name": "amadis-stage-proxy-036076473df1",
+                "EndpointID": "ada8b1858b891dd473aea55e1f4ff2b3284a79ca5b345579771e83c8b296e2fa",
+                "MacAddress": "5e:d4:41:5b:fd:83",
+                "IPv4Address": "172.17.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "172.17.0.0/16": {
+                        "IPsInUse": 4,
+                        "DynamicIPsAvailable": 65532
+                    }
+                }
+            }
+        }
+    }
+]

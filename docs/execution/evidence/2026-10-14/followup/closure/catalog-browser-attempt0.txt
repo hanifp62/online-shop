@@ -1,0 +1,2 @@
+attempt0: selector a[href="/belanja"] expected relative href; app renders absolute URL via route(). Test selector bug, fixed to a[href$="/belanja"]. exit=1
+attempt1: /jumlah/ case-sensitive vs CSS text-transform uppercase innerText "TERAPKAN JUMLAH KE TAS"; label correct. Fixed to /jumlah/i. exit=1

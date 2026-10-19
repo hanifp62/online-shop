@@ -1,0 +1,7 @@
+{
+  "command": "docker network create --internal amadis-stage-composer-66dd10879584",
+  "returncode": 0,
+  "platform": "Linux container",
+  "start": "2026-10-13T05:15:45Z",
+  "finish": "2026-10-13T05:15:45Z"
+}

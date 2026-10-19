@@ -1,0 +1,162 @@
+{
+  "results": [
+    {
+      "surface": "/",
+      "check": "theme",
+      "rows": [
+        {
+          "i": 0,
+          "theme": "light",
+          "pointerUnder": {},
+          "applied": "light",
+          "ok": true
+        },
+        {
+          "i": 1,
+          "theme": "dark",
+          "pointerUnder": {},
+          "applied": "dark",
+          "ok": true
+        },
+        {
+          "i": 2,
+          "theme": "system",
+          "pointerUnder": {},
+          "applied": "system",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "surface": "/prototype/",
+      "check": "theme",
+      "rows": [
+        {
+          "i": 0,
+          "theme": "light",
+          "pointerUnder": {},
+          "applied": "light",
+          "ok": true
+        },
+        {
+          "i": 1,
+          "theme": "dark",
+          "pointerUnder": {},
+          "applied": "dark",
+          "ok": true
+        },
+        {
+          "i": 2,
+          "theme": "system",
+          "pointerUnder": {},
+          "applied": "system",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "surface": "/prototype/",
+      "check": "view-mode",
+      "width": 1366,
+      "rows": [
+        {
+          "i": 0,
+          "mode": "editorial",
+          "px": 54,
+          "hitMode": "editorial",
+          "ok": true
+        },
+        {
+          "i": 0,
+          "mode": "editorial",
+          "px": 230,
+          "hitMode": "editorial",
+          "ok": true
+        },
+        {
+          "i": 1,
+          "mode": "gallery",
+          "px": 234,
+          "hitMode": "gallery",
+          "ok": true
+        },
+        {
+          "i": 1,
+          "mode": "gallery",
+          "px": 389.8,
+          "hitMode": "gallery",
+          "ok": true
+        },
+        {
+          "clickEditorialActive": "editorial",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "surface": "/prototype/",
+      "check": "view-mode",
+      "width": 390,
+      "rows": [
+        {
+          "i": 0,
+          "mode": "editorial",
+          "px": 26,
+          "hitMode": "editorial",
+          "ok": true
+        },
+        {
+          "i": 0,
+          "mode": "editorial",
+          "px": 202,
+          "hitMode": "editorial",
+          "ok": true
+        },
+        {
+          "i": 1,
+          "mode": "gallery",
+          "px": 206,
+          "hitMode": "gallery",
+          "ok": true
+        },
+        {
+          "i": 1,
+          "mode": "gallery",
+          "px": 361.8,
+          "hitMode": "gallery",
+          "ok": true
+        },
+        {
+          "clickEditorialActive": "editorial",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "surface": "/",
+      "check": "brand-search",
+      "width": 390,
+      "info": {
+        "pts": [
+          {
+            "x": 246,
+            "onBrand": true
+          },
+          {
+            "x": 243,
+            "onBrand": true
+          },
+          {
+            "x": 235,
+            "onBrand": true
+          }
+        ],
+        "beforeW": "37px",
+        "beforeH": "44px",
+        "searchRectW": 37
+      },
+      "ok": true
+    }
+  ],
+  "failures": []
+}

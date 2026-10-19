@@ -1,0 +1,46 @@
+{
+  "php-tests-final": {
+    "command": [
+      "php",
+      "artisan",
+      "test"
+    ],
+    "exit": 0
+  },
+  "php-random-final": {
+    "command": [
+      "php",
+      "artisan",
+      "test",
+      "--order-by=random"
+    ],
+    "exit": 0
+  },
+  "node-tests-final": {
+    "command": [
+      "node",
+      "--test",
+      "tests/task4-focus.test.mjs",
+      "tests/sw.test.mjs",
+      "tests/prototype-currency.test.mjs",
+      "tests/task4.test.mjs",
+      "tests/task3.test.mjs"
+    ],
+    "exit": 0
+  },
+  "pint-final": {
+    "command": [
+      "vendor/bin/pint",
+      "--test"
+    ],
+    "exit": 0
+  },
+  "build-final": {
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit": 0
+  }
+}

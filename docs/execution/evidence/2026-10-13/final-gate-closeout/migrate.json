@@ -1,0 +1,11 @@
+{
+  "label": "migrate",
+  "command": [
+    "scripts/amadis/launch.sh",
+    "migrate"
+  ],
+  "start": "2026-10-13T05:22:37.385403+00:00",
+  "finish": "2026-10-13T05:22:38.110349+00:00",
+  "seconds": 0.7249509579851292,
+  "returncode": 0
+}

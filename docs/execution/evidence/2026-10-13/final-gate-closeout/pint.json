@@ -1,0 +1,19 @@
+{
+  "label": "pint",
+  "command": [
+    "vendor/bin/pint",
+    "--test",
+    "app/Support/ComposerHooks.php",
+    "app/Http/Controllers/AdminOrderController.php",
+    "tests/Unit/ComposerHooksTest.php",
+    "tests/Feature/AdminOrderReportTest.php",
+    "scripts/amadis/server.php",
+    "scripts/amadis/connect_proxy.php",
+    "scripts/amadis/artisan.php",
+    "scripts/amadis/pdf-ui-fixture.php"
+  ],
+  "start": "2026-10-13T05:24:49.859620+00:00",
+  "finish": "2026-10-13T05:24:50.266873+00:00",
+  "seconds": 0.40726833400549367,
+  "returncode": 0
+}

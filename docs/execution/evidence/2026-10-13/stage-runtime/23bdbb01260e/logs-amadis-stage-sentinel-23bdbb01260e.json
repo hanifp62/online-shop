@@ -1,0 +1,7 @@
+{
+  "command": "docker logs amadis-stage-sentinel-23bdbb01260e",
+  "returncode": 0,
+  "platform": "Linux container",
+  "start": "2026-10-13T03:56:33Z",
+  "finish": "2026-10-13T03:56:33Z"
+}

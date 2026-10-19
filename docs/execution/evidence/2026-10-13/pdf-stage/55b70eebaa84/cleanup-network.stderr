@@ -1,0 +1,2 @@
+Error response from daemon: error while removing network: network amadis-stage-composer-55b70eebaa84 has active endpoints (name:"amadis-stage-composer-55b70eebaa84" id:"15c16895eb23")
+exit status 1

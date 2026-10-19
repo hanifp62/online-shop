@@ -1,0 +1,5 @@
+{
+  "command": "docker rm --force amadis-stage-composer-dfa208627395",
+  "returncode": 0,
+  "platform": "Linux container"
+}

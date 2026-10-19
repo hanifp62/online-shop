@@ -1,0 +1,5 @@
+{
+  "command": "docker run --detach --name amadis-stage-sentinel-ffcb1dd14491 --network amadis-stage-sentinel-ffcb1dd14491 --user '[REDACTED]' --cap-drop ALL --security-opt no-new-privileges:true --read-only --pids-limit 128 --memory 2g --cpus 2 --tmpfs /tmp:rw,nosuid,nodev,size=256m,mode=1777 --env HOME=/tmp --env COMPOSER_HOME=/tmp/composer --mount type=bind,src=/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-ffcb1dd14491,dst=/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-ffcb1dd14491,readonly=false --workdir /private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-ffcb1dd14491/repo composer@sha256:af98f42dfff7c68ba8d53c2164fd9fde1087b7d449514baa38c418b1f6bc4bac php /private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-ffcb1dd14491/sentinel.php",
+  "returncode": 0,
+  "platform": "Linux container"
+}

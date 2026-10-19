@@ -1,0 +1,462 @@
+{
+    "harness_sha256": "a27bc9acbe5b5879399439ea735456817f3ea84fb3a0dd215e9238aa7592dcb3",
+    "service_sha256": "4e27e486d16518e7cb90289e82fb6eaad27f7c7ba62f64a918772a29b6012f90",
+    "source_sha256": {
+        "app/Services/CheckoutService.php": "4e27e486d16518e7cb90289e82fb6eaad27f7c7ba62f64a918772a29b6012f90",
+        "app/Models/Order.php": "09a4a49de5fc8c610775585ea614aae44f6aed93ffc1370cec13f15e0e6dda00",
+        "app/Models/Voucher.php": "b564b1e0deea917dd8cf63e2cfadbb9b5662adad2cd672f80cb85f696362517d",
+        "app/Models/Product.php": "cb87ed8dc2d90ea250a466a781be13f27a3bb3de6f512ea0900f0fd759d3d16a",
+        "app/Observers/UserObserver.php": "7905d78af2f610576b3c7ed2e44978e4a6d14ada0145b4e4c1737dbb0104ac82",
+        "config/database.php": "edcbef9e80ec069241b3b6d898b358785df36ed74c61ac3a73a9ce9636941038",
+        "database/migrations/2026_10_12_000002_create_vouchers_table.php": "a39fbd80460e8e27fa0a9305221d07ba79d9a5226e80635f34b281f2a0ab998e",
+        "vendor/laravel/framework/src/Illuminate/Database/ConcurrencyErrorDetector.php": "d2e8b04b6d87b880c13aa6ba3d04dedd38316a91cc321d0c2b55239c79272921",
+        "vendor/laravel/framework/src/Illuminate/Database/Connectors/SQLiteConnector.php": "1feecd8c338c6d6b306d1cc69a39f440122c8bbdf8550dd1a829abbdcdddefa8"
+    },
+    "php": "8.5.11",
+    "laravel": "12.69.1",
+    "engine": "3.53.4",
+    "transaction_mode": "DEFERRED",
+    "journal_mode": "wal",
+    "busy_timeout_ms": 50,
+    "database": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/checkout-proof-3abacb85583efeb3/disposable.sqlite",
+    "mysql": "NOT_RUN",
+    "scenarios": {
+        "same-key": {
+            "workers": [
+                {
+                    "pid": 74731,
+                    "start": 1791996031.491812,
+                    "initial_lookup": 1791996031.493559,
+                    "initial_lookup_passed": 1791996031.494795,
+                    "transaction_read": 1791996031.496019,
+                    "end": 1791996031.499292,
+                    "status": 201,
+                    "error": null
+                },
+                {
+                    "pid": 74732,
+                    "start": 1791996031.492316,
+                    "initial_lookup": 1791996031.49374,
+                    "initial_lookup_passed": 1791996031.493859,
+                    "transaction_read": 1791996031.495842,
+                    "end": 1791996031.529691,
+                    "status": 200,
+                    "error": null
+                }
+            ],
+            "statuses": [
+                200,
+                201
+            ],
+            "expected": [
+                200,
+                201
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 9,
+            "used": 0,
+            "barrierProof": true,
+            "pass": true
+        },
+        "changed-address": {
+            "workers": [
+                {
+                    "pid": 74733,
+                    "start": 1791996031.538987,
+                    "initial_lookup": 1791996031.540424,
+                    "initial_lookup_passed": 1791996031.541646,
+                    "transaction_read": 1791996031.542001,
+                    "end": 1791996031.545388,
+                    "status": 201,
+                    "error": null
+                },
+                {
+                    "pid": 74734,
+                    "start": 1791996031.539459,
+                    "initial_lookup": 1791996031.540663,
+                    "initial_lookup_passed": 1791996031.540758,
+                    "transaction_read": 1791996031.541141,
+                    "end": 1791996031.570816,
+                    "status": 409,
+                    "error": {
+                        "class": "Symfony\\Component\\HttpKernel\\Exception\\HttpException",
+                        "code": 0
+                    }
+                }
+            ],
+            "statuses": [
+                201,
+                409
+            ],
+            "expected": [
+                201,
+                409
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 9,
+            "used": 0,
+            "barrierProof": true,
+            "pass": true
+        },
+        "distinct-voucher": {
+            "workers": [
+                {
+                    "pid": 74735,
+                    "start": 1791996031.579186,
+                    "initial_lookup": 1791996031.580627,
+                    "initial_lookup_passed": 1791996031.581847,
+                    "transaction_read": 1791996031.582211,
+                    "end": 1791996031.58433,
+                    "status": 201,
+                    "error": null
+                },
+                {
+                    "pid": 74736,
+                    "start": 1791996031.579602,
+                    "initial_lookup": 1791996031.580798,
+                    "initial_lookup_passed": 1791996031.580876,
+                    "transaction_read": 1791996031.581239,
+                    "end": 1791996031.618311,
+                    "status": 422,
+                    "error": {
+                        "class": "Illuminate\\Validation\\ValidationException",
+                        "code": 0
+                    }
+                }
+            ],
+            "statuses": [
+                201,
+                422
+            ],
+            "expected": [
+                201,
+                422
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 9,
+            "used": 1,
+            "barrierProof": true,
+            "pass": true
+        },
+        "distinct-key": {
+            "workers": [
+                {
+                    "pid": 74737,
+                    "start": 1791996031.626445,
+                    "initial_lookup": 1791996031.62778,
+                    "initial_lookup_passed": 1791996031.62813,
+                    "transaction_read": 1791996031.628499,
+                    "end": 1791996031.630477,
+                    "status": 201,
+                    "error": null
+                },
+                {
+                    "pid": 74738,
+                    "start": 1791996031.626937,
+                    "initial_lookup": 1791996031.628084,
+                    "initial_lookup_passed": 1791996031.62817,
+                    "transaction_read": 1791996031.628518,
+                    "end": 1791996031.657955,
+                    "status": 201,
+                    "error": null
+                }
+            ],
+            "statuses": [
+                201,
+                201
+            ],
+            "expected": [
+                201,
+                201
+            ],
+            "orders": 2,
+            "items": 2,
+            "stock": 8,
+            "used": 0,
+            "barrierProof": true,
+            "pass": true
+        },
+        "exact-one-stock": {
+            "workers": [
+                {
+                    "pid": 74739,
+                    "start": 1791996031.666077,
+                    "initial_lookup": 1791996031.667585,
+                    "initial_lookup_passed": 1791996031.668818,
+                    "transaction_read": 1791996031.669185,
+                    "end": 1791996031.671361,
+                    "status": 201,
+                    "error": null
+                },
+                {
+                    "pid": 74740,
+                    "start": 1791996031.666638,
+                    "initial_lookup": 1791996031.667841,
+                    "initial_lookup_passed": 1791996031.667932,
+                    "transaction_read": 1791996031.668313,
+                    "end": 1791996031.700742,
+                    "status": 422,
+                    "error": {
+                        "class": "Illuminate\\Validation\\ValidationException",
+                        "code": 0
+                    }
+                }
+            ],
+            "statuses": [
+                201,
+                422
+            ],
+            "expected": [
+                201,
+                422
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 0,
+            "used": 0,
+            "barrierProof": true,
+            "pass": true
+        },
+        "same-key-stock-one": {
+            "workers": [
+                {
+                    "pid": 74741,
+                    "start": 1791996031.711124,
+                    "initial_lookup": 1791996031.71256,
+                    "initial_lookup_passed": 1791996031.71378,
+                    "transaction_read": 1791996031.714158,
+                    "end": 1791996031.716137,
+                    "status": 201,
+                    "error": null
+                },
+                {
+                    "pid": 74742,
+                    "start": 1791996031.711618,
+                    "initial_lookup": 1791996031.71282,
+                    "initial_lookup_passed": 1791996031.712898,
+                    "transaction_read": 1791996031.713273,
+                    "end": 1791996031.743683,
+                    "status": 200,
+                    "error": null
+                }
+            ],
+            "statuses": [
+                200,
+                201
+            ],
+            "expected": [
+                200,
+                201
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 0,
+            "used": 0,
+            "barrierProof": true,
+            "pass": true
+        },
+        "voucher-last-per-user-one": {
+            "workers": [
+                {
+                    "pid": 74743,
+                    "start": 1791996031.754773,
+                    "initial_lookup": 1791996031.756296,
+                    "initial_lookup_passed": 1791996031.7564,
+                    "transaction_read": 1791996031.756798,
+                    "end": 1791996031.792036,
+                    "status": 422,
+                    "error": {
+                        "class": "Illuminate\\Validation\\ValidationException",
+                        "code": 0
+                    }
+                },
+                {
+                    "pid": 74744,
+                    "start": 1791996031.755066,
+                    "initial_lookup": 1791996031.756346,
+                    "initial_lookup_passed": 1791996031.756442,
+                    "transaction_read": 1791996031.756811,
+                    "end": 1791996031.75891,
+                    "status": 201,
+                    "error": null
+                }
+            ],
+            "statuses": [
+                201,
+                422
+            ],
+            "expected": [
+                201,
+                422
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 9,
+            "used": 1,
+            "barrierProof": true,
+            "pass": true
+        },
+        "same-key-voucher-last": {
+            "workers": [
+                {
+                    "pid": 74745,
+                    "start": 1791996031.800909,
+                    "initial_lookup": 1791996031.802386,
+                    "initial_lookup_passed": 1791996031.803606,
+                    "transaction_read": 1791996031.803984,
+                    "end": 1791996031.80616,
+                    "status": 201,
+                    "error": null
+                },
+                {
+                    "pid": 74746,
+                    "start": 1791996031.801386,
+                    "initial_lookup": 1791996031.802637,
+                    "initial_lookup_passed": 1791996031.802714,
+                    "transaction_read": 1791996031.803087,
+                    "end": 1791996031.833761,
+                    "status": 200,
+                    "error": null
+                }
+            ],
+            "statuses": [
+                200,
+                201
+            ],
+            "expected": [
+                200,
+                201
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 9,
+            "used": 1,
+            "barrierProof": true,
+            "pass": true
+        },
+        "combined-same-key": {
+            "workers": [
+                {
+                    "pid": 74747,
+                    "start": 1791996031.84549,
+                    "initial_lookup": 1791996031.846951,
+                    "initial_lookup_passed": 1791996031.848179,
+                    "transaction_read": 1791996031.848598,
+                    "end": 1791996031.850669,
+                    "status": 201,
+                    "error": null
+                },
+                {
+                    "pid": 74748,
+                    "start": 1791996031.846024,
+                    "initial_lookup": 1791996031.847241,
+                    "initial_lookup_passed": 1791996031.847317,
+                    "transaction_read": 1791996031.847687,
+                    "end": 1791996031.877934,
+                    "status": 200,
+                    "error": null
+                }
+            ],
+            "statuses": [
+                200,
+                201
+            ],
+            "expected": [
+                200,
+                201
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 0,
+            "used": 1,
+            "barrierProof": true,
+            "pass": true
+        },
+        "combined-distinct-key": {
+            "workers": [
+                {
+                    "pid": 74749,
+                    "start": 1791996031.887248,
+                    "initial_lookup": 1791996031.888695,
+                    "initial_lookup_passed": 1791996031.889926,
+                    "transaction_read": 1791996031.890286,
+                    "end": 1791996031.892491,
+                    "status": 201,
+                    "error": null
+                },
+                {
+                    "pid": 74750,
+                    "start": 1791996031.887679,
+                    "initial_lookup": 1791996031.888938,
+                    "initial_lookup_passed": 1791996031.889025,
+                    "transaction_read": 1791996031.889437,
+                    "end": 1791996031.923296,
+                    "status": 422,
+                    "error": {
+                        "class": "Illuminate\\Validation\\ValidationException",
+                        "code": 0
+                    }
+                }
+            ],
+            "statuses": [
+                201,
+                422
+            ],
+            "expected": [
+                201,
+                422
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 0,
+            "used": 1,
+            "barrierProof": true,
+            "pass": true
+        },
+        "double-cancel": {
+            "workers": [
+                {
+                    "pid": 74751,
+                    "start": 1791996031.935228,
+                    "initial_lookup": null,
+                    "initial_lookup_passed": null,
+                    "transaction_read": 1791996031.936238,
+                    "end": 1791996031.93819,
+                    "status": 409,
+                    "error": {
+                        "class": "Symfony\\Component\\HttpKernel\\Exception\\HttpException",
+                        "code": 0
+                    }
+                },
+                {
+                    "pid": 74752,
+                    "start": 1791996031.935626,
+                    "initial_lookup": null,
+                    "initial_lookup_passed": null,
+                    "transaction_read": 1791996031.936403,
+                    "end": 1791996031.937282,
+                    "status": 200,
+                    "error": null
+                }
+            ],
+            "statuses": [
+                200,
+                409
+            ],
+            "expected": [
+                200,
+                409
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 10,
+            "used": 0,
+            "barrierProof": "NOT_APPLICABLE",
+            "pass": true
+        }
+    },
+    "pass": true
+}

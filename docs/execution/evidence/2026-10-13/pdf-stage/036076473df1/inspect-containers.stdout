@@ -1,0 +1,782 @@
+[
+    {
+        "Id": "bb3c6872660ea1b0a47c6883ef971a33e0eae9964d31582c908db5a179800400",
+        "Created": "2026-10-12T19:38:54.609965346Z",
+        "Path": "/docker-entrypoint.sh",
+        "Args": [
+            "php",
+            "scripts/amadis/connect_proxy.php"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 2990,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-12T19:38:54.654483763Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:af98f42dfff7c68ba8d53c2164fd9fde1087b7d449514baa38c418b1f6bc4bac",
+        "ResolvConfPath": "/var/lib/docker/containers/bb3c6872660ea1b0a47c6883ef971a33e0eae9964d31582c908db5a179800400/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/bb3c6872660ea1b0a47c6883ef971a33e0eae9964d31582c908db5a179800400/hostname",
+        "HostsPath": "/var/lib/docker/containers/bb3c6872660ea1b0a47c6883ef971a33e0eae9964d31582c908db5a179800400/hosts",
+        "LogPath": "",
+        "Name": "/amadis-stage-proxy-036076473df1",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "local",
+                "Config": {}
+            },
+            "NetworkMode": "bridge",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": [
+                "ALL"
+            ],
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": true,
+            "SecurityOpt": [
+                "no-new-privileges:true"
+            ],
+            "Tmpfs": {
+                "/tmp": "rw,nosuid,nodev,size=256m,mode=1777"
+            },
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 2147483648,
+            "NanoCpus": 2000000000,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 4294967296,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": 128,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "Mounts": [
+                {
+                    "Type": "bind",
+                    "Source": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-036076473df1",
+                    "Target": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-036076473df1"
+                }
+            ],
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-036076473df1",
+                "Destination": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-036076473df1",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "bb3c6872660e",
+            "Domainname": "",
+            "User": "501:20",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "HOME=/tmp",
+                "COMPOSER_HOME=/tmp/composer",
+                "PROXY_LISTEN=0.0.0.0:8080",
+                "PROXY_ALLOW_NONLOOPBACK=1",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "PHPIZE_DEPS=autoconf \t\tdpkg-dev dpkg \t\tfile \t\tg++ \t\tgcc \t\tlibc-dev \t\tmake \t\tpkgconf \t\tre2c",
+                "PHP_INI_DIR=/usr/local/etc/php",
+                "PHP_CFLAGS=-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64",
+                "PHP_CPPFLAGS=-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64",
+                "PHP_LDFLAGS=-Wl,-O1 -pie",
+                "GPG_KEYS=[REDACTED] 49D9AF6BC72A80D6691719C8AA23F5BE9C7097D4 D95C03BC702BE9515344AE3374E44BC9067701A5",
+                "PHP_VERSION=8.5.11",
+                "PHP_URL=https://www.php.net/distributions/php-8.5.11.tar.xz",
+                "PHP_ASC_URL=https://www.php.net/distributions/php-8.5.11.tar.xz.asc",
+                "PHP_SHA256=d9be75c08e8c316f4c8f4194d8fbe1750a15f6a6d9d4e3fe72082abeeb800360",
+                "COMPOSER_ALLOW_SUPERUSER=1",
+                "COMPOSER_VERSION=2.10.3"
+            ],
+            "Cmd": [
+                "php",
+                "scripts/amadis/connect_proxy.php"
+            ],
+            "Image": "composer@sha256:af98f42dfff7c68ba8d53c2164fd9fde1087b7d449514baa38c418b1f6bc4bac",
+            "Volumes": null,
+            "WorkingDir": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-036076473df1/repo",
+            "Entrypoint": [
+                "/docker-entrypoint.sh"
+            ],
+            "Labels": {}
+        },
+        "NetworkSettings": {
+            "SandboxID": "e53c0f344e7bdb4e1ea04b1474d9c8b73c1be0a70ce9849d34984dfb372dba59",
+            "SandboxKey": "/var/run/docker/netns/e53c0f344e7b",
+            "Ports": {},
+            "Networks": {
+                "amadis-stage-composer-036076473df1": {
+                    "IPAMConfig": {},
+                    "Links": null,
+                    "Aliases": [
+                        "amadis-proxy"
+                    ],
+                    "DriverOpts": {},
+                    "GwPriority": 0,
+                    "NetworkID": "0558d9be96a631f68514aaad655de73b597466ba0b81070325a625363b19b728",
+                    "EndpointID": "b5abcfcc6c9d63570478659dd5c2e4b97b06a4dddee8c9bac2bb3e42b5de46f0",
+                    "Gateway": "",
+                    "IPAddress": "172.22.0.2",
+                    "MacAddress": "72:88:79:de:79:cd",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "amadis-stage-proxy-036076473df1",
+                        "amadis-proxy",
+                        "bb3c6872660e"
+                    ]
+                },
+                "amadis-stage-sentinel-036076473df1": {
+                    "IPAMConfig": {},
+                    "Links": null,
+                    "Aliases": [
+                        "amadis-proxy"
+                    ],
+                    "DriverOpts": {},
+                    "GwPriority": 0,
+                    "NetworkID": "01f906521ba26ac69cdf8c83509c2b0b21eb544ce380e26a7ac6941feb0aab08",
+                    "EndpointID": "a4e8ee7a834e80864f230e33a4665661897aeff989d5e168c0b53a756c6c092f",
+                    "Gateway": "",
+                    "IPAddress": "172.23.0.2",
+                    "MacAddress": "ee:8c:e4:34:35:2c",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "amadis-stage-proxy-036076473df1",
+                        "amadis-proxy",
+                        "bb3c6872660e"
+                    ]
+                },
+                "bridge": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "102c6cc94c80705335c675a2018310a2fec0e7fdd427fc4424dd27441068d81a",
+                    "EndpointID": "ada8b1858b891dd473aea55e1f4ff2b3284a79ca5b345579771e83c8b296e2fa",
+                    "Gateway": "172.17.0.1",
+                    "IPAddress": "172.17.0.2",
+                    "MacAddress": "5e:d4:41:5b:fd:83",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": null
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:6b0fbf488bd5f441362f6e9a67daf63f55f9fba8e5670e7292408150669d6171",
+            "size": 3611,
+            "annotations": {
+                "com.docker.official-images.bashbrew.arch": "arm64v8",
+                "org.opencontainers.image.base.digest": "sha256:db3eb93df82200779d37e1698c3b72b12bb60f1a5887516141478d925c41ad02",
+                "org.opencontainers.image.base.name": "php:8-alpine",
+                "org.opencontainers.image.created": "2026-09-24T19:28:15Z",
+                "org.opencontainers.image.revision": "a23788a1b4f65ad2dd090c3ee2a7ad9e35a7d9d1",
+                "org.opencontainers.image.source": "https://github.com/composer/docker.git#a23788a1b4f65ad2dd090c3ee2a7ad9e35a7d9d1:latest",
+                "org.opencontainers.image.url": "https://hub.docker.com/_/composer",
+                "org.opencontainers.image.version": "2.10.3"
+            },
+            "platform": {
+                "architecture": "arm64",
+                "os": "linux",
+                "variant": "v8"
+            }
+        }
+    },
+    {
+        "Id": "156237cedc7ea59b873bb3c947e8f6e7e4679d64e4f3a50ee3e9fc2a36d965c5",
+        "Created": "2026-10-12T19:38:54.790781471Z",
+        "Path": "/docker-entrypoint.sh",
+        "Args": [
+            "php",
+            "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-036076473df1/sentinel.php"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 3059,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-12T19:38:54.824082138Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:af98f42dfff7c68ba8d53c2164fd9fde1087b7d449514baa38c418b1f6bc4bac",
+        "ResolvConfPath": "/var/lib/docker/containers/156237cedc7ea59b873bb3c947e8f6e7e4679d64e4f3a50ee3e9fc2a36d965c5/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/156237cedc7ea59b873bb3c947e8f6e7e4679d64e4f3a50ee3e9fc2a36d965c5/hostname",
+        "HostsPath": "/var/lib/docker/containers/156237cedc7ea59b873bb3c947e8f6e7e4679d64e4f3a50ee3e9fc2a36d965c5/hosts",
+        "LogPath": "",
+        "Name": "/amadis-stage-sentinel-036076473df1",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "local",
+                "Config": {}
+            },
+            "NetworkMode": "amadis-stage-sentinel-036076473df1",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": [
+                "ALL"
+            ],
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": true,
+            "SecurityOpt": [
+                "no-new-privileges:true"
+            ],
+            "Tmpfs": {
+                "/tmp": "rw,nosuid,nodev,size=256m,mode=1777"
+            },
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 2147483648,
+            "NanoCpus": 2000000000,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 4294967296,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": 128,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "Mounts": [
+                {
+                    "Type": "bind",
+                    "Source": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-036076473df1",
+                    "Target": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-036076473df1"
+                }
+            ],
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-036076473df1",
+                "Destination": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-036076473df1",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "156237cedc7e",
+            "Domainname": "",
+            "User": "501:20",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "HOME=/tmp",
+                "COMPOSER_HOME=/tmp/composer",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "PHPIZE_DEPS=autoconf \t\tdpkg-dev dpkg \t\tfile \t\tg++ \t\tgcc \t\tlibc-dev \t\tmake \t\tpkgconf \t\tre2c",
+                "PHP_INI_DIR=/usr/local/etc/php",
+                "PHP_CFLAGS=-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64",
+                "PHP_CPPFLAGS=-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64",
+                "PHP_LDFLAGS=-Wl,-O1 -pie",
+                "GPG_KEYS=[REDACTED] 49D9AF6BC72A80D6691719C8AA23F5BE9C7097D4 D95C03BC702BE9515344AE3374E44BC9067701A5",
+                "PHP_VERSION=8.5.11",
+                "PHP_URL=https://www.php.net/distributions/php-8.5.11.tar.xz",
+                "PHP_ASC_URL=https://www.php.net/distributions/php-8.5.11.tar.xz.asc",
+                "PHP_SHA256=d9be75c08e8c316f4c8f4194d8fbe1750a15f6a6d9d4e3fe72082abeeb800360",
+                "COMPOSER_ALLOW_SUPERUSER=1",
+                "COMPOSER_VERSION=2.10.3"
+            ],
+            "Cmd": [
+                "php",
+                "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-036076473df1/sentinel.php"
+            ],
+            "Image": "composer@sha256:af98f42dfff7c68ba8d53c2164fd9fde1087b7d449514baa38c418b1f6bc4bac",
+            "Volumes": null,
+            "WorkingDir": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-036076473df1/repo",
+            "Entrypoint": [
+                "/docker-entrypoint.sh"
+            ],
+            "Labels": {}
+        },
+        "NetworkSettings": {
+            "SandboxID": "7495f79a4df30cae922cf206356ceafe0aaee511ea35da6753c62ca82e9c1138",
+            "SandboxKey": "/var/run/docker/netns/7495f79a4df3",
+            "Ports": {},
+            "Networks": {
+                "amadis-stage-sentinel-036076473df1": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "01f906521ba26ac69cdf8c83509c2b0b21eb544ce380e26a7ac6941feb0aab08",
+                    "EndpointID": "1660ce6f265c39984e7251d5c35bc20d8a5335a649485c8e66bea363c970868f",
+                    "Gateway": "",
+                    "IPAddress": "172.23.0.3",
+                    "MacAddress": "46:6d:1e:b3:8a:6e",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "amadis-stage-sentinel-036076473df1",
+                        "156237cedc7e"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:6b0fbf488bd5f441362f6e9a67daf63f55f9fba8e5670e7292408150669d6171",
+            "size": 3611,
+            "annotations": {
+                "com.docker.official-images.bashbrew.arch": "arm64v8",
+                "org.opencontainers.image.base.digest": "sha256:db3eb93df82200779d37e1698c3b72b12bb60f1a5887516141478d925c41ad02",
+                "org.opencontainers.image.base.name": "php:8-alpine",
+                "org.opencontainers.image.created": "2026-09-24T19:28:15Z",
+                "org.opencontainers.image.revision": "a23788a1b4f65ad2dd090c3ee2a7ad9e35a7d9d1",
+                "org.opencontainers.image.source": "https://github.com/composer/docker.git#a23788a1b4f65ad2dd090c3ee2a7ad9e35a7d9d1:latest",
+                "org.opencontainers.image.url": "https://hub.docker.com/_/composer",
+                "org.opencontainers.image.version": "2.10.3"
+            },
+            "platform": {
+                "architecture": "arm64",
+                "os": "linux",
+                "variant": "v8"
+            }
+        }
+    },
+    {
+        "Id": "21611ee51a321428446ab18b954b9c21f619599369c50602cad6f16ac2af6a51",
+        "Created": "2026-10-12T19:38:54.911905555Z",
+        "Path": "/docker-entrypoint.sh",
+        "Args": [
+            "sleep",
+            "600"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 3127,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-12T19:38:54.937526055Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:af98f42dfff7c68ba8d53c2164fd9fde1087b7d449514baa38c418b1f6bc4bac",
+        "ResolvConfPath": "/var/lib/docker/containers/21611ee51a321428446ab18b954b9c21f619599369c50602cad6f16ac2af6a51/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/21611ee51a321428446ab18b954b9c21f619599369c50602cad6f16ac2af6a51/hostname",
+        "HostsPath": "/var/lib/docker/containers/21611ee51a321428446ab18b954b9c21f619599369c50602cad6f16ac2af6a51/hosts",
+        "LogPath": "",
+        "Name": "/amadis-stage-composer-036076473df1",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "local",
+                "Config": {}
+            },
+            "NetworkMode": "amadis-stage-composer-036076473df1",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": [
+                "ALL"
+            ],
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": true,
+            "SecurityOpt": [
+                "no-new-privileges:true"
+            ],
+            "Tmpfs": {
+                "/tmp": "rw,nosuid,nodev,size=256m,mode=1777"
+            },
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 2147483648,
+            "NanoCpus": 2000000000,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 4294967296,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": 128,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "Mounts": [
+                {
+                    "Type": "bind",
+                    "Source": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-036076473df1",
+                    "Target": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-036076473df1"
+                }
+            ],
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-036076473df1",
+                "Destination": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-036076473df1",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "21611ee51a32",
+            "Domainname": "",
+            "User": "501:20",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "HOME=/tmp",
+                "COMPOSER_HOME=/tmp/composer",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "PHPIZE_DEPS=autoconf \t\tdpkg-dev dpkg \t\tfile \t\tg++ \t\tgcc \t\tlibc-dev \t\tmake \t\tpkgconf \t\tre2c",
+                "PHP_INI_DIR=/usr/local/etc/php",
+                "PHP_CFLAGS=-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64",
+                "PHP_CPPFLAGS=-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64",
+                "PHP_LDFLAGS=-Wl,-O1 -pie",
+                "GPG_KEYS=[REDACTED] 49D9AF6BC72A80D6691719C8AA23F5BE9C7097D4 D95C03BC702BE9515344AE3374E44BC9067701A5",
+                "PHP_VERSION=8.5.11",
+                "PHP_URL=https://www.php.net/distributions/php-8.5.11.tar.xz",
+                "PHP_ASC_URL=https://www.php.net/distributions/php-8.5.11.tar.xz.asc",
+                "PHP_SHA256=d9be75c08e8c316f4c8f4194d8fbe1750a15f6a6d9d4e3fe72082abeeb800360",
+                "COMPOSER_ALLOW_SUPERUSER=1",
+                "COMPOSER_VERSION=2.10.3"
+            ],
+            "Cmd": [
+                "sleep",
+                "600"
+            ],
+            "Image": "composer@sha256:af98f42dfff7c68ba8d53c2164fd9fde1087b7d449514baa38c418b1f6bc4bac",
+            "Volumes": null,
+            "WorkingDir": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-036076473df1/repo",
+            "Entrypoint": [
+                "/docker-entrypoint.sh"
+            ],
+            "Labels": {}
+        },
+        "NetworkSettings": {
+            "SandboxID": "0ab0023f491a73db315c276c4030e784771792158f2e2e546ee92cf3f0eefd52",
+            "SandboxKey": "/var/run/docker/netns/0ab0023f491a",
+            "Ports": {},
+            "Networks": {
+                "amadis-stage-composer-036076473df1": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "0558d9be96a631f68514aaad655de73b597466ba0b81070325a625363b19b728",
+                    "EndpointID": "ef1341fcd407796fa3a84eb83e6fe4f942bfea1f25dc85251a1374c8975609f8",
+                    "Gateway": "",
+                    "IPAddress": "172.22.0.3",
+                    "MacAddress": "56:1c:2d:0d:8c:43",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "amadis-stage-composer-036076473df1",
+                        "21611ee51a32"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:6b0fbf488bd5f441362f6e9a67daf63f55f9fba8e5670e7292408150669d6171",
+            "size": 3611,
+            "annotations": {
+                "com.docker.official-images.bashbrew.arch": "arm64v8",
+                "org.opencontainers.image.base.digest": "sha256:db3eb93df82200779d37e1698c3b72b12bb60f1a5887516141478d925c41ad02",
+                "org.opencontainers.image.base.name": "php:8-alpine",
+                "org.opencontainers.image.created": "2026-09-24T19:28:15Z",
+                "org.opencontainers.image.revision": "a23788a1b4f65ad2dd090c3ee2a7ad9e35a7d9d1",
+                "org.opencontainers.image.source": "https://github.com/composer/docker.git#a23788a1b4f65ad2dd090c3ee2a7ad9e35a7d9d1:latest",
+                "org.opencontainers.image.url": "https://hub.docker.com/_/composer",
+                "org.opencontainers.image.version": "2.10.3"
+            },
+            "platform": {
+                "architecture": "arm64",
+                "os": "linux",
+                "variant": "v8"
+            }
+        }
+    }
+]

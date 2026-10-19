@@ -1,0 +1,3 @@
+11396e0b0c5fc144d23bc3ed5e1fdcaba249649f7b23fb49025874934f9e4954  composer.json
+5e25a1716cffd43c6ee5c68c7cf753d8479c5ece7473bb98ce86e0a8e5cdae9c  composer.lock
+73d0dd974221c1d5db4ad536cc874e0c4bea5a5d1f404a4576a5754b4d5f5831  vendor/composer/installed.json

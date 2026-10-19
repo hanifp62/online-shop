@@ -1,0 +1,13 @@
+Structural check: execute public/js/zafira-core.js in node:vm, inspect window.Zafira.I18N (no regex parser).
+welcome.blade.php attribute keys: 118  dictionary union: 207
+id count 206 missingUsed [] missingVsUnion ["studio_monogram_desc"]
+en count 207 missingUsed [] missingVsUnion []
+fr count 206 missingUsed [] missingVsUnion ["studio_monogram_desc"]
+it count 206 missingUsed [] missingVsUnion ["studio_monogram_desc"]
+Finding: prior crude-parser editorial_* gaps were real (verified missing before fix); parity mismatch reported 9/8/9/1 was parser artifact. Real union gap: studio_monogram_desc absent in id/fr/it (used only by prototype/app.js with built-in fallback; not in welcome.blade.php), left unfixed.
+
+node --test tests/zafira-i18n.test.mjs:
+✔ exported dictionaries cover storefront translation attributes (0.713792ms)
+ℹ tests 1
+ℹ pass 1
+ℹ fail 0

@@ -1,0 +1,105 @@
+{
+  "evidence": "/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/tmpk2aodv7k/docs/execution/evidence/2026-10-13/pdf-stage/7dc5fe0c11ab",
+  "returncode": 1,
+  "predicates": {
+    "direct_egress": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "init": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "allowed_proxy": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "private_targets": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "class_load": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "install": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "artisan": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "parallel_tls": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "forbidden_proxy": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "topology": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "source_modes": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "platform-no-dev": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "hooks": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "change_scope": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "sentinel_direct_isolation": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "pins": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "platform": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "sqlite": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    },
+    "sentinel_proxy": {
+      "status": "FAIL",
+      "returncode": 1,
+      "detail": "missing or crashed probe"
+    }
+  }
+}
+{"gate": "init", "category": "docker_missing", "returncode": 127, "root": "/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/tmpfb9u9q8i/amadis-343e1f81720892e637e77ef6"}
+{"gate": "init", "category": "docker_unavailable", "returncode": 125, "root": "/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/tmpc9iboa87/amadis-d8abe433fd95a141656c2d50"}
+{"gate": "platform", "category": "passed", "returncode": 0, "root": "/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/tmpsdzdyl12/amadis-7a6b933027475076553490d9"}
+PDF candidate validated; no repository file changed

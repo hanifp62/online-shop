@@ -1,0 +1,991 @@
+{
+  "f1": {
+    "1024": {
+      "scrollY": 0,
+      "docH": 9289,
+      "announcement": {
+        "x": 279,
+        "y": 14,
+        "w": 297,
+        "h": 17,
+        "bottom": 32,
+        "right": 576
+      },
+      "header": {
+        "x": 0,
+        "y": 47,
+        "w": 1024,
+        "h": 82,
+        "bottom": 129,
+        "right": 1024
+      },
+      "headerPos": "sticky",
+      "h1": {
+        "t": "Born of Light,\nShaped by Elegance",
+        "x": 25,
+        "y": 581,
+        "w": 975,
+        "h": 78,
+        "bottom": 659,
+        "right": 1000
+      },
+      "heroButtons": [
+        {
+          "t": "Craft Studio & Savoir-Faire",
+          "x": 25,
+          "y": 755,
+          "w": 305,
+          "h": 42,
+          "bottom": 797,
+          "right": 330
+        },
+        {
+          "t": "Private Rendez-vous",
+          "x": 344,
+          "y": 756,
+          "w": 221,
+          "h": 40,
+          "bottom": 796,
+          "right": 564
+        }
+      ],
+      "navCount": 9,
+      "navOverlapPairs": 0,
+      "headerScrollW": 1024,
+      "headerClientW": 1024
+    },
+    "1366": {
+      "scrollY": 0,
+      "docH": 6164,
+      "announcement": {
+        "x": 317,
+        "y": 14,
+        "w": 601,
+        "h": 17,
+        "bottom": 32,
+        "right": 918
+      },
+      "header": {
+        "x": 0,
+        "y": 47,
+        "w": 1366,
+        "h": 69,
+        "bottom": 116,
+        "right": 1366
+      },
+      "headerPos": "sticky",
+      "h1": {
+        "t": "Born of Light,\nShaped by Elegance",
+        "x": 775,
+        "y": 271,
+        "w": 527,
+        "h": 109,
+        "bottom": 380,
+        "right": 1302
+      },
+      "heroButtons": [
+        {
+          "t": "Craft Studio & Savoir-Faire",
+          "x": 775,
+          "y": 476,
+          "w": 305,
+          "h": 42,
+          "bottom": 518,
+          "right": 1080
+        },
+        {
+          "t": "Private Rendez-vous",
+          "x": 775,
+          "y": 532,
+          "w": 221,
+          "h": 40,
+          "bottom": 572,
+          "right": 996
+        }
+      ],
+      "navCount": 9,
+      "navOverlapPairs": 0,
+      "headerScrollW": 1366,
+      "headerClientW": 1366
+    },
+    "1440": {
+      "scrollY": 0,
+      "docH": 6254,
+      "announcement": {
+        "x": 341,
+        "y": 14,
+        "w": 651,
+        "h": 17,
+        "bottom": 32,
+        "right": 992
+      },
+      "header": {
+        "x": 0,
+        "y": 47,
+        "w": 1440,
+        "h": 83,
+        "bottom": 130,
+        "right": 1440
+      },
+      "headerPos": "sticky",
+      "h1": {
+        "t": "Born of Light,\nShaped by Elegance",
+        "x": 814,
+        "y": 312,
+        "w": 562,
+        "h": 109,
+        "bottom": 421,
+        "right": 1376
+      },
+      "heroButtons": [
+        {
+          "t": "Craft Studio & Savoir-Faire",
+          "x": 814,
+          "y": 517,
+          "w": 305,
+          "h": 42,
+          "bottom": 559,
+          "right": 1119
+        },
+        {
+          "t": "Private Rendez-vous",
+          "x": 1133,
+          "y": 518,
+          "w": 221,
+          "h": 40,
+          "bottom": 558,
+          "right": 1353
+        }
+      ],
+      "navCount": 9,
+      "navOverlapPairs": 0,
+      "headerScrollW": 1440,
+      "headerClientW": 1440
+    },
+    "1650": {
+      "scrollY": 0,
+      "docH": 6254,
+      "announcement": {
+        "x": 411,
+        "y": 14,
+        "w": 791,
+        "h": 17,
+        "bottom": 32,
+        "right": 1202
+      },
+      "header": {
+        "x": 0,
+        "y": 47,
+        "w": 1650,
+        "h": 83,
+        "bottom": 130,
+        "right": 1650
+      },
+      "headerPos": "sticky",
+      "h1": {
+        "t": "Born of Light,\nShaped by Elegance",
+        "x": 923,
+        "y": 312,
+        "w": 663,
+        "h": 109,
+        "bottom": 421,
+        "right": 1586
+      },
+      "heroButtons": [
+        {
+          "t": "Craft Studio & Savoir-Faire",
+          "x": 923,
+          "y": 517,
+          "w": 305,
+          "h": 42,
+          "bottom": 559,
+          "right": 1228
+        },
+        {
+          "t": "Private Rendez-vous",
+          "x": 1242,
+          "y": 518,
+          "w": 221,
+          "h": 40,
+          "bottom": 558,
+          "right": 1462
+        }
+      ],
+      "navCount": 9,
+      "navOverlapPairs": 0,
+      "headerScrollW": 1650,
+      "headerClientW": 1650
+    }
+  },
+  "f2": {
+    "1024": {
+      "dockClass": "floating-luxury-dock",
+      "dockText": "ZAFIRA v4.1 · Multi-Lang Boutique Studio PDP VIP Account Atelier",
+      "dock": {
+        "x": 210,
+        "y": 673,
+        "w": 605,
+        "h": 71,
+        "bottom": 744,
+        "right": 814
+      },
+      "firstPaintOverlaps": [
+        {
+          "tag": "P",
+          "t": "Parisian elegance meets Italian mastery in every c",
+          "x": 25,
+          "y": 679,
+          "w": 520,
+          "h": 52,
+          "bottom": 731,
+          "right": 545
+        }
+      ],
+      "kebayaTitle": {
+        "x": 48,
+        "y": 2412,
+        "w": 928,
+        "h": 41,
+        "bottom": 2453,
+        "right": 976
+      },
+      "kebayaTitleInFirstViewport": false,
+      "scrolledToKebaya": {
+        "scrollY": 456,
+        "kebaya": {
+          "x": 48,
+          "y": 1956,
+          "w": 928,
+          "h": 41,
+          "bottom": 1997,
+          "right": 976
+        },
+        "header": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 82,
+          "bottom": 82,
+          "right": 1024
+        }
+      }
+    },
+    "1366": {
+      "dockClass": "floating-luxury-dock",
+      "dockText": "ZAFIRA v4.1 · Multi-Lang Boutique Studio PDP VIP Account Atelier",
+      "dock": {
+        "x": 342,
+        "y": 686,
+        "w": 683,
+        "h": 58,
+        "bottom": 744,
+        "right": 1025
+      },
+      "firstPaintOverlaps": [
+        {
+          "tag": "IMG",
+          "t": "ZAFIRA Haute Couture Editorial Runway",
+          "x": 0,
+          "y": 116,
+          "w": 710,
+          "h": 579,
+          "bottom": 695,
+          "right": 710
+        }
+      ],
+      "kebayaTitle": {
+        "x": 781,
+        "y": 1221,
+        "w": 517,
+        "h": 41,
+        "bottom": 1262,
+        "right": 1298
+      },
+      "kebayaTitleInFirstViewport": false,
+      "scrolledToKebaya": {
+        "scrollY": 366,
+        "kebaya": {
+          "x": 781,
+          "y": 855,
+          "w": 517,
+          "h": 41,
+          "bottom": 896,
+          "right": 1298
+        },
+        "header": {
+          "x": 0,
+          "y": 0,
+          "w": 1366,
+          "h": 69,
+          "bottom": 69,
+          "right": 1366
+        }
+      }
+    },
+    "1440": {
+      "dockClass": "floating-luxury-dock",
+      "dockText": "ZAFIRA v4.1 · Multi-Lang Boutique Studio PDP VIP Account Atelier",
+      "dock": {
+        "x": 366,
+        "y": 818,
+        "w": 707,
+        "h": 58,
+        "bottom": 876,
+        "right": 1074
+      },
+      "firstPaintOverlaps": [
+        {
+          "tag": "BUTTON",
+          "t": "COUTURE CAPSULE",
+          "x": 352,
+          "y": 830,
+          "w": 168,
+          "h": 44,
+          "bottom": 874,
+          "right": 520
+        },
+        {
+          "tag": "BUTTON",
+          "t": "WOMEN'S FASHION",
+          "x": 528,
+          "y": 830,
+          "w": 163,
+          "h": 44,
+          "bottom": 874,
+          "right": 691
+        },
+        {
+          "tag": "BUTTON",
+          "t": "MEN'S TAILORING",
+          "x": 699,
+          "y": 830,
+          "w": 155,
+          "h": 44,
+          "bottom": 874,
+          "right": 854
+        },
+        {
+          "tag": "BUTTON",
+          "t": "EVENING BAGS",
+          "x": 862,
+          "y": 830,
+          "w": 138,
+          "h": 44,
+          "bottom": 874,
+          "right": 1000
+        },
+        {
+          "tag": "BUTTON",
+          "t": "SYAL SUTRA",
+          "x": 1008,
+          "y": 830,
+          "w": 120,
+          "h": 44,
+          "bottom": 874,
+          "right": 1128
+        }
+      ],
+      "kebayaTitle": {
+        "x": 820,
+        "y": 1259,
+        "w": 532,
+        "h": 41,
+        "bottom": 1300,
+        "right": 1352
+      },
+      "kebayaTitleInFirstViewport": false,
+      "scrolledToKebaya": {
+        "scrollY": 356,
+        "kebaya": {
+          "x": 820,
+          "y": 903,
+          "w": 532,
+          "h": 41,
+          "bottom": 944,
+          "right": 1352
+        },
+        "header": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 83,
+          "bottom": 83,
+          "right": 1440
+        }
+      }
+    },
+    "1650": {
+      "dockClass": "floating-luxury-dock",
+      "dockText": "ZAFIRA v4.1 · Multi-Lang Boutique Studio PDP VIP Account Atelier",
+      "dock": {
+        "x": 471,
+        "y": 845,
+        "w": 707,
+        "h": 58,
+        "bottom": 903,
+        "right": 1179
+      },
+      "firstPaintOverlaps": [
+        {
+          "tag": "BUTTON",
+          "t": "COUTURE CAPSULE",
+          "x": 457,
+          "y": 830,
+          "w": 168,
+          "h": 44,
+          "bottom": 874,
+          "right": 625
+        },
+        {
+          "tag": "BUTTON",
+          "t": "WOMEN'S FASHION",
+          "x": 633,
+          "y": 830,
+          "w": 163,
+          "h": 44,
+          "bottom": 874,
+          "right": 796
+        },
+        {
+          "tag": "BUTTON",
+          "t": "MEN'S TAILORING",
+          "x": 804,
+          "y": 830,
+          "w": 155,
+          "h": 44,
+          "bottom": 874,
+          "right": 959
+        },
+        {
+          "tag": "BUTTON",
+          "t": "EVENING BAGS",
+          "x": 967,
+          "y": 830,
+          "w": 138,
+          "h": 44,
+          "bottom": 874,
+          "right": 1105
+        },
+        {
+          "tag": "BUTTON",
+          "t": "SYAL SUTRA",
+          "x": 1113,
+          "y": 830,
+          "w": 120,
+          "h": 44,
+          "bottom": 874,
+          "right": 1233
+        },
+        {
+          "tag": "BUTTON",
+          "t": "TAMPILAN GALERI",
+          "x": 357,
+          "y": 896,
+          "w": 160,
+          "h": 24,
+          "bottom": 920,
+          "right": 517
+        }
+      ],
+      "kebayaTitle": {
+        "x": 925,
+        "y": 1259,
+        "w": 532,
+        "h": 41,
+        "bottom": 1300,
+        "right": 1457
+      },
+      "kebayaTitleInFirstViewport": false,
+      "scrolledToKebaya": {
+        "scrollY": 316,
+        "kebaya": {
+          "x": 925,
+          "y": 943,
+          "w": 532,
+          "h": 41,
+          "bottom": 984,
+          "right": 1457
+        },
+        "header": {
+          "x": 0,
+          "y": 0,
+          "w": 1650,
+          "h": 83,
+          "bottom": 83,
+          "right": 1650
+        }
+      }
+    }
+  },
+  "f8": {
+    "en-1366": {
+      "text": "Complimentary signature gift wrapping & white-glove insured delivery across the archipelago & worldwide",
+      "renderedW": 810,
+      "scrollWidth": 0,
+      "clientWidth": 0,
+      "truncated": false,
+      "textOverflow": "clip",
+      "overflow": "visible",
+      "whiteSpace": "nowrap",
+      "parentTextOverflow": "ellipsis",
+      "parentScrollW": 842,
+      "parentClientW": 601
+    },
+    "id-1366": {
+      "text": "Complimentary signature gift wrapping & pengiriman berpendingin ke seluruh Nusantara",
+      "renderedW": 662,
+      "scrollWidth": 0,
+      "clientWidth": 0,
+      "truncated": false,
+      "textOverflow": "clip",
+      "overflow": "visible",
+      "whiteSpace": "nowrap",
+      "parentTextOverflow": "ellipsis",
+      "parentScrollW": 694,
+      "parentClientW": 606
+    },
+    "fr-1366": {
+      "text": "Emballage signature offert & expédition assurée sur tout l'archipel et à l'international",
+      "renderedW": 667,
+      "scrollWidth": 0,
+      "clientWidth": 0,
+      "truncated": false,
+      "textOverflow": "clip",
+      "overflow": "visible",
+      "whiteSpace": "nowrap",
+      "parentTextOverflow": "ellipsis",
+      "parentScrollW": 699,
+      "parentClientW": 611
+    },
+    "it-1366": {
+      "text": "Confezione regalo d'autore in omaggio & spedizione protetta in tutto l'arcipelago e nel mondo",
+      "renderedW": 716,
+      "scrollWidth": 0,
+      "clientWidth": 0,
+      "truncated": false,
+      "textOverflow": "clip",
+      "overflow": "visible",
+      "whiteSpace": "nowrap",
+      "parentTextOverflow": "ellipsis",
+      "parentScrollW": 748,
+      "parentClientW": 592
+    },
+    "en-1440": {
+      "text": "Complimentary signature gift wrapping & white-glove insured delivery across the archipelago & worldwide",
+      "renderedW": 810,
+      "scrollWidth": 0,
+      "clientWidth": 0,
+      "truncated": false,
+      "textOverflow": "clip",
+      "overflow": "visible",
+      "whiteSpace": "nowrap",
+      "parentTextOverflow": "ellipsis",
+      "parentScrollW": 842,
+      "parentClientW": 651
+    },
+    "id-1440": {
+      "text": "Complimentary signature gift wrapping & pengiriman berpendingin ke seluruh Nusantara",
+      "renderedW": 662,
+      "scrollWidth": 0,
+      "clientWidth": 0,
+      "truncated": false,
+      "textOverflow": "clip",
+      "overflow": "visible",
+      "whiteSpace": "nowrap",
+      "parentTextOverflow": "ellipsis",
+      "parentScrollW": 694,
+      "parentClientW": 656
+    },
+    "fr-1440": {
+      "text": "Emballage signature offert & expédition assurée sur tout l'archipel et à l'international",
+      "renderedW": 667,
+      "scrollWidth": 0,
+      "clientWidth": 0,
+      "truncated": false,
+      "textOverflow": "clip",
+      "overflow": "visible",
+      "whiteSpace": "nowrap",
+      "parentTextOverflow": "ellipsis",
+      "parentScrollW": 699,
+      "parentClientW": 661
+    },
+    "it-1440": {
+      "text": "Confezione regalo d'autore in omaggio & spedizione protetta in tutto l'arcipelago e nel mondo",
+      "renderedW": 716,
+      "scrollWidth": 0,
+      "clientWidth": 0,
+      "truncated": false,
+      "textOverflow": "clip",
+      "overflow": "visible",
+      "whiteSpace": "nowrap",
+      "parentTextOverflow": "ellipsis",
+      "parentScrollW": 748,
+      "parentClientW": 641
+    },
+    "en-1650": {
+      "text": "Complimentary signature gift wrapping & white-glove insured delivery across the archipelago & worldwide",
+      "renderedW": 810,
+      "scrollWidth": 0,
+      "clientWidth": 0,
+      "truncated": false,
+      "textOverflow": "clip",
+      "overflow": "visible",
+      "whiteSpace": "nowrap",
+      "parentTextOverflow": "ellipsis",
+      "parentScrollW": 842,
+      "parentClientW": 791
+    },
+    "id-1650": {
+      "text": "Complimentary signature gift wrapping & pengiriman berpendingin ke seluruh Nusantara",
+      "renderedW": 662,
+      "scrollWidth": 0,
+      "clientWidth": 0,
+      "truncated": false,
+      "textOverflow": "clip",
+      "overflow": "visible",
+      "whiteSpace": "nowrap",
+      "parentTextOverflow": "ellipsis",
+      "parentScrollW": 796,
+      "parentClientW": 796
+    },
+    "fr-1650": {
+      "text": "Emballage signature offert & expédition assurée sur tout l'archipel et à l'international",
+      "renderedW": 667,
+      "scrollWidth": 0,
+      "clientWidth": 0,
+      "truncated": false,
+      "textOverflow": "clip",
+      "overflow": "visible",
+      "whiteSpace": "nowrap",
+      "parentTextOverflow": "ellipsis",
+      "parentScrollW": 801,
+      "parentClientW": 801
+    },
+    "it-1650": {
+      "text": "Confezione regalo d'autore in omaggio & spedizione protetta in tutto l'arcipelago e nel mondo",
+      "renderedW": 716,
+      "scrollWidth": 0,
+      "clientWidth": 0,
+      "truncated": false,
+      "textOverflow": "clip",
+      "overflow": "visible",
+      "whiteSpace": "nowrap",
+      "parentTextOverflow": "ellipsis",
+      "parentScrollW": 781,
+      "parentClientW": 781
+    }
+  },
+  "f7": {
+    "en-1366": {
+      "h1": {
+        "x": 388,
+        "y": 300,
+        "w": 590,
+        "h": 150,
+        "bottom": 449,
+        "right": 978
+      },
+      "sub": {
+        "x": 393,
+        "y": 473,
+        "w": 580,
+        "h": 51,
+        "bottom": 524,
+        "right": 973
+      },
+      "color": "rgb(255, 255, 255)",
+      "subColor": "rgba(255, 255, 255, 0.88)",
+      "shadow": "rgba(0, 0, 0, 0.4) 0px 4px 24px",
+      "scrims": [
+        {
+          "cls": "hero-overlay",
+          "bg": "rgba(8, 16, 29, 0.45)",
+          "img": "none"
+        },
+        {
+          "cls": "",
+          "bg": "rgba(182, 154, 100, 0.65)",
+          "img": "none"
+        },
+        {
+          "cls": "",
+          "bg": "rgba(182, 154, 100, 0.65)",
+          "img": "none"
+        }
+      ],
+      "stat": {
+        "h1": {
+          "samples": 12643,
+          "lumMedian": 0.055,
+          "lumP95": 0.113,
+          "lumMax": 0.137,
+          "contrastAtMedian": 9.97,
+          "contrastAtP95": 6.44,
+          "contrastWorst": 5.61,
+          "pctBelow4_5": 0,
+          "pctBelow3": 0
+        },
+        "sub": {
+          "samples": 4226,
+          "lumMedian": 0.035,
+          "lumP95": 0.117,
+          "lumMax": 0.144,
+          "contrastAtMedian": 12.29,
+          "contrastAtP95": 6.3,
+          "contrastWorst": 5.42,
+          "pctBelow4_5": 0,
+          "pctBelow3": 0
+        }
+      }
+    },
+    "en-1440": {
+      "h1": {
+        "x": 425,
+        "y": 366,
+        "w": 590,
+        "h": 150,
+        "bottom": 515,
+        "right": 1015
+      },
+      "sub": {
+        "x": 430,
+        "y": 539,
+        "w": 580,
+        "h": 51,
+        "bottom": 590,
+        "right": 1010
+      },
+      "color": "rgb(255, 255, 255)",
+      "subColor": "rgba(255, 255, 255, 0.88)",
+      "shadow": "rgba(0, 0, 0, 0.4) 0px 4px 24px",
+      "scrims": [
+        {
+          "cls": "hero-overlay",
+          "bg": "rgba(8, 16, 29, 0.45)",
+          "img": "none"
+        },
+        {
+          "cls": "",
+          "bg": "rgba(182, 154, 100, 0.65)",
+          "img": "none"
+        },
+        {
+          "cls": "",
+          "bg": "rgba(182, 154, 100, 0.65)",
+          "img": "none"
+        }
+      ],
+      "stat": {
+        "h1": {
+          "samples": 12643,
+          "lumMedian": 0.044,
+          "lumP95": 0.107,
+          "lumMax": 0.131,
+          "contrastAtMedian": 11.15,
+          "contrastAtP95": 6.69,
+          "contrastWorst": 5.81,
+          "pctBelow4_5": 0,
+          "pctBelow3": 0
+        },
+        "sub": {
+          "samples": 4226,
+          "lumMedian": 0.032,
+          "lumP95": 0.105,
+          "lumMax": 0.135,
+          "contrastAtMedian": 12.74,
+          "contrastAtP95": 6.78,
+          "contrastWorst": 5.68,
+          "pctBelow4_5": 0,
+          "pctBelow3": 0
+        }
+      }
+    },
+    "en-1650": {
+      "h1": {
+        "x": 530,
+        "y": 379,
+        "w": 590,
+        "h": 150,
+        "bottom": 529,
+        "right": 1120
+      },
+      "sub": {
+        "x": 535,
+        "y": 553,
+        "w": 580,
+        "h": 51,
+        "bottom": 604,
+        "right": 1115
+      },
+      "color": "rgb(255, 255, 255)",
+      "subColor": "rgba(255, 255, 255, 0.88)",
+      "shadow": "rgba(0, 0, 0, 0.4) 0px 4px 24px",
+      "scrims": [
+        {
+          "cls": "hero-overlay",
+          "bg": "rgba(8, 16, 29, 0.45)",
+          "img": "none"
+        },
+        {
+          "cls": "",
+          "bg": "rgba(182, 154, 100, 0.65)",
+          "img": "none"
+        },
+        {
+          "cls": "",
+          "bg": "rgba(182, 154, 100, 0.65)",
+          "img": "none"
+        }
+      ],
+      "stat": {
+        "h1": {
+          "samples": 12643,
+          "lumMedian": 0.041,
+          "lumP95": 0.095,
+          "lumMax": 0.108,
+          "contrastAtMedian": 11.5,
+          "contrastAtP95": 7.23,
+          "contrastWorst": 6.66,
+          "pctBelow4_5": 0,
+          "pctBelow3": 0
+        },
+        "sub": {
+          "samples": 4226,
+          "lumMedian": 0.024,
+          "lumP95": 0.087,
+          "lumMax": 0.109,
+          "contrastAtMedian": 14.19,
+          "contrastAtP95": 7.69,
+          "contrastWorst": 6.62,
+          "pctBelow4_5": 0,
+          "pctBelow3": 0
+        }
+      }
+    },
+    "id-1440": {
+      "h1": {
+        "x": 340,
+        "y": 328,
+        "w": 760,
+        "h": 224,
+        "bottom": 553,
+        "right": 1100
+      },
+      "sub": {
+        "x": 430,
+        "y": 577,
+        "w": 580,
+        "h": 51,
+        "bottom": 628,
+        "right": 1010
+      },
+      "color": "rgb(255, 255, 255)",
+      "subColor": "rgba(255, 255, 255, 0.88)",
+      "shadow": "rgba(0, 0, 0, 0.4) 0px 4px 24px",
+      "scrims": [
+        {
+          "cls": "hero-overlay",
+          "bg": "rgba(8, 16, 29, 0.45)",
+          "img": "none"
+        },
+        {
+          "cls": "",
+          "bg": "rgba(182, 154, 100, 0.65)",
+          "img": "none"
+        },
+        {
+          "cls": "",
+          "bg": "rgba(182, 154, 100, 0.65)",
+          "img": "none"
+        }
+      ],
+      "stat": {
+        "h1": {
+          "samples": 24320,
+          "lumMedian": 0.064,
+          "lumP95": 0.134,
+          "lumMax": 0.137,
+          "contrastAtMedian": 9.19,
+          "contrastAtP95": 5.7,
+          "contrastWorst": 5.6,
+          "pctBelow4_5": 0,
+          "pctBelow3": 0
+        },
+        "sub": {
+          "samples": 4226,
+          "lumMedian": 0.028,
+          "lumP95": 0.112,
+          "lumMax": 0.138,
+          "contrastAtMedian": 13.41,
+          "contrastAtP95": 6.5,
+          "contrastWorst": 5.59,
+          "pctBelow4_5": 0,
+          "pctBelow3": 0
+        }
+      }
+    },
+    "id-1650": {
+      "h1": {
+        "x": 445,
+        "y": 342,
+        "w": 760,
+        "h": 224,
+        "bottom": 566,
+        "right": 1205
+      },
+      "sub": {
+        "x": 535,
+        "y": 590,
+        "w": 580,
+        "h": 51,
+        "bottom": 641,
+        "right": 1115
+      },
+      "color": "rgb(255, 255, 255)",
+      "subColor": "rgba(255, 255, 255, 0.88)",
+      "shadow": "rgba(0, 0, 0, 0.4) 0px 4px 24px",
+      "scrims": [
+        {
+          "cls": "hero-overlay",
+          "bg": "rgba(8, 16, 29, 0.45)",
+          "img": "none"
+        },
+        {
+          "cls": "",
+          "bg": "rgba(182, 154, 100, 0.65)",
+          "img": "none"
+        },
+        {
+          "cls": "",
+          "bg": "rgba(182, 154, 100, 0.65)",
+          "img": "none"
+        }
+      ],
+      "stat": {
+        "h1": {
+          "samples": 24320,
+          "lumMedian": 0.058,
+          "lumP95": 0.13,
+          "lumMax": 0.137,
+          "contrastAtMedian": 9.68,
+          "contrastAtP95": 5.84,
+          "contrastWorst": 5.6,
+          "pctBelow4_5": 0,
+          "pctBelow3": 0
+        },
+        "sub": {
+          "samples": 4226,
+          "lumMedian": 0.024,
+          "lumP95": 0.092,
+          "lumMax": 0.109,
+          "contrastAtMedian": 14.22,
+          "contrastAtP95": 7.38,
+          "contrastWorst": 6.61,
+          "pctBelow4_5": 0,
+          "pctBelow3": 0
+        }
+      }
+    }
+  },
+  "f3keys": null
+}

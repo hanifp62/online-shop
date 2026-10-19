@@ -1,0 +1,3 @@
+e4c26a812a967b6cd786ac2d2c5dd1b1e95f4d1150dc79c2911c723719052c6b  REMEDIATION_PACKET_v2.zip
+size=7641859 members=162 manifest_sha256=0aa3f5e0aa92cd7b761aca11158776a20c263d8c7bd1dbfae417ccb9f3252d12
+verified=unzip -tq OK; extracted MANIFEST.sha256 OK; v1 and AUDIT_PACKET hashes unchanged

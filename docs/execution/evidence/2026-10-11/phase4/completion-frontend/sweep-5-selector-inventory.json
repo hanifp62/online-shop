@@ -1,0 +1,3394 @@
+[
+  {
+    "surface": "/",
+    "lang": "id",
+    "width": 390,
+    "targets": [
+      {
+        "selector": "a.skip-link",
+        "label": "Lewati ke konten utama",
+        "w": 183.875,
+        "h": 42.390625
+      },
+      {
+        "selector": "button.icon-button.mobile-menu-button",
+        "label": "Buka menu",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "a.brand",
+        "label": "ZAFIRA: kembali ke beranda",
+        "w": 131.890625,
+        "h": 22
+      },
+      {
+        "selector": "button.icon-button",
+        "label": "Cari",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "#btn-header-profile",
+        "label": "Profil VIP & Pilihan Salon",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.icon-button",
+        "label": "Buka tas belanja",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "a.brand.brand-horizontal",
+        "label": "ZAFIRA beranda",
+        "w": 138.890625,
+        "h": 32
+      },
+      {
+        "selector": "button.icon-button",
+        "label": "Tutup menu",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.lang-btn.active",
+        "label": "ID",
+        "w": 12.640625,
+        "h": 24.390625
+      },
+      {
+        "selector": "button.lang-btn",
+        "label": "EN",
+        "w": 12.640625,
+        "h": 24.390625
+      },
+      {
+        "selector": "button.lang-btn",
+        "label": "FR",
+        "w": 12.640625,
+        "h": 24.390625
+      },
+      {
+        "selector": "button.lang-btn",
+        "label": "IT",
+        "w": 12.640625,
+        "h": 24.390625
+      },
+      {
+        "selector": "button.theme-btn.active",
+        "label": "",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.theme-btn",
+        "label": "",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.theme-btn",
+        "label": "",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "a.",
+        "label": "Masuk",
+        "w": 59.515625,
+        "h": 24.390625
+      },
+      {
+        "selector": "button.",
+        "label": "Favorit 0",
+        "w": 82.046875,
+        "h": 24.390625
+      },
+      {
+        "selector": "button.text-link.light.mobile-concierge",
+        "label": "Rendez-vous privat",
+        "w": 111.203125,
+        "h": 12.796875
+      },
+      {
+        "selector": "button.filter-pill.active",
+        "label": "Semua",
+        "w": 70.515625,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Busana Wanita",
+        "w": 118.71875,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Busana Pria",
+        "w": 103.921875,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Tas Tangan",
+        "w": 99.015625,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Sepatu",
+        "w": 74.078125,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Aksesori",
+        "w": 87.21875,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Perhiasan",
+        "w": 94.125,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Warisan Nusantara",
+        "w": 148.3125,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Koleksi Kapsul",
+        "w": 123.140625,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "QA Cat 1791726291332",
+        "w": 151.75,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "QA Cat 1791726473464",
+        "w": 151.75,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "QA Cat 1791726641016",
+        "w": 151.75,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "QA Cat 1791726713940 Edit",
+        "w": 179.25,
+        "h": 34.390625
+      },
+      {
+        "selector": "#live-catalog-search-input",
+        "label": "",
+        "w": 340,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Sac Séraphine ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Sac Séraphine",
+        "w": 113.0625,
+        "h": 20.734375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Sac Séraphine ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Trench Céleste ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Trench Céleste",
+        "w": 119.5625,
+        "h": 20.734375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Trench Céleste ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Robe Élan ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Robe Élan",
+        "w": 81.5625,
+        "h": 20.734375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Robe Élan ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Mocassin Riva ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Mocassin Riva",
+        "w": 113.546875,
+        "h": 20.734375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Mocassin Riva ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Minaudière Saphir ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Minaudière Saphir",
+        "w": 125,
+        "h": 41.46875
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Minaudière Saphir ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Manteau Firenze ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Manteau Firenze",
+        "w": 125,
+        "h": 41.46875
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Manteau Firenze ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Carré Lumière ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Carré Lumière",
+        "w": 116.34375,
+        "h": 20.734375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Carré Lumière ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Montre Nocturne ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Montre Nocturne",
+        "w": 125,
+        "h": 41.46875
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Montre Nocturne ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Kebaya Lumière ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Kebaya Lumière",
+        "w": 125,
+        "h": 41.46875
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Kebaya Lumière ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Chemise Rivière ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Chemise Rivière",
+        "w": 125,
+        "h": 41.46875
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Chemise Rivière ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Écharpe Éclat ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Écharpe Éclat",
+        "w": 110.484375,
+        "h": 20.734375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Écharpe Éclat ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Robe Aurore ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Robe Aurore",
+        "w": 102.953125,
+        "h": 20.734375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Robe Aurore ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "a.text-link.light",
+        "label": "Kisah Maison",
+        "w": 340,
+        "h": 16
+      },
+      {
+        "selector": "#monogram-input",
+        "label": "",
+        "w": 154.296875,
+        "h": 42.59375
+      },
+      {
+        "selector": "button.foil.active",
+        "label": "Emas",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.foil",
+        "label": "Perak",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.foil",
+        "label": "Safir",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "#btn-ribbon-gold",
+        "label": "Pita Emas (Ori)",
+        "w": 141.0625,
+        "h": 36
+      },
+      {
+        "selector": "#btn-ribbon-sapphire",
+        "label": "Pita Safir (Saphir)",
+        "w": 168.171875,
+        "h": 36
+      },
+      {
+        "selector": "a.",
+        "label": "Wanita",
+        "w": 49.28125,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Pria",
+        "w": 28.53125,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Tas Tangan",
+        "w": 78.0625,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Aksesori",
+        "w": 61.265625,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Kisah Kami",
+        "w": 78,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Atelier Z",
+        "w": 60.59375,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Layanan",
+        "w": 58.421875,
+        "h": 24
+      },
+      {
+        "selector": "button.",
+        "label": "Rendez-vous",
+        "w": 88.640625,
+        "h": 24
+      },
+      {
+        "selector": "#welcome-footer-lang-select",
+        "label": "Pilih Bahasa / Select Language",
+        "w": 238,
+        "h": 30
+      },
+      {
+        "selector": "#welcome-footer-theme-select",
+        "label": "Mode Tampilan / Display Mode",
+        "w": 187,
+        "h": 30
+      },
+      {
+        "selector": "button.text-link",
+        "label": "Buka panduan pintasan keyboard",
+        "w": 86.546875,
+        "h": 17.59375
+      },
+      {
+        "selector": "a.",
+        "label": "Ketentuan",
+        "w": 54.21875,
+        "h": 12.796875
+      },
+      {
+        "selector": "a.",
+        "label": "Indonesia / ID",
+        "w": 67.203125,
+        "h": 12.796875
+      },
+      {
+        "selector": "a.",
+        "label": "Instagram ZAFIRA",
+        "w": 15,
+        "h": 22
+      }
+    ]
+  },
+  {
+    "surface": "/",
+    "lang": "id",
+    "width": 1440,
+    "targets": [
+      {
+        "selector": "a.skip-link",
+        "label": "Lewati ke konten utama",
+        "w": 183.875,
+        "h": 42.390625
+      },
+      {
+        "selector": "button.lang-btn.active",
+        "label": "Bahasa Indonesia",
+        "w": 23.65625,
+        "h": 20
+      },
+      {
+        "selector": "button.lang-btn",
+        "label": "English",
+        "w": 23.65625,
+        "h": 20
+      },
+      {
+        "selector": "button.lang-btn",
+        "label": "Français",
+        "w": 23.65625,
+        "h": 20
+      },
+      {
+        "selector": "button.lang-btn",
+        "label": "Italiano",
+        "w": 23.65625,
+        "h": 20
+      },
+      {
+        "selector": "button.theme-btn.active",
+        "label": "Mode Terang",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.theme-btn",
+        "label": "Mode Gelap",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.theme-btn",
+        "label": "Mengikuti Sistem",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.",
+        "label": "Rendez-vous privat",
+        "w": 106.703125,
+        "h": 15.390625
+      },
+      {
+        "selector": "a.",
+        "label": "Koleksi",
+        "w": 51.203125,
+        "h": 14
+      },
+      {
+        "selector": "a.",
+        "label": "Terbaru",
+        "w": 56.1875,
+        "h": 14
+      },
+      {
+        "selector": "a.",
+        "label": "Warisan",
+        "w": 54.703125,
+        "h": 14
+      },
+      {
+        "selector": "a.",
+        "label": "Atelier Z",
+        "w": 60.625,
+        "h": 14
+      },
+      {
+        "selector": "a.",
+        "label": "L'Art d'Offrir",
+        "w": 93.046875,
+        "h": 14
+      },
+      {
+        "selector": "a.",
+        "label": "Layanan",
+        "w": 53.609375,
+        "h": 14
+      },
+      {
+        "selector": "a.brand",
+        "label": "ZAFIRA: kembali ke beranda",
+        "w": 220,
+        "h": 38
+      },
+      {
+        "selector": "button.icon-button",
+        "label": "Cari",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "#btn-header-profile",
+        "label": "Profil VIP & Pilihan Salon",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.icon-button.wishlist-trigger",
+        "label": "Tampilkan favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.icon-button",
+        "label": "Buka tas belanja",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.filter-pill.active",
+        "label": "Semua",
+        "w": 70.515625,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Busana Wanita",
+        "w": 118.71875,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Busana Pria",
+        "w": 103.921875,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Tas Tangan",
+        "w": 99.015625,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Sepatu",
+        "w": 74.078125,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Aksesori",
+        "w": 87.21875,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Perhiasan",
+        "w": 94.125,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Warisan Nusantara",
+        "w": 148.3125,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Koleksi Kapsul",
+        "w": 123.140625,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "QA Cat 1791726291332",
+        "w": 151.75,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "QA Cat 1791726473464",
+        "w": 151.75,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "QA Cat 1791726641016",
+        "w": 151.75,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "QA Cat 1791726713940 Edit",
+        "w": 179.25,
+        "h": 34.390625
+      },
+      {
+        "selector": "#live-catalog-search-input",
+        "label": "",
+        "w": 340,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Sac Séraphine ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Sac Séraphine",
+        "w": 139.65625,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Sac Séraphine ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Trench Céleste ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Trench Céleste",
+        "w": 147.6875,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Trench Céleste ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Robe Élan ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Robe Élan",
+        "w": 100.75,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Robe Élan ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Mocassin Riva ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Mocassin Riva",
+        "w": 140.265625,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Mocassin Riva ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Minaudière Saphir ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Minaudière Saphir",
+        "w": 183.453125,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Minaudière Saphir ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Manteau Firenze ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Manteau Firenze",
+        "w": 163.6875,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Manteau Firenze ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Carré Lumière ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Carré Lumière",
+        "w": 143.703125,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Carré Lumière ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Montre Nocturne ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Montre Nocturne",
+        "w": 168.359375,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Montre Nocturne ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Kebaya Lumière ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Kebaya Lumière",
+        "w": 160.296875,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Kebaya Lumière ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Chemise Rivière ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Chemise Rivière",
+        "w": 160.765625,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Chemise Rivière ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Écharpe Éclat ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Écharpe Éclat",
+        "w": 136.484375,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Écharpe Éclat ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Robe Aurore ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Robe Aurore",
+        "w": 127.171875,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Robe Aurore ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "a.text-link.light",
+        "label": "Kisah Maison",
+        "w": 439.234375,
+        "h": 16
+      },
+      {
+        "selector": "#monogram-input",
+        "label": "",
+        "w": 160,
+        "h": 42.59375
+      },
+      {
+        "selector": "button.foil.active",
+        "label": "Emas",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.foil",
+        "label": "Perak",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.foil",
+        "label": "Safir",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "#btn-ribbon-gold",
+        "label": "Pita Emas (Ori)",
+        "w": 141.0625,
+        "h": 36
+      },
+      {
+        "selector": "#btn-ribbon-sapphire",
+        "label": "Pita Safir (Saphir)",
+        "w": 168.171875,
+        "h": 36
+      },
+      {
+        "selector": "a.",
+        "label": "Wanita",
+        "w": 49.28125,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Pria",
+        "w": 28.53125,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Tas Tangan",
+        "w": 78.0625,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Aksesori",
+        "w": 61.265625,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Kisah Kami",
+        "w": 78,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Atelier Z",
+        "w": 60.59375,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Layanan",
+        "w": 58.421875,
+        "h": 24
+      },
+      {
+        "selector": "button.",
+        "label": "Rendez-vous",
+        "w": 88.640625,
+        "h": 24
+      },
+      {
+        "selector": "#welcome-footer-lang-select",
+        "label": "Pilih Bahasa / Select Language",
+        "w": 238,
+        "h": 30
+      },
+      {
+        "selector": "#welcome-footer-theme-select",
+        "label": "Mode Tampilan / Display Mode",
+        "w": 187,
+        "h": 30
+      },
+      {
+        "selector": "button.text-link",
+        "label": "Buka panduan pintasan keyboard",
+        "w": 86.546875,
+        "h": 17.59375
+      },
+      {
+        "selector": "a.",
+        "label": "Ketentuan",
+        "w": 54.21875,
+        "h": 12.796875
+      },
+      {
+        "selector": "a.",
+        "label": "Indonesia / ID",
+        "w": 67.203125,
+        "h": 12.796875
+      },
+      {
+        "selector": "a.",
+        "label": "Instagram ZAFIRA",
+        "w": 15,
+        "h": 22
+      }
+    ]
+  },
+  {
+    "surface": "/",
+    "lang": "fr",
+    "width": 390,
+    "targets": [
+      {
+        "selector": "a.skip-link",
+        "label": "Lewati ke konten utama",
+        "w": 183.875,
+        "h": 42.390625
+      },
+      {
+        "selector": "button.icon-button.mobile-menu-button",
+        "label": "Buka menu",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "a.brand",
+        "label": "ZAFIRA: kembali ke beranda",
+        "w": 131.890625,
+        "h": 22
+      },
+      {
+        "selector": "button.icon-button",
+        "label": "Cari",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "#btn-header-profile",
+        "label": "Profil VIP & Pilihan Salon",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.icon-button",
+        "label": "Buka tas belanja",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "a.brand.brand-horizontal",
+        "label": "ZAFIRA beranda",
+        "w": 138.890625,
+        "h": 32
+      },
+      {
+        "selector": "button.icon-button",
+        "label": "Tutup menu",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.lang-btn",
+        "label": "ID",
+        "w": 12.640625,
+        "h": 24.390625
+      },
+      {
+        "selector": "button.lang-btn",
+        "label": "EN",
+        "w": 12.640625,
+        "h": 24.390625
+      },
+      {
+        "selector": "button.lang-btn.active",
+        "label": "FR",
+        "w": 12.640625,
+        "h": 24.390625
+      },
+      {
+        "selector": "button.lang-btn",
+        "label": "IT",
+        "w": 12.640625,
+        "h": 24.390625
+      },
+      {
+        "selector": "button.theme-btn.active",
+        "label": "",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.theme-btn",
+        "label": "",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.theme-btn",
+        "label": "",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "a.",
+        "label": "Masuk",
+        "w": 59.515625,
+        "h": 24.390625
+      },
+      {
+        "selector": "button.",
+        "label": "Favoris 0",
+        "w": 82.5625,
+        "h": 24.390625
+      },
+      {
+        "selector": "button.text-link.light.mobile-concierge",
+        "label": "Rendez-vous Privé",
+        "w": 106.21875,
+        "h": 12.796875
+      },
+      {
+        "selector": "button.filter-pill.active",
+        "label": "Tout",
+        "w": 61.9375,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Busana Wanita",
+        "w": 118.71875,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Busana Pria",
+        "w": 103.921875,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Tas Tangan",
+        "w": 99.015625,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Sepatu",
+        "w": 74.078125,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Aksesori",
+        "w": 87.21875,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Perhiasan",
+        "w": 94.125,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Warisan Nusantara",
+        "w": 148.3125,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Koleksi Kapsul",
+        "w": 123.140625,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "QA Cat 1791726291332",
+        "w": 151.75,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "QA Cat 1791726473464",
+        "w": 151.75,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "QA Cat 1791726641016",
+        "w": 151.75,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "QA Cat 1791726713940 Edit",
+        "w": 179.25,
+        "h": 34.390625
+      },
+      {
+        "selector": "#live-catalog-search-input",
+        "label": "",
+        "w": 340,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Sac Séraphine ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Sac Séraphine",
+        "w": 113.0625,
+        "h": 20.734375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Sac Séraphine ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Trench Céleste ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Trench Céleste",
+        "w": 119.5625,
+        "h": 20.734375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Trench Céleste ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Robe Élan ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Robe Élan",
+        "w": 81.5625,
+        "h": 20.734375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Robe Élan ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Mocassin Riva ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Mocassin Riva",
+        "w": 113.546875,
+        "h": 20.734375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Mocassin Riva ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Minaudière Saphir ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Minaudière Saphir",
+        "w": 125,
+        "h": 41.46875
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Minaudière Saphir ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Manteau Firenze ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Manteau Firenze",
+        "w": 125,
+        "h": 41.46875
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Manteau Firenze ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Carré Lumière ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Carré Lumière",
+        "w": 116.34375,
+        "h": 20.734375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Carré Lumière ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Montre Nocturne ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Montre Nocturne",
+        "w": 125,
+        "h": 41.46875
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Montre Nocturne ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Kebaya Lumière ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Kebaya Lumière",
+        "w": 125,
+        "h": 41.46875
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Kebaya Lumière ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Chemise Rivière ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Chemise Rivière",
+        "w": 125,
+        "h": 41.46875
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Chemise Rivière ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Écharpe Éclat ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Écharpe Éclat",
+        "w": 110.484375,
+        "h": 20.734375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Écharpe Éclat ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Robe Aurore ke favorit",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "selector": "button.",
+        "label": "Robe Aurore",
+        "w": 102.953125,
+        "h": 20.734375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Robe Aurore ke tas",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "selector": "a.text-link.light",
+        "label": "L'Histoire de la Maison",
+        "w": 340,
+        "h": 16
+      },
+      {
+        "selector": "#monogram-input",
+        "label": "",
+        "w": 154.296875,
+        "h": 42.59375
+      },
+      {
+        "selector": "button.foil.active",
+        "label": "Emas",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.foil",
+        "label": "Perak",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.foil",
+        "label": "Safir",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "#btn-ribbon-gold",
+        "label": "Ruban d'Or (Or)",
+        "w": 148.4375,
+        "h": 36
+      },
+      {
+        "selector": "#btn-ribbon-sapphire",
+        "label": "Ruban Saphir (Saphir)",
+        "w": 193.40625,
+        "h": 36
+      },
+      {
+        "selector": "a.",
+        "label": "Femme",
+        "w": 50.5,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Homme",
+        "w": 53.515625,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Minaudières",
+        "w": 85.984375,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Accessoires",
+        "w": 81.546875,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Notre Histoire",
+        "w": 98.171875,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Atelier Z",
+        "w": 60.59375,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Services",
+        "w": 57.890625,
+        "h": 24
+      },
+      {
+        "selector": "button.",
+        "label": "Rendez-vous",
+        "w": 88.640625,
+        "h": 24
+      },
+      {
+        "selector": "#welcome-footer-lang-select",
+        "label": "Pilih Bahasa / Select Language",
+        "w": 238,
+        "h": 30
+      },
+      {
+        "selector": "#welcome-footer-theme-select",
+        "label": "Mode Tampilan / Display Mode",
+        "w": 187,
+        "h": 30
+      },
+      {
+        "selector": "button.text-link",
+        "label": "Buka panduan pintasan keyboard",
+        "w": 108.9375,
+        "h": 17.59375
+      },
+      {
+        "selector": "a.",
+        "label": "Conditions Générales",
+        "w": 114.15625,
+        "h": 12.796875
+      },
+      {
+        "selector": "a.",
+        "label": "Indonesia / ID",
+        "w": 67.203125,
+        "h": 12.796875
+      },
+      {
+        "selector": "a.",
+        "label": "Instagram ZAFIRA",
+        "w": 15,
+        "h": 22
+      }
+    ]
+  },
+  {
+    "surface": "/",
+    "lang": "fr",
+    "width": 1440,
+    "targets": [
+      {
+        "selector": "a.skip-link",
+        "label": "Lewati ke konten utama",
+        "w": 183.875,
+        "h": 42.390625
+      },
+      {
+        "selector": "button.lang-btn",
+        "label": "Bahasa Indonesia",
+        "w": 23.65625,
+        "h": 20
+      },
+      {
+        "selector": "button.lang-btn",
+        "label": "English",
+        "w": 23.65625,
+        "h": 20
+      },
+      {
+        "selector": "button.lang-btn.active",
+        "label": "Français",
+        "w": 23.65625,
+        "h": 20
+      },
+      {
+        "selector": "button.lang-btn",
+        "label": "Italiano",
+        "w": 23.65625,
+        "h": 20
+      },
+      {
+        "selector": "button.theme-btn.active",
+        "label": "Mode Terang",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.theme-btn",
+        "label": "Mode Gelap",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.theme-btn",
+        "label": "Mengikuti Sistem",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.",
+        "label": "Rendez-vous Privé",
+        "w": 103.578125,
+        "h": 15.390625
+      },
+      {
+        "selector": "a.",
+        "label": "Collections",
+        "w": 83.78125,
+        "h": 14
+      },
+      {
+        "selector": "a.",
+        "label": "Nouveautés",
+        "w": 80.90625,
+        "h": 14
+      },
+      {
+        "selector": "a.",
+        "label": "Héritage",
+        "w": 59.984375,
+        "h": 14
+      },
+      {
+        "selector": "a.",
+        "label": "Atelier Z",
+        "w": 60.625,
+        "h": 14
+      },
+      {
+        "selector": "a.",
+        "label": "L'Art d'Offrir",
+        "w": 93.046875,
+        "h": 14
+      },
+      {
+        "selector": "a.",
+        "label": "Services",
+        "w": 60,
+        "h": 14
+      },
+      {
+        "selector": "a.brand",
+        "label": "ZAFIRA: kembali ke beranda",
+        "w": 220,
+        "h": 38
+      },
+      {
+        "selector": "button.icon-button",
+        "label": "Cari",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "#btn-header-profile",
+        "label": "Profil VIP & Pilihan Salon",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.icon-button.wishlist-trigger",
+        "label": "Tampilkan favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.icon-button",
+        "label": "Buka tas belanja",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.filter-pill.active",
+        "label": "Tout",
+        "w": 61.9375,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Busana Wanita",
+        "w": 118.71875,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Busana Pria",
+        "w": 103.921875,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Tas Tangan",
+        "w": 99.015625,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Sepatu",
+        "w": 74.078125,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Aksesori",
+        "w": 87.21875,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Perhiasan",
+        "w": 94.125,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Warisan Nusantara",
+        "w": 148.3125,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "Koleksi Kapsul",
+        "w": 123.140625,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "QA Cat 1791726291332",
+        "w": 151.75,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "QA Cat 1791726473464",
+        "w": 151.75,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "QA Cat 1791726641016",
+        "w": 151.75,
+        "h": 34.390625
+      },
+      {
+        "selector": "button.filter-pill",
+        "label": "QA Cat 1791726713940 Edit",
+        "w": 179.25,
+        "h": 34.390625
+      },
+      {
+        "selector": "#live-catalog-search-input",
+        "label": "",
+        "w": 340,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Sac Séraphine ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Sac Séraphine",
+        "w": 139.65625,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Sac Séraphine ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Trench Céleste ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Trench Céleste",
+        "w": 147.6875,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Trench Céleste ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Robe Élan ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Robe Élan",
+        "w": 100.75,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Robe Élan ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Mocassin Riva ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Mocassin Riva",
+        "w": 140.265625,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Mocassin Riva ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Minaudière Saphir ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Minaudière Saphir",
+        "w": 183.453125,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Minaudière Saphir ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Manteau Firenze ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Manteau Firenze",
+        "w": 163.6875,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Manteau Firenze ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Carré Lumière ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Carré Lumière",
+        "w": 143.703125,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Carré Lumière ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Montre Nocturne ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Montre Nocturne",
+        "w": 168.359375,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Montre Nocturne ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Kebaya Lumière ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Kebaya Lumière",
+        "w": 160.296875,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Kebaya Lumière ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Chemise Rivière ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Chemise Rivière",
+        "w": 160.765625,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Chemise Rivière ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Écharpe Éclat ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Écharpe Éclat",
+        "w": 136.484375,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Écharpe Éclat ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "button.wishlist-button",
+        "label": "Tambahkan Robe Aurore ke favorit",
+        "w": 37,
+        "h": 37
+      },
+      {
+        "selector": "button.",
+        "label": "Robe Aurore",
+        "w": 127.171875,
+        "h": 25.609375
+      },
+      {
+        "selector": "button.product-add",
+        "label": "Tambahkan Robe Aurore ke tas",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "selector": "a.text-link.light",
+        "label": "L'Histoire de la Maison",
+        "w": 439.234375,
+        "h": 16
+      },
+      {
+        "selector": "#monogram-input",
+        "label": "",
+        "w": 160,
+        "h": 42.59375
+      },
+      {
+        "selector": "button.foil.active",
+        "label": "Emas",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.foil",
+        "label": "Perak",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.foil",
+        "label": "Safir",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "#btn-ribbon-gold",
+        "label": "Ruban d'Or (Or)",
+        "w": 148.4375,
+        "h": 36
+      },
+      {
+        "selector": "#btn-ribbon-sapphire",
+        "label": "Ruban Saphir (Saphir)",
+        "w": 193.40625,
+        "h": 36
+      },
+      {
+        "selector": "a.",
+        "label": "Femme",
+        "w": 50.5,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Homme",
+        "w": 53.515625,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Minaudières",
+        "w": 85.984375,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Accessoires",
+        "w": 81.546875,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Notre Histoire",
+        "w": 98.171875,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Atelier Z",
+        "w": 60.59375,
+        "h": 24
+      },
+      {
+        "selector": "a.",
+        "label": "Services",
+        "w": 57.890625,
+        "h": 24
+      },
+      {
+        "selector": "button.",
+        "label": "Rendez-vous",
+        "w": 88.640625,
+        "h": 24
+      },
+      {
+        "selector": "#welcome-footer-lang-select",
+        "label": "Pilih Bahasa / Select Language",
+        "w": 238,
+        "h": 30
+      },
+      {
+        "selector": "#welcome-footer-theme-select",
+        "label": "Mode Tampilan / Display Mode",
+        "w": 187,
+        "h": 30
+      },
+      {
+        "selector": "button.text-link",
+        "label": "Buka panduan pintasan keyboard",
+        "w": 108.9375,
+        "h": 17.59375
+      },
+      {
+        "selector": "a.",
+        "label": "Conditions Générales",
+        "w": 114.15625,
+        "h": 12.796875
+      },
+      {
+        "selector": "a.",
+        "label": "Indonesia / ID",
+        "w": 67.203125,
+        "h": 12.796875
+      },
+      {
+        "selector": "a.",
+        "label": "Instagram ZAFIRA",
+        "w": 15,
+        "h": 22
+      }
+    ]
+  },
+  {
+    "surface": "/prototype/",
+    "lang": "id",
+    "width": 390,
+    "targets": [
+      {
+        "selector": "a.sf-brand",
+        "label": "ZAFIRA\n        La Maison de Lumière",
+        "w": 122.421875,
+        "h": 40.28125
+      },
+      {
+        "selector": "button.btn-gold",
+        "label": "Studio Kriya & Savoir-Faire",
+        "w": 300.421875,
+        "h": 42
+      },
+      {
+        "selector": "button.btn-outline",
+        "label": "Rendez-vous privat",
+        "w": 211.515625,
+        "h": 40
+      },
+      {
+        "selector": "button.cat-pill.active",
+        "label": "Semua",
+        "w": 84.328125,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Warisan Nusantara",
+        "w": 184.296875,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Koleksi Kapsul",
+        "w": 153.65625,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Busana Wanita",
+        "w": 147.4375,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Busana Pria",
+        "w": 128.515625,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Tas Tangan",
+        "w": 121.6875,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Syal Sutra",
+        "w": 120.28125,
+        "h": 28
+      },
+      {
+        "selector": "button.view-mode-btn.active",
+        "label": "Tampilan Editorial",
+        "w": 179.984375,
+        "h": 24
+      },
+      {
+        "selector": "button.view-mode-btn",
+        "label": "Tampilan Galeri",
+        "w": 159.828125,
+        "h": 24
+      },
+      {
+        "selector": "button.btn-outline",
+        "label": "Tambah",
+        "w": 115.40625,
+        "h": 40
+      },
+      {
+        "selector": "button.btn-outline",
+        "label": "Tambah",
+        "w": 115.40625,
+        "h": 40
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Tambah",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Tambah",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Tambah",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Tambah",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Tambah",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Tambah",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.proto-btn",
+        "label": "Pita Emas (Ori)",
+        "w": 79.453125,
+        "h": 34
+      },
+      {
+        "selector": "button.proto-btn",
+        "label": "Pita Safir (Saphir)",
+        "w": 87.0625,
+        "h": 34
+      },
+      {
+        "selector": "a.",
+        "label": "Rendez-vous privat",
+        "w": 113.078125,
+        "h": 15
+      },
+      {
+        "selector": "a.",
+        "label": "Portal Klien VIP",
+        "w": 89.703125,
+        "h": 15
+      },
+      {
+        "selector": "a.",
+        "label": "Tas Belanja",
+        "w": 65.890625,
+        "h": 15
+      },
+      {
+        "selector": "a.",
+        "label": "Atelier Digital",
+        "w": 78.25,
+        "h": 15
+      },
+      {
+        "selector": "input.",
+        "label": "",
+        "w": 269.03125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-gold",
+        "label": "Daftar",
+        "w": 88.96875,
+        "h": 34
+      },
+      {
+        "selector": "#proto-footer-lang-select",
+        "label": "Pilih Bahasa / Select Language",
+        "w": 198,
+        "h": 31
+      },
+      {
+        "selector": "#proto-footer-theme-select",
+        "label": "Mode Tampilan / Display Mode",
+        "w": 194,
+        "h": 31
+      },
+      {
+        "selector": "#dock-collapse-btn",
+        "label": "Toggle Dock",
+        "w": 24,
+        "h": 24
+      }
+    ]
+  },
+  {
+    "surface": "/prototype/",
+    "lang": "id",
+    "width": 1440,
+    "targets": [
+      {
+        "selector": "button.lang-opt.active",
+        "label": "ID",
+        "w": 20.046875,
+        "h": 13
+      },
+      {
+        "selector": "button.lang-opt",
+        "label": "EN",
+        "w": 20.046875,
+        "h": 13
+      },
+      {
+        "selector": "button.lang-opt",
+        "label": "FR",
+        "w": 20.046875,
+        "h": 13
+      },
+      {
+        "selector": "button.lang-opt",
+        "label": "IT",
+        "w": 20.046875,
+        "h": 13
+      },
+      {
+        "selector": "button.theme-opt.active",
+        "label": "Mode Terang",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.theme-opt",
+        "label": "Mode Gelap",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.theme-opt",
+        "label": "Sistem",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "a.announcement-rv-btn",
+        "label": "Rendez-vous privat",
+        "w": 139.3125,
+        "h": 16.5
+      },
+      {
+        "selector": "#sound-toggle-btn",
+        "label": "Acoustics: On",
+        "w": 100.671875,
+        "h": 30
+      },
+      {
+        "selector": "#shortcuts-toggle-btn",
+        "label": "?",
+        "w": 34.46875,
+        "h": 20
+      },
+      {
+        "selector": "a.",
+        "label": "Koleksi",
+        "w": 58.109375,
+        "h": 22.140625
+      },
+      {
+        "selector": "a.",
+        "label": "Warisan",
+        "w": 63.6875,
+        "h": 22.140625
+      },
+      {
+        "selector": "a.",
+        "label": "Terbaru",
+        "w": 63.734375,
+        "h": 22.140625
+      },
+      {
+        "selector": "a.",
+        "label": "L'Art d'Offrir",
+        "w": 107.6875,
+        "h": 22.140625
+      },
+      {
+        "selector": "a.",
+        "label": "Layanan",
+        "w": 63.796875,
+        "h": 22.140625
+      },
+      {
+        "selector": "#sf-search-input",
+        "label": "",
+        "w": 190,
+        "h": 33
+      },
+      {
+        "selector": "button.action-btn",
+        "label": "Rendez-vous privat",
+        "w": 148.5,
+        "h": 28
+      },
+      {
+        "selector": "button.action-btn",
+        "label": "Tas Belanja\n          1",
+        "w": 151.921875,
+        "h": 31
+      },
+      {
+        "selector": "#btn-header-profile",
+        "label": "Profil Klien VIP",
+        "w": 98.53125,
+        "h": 31
+      },
+      {
+        "selector": "button.btn-gold",
+        "label": "Studio Kriya & Savoir-Faire",
+        "w": 300.421875,
+        "h": 42
+      },
+      {
+        "selector": "button.btn-outline",
+        "label": "Rendez-vous privat",
+        "w": 211.515625,
+        "h": 40
+      },
+      {
+        "selector": "button.cat-pill.active",
+        "label": "Semua",
+        "w": 84.328125,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Warisan Nusantara",
+        "w": 184.296875,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Koleksi Kapsul",
+        "w": 153.65625,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Busana Wanita",
+        "w": 147.4375,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Busana Pria",
+        "w": 128.515625,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Tas Tangan",
+        "w": 121.6875,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Syal Sutra",
+        "w": 120.28125,
+        "h": 28
+      },
+      {
+        "selector": "button.view-mode-btn.active",
+        "label": "Tampilan Editorial",
+        "w": 179.984375,
+        "h": 24
+      },
+      {
+        "selector": "button.view-mode-btn",
+        "label": "Tampilan Galeri",
+        "w": 159.828125,
+        "h": 24
+      },
+      {
+        "selector": "button.btn-gold",
+        "label": "Studio Kriya & Savoir-Faire",
+        "w": 278.421875,
+        "h": 40
+      },
+      {
+        "selector": "button.btn-outline",
+        "label": "Tambah",
+        "w": 115.40625,
+        "h": 40
+      },
+      {
+        "selector": "button.btn-gold",
+        "label": "Studio Kriya & Savoir-Faire",
+        "w": 278.421875,
+        "h": 40
+      },
+      {
+        "selector": "button.btn-outline",
+        "label": "Tambah",
+        "w": 115.40625,
+        "h": 40
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Tambah",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Tambah",
+        "w": 186.34375,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Tambah",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Tambah",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Tambah",
+        "w": 186.34375,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Tambah",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.proto-btn",
+        "label": "Pita Emas (Ori)",
+        "w": 99.5625,
+        "h": 19
+      },
+      {
+        "selector": "button.proto-btn",
+        "label": "Pita Safir (Saphir)",
+        "w": 109.203125,
+        "h": 19
+      },
+      {
+        "selector": "a.",
+        "label": "Rendez-vous privat",
+        "w": 113.078125,
+        "h": 15
+      },
+      {
+        "selector": "a.",
+        "label": "Portal Klien VIP",
+        "w": 89.703125,
+        "h": 15
+      },
+      {
+        "selector": "a.",
+        "label": "Tas Belanja",
+        "w": 65.890625,
+        "h": 15
+      },
+      {
+        "selector": "a.",
+        "label": "Atelier Digital",
+        "w": 78.25,
+        "h": 15
+      },
+      {
+        "selector": "input.",
+        "label": "",
+        "w": 151,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-gold",
+        "label": "Daftar",
+        "w": 88.96875,
+        "h": 34
+      },
+      {
+        "selector": "#proto-footer-lang-select",
+        "label": "Pilih Bahasa / Select Language",
+        "w": 198,
+        "h": 31
+      },
+      {
+        "selector": "#proto-footer-theme-select",
+        "label": "Mode Tampilan / Display Mode",
+        "w": 194,
+        "h": 31
+      },
+      {
+        "selector": "#btn-view-storefront",
+        "label": "Boutique",
+        "w": 96.828125,
+        "h": 27
+      },
+      {
+        "selector": "#btn-view-studio",
+        "label": "Studio PDP",
+        "w": 109.625,
+        "h": 27
+      },
+      {
+        "selector": "#btn-view-account",
+        "label": "Akun VIP",
+        "w": 97.484375,
+        "h": 27
+      },
+      {
+        "selector": "#btn-view-admin",
+        "label": "Atelier",
+        "w": 82.796875,
+        "h": 27
+      },
+      {
+        "selector": "#dock-collapse-btn",
+        "label": "Toggle Dock",
+        "w": 24,
+        "h": 24
+      }
+    ]
+  },
+  {
+    "surface": "/prototype/",
+    "lang": "fr",
+    "width": 390,
+    "targets": [
+      {
+        "selector": "a.sf-brand",
+        "label": "ZAFIRA\n        La Maison de Lumière",
+        "w": 122.421875,
+        "h": 40.28125
+      },
+      {
+        "selector": "button.btn-gold",
+        "label": "Studio Kriya & Savoir-Faire",
+        "w": 300.421875,
+        "h": 42
+      },
+      {
+        "selector": "button.btn-outline",
+        "label": "Rendez-vous Privé",
+        "w": 204.0625,
+        "h": 40
+      },
+      {
+        "selector": "button.cat-pill.active",
+        "label": "Tout",
+        "w": 73.03125,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Héritage de l'Archipel",
+        "w": 210.015625,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Capsule Couture",
+        "w": 167.8125,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Prêt-à-Porter Femme",
+        "w": 195.703125,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Tailleur Homme",
+        "w": 155.265625,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Minaudières du Soir",
+        "w": 188.984375,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Syal Sutra",
+        "w": 120.28125,
+        "h": 28
+      },
+      {
+        "selector": "button.view-mode-btn.active",
+        "label": "Tampilan Editorial",
+        "w": 179.984375,
+        "h": 24
+      },
+      {
+        "selector": "button.view-mode-btn",
+        "label": "Tampilan Galeri",
+        "w": 159.828125,
+        "h": 24
+      },
+      {
+        "selector": "button.btn-outline",
+        "label": "Ajouter",
+        "w": 122.890625,
+        "h": 40
+      },
+      {
+        "selector": "button.btn-outline",
+        "label": "Ajouter",
+        "w": 122.890625,
+        "h": 40
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Ajouter",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Ajouter",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Ajouter",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Ajouter",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Ajouter",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Ajouter",
+        "w": 160,
+        "h": 34
+      },
+      {
+        "selector": "button.proto-btn",
+        "label": "Ruban d'Or (Or)",
+        "w": 81.640625,
+        "h": 34
+      },
+      {
+        "selector": "button.proto-btn",
+        "label": "Ruban Saphir (Saphir)",
+        "w": 106.78125,
+        "h": 34
+      },
+      {
+        "selector": "a.",
+        "label": "Rendez-vous Privé",
+        "w": 109.125,
+        "h": 15
+      },
+      {
+        "selector": "a.",
+        "label": "Espace Client VIP",
+        "w": 102.953125,
+        "h": 15
+      },
+      {
+        "selector": "a.",
+        "label": "Panier",
+        "w": 36.671875,
+        "h": 15
+      },
+      {
+        "selector": "a.",
+        "label": "Atelier Numérique",
+        "w": 105.1875,
+        "h": 15
+      },
+      {
+        "selector": "input.",
+        "label": "",
+        "w": 243.875,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-gold",
+        "label": "S'inscrire",
+        "w": 114.125,
+        "h": 34
+      },
+      {
+        "selector": "#proto-footer-lang-select",
+        "label": "Pilih Bahasa / Select Language",
+        "w": 198,
+        "h": 31
+      },
+      {
+        "selector": "#proto-footer-theme-select",
+        "label": "Mode Tampilan / Display Mode",
+        "w": 194,
+        "h": 31
+      },
+      {
+        "selector": "#dock-collapse-btn",
+        "label": "Toggle Dock",
+        "w": 24,
+        "h": 24
+      }
+    ]
+  },
+  {
+    "surface": "/prototype/",
+    "lang": "fr",
+    "width": 1440,
+    "targets": [
+      {
+        "selector": "button.lang-opt",
+        "label": "ID",
+        "w": 20.046875,
+        "h": 13
+      },
+      {
+        "selector": "button.lang-opt",
+        "label": "EN",
+        "w": 20.046875,
+        "h": 13
+      },
+      {
+        "selector": "button.lang-opt.active",
+        "label": "FR",
+        "w": 20.046875,
+        "h": 13
+      },
+      {
+        "selector": "button.lang-opt",
+        "label": "IT",
+        "w": 20.046875,
+        "h": 13
+      },
+      {
+        "selector": "button.theme-opt.active",
+        "label": "Mode Terang",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.theme-opt",
+        "label": "Mode Gelap",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "button.theme-opt",
+        "label": "Sistem",
+        "w": 20,
+        "h": 20
+      },
+      {
+        "selector": "a.announcement-rv-btn",
+        "label": "Rendez-vous Privé",
+        "w": 131.703125,
+        "h": 16.5
+      },
+      {
+        "selector": "#sound-toggle-btn",
+        "label": "Acoustics: On",
+        "w": 100.671875,
+        "h": 30
+      },
+      {
+        "selector": "#shortcuts-toggle-btn",
+        "label": "?",
+        "w": 34.46875,
+        "h": 20
+      },
+      {
+        "selector": "a.",
+        "label": "Collections",
+        "w": 96.53125,
+        "h": 22.140625
+      },
+      {
+        "selector": "a.",
+        "label": "Héritage",
+        "w": 67.703125,
+        "h": 22.140625
+      },
+      {
+        "selector": "a.",
+        "label": "Nouveautés",
+        "w": 92.921875,
+        "h": 22.140625
+      },
+      {
+        "selector": "a.",
+        "label": "L'Art d'Offrir",
+        "w": 107.6875,
+        "h": 22.140625
+      },
+      {
+        "selector": "a.",
+        "label": "Services",
+        "w": 67.34375,
+        "h": 22.140625
+      },
+      {
+        "selector": "#sf-search-input",
+        "label": "",
+        "w": 190,
+        "h": 33
+      },
+      {
+        "selector": "button.action-btn",
+        "label": "Rendez-vous Privé",
+        "w": 144.625,
+        "h": 28
+      },
+      {
+        "selector": "button.action-btn",
+        "label": "Panier\n          1",
+        "w": 120.578125,
+        "h": 31
+      },
+      {
+        "selector": "#btn-header-profile",
+        "label": "Profil Klien VIP",
+        "w": 98.53125,
+        "h": 31
+      },
+      {
+        "selector": "button.btn-gold",
+        "label": "Studio Kriya & Savoir-Faire",
+        "w": 300.421875,
+        "h": 42
+      },
+      {
+        "selector": "button.btn-outline",
+        "label": "Rendez-vous Privé",
+        "w": 204.0625,
+        "h": 40
+      },
+      {
+        "selector": "button.cat-pill.active",
+        "label": "Tout",
+        "w": 73.03125,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Héritage de l'Archipel",
+        "w": 210.015625,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Capsule Couture",
+        "w": 167.8125,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Prêt-à-Porter Femme",
+        "w": 195.703125,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Tailleur Homme",
+        "w": 155.265625,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Minaudières du Soir",
+        "w": 188.984375,
+        "h": 28
+      },
+      {
+        "selector": "button.cat-pill",
+        "label": "Syal Sutra",
+        "w": 120.28125,
+        "h": 28
+      },
+      {
+        "selector": "button.view-mode-btn.active",
+        "label": "Tampilan Editorial",
+        "w": 179.984375,
+        "h": 24
+      },
+      {
+        "selector": "button.view-mode-btn",
+        "label": "Tampilan Galeri",
+        "w": 159.828125,
+        "h": 24
+      },
+      {
+        "selector": "button.btn-gold",
+        "label": "Studio Kriya & Savoir-Faire",
+        "w": 278.421875,
+        "h": 40
+      },
+      {
+        "selector": "button.btn-outline",
+        "label": "Ajouter",
+        "w": 122.890625,
+        "h": 40
+      },
+      {
+        "selector": "button.btn-gold",
+        "label": "Studio Kriya & Savoir-Faire",
+        "w": 278.421875,
+        "h": 40
+      },
+      {
+        "selector": "button.btn-outline",
+        "label": "Ajouter",
+        "w": 122.890625,
+        "h": 40
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Ajouter",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Ajouter",
+        "w": 186.34375,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Ajouter",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Ajouter",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Ajouter",
+        "w": 186.34375,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "Studio Z",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-quick",
+        "label": "+ Ajouter",
+        "w": 186.328125,
+        "h": 34
+      },
+      {
+        "selector": "button.proto-btn",
+        "label": "Ruban d'Or (Or)",
+        "w": 104.1875,
+        "h": 19
+      },
+      {
+        "selector": "button.proto-btn",
+        "label": "Ruban Saphir (Saphir)",
+        "w": 136.640625,
+        "h": 19
+      },
+      {
+        "selector": "a.",
+        "label": "Rendez-vous Privé",
+        "w": 109.125,
+        "h": 15
+      },
+      {
+        "selector": "a.",
+        "label": "Espace Client VIP",
+        "w": 102.953125,
+        "h": 15
+      },
+      {
+        "selector": "a.",
+        "label": "Panier",
+        "w": 36.671875,
+        "h": 15
+      },
+      {
+        "selector": "a.",
+        "label": "Atelier Numérique",
+        "w": 105.1875,
+        "h": 15
+      },
+      {
+        "selector": "input.",
+        "label": "",
+        "w": 151,
+        "h": 34
+      },
+      {
+        "selector": "button.btn-gold",
+        "label": "S'inscrire",
+        "w": 114.125,
+        "h": 34
+      },
+      {
+        "selector": "#proto-footer-lang-select",
+        "label": "Pilih Bahasa / Select Language",
+        "w": 198,
+        "h": 31
+      },
+      {
+        "selector": "#proto-footer-theme-select",
+        "label": "Mode Tampilan / Display Mode",
+        "w": 194,
+        "h": 31
+      },
+      {
+        "selector": "#btn-view-storefront",
+        "label": "Boutique",
+        "w": 96.828125,
+        "h": 27
+      },
+      {
+        "selector": "#btn-view-studio",
+        "label": "Studio PDP",
+        "w": 109.625,
+        "h": 27
+      },
+      {
+        "selector": "#btn-view-account",
+        "label": "Espace Client",
+        "w": 122.421875,
+        "h": 27
+      },
+      {
+        "selector": "#btn-view-admin",
+        "label": "Atelier",
+        "w": 82.796875,
+        "h": 27
+      },
+      {
+        "selector": "#dock-collapse-btn",
+        "label": "Toggle Dock",
+        "w": 24,
+        "h": 24
+      }
+    ]
+  }
+]

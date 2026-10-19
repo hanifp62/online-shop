@@ -1,0 +1,42 @@
+{
+  "platform": "macOS host; candidate generated on Linux",
+  "applied_to_mac": false,
+  "changed_composer_files": [
+    "vendor/composer/autoload_classmap.php",
+    "vendor/composer/autoload_files.php",
+    "vendor/composer/autoload_psr4.php",
+    "vendor/composer/autoload_static.php",
+    "vendor/composer/installed.json",
+    "vendor/composer/installed.php"
+  ],
+  "cleanup": {
+    "containers": {
+      "command": [
+        "docker",
+        "ps",
+        "-a",
+        "--format",
+        "{{.Names}}"
+      ],
+      "returncode": 0,
+      "remaining": [],
+      "stderr": ""
+    },
+    "networks": {
+      "command": [
+        "docker",
+        "network",
+        "ls",
+        "--format",
+        "{{.Name}}"
+      ],
+      "returncode": 0,
+      "remaining": [],
+      "stderr": ""
+    }
+  },
+  "blockers": [
+    "Current apply set omits changed Composer autoload maps; copying installed.json alone cannot register the new classes.",
+    "Composer reports: Found 2 security vulnerability advisories affecting 1 package. Affected package not yet identified."
+  ]
+}

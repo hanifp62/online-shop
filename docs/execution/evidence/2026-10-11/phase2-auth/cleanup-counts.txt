@@ -1,0 +1,8 @@
+deleted_exact_backup	1
+deleted_synthetic_user_sessions	5
+deleted_exact_user	1
+deleted_exact_admin	1
+users_remaining	1
+admins_remaining	1
+synthetic_backup_remaining	0
+synthetic_concierge_refs	0

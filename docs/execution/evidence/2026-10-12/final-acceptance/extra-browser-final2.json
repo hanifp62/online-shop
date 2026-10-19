@@ -1,0 +1,370 @@
+[
+  {
+    "width": 320,
+    "theme": "light",
+    "hit": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "dialog": true,
+    "escaped": true,
+    "searchFocus": {
+      "headerOverflowers": [],
+      "inputInViewport": true,
+      "inputFocused": true,
+      "scrollW": 0
+    },
+    "state": {
+      "overflow": 0,
+      "theme": "light",
+      "focused": "<input id=\"search-input\" type=\"search\" data-search-input=\"\" placeholder=\"Cari…\" data-i18n-placeholder=\"search_placeholder\" autocomplete=\"off\" spellcheck=\"false\"",
+      "search": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 844,
+        "top": 0,
+        "right": 320,
+        "bottom": 844,
+        "left": 0
+      }
+    },
+    "pass": true
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "hit": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "dialog": true,
+    "escaped": true,
+    "searchFocus": {
+      "headerOverflowers": [],
+      "inputInViewport": true,
+      "inputFocused": true,
+      "scrollW": 0
+    },
+    "state": {
+      "overflow": 0,
+      "theme": "dark",
+      "focused": "<input id=\"search-input\" type=\"search\" data-search-input=\"\" placeholder=\"Cari…\" data-i18n-placeholder=\"search_placeholder\" autocomplete=\"off\" spellcheck=\"false\"",
+      "search": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 844,
+        "top": 0,
+        "right": 320,
+        "bottom": 844,
+        "left": 0
+      }
+    },
+    "pass": true
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "hit": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "dialog": true,
+    "escaped": true,
+    "searchFocus": {
+      "headerOverflowers": [],
+      "inputInViewport": true,
+      "inputFocused": true,
+      "scrollW": 0
+    },
+    "state": {
+      "overflow": 0,
+      "theme": "light",
+      "focused": "<input id=\"search-input\" type=\"search\" data-search-input=\"\" placeholder=\"Cari…\" data-i18n-placeholder=\"search_placeholder\" autocomplete=\"off\" spellcheck=\"false\"",
+      "search": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844,
+        "top": 0,
+        "right": 390,
+        "bottom": 844,
+        "left": 0
+      }
+    },
+    "pass": true
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "hit": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "dialog": true,
+    "escaped": true,
+    "searchFocus": {
+      "headerOverflowers": [],
+      "inputInViewport": true,
+      "inputFocused": true,
+      "scrollW": 0
+    },
+    "state": {
+      "overflow": 0,
+      "theme": "dark",
+      "focused": "<input id=\"search-input\" type=\"search\" data-search-input=\"\" placeholder=\"Cari…\" data-i18n-placeholder=\"search_placeholder\" autocomplete=\"off\" spellcheck=\"false\"",
+      "search": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844,
+        "top": 0,
+        "right": 390,
+        "bottom": 844,
+        "left": 0
+      }
+    },
+    "pass": true
+  },
+  {
+    "width": 1025,
+    "theme": "light",
+    "hit": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "dialog": true,
+    "escaped": true,
+    "searchFocus": {
+      "headerOverflowers": [],
+      "inputInViewport": true,
+      "inputFocused": true,
+      "scrollW": 0
+    },
+    "state": {
+      "overflow": 0,
+      "theme": "light",
+      "focused": "<input id=\"search-input\" type=\"search\" data-search-input=\"\" placeholder=\"Cari…\" data-i18n-placeholder=\"search_placeholder\" autocomplete=\"off\" spellcheck=\"false\"",
+      "search": {
+        "x": 0,
+        "y": 0,
+        "width": 1025,
+        "height": 520,
+        "top": 0,
+        "right": 1025,
+        "bottom": 520,
+        "left": 0
+      }
+    },
+    "pass": true
+  },
+  {
+    "width": 1025,
+    "theme": "dark",
+    "hit": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "dialog": true,
+    "escaped": true,
+    "searchFocus": {
+      "headerOverflowers": [],
+      "inputInViewport": true,
+      "inputFocused": true,
+      "scrollW": 0
+    },
+    "state": {
+      "overflow": 0,
+      "theme": "dark",
+      "focused": "<input id=\"search-input\" type=\"search\" data-search-input=\"\" placeholder=\"Cari…\" data-i18n-placeholder=\"search_placeholder\" autocomplete=\"off\" spellcheck=\"false\"",
+      "search": {
+        "x": 0,
+        "y": 0,
+        "width": 1025,
+        "height": 520,
+        "top": 0,
+        "right": 1025,
+        "bottom": 520,
+        "left": 0
+      }
+    },
+    "pass": true
+  },
+  {
+    "width": 1366,
+    "theme": "light",
+    "hit": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "dialog": true,
+    "escaped": true,
+    "searchFocus": {
+      "headerOverflowers": [],
+      "inputInViewport": true,
+      "inputFocused": true,
+      "scrollW": 0
+    },
+    "state": {
+      "overflow": 0,
+      "theme": "light",
+      "focused": "<input id=\"search-input\" type=\"search\" data-search-input=\"\" placeholder=\"Cari…\" data-i18n-placeholder=\"search_placeholder\" autocomplete=\"off\" spellcheck=\"false\"",
+      "search": {
+        "x": 0,
+        "y": 0,
+        "width": 1366,
+        "height": 520,
+        "top": 0,
+        "right": 1366,
+        "bottom": 520,
+        "left": 0
+      }
+    },
+    "pass": true
+  },
+  {
+    "width": 1366,
+    "theme": "dark",
+    "hit": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "dialog": true,
+    "escaped": true,
+    "searchFocus": {
+      "headerOverflowers": [],
+      "inputInViewport": true,
+      "inputFocused": true,
+      "scrollW": 0
+    },
+    "state": {
+      "overflow": 0,
+      "theme": "dark",
+      "focused": "<input id=\"search-input\" type=\"search\" data-search-input=\"\" placeholder=\"Cari…\" data-i18n-placeholder=\"search_placeholder\" autocomplete=\"off\" spellcheck=\"false\"",
+      "search": {
+        "x": 0,
+        "y": 0,
+        "width": 1366,
+        "height": 520,
+        "top": 0,
+        "right": 1366,
+        "bottom": 520,
+        "left": 0
+      }
+    },
+    "pass": true
+  }
+]

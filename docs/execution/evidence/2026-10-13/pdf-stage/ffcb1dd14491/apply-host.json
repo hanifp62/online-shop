@@ -1,0 +1,32 @@
+{
+  "status": "applied",
+  "backup": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-ffcb1dd14491/mac-backup",
+  "checks": [
+    {
+      "check": "host-platform",
+      "command": [
+        "composer",
+        "check-platform-reqs",
+        "--lock"
+      ],
+      "returncode": 0,
+      "stdout": "success                                       \next-pcre             8.5.11     success                                       \next-phar             8.5.11     success                                       \next-session          8.5.11     success                                       \next-tokenizer        8.5.11     success                                       \next-xml              8.5.11     success                                       \next-xmlwriter        8.5.11     success                                       \nphp                  8.5.11     success                                       \n",
+      "stderr": "Checking platform requirements using the lock file\n",
+      "platform": "macOS host"
+    },
+    {
+      "check": "host-class-load",
+      "command": [
+        "php",
+        "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-ffcb1dd14491/host_check.php"
+      ],
+      "returncode": 0,
+      "stdout": "Dompdf loaded\n",
+      "stderr": "",
+      "platform": "macOS host"
+    }
+  ],
+  "mac_matches_stage": true,
+  "files_in_set": 322,
+  "before_files": 9
+}

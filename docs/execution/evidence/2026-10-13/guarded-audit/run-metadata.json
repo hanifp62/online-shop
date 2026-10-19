@@ -1,0 +1,24 @@
+{
+  "root": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-98f7b22a01c66a457c631baf",
+  "argv": [
+    "./scripts/amadis/launch.sh",
+    "composer-audit",
+    "--locked",
+    "--format=json"
+  ],
+  "before": {
+    "composer.json": "11396e0b0c5fc144d23bc3ed5e1fdcaba249649f7b23fb49025874934f9e4954",
+    "composer.lock": "5e25a1716cffd43c6ee5c68c7cf753d8479c5ece7473bb98ce86e0a8e5cdae9c",
+    "vendor/composer/installed.json": "73d0dd974221c1d5db4ad536cc874e0c4bea5a5d1f404a4576a5754b4d5f5831",
+    "app/Support/ComposerHooks.php": "54b64ad8390ee864aa041db4da2131f40f3d4a09d2bbae81be8bce7c729293e3",
+    "scripts/amadis/guard.php": "d1d517e00c1b87e45f335b6749e71e10abae30234c14b10f3e092e7685f4af11"
+  },
+  "after": {
+    "composer.json": "11396e0b0c5fc144d23bc3ed5e1fdcaba249649f7b23fb49025874934f9e4954",
+    "composer.lock": "5e25a1716cffd43c6ee5c68c7cf753d8479c5ece7473bb98ce86e0a8e5cdae9c",
+    "vendor/composer/installed.json": "73d0dd974221c1d5db4ad536cc874e0c4bea5a5d1f404a4576a5754b4d5f5831",
+    "app/Support/ComposerHooks.php": "54b64ad8390ee864aa041db4da2131f40f3d4a09d2bbae81be8bce7c729293e3",
+    "scripts/amadis/guard.php": "d1d517e00c1b87e45f335b6749e71e10abae30234c14b10f3e092e7685f4af11"
+  },
+  "returncode": 1
+}

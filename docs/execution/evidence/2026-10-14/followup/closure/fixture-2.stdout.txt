@@ -1,0 +1,2 @@
+PASS: inherited environment and isolated identity preflight.
+Synthetic fixture ready; existing orders and inventory untouched.

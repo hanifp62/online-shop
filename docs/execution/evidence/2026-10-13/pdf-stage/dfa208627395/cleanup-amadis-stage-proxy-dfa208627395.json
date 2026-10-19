@@ -1,0 +1,5 @@
+{
+  "command": "docker rm --force amadis-stage-proxy-dfa208627395",
+  "returncode": 0,
+  "platform": "Linux container"
+}

@@ -1,0 +1,55 @@
+{
+  "AM-02": {
+    "status": "PASS",
+    "counts": [
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      4
+    ],
+    "uniqueProducts": 76
+  },
+  "AM-06-keyboard": {
+    "status": "PASS",
+    "enter": true,
+    "space": true,
+    "escape": true,
+    "closeButton": true,
+    "focusRestored": true,
+    "tabSteps": 12,
+    "focusToBrowserUi": 1,
+    "pageContentLeaks": []
+  },
+  "AM-10": {
+    "status": "PENDING",
+    "requests": [
+      {
+        "quantity": 20,
+        "start": "2026-10-14T02:06:45.213Z",
+        "finish": "2026-10-14T02:06:45.228Z",
+        "httpStatus": 201,
+        "orderId": 1
+      },
+      {
+        "quantity": 20,
+        "start": "2026-10-14T02:06:45.213Z",
+        "finish": "2026-10-14T02:06:45.236Z",
+        "httpStatus": 422,
+        "orderId": null
+      },
+      {
+        "quantity": 17,
+        "start": "2026-10-14T02:06:45.213Z",
+        "finish": "2026-10-14T02:06:45.240Z",
+        "httpStatus": 500,
+        "orderId": null
+      }
+    ]
+  }
+}

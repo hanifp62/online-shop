@@ -1,0 +1,1271 @@
+{
+  "base": "http://127.0.0.1:8015",
+  "auth": "guest",
+  "startedAt": "2026-10-11T16:32:24.750Z",
+  "assertions": {
+    "total": 174,
+    "passed": 174,
+    "failed": 0
+  },
+  "cases": [
+    {
+      "name": "cart",
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "auth": "guest",
+      "trigger": "[data-open-cart]",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "route HTTP 200",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "visible real trigger exists",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "trigger opens dialog",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "focus moves inside",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "has keyboard focus targets",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tab wraps last to first",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Shift+Tab wraps first to last",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop restores opener focus",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "focusableCount": 2,
+      "backdropPoint": {
+        "x": 12,
+        "y": 12
+      }
+    },
+    {
+      "name": "search",
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "auth": "guest",
+      "trigger": "[data-open-search]",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "route HTTP 200",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "visible real trigger exists",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "trigger opens dialog",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "focus moves inside",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "has keyboard focus targets",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tab wraps last to first",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Shift+Tab wraps first to last",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop restores opener focus",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "focusableCount": 7,
+      "backdropPoint": {
+        "x": 12,
+        "y": 524
+      }
+    },
+    {
+      "name": "quick-view",
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "auth": "guest",
+      "trigger": "[data-product-card] [data-quick-view]",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "route HTTP 200",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "visible real trigger exists",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "trigger opens dialog",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "focus moves inside",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "has keyboard focus targets",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tab wraps last to first",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Shift+Tab wraps first to last",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop restores opener focus",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "focusableCount": 3,
+      "backdropPoint": {
+        "x": 12,
+        "y": 12
+      }
+    },
+    {
+      "name": "concierge",
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "auth": "guest",
+      "trigger": "[data-open-concierge]:not(.mobile-concierge)",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "route HTTP 200",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "visible real trigger exists",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "trigger opens dialog",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "focus moves inside",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "has keyboard focus targets",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tab wraps last to first",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Shift+Tab wraps first to last",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop restores opener focus",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "focusableCount": 9,
+      "backdropPoint": {
+        "x": 12,
+        "y": 12
+      }
+    },
+    {
+      "name": "profile",
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "auth": "guest",
+      "trigger": "[data-open-profile]",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "route HTTP 200",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "visible real trigger exists",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "trigger opens dialog",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "focus moves inside",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "has keyboard focus targets",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tab wraps last to first",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Shift+Tab wraps first to last",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop restores opener focus",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "focusableCount": 9,
+      "backdropPoint": {
+        "x": 12,
+        "y": 12
+      }
+    },
+    {
+      "name": "size-guide",
+      "route": "/produk/celeste-trench",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "auth": "guest",
+      "trigger": "[data-open-size-guide]",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "route HTTP 200",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "visible real trigger exists",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "trigger opens dialog",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "focus moves inside",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "has keyboard focus targets",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tab wraps last to first",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Shift+Tab wraps first to last",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop restores opener focus",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "focusableCount": 1,
+      "backdropPoint": {
+        "x": 12,
+        "y": 12
+      }
+    },
+    {
+      "name": "shortcuts",
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "auth": "guest",
+      "trigger": "[data-open-shortcuts]",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "route HTTP 200",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "visible real trigger exists",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "trigger opens dialog",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "focus moves inside",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "has keyboard focus targets",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tab wraps last to first",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Shift+Tab wraps first to last",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop restores opener focus",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "focusableCount": 2,
+      "backdropPoint": {
+        "x": 12,
+        "y": 12
+      }
+    },
+    {
+      "name": "cart",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "auth": "guest",
+      "trigger": "[data-open-cart]",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "route HTTP 200",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "visible real trigger exists",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "trigger opens dialog",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "focus moves inside",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "has keyboard focus targets",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tab wraps last to first",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Shift+Tab wraps first to last",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop restores opener focus",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "focusableCount": 2,
+      "backdropPoint": {
+        "x": 12,
+        "y": 12
+      }
+    },
+    {
+      "name": "search",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "auth": "guest",
+      "trigger": "[data-open-search]",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "route HTTP 200",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "visible real trigger exists",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "trigger opens dialog",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "focus moves inside",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "has keyboard focus targets",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tab wraps last to first",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Shift+Tab wraps first to last",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button restores opener focus",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "focusableCount": 7,
+      "backdropPoint": null,
+      "backdrop": "not-available-at-viewport"
+    },
+    {
+      "name": "quick-view",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "auth": "guest",
+      "trigger": "[data-product-card] [data-quick-view]",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "route HTTP 200",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "visible real trigger exists",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "trigger opens dialog",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "focus moves inside",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "has keyboard focus targets",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tab wraps last to first",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Shift+Tab wraps first to last",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button restores opener focus",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "focusableCount": 3,
+      "backdropPoint": null,
+      "backdrop": "not-available-at-viewport"
+    },
+    {
+      "name": "concierge",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "auth": "guest",
+      "trigger": "[data-open-concierge]:not(.mobile-concierge)",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "route HTTP 200",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "visible real trigger exists",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "trigger opens dialog",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "focus moves inside",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "has keyboard focus targets",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tab wraps last to first",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Shift+Tab wraps first to last",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button restores opener focus",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "focusableCount": 9,
+      "backdropPoint": null,
+      "backdrop": "not-available-at-viewport"
+    },
+    {
+      "name": "profile",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "auth": "guest",
+      "trigger": "[data-open-profile]",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "route HTTP 200",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "visible real trigger exists",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "trigger opens dialog",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "focus moves inside",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "has keyboard focus targets",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tab wraps last to first",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Shift+Tab wraps first to last",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop restores opener focus",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "focusableCount": 9,
+      "backdropPoint": {
+        "x": 12,
+        "y": 12
+      }
+    },
+    {
+      "name": "size-guide",
+      "route": "/produk/celeste-trench",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "auth": "guest",
+      "trigger": "[data-open-size-guide]",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "route HTTP 200",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "visible real trigger exists",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "trigger opens dialog",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "focus moves inside",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "has keyboard focus targets",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tab wraps last to first",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Shift+Tab wraps first to last",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button restores opener focus",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "focusableCount": 1,
+      "backdropPoint": null,
+      "backdrop": "not-available-at-viewport"
+    },
+    {
+      "name": "shortcuts",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "auth": "guest",
+      "trigger": "[data-open-shortcuts]",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "route HTTP 200",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "visible real trigger exists",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "trigger opens dialog",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "focus moves inside",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "has keyboard focus targets",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tab wraps last to first",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Shift+Tab wraps first to last",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Escape restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "close button restores opener focus",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop closes",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "backdrop restores opener focus",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "focusableCount": 2,
+      "backdropPoint": {
+        "x": 12,
+        "y": 12
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "cart-1440x900.png",
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "auth": "guest",
+      "overlay": "cart"
+    },
+    {
+      "file": "search-1440x900.png",
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "auth": "guest",
+      "overlay": "search"
+    },
+    {
+      "file": "quick-view-1440x900.png",
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "auth": "guest",
+      "overlay": "quick-view"
+    },
+    {
+      "file": "concierge-1440x900.png",
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "auth": "guest",
+      "overlay": "concierge"
+    },
+    {
+      "file": "profile-1440x900.png",
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "auth": "guest",
+      "overlay": "profile"
+    },
+    {
+      "file": "size-guide-1440x900.png",
+      "route": "/produk/celeste-trench",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "auth": "guest",
+      "overlay": "size-guide"
+    },
+    {
+      "file": "shortcuts-1440x900.png",
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "auth": "guest",
+      "overlay": "shortcuts"
+    },
+    {
+      "file": "cart-390x844.png",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "auth": "guest",
+      "overlay": "cart"
+    },
+    {
+      "file": "search-390x844.png",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "auth": "guest",
+      "overlay": "search"
+    },
+    {
+      "file": "quick-view-390x844.png",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "auth": "guest",
+      "overlay": "quick-view"
+    },
+    {
+      "file": "concierge-390x844.png",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "auth": "guest",
+      "overlay": "concierge"
+    },
+    {
+      "file": "profile-390x844.png",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "auth": "guest",
+      "overlay": "profile"
+    },
+    {
+      "file": "size-guide-390x844.png",
+      "route": "/produk/celeste-trench",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "auth": "guest",
+      "overlay": "size-guide"
+    },
+    {
+      "file": "shortcuts-390x844.png",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "auth": "guest",
+      "overlay": "shortcuts"
+    }
+  ],
+  "errors": [],
+  "failedRequests": [],
+  "finishedAt": "2026-10-11T16:32:46.465Z"
+}

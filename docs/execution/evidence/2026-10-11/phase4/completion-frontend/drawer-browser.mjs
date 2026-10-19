@@ -1,0 +1,32 @@
+import { createRequire } from 'node:module';
+import { execFileSync } from 'node:child_process';
+import { writeFileSync } from 'node:fs';
+const require = createRequire(import.meta.url);
+const { chromium } = require(execFileSync('npm', ['root', '-g'], { encoding: 'utf8' }).trim() + '/@playwright/cli/node_modules/playwright-core');
+const browser = await chromium.launch({ executablePath: process.env.HOME + '/Library/Caches/ms-playwright/chromium_headless_shell-1228/chrome-headless-shell-mac-arm64/chrome-headless-shell' });
+const page = await browser.newPage({viewport:{width:390,height:844}});
+await page.goto('http://127.0.0.1:8015/prototype/',{waitUntil:'networkidle'});
+const results={};
+await page.locator('#btn-mobile-nav-toggle').click();
+results.open = await page.evaluate(()=>document.querySelector('#mobile-nav-drawer').contains(document.activeElement));
+await page.keyboard.press('Shift+Tab');
+results.backwardTrap = await page.evaluate(()=>document.querySelector('#mobile-nav-drawer').contains(document.activeElement));
+await page.keyboard.press('Tab');
+results.forwardTrap = await page.evaluate(()=>document.activeElement===document.querySelector('#mobile-nav-drawer .btn-close'));
+await page.keyboard.press('Escape');
+results.escapeReturn = await page.evaluate(()=>document.activeElement.id==='btn-mobile-nav-toggle');
+await page.locator('#btn-mobile-nav-toggle').click();
+await page.locator('#drawer-backdrop').click({position:{x:385,y:500},force:true});
+results.backdropReturn=await page.evaluate(()=>document.activeElement.id==='btn-mobile-nav-toggle'&&!document.querySelector('#mobile-nav-drawer').classList.contains('open'));
+results.geometry=await page.evaluate(()=>{
+ const rect=s=>{const r=document.querySelector(s)?.getBoundingClientRect();return r?{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom}:null;};
+ return {dock:rect('.floating-luxury-dock'),hero:rect('.hero-text-pane'),paragraph:rect('.hero-manifesto')};
+});
+results.contrast=await page.evaluate(()=>{
+ const e=document.querySelector('.cat-pill');const s=getComputedStyle(e);
+ return {selector:'.cat-pill',foreground:s.color,background:s.backgroundColor,fontSize:s.fontSize,fontWeight:s.fontWeight,backgroundImage:s.backgroundImage};
+});
+await page.screenshot({path:new URL('drawer-mobile.png',import.meta.url).pathname});
+writeFileSync(new URL('drawer-browser-results.json',import.meta.url),JSON.stringify(results,null,2));
+console.log(results);await browser.close();
+if(Object.entries(results).some(([k,v])=>typeof v==='boolean'&&!v))process.exitCode=1;

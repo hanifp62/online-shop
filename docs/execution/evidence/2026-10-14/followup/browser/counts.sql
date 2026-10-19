@@ -1,0 +1,13 @@
+select 'categories_manual',count(*) from categories where cat_title='MANUAL';
+select 'products',count(*) from products;
+select 'users',count(*) from users;
+select 'admins',count(*) from admins;
+select 'addresses',count(*) from addresses;
+select 'vouchers',count(*) from vouchers;
+select 'orders',count(*) from orders;
+select 'order_items',count(*) from order_items;
+select 'identity_products',group_concat(product_slug||':'||product_price||':'||is_active,',') from (select * from products order by product_slug);
+select 'identity_accounts',(select group_concat(email||':'||name) from users)||'|'||(select group_concat(email||':'||name) from admins);
+select 'identity_category',group_concat(cat_id||':'||cat_title) from categories;
+select 'identity_addresses',group_concat(label||':'||recipient_name||':'||phone||':'||line1||':'||city||':'||province||':'||postal_code) from addresses order by label;
+select 'identity_vouchers',group_concat(code||':'||discount_amount||':'||quota||':'||per_user_limit||':'||is_active) from vouchers order by code;

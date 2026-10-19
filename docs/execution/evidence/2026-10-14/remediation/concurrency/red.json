@@ -1,0 +1,210 @@
+{
+    "harness_sha256": "b7521a36e8fccd4756555e51a570fdf6f681876aa31640ec44a5b6770db7ce16",
+    "service_sha256": "bceaf3e3e401a0f3867cbff8ddf3c2391ec249c2c44464cd5a448b0c7968940c",
+    "php": "8.5.11",
+    "engine": "3.53.4",
+    "transaction_mode": "DEFERRED",
+    "journal_mode": "wal",
+    "busy_timeout_ms": 50,
+    "database": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/checkout-proof-ef0e4fee965a74be/disposable.sqlite",
+    "mysql": "NOT_RUN",
+    "scenarios": {
+        "same-key": {
+            "workers": [
+                {
+                    "pid": 4856,
+                    "start": 1791981326.041325,
+                    "barrier": 1791981326.044507,
+                    "end": 1791981326.046784,
+                    "status": 201,
+                    "error": null
+                },
+                {
+                    "pid": 4857,
+                    "start": 1791981326.0419,
+                    "barrier": 1791981326.04454,
+                    "end": 1791981326.045303,
+                    "status": 500,
+                    "error": {
+                        "class": "Illuminate\\Database\\QueryException",
+                        "code": [
+                            "HY000",
+                            5,
+                            "database is locked"
+                        ]
+                    }
+                }
+            ],
+            "statuses": [
+                201,
+                500
+            ],
+            "expected": [
+                200,
+                201
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 9,
+            "used": 0,
+            "pass": false
+        },
+        "changed-address": {
+            "workers": [
+                {
+                    "pid": 4858,
+                    "start": 1791981326.056798,
+                    "barrier": 1791981326.058415,
+                    "end": 1791981326.060167,
+                    "status": 500,
+                    "error": {
+                        "class": "Illuminate\\Database\\QueryException",
+                        "code": [
+                            "HY000",
+                            5,
+                            "database is locked"
+                        ]
+                    }
+                },
+                {
+                    "pid": 4859,
+                    "start": 1791981326.057333,
+                    "barrier": 1791981326.058822,
+                    "end": 1791981326.060624,
+                    "status": 201,
+                    "error": null
+                }
+            ],
+            "statuses": [
+                201,
+                500
+            ],
+            "expected": [
+                201,
+                409
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 9,
+            "used": 0,
+            "pass": false
+        },
+        "distinct-voucher": {
+            "workers": [
+                {
+                    "pid": 4860,
+                    "start": 1791981326.069524,
+                    "barrier": 1791981326.071492,
+                    "end": 1791981326.072198,
+                    "status": 500,
+                    "error": {
+                        "class": "Illuminate\\Database\\QueryException",
+                        "code": [
+                            "HY000",
+                            5,
+                            "database is locked"
+                        ]
+                    }
+                },
+                {
+                    "pid": 4861,
+                    "start": 1791981326.06992,
+                    "barrier": 1791981326.071493,
+                    "end": 1791981326.073551,
+                    "status": 201,
+                    "error": null
+                }
+            ],
+            "statuses": [
+                201,
+                500
+            ],
+            "expected": [
+                201,
+                422
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 9,
+            "used": 1,
+            "pass": false
+        },
+        "distinct-key": {
+            "workers": [
+                {
+                    "pid": 4862,
+                    "start": 1791981326.081527,
+                    "barrier": 1791981326.083301,
+                    "end": 1791981326.085074,
+                    "status": 500,
+                    "error": {
+                        "class": "Illuminate\\Database\\QueryException",
+                        "code": [
+                            "HY000",
+                            5,
+                            "database is locked"
+                        ]
+                    }
+                },
+                {
+                    "pid": 4863,
+                    "start": 1791981326.081868,
+                    "barrier": 1791981326.083388,
+                    "end": 1791981326.085849,
+                    "status": 201,
+                    "error": null
+                }
+            ],
+            "statuses": [
+                201,
+                500
+            ],
+            "expected": [
+                201,
+                201
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 9,
+            "used": 0,
+            "pass": false
+        },
+        "double-cancel": {
+            "workers": [
+                {
+                    "pid": 4864,
+                    "start": 1791981326.096069,
+                    "barrier": 1791981326.097041,
+                    "end": 1791981326.098891,
+                    "status": 409,
+                    "error": {
+                        "class": "Symfony\\Component\\HttpKernel\\Exception\\HttpException",
+                        "code": 0
+                    }
+                },
+                {
+                    "pid": 4865,
+                    "start": 1791981326.096663,
+                    "barrier": 1791981326.0974,
+                    "end": 1791981326.098255,
+                    "status": 200,
+                    "error": null
+                }
+            ],
+            "statuses": [
+                200,
+                409
+            ],
+            "expected": [
+                200,
+                409
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 10,
+            "used": 0,
+            "pass": true
+        }
+    },
+    "pass": false
+}

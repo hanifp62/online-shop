@@ -1,0 +1,7 @@
+{
+  "command": "docker network inspect bridge",
+  "returncode": 0,
+  "platform": "Linux container",
+  "start": "2026-10-13T03:56:31Z",
+  "finish": "2026-10-13T03:56:31Z"
+}

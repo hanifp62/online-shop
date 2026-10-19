@@ -1,0 +1,28 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "tests/amadis-layout.test.mjs",
+    "tests/cart-concurrency.test.mjs",
+    "tests/catalog-replacement.test.mjs",
+    "tests/hit-hero-run12.test.mjs",
+    "tests/phase4-a11y.test.mjs",
+    "tests/prototype-currency.test.mjs",
+    "tests/prototype-dock.test.mjs",
+    "tests/prototype-drawer.test.mjs",
+    "tests/prototype-header-1025.test.mjs",
+    "tests/prototype-mobile-lang.test.mjs",
+    "tests/prototype-security.test.mjs",
+    "tests/sw.test.mjs",
+    "tests/sweep10-repairs.test.mjs",
+    "tests/task3.test.mjs",
+    "tests/task4-focus.test.mjs",
+    "tests/task4.test.mjs",
+    "tests/zafira-i18n.test.mjs",
+    "tests/zafira-theme.test.mjs"
+  ],
+  "cwd": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-manual-closure-20261015",
+  "utc_start": "2026-10-14T17:13:08.072519+00:00",
+  "utc_end": "2026-10-14T17:13:08.256469+00:00",
+  "returncode": 0
+}

@@ -1,0 +1,5 @@
+{
+  "command": "docker network rm amadis-stage-composer-55b70eebaa84",
+  "returncode": 1,
+  "platform": "Linux container"
+}

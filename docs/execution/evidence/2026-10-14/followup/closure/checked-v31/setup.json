@@ -1,0 +1,10 @@
+{
+  "command": [
+    "bash",
+    "scripts/manual/setup.sh"
+  ],
+  "cwd": "/Users/hanifpriyambodo/Documents/online-shop",
+  "root": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-manual-v31-20261015",
+  "returncode": 0,
+  "log": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-manual-v31-20261015.setup.log"
+}

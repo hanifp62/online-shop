@@ -1,0 +1,3142 @@
+[
+ {
+  "kind": "app",
+  "path": "/",
+  "finalUrl": "/",
+  "status": 200,
+  "w": 320,
+  "h": 568,
+  "scrollWidth": 320,
+  "clientWidth": 320,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.skip-link",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   },
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 500,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 13910
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/login",
+  "finalUrl": "/login",
+  "status": 200,
+  "w": 320,
+  "h": 568,
+  "scrollWidth": 320,
+  "clientWidth": 320,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.password-toggle",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 709
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/register",
+  "finalUrl": "/register",
+  "status": 200,
+  "w": 320,
+  "h": 568,
+  "scrollWidth": 320,
+  "clientWidth": 320,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 1224
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/admin/login",
+  "finalUrl": "/admin/login",
+  "status": 200,
+  "w": 320,
+  "h": 568,
+  "scrollWidth": 320,
+  "clientWidth": 320,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 632
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/akun",
+  "finalUrl": "/login",
+  "status": 200,
+  "w": 320,
+  "h": 568,
+  "scrollWidth": 320,
+  "clientWidth": 320,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.password-toggle",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 709
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/admin",
+  "finalUrl": "/admin/login",
+  "status": 200,
+  "w": 320,
+  "h": 568,
+  "scrollWidth": 320,
+  "clientWidth": 320,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 632
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/produk/sac-seraphine",
+  "finalUrl": "/produk/sac-seraphine",
+  "status": 200,
+  "w": 320,
+  "h": 568,
+  "scrollWidth": 320,
+  "clientWidth": 320,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.skip-link",
+    "visible": true
+   },
+   {
+    "el": "button.",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   },
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 487,
+     "height": 61
+    }
+   ],
+   "covered": [],
+   "docEnd": 3159
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#storefront",
+  "w": 320,
+  "h": 568,
+  "scrollWidth": 320,
+  "clientWidth": 320,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 502,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 11040
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 502,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 11040
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#studio",
+  "w": 320,
+  "h": 568,
+  "scrollWidth": 320,
+  "clientWidth": 320,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 502,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 2432
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 502,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 2432
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#account",
+  "w": 320,
+  "h": 568,
+  "scrollWidth": 320,
+  "clientWidth": 320,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 502,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 5183
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 502,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 5183
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#admin",
+  "w": 320,
+  "h": 568,
+  "scrollWidth": 320,
+  "clientWidth": 320,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 502,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 3523
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 502,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 3523
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/",
+  "finalUrl": "/",
+  "status": 200,
+  "w": 390,
+  "h": 844,
+  "scrollWidth": 390,
+  "clientWidth": 390,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.skip-link",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   },
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 776,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 13915
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/login",
+  "finalUrl": "/login",
+  "status": 200,
+  "w": 390,
+  "h": 844,
+  "scrollWidth": 390,
+  "clientWidth": 390,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.password-toggle",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 844
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/register",
+  "finalUrl": "/register",
+  "status": 200,
+  "w": 390,
+  "h": 844,
+  "scrollWidth": 390,
+  "clientWidth": 390,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 1152
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/admin/login",
+  "finalUrl": "/admin/login",
+  "status": 200,
+  "w": 390,
+  "h": 844,
+  "scrollWidth": 390,
+  "clientWidth": 390,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 844
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/akun",
+  "finalUrl": "/login",
+  "status": 200,
+  "w": 390,
+  "h": 844,
+  "scrollWidth": 390,
+  "clientWidth": 390,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.password-toggle",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 844
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/admin",
+  "finalUrl": "/admin/login",
+  "status": 200,
+  "w": 390,
+  "h": 844,
+  "scrollWidth": 390,
+  "clientWidth": 390,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 844
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/produk/sac-seraphine",
+  "finalUrl": "/produk/sac-seraphine",
+  "status": 200,
+  "w": 390,
+  "h": 844,
+  "scrollWidth": 390,
+  "clientWidth": 390,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.skip-link",
+    "visible": true
+   },
+   {
+    "el": "button.",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   },
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 763,
+     "height": 61
+    }
+   ],
+   "covered": [],
+   "docEnd": 3110
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#storefront",
+  "w": 390,
+  "h": 844,
+  "scrollWidth": 390,
+  "clientWidth": 390,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 778,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 10959
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 778,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 10959
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#studio",
+  "w": 390,
+  "h": 844,
+  "scrollWidth": 390,
+  "clientWidth": 390,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 778,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 2393
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 778,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 2393
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#account",
+  "w": 390,
+  "h": 844,
+  "scrollWidth": 390,
+  "clientWidth": 390,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 778,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 4568
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 778,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 4568
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#admin",
+  "w": 390,
+  "h": 844,
+  "scrollWidth": 390,
+  "clientWidth": 390,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 778,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 3493
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 778,
+     "height": 54
+    }
+   ],
+   "covered": [],
+   "docEnd": 3493
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/",
+  "finalUrl": "/",
+  "status": 200,
+  "w": 768,
+  "h": 1024,
+  "scrollWidth": 768,
+  "clientWidth": 768,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.skip-link",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   },
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 952,
+     "height": 58
+    }
+   ],
+   "covered": [],
+   "docEnd": 14663
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/login",
+  "finalUrl": "/login",
+  "status": 200,
+  "w": 768,
+  "h": 1024,
+  "scrollWidth": 768,
+  "clientWidth": 768,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.password-toggle",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 1024
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/register",
+  "finalUrl": "/register",
+  "status": 200,
+  "w": 768,
+  "h": 1024,
+  "scrollWidth": 768,
+  "clientWidth": 768,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 1042
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/admin/login",
+  "finalUrl": "/admin/login",
+  "status": 200,
+  "w": 768,
+  "h": 1024,
+  "scrollWidth": 768,
+  "clientWidth": 768,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 1024
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/akun",
+  "finalUrl": "/login",
+  "status": 200,
+  "w": 768,
+  "h": 1024,
+  "scrollWidth": 768,
+  "clientWidth": 768,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.password-toggle",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 1024
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/admin",
+  "finalUrl": "/admin/login",
+  "status": 200,
+  "w": 768,
+  "h": 1024,
+  "scrollWidth": 768,
+  "clientWidth": 768,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 1024
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/produk/sac-seraphine",
+  "finalUrl": "/produk/sac-seraphine",
+  "status": 200,
+  "w": 768,
+  "h": 1024,
+  "scrollWidth": 768,
+  "clientWidth": 768,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.skip-link",
+    "visible": true
+   },
+   {
+    "el": "button.",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   },
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   },
+   {
+    "el": "button.icon-button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 943,
+     "height": 61
+    }
+   ],
+   "covered": [],
+   "docEnd": 3665
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#storefront",
+  "w": 768,
+  "h": 1024,
+  "scrollWidth": 768,
+  "clientWidth": 768,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 966,
+     "height": 46
+    }
+   ],
+   "covered": [],
+   "docEnd": 13959
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 966,
+     "height": 46
+    }
+   ],
+   "covered": [],
+   "docEnd": 13959
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#studio",
+  "w": 768,
+  "h": 1024,
+  "scrollWidth": 768,
+  "clientWidth": 768,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 966,
+     "height": 46
+    }
+   ],
+   "covered": [],
+   "docEnd": 3171
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 966,
+     "height": 46
+    }
+   ],
+   "covered": [],
+   "docEnd": 3171
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#account",
+  "w": 768,
+  "h": 1024,
+  "scrollWidth": 768,
+  "clientWidth": 768,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 966,
+     "height": 46
+    }
+   ],
+   "covered": [],
+   "docEnd": 3498
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 966,
+     "height": 46
+    }
+   ],
+   "covered": [],
+   "docEnd": 3498
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#admin",
+  "w": 768,
+  "h": 1024,
+  "scrollWidth": 768,
+  "clientWidth": 768,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 966,
+     "height": 46
+    }
+   ],
+   "covered": [],
+   "docEnd": 2923
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 966,
+     "height": 46
+    }
+   ],
+   "covered": [],
+   "docEnd": 2923
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/",
+  "finalUrl": "/",
+  "status": 200,
+  "w": 1024,
+  "h": 768,
+  "scrollWidth": 1024,
+  "clientWidth": 1024,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.skip-link",
+    "visible": true
+   },
+   {
+    "el": "button.lang-btn",
+    "visible": true
+   },
+   {
+    "el": "button.lang-btn",
+    "visible": true
+   },
+   {
+    "el": "button.lang-btn",
+    "visible": true
+   },
+   {
+    "el": "button.lang-btn",
+    "visible": true
+   },
+   {
+    "el": "button.theme-btn",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 677,
+     "height": 67
+    }
+   ],
+   "covered": [],
+   "docEnd": 11096
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/login",
+  "finalUrl": "/login",
+  "status": 200,
+  "w": 1024,
+  "h": 768,
+  "scrollWidth": 1024,
+  "clientWidth": 1024,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.password-toggle",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 768
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/register",
+  "finalUrl": "/register",
+  "status": 200,
+  "w": 1024,
+  "h": 768,
+  "scrollWidth": 1024,
+  "clientWidth": 1024,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 1123
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/admin/login",
+  "finalUrl": "/admin/login",
+  "status": 200,
+  "w": 1024,
+  "h": 768,
+  "scrollWidth": 1024,
+  "clientWidth": 1024,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 768
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/akun",
+  "finalUrl": "/login",
+  "status": 200,
+  "w": 1024,
+  "h": 768,
+  "scrollWidth": 1024,
+  "clientWidth": 1024,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.password-toggle",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 768
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/admin",
+  "finalUrl": "/admin/login",
+  "status": 200,
+  "w": 1024,
+  "h": 768,
+  "scrollWidth": 1024,
+  "clientWidth": 1024,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 768
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/produk/sac-seraphine",
+  "finalUrl": "/produk/sac-seraphine",
+  "status": 200,
+  "w": 1024,
+  "h": 768,
+  "scrollWidth": 1024,
+  "clientWidth": 1024,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.skip-link",
+    "visible": true
+   },
+   {
+    "el": "button.",
+    "visible": true
+   },
+   {
+    "el": "a.",
+    "visible": true
+   },
+   {
+    "el": "a.",
+    "visible": true
+   },
+   {
+    "el": "a.",
+    "visible": true
+   },
+   {
+    "el": "a.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 700,
+     "height": 48
+    }
+   ],
+   "covered": [],
+   "docEnd": 2651
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#storefront",
+  "w": 1024,
+  "h": 768,
+  "scrollWidth": 1024,
+  "clientWidth": 1024,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 673,
+     "height": 71
+    }
+   ],
+   "covered": [],
+   "docEnd": 10199
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 673,
+     "height": 71
+    }
+   ],
+   "covered": [],
+   "docEnd": 10199
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#studio",
+  "w": 1024,
+  "h": 768,
+  "scrollWidth": 1024,
+  "clientWidth": 1024,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 673,
+     "height": 71
+    }
+   ],
+   "covered": [],
+   "docEnd": 3871
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 673,
+     "height": 71
+    }
+   ],
+   "covered": [],
+   "docEnd": 3871
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#account",
+  "w": 1024,
+  "h": 768,
+  "scrollWidth": 1024,
+  "clientWidth": 1024,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 673,
+     "height": 71
+    }
+   ],
+   "covered": [],
+   "docEnd": 2401
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 673,
+     "height": 71
+    }
+   ],
+   "covered": [],
+   "docEnd": 2401
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#admin",
+  "w": 1024,
+  "h": 768,
+  "scrollWidth": 1024,
+  "clientWidth": 1024,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 673,
+     "height": 71
+    }
+   ],
+   "covered": [],
+   "docEnd": 2280
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 673,
+     "height": 71
+    }
+   ],
+   "covered": [],
+   "docEnd": 2280
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/",
+  "finalUrl": "/",
+  "status": 200,
+  "w": 1366,
+  "h": 768,
+  "scrollWidth": 1366,
+  "clientWidth": 1366,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.skip-link",
+    "visible": true
+   },
+   {
+    "el": "button.lang-btn",
+    "visible": true
+   },
+   {
+    "el": "button.lang-btn",
+    "visible": true
+   },
+   {
+    "el": "button.lang-btn",
+    "visible": true
+   },
+   {
+    "el": "button.lang-btn",
+    "visible": true
+   },
+   {
+    "el": "button.theme-btn",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 677,
+     "height": 67
+    }
+   ],
+   "covered": [],
+   "docEnd": 9821
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/login",
+  "finalUrl": "/login",
+  "status": 200,
+  "w": 1366,
+  "h": 768,
+  "scrollWidth": 1366,
+  "clientWidth": 1366,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.password-toggle",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 768
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/register",
+  "finalUrl": "/register",
+  "status": 200,
+  "w": 1366,
+  "h": 768,
+  "scrollWidth": 1366,
+  "clientWidth": 1366,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 1002
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/admin/login",
+  "finalUrl": "/admin/login",
+  "status": 200,
+  "w": 1366,
+  "h": 768,
+  "scrollWidth": 1366,
+  "clientWidth": 1366,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 768
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/akun",
+  "finalUrl": "/login",
+  "status": 200,
+  "w": 1366,
+  "h": 768,
+  "scrollWidth": 1366,
+  "clientWidth": 1366,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.password-toggle",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 768
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/admin",
+  "finalUrl": "/admin/login",
+  "status": 200,
+  "w": 1366,
+  "h": 768,
+  "scrollWidth": 1366,
+  "clientWidth": 1366,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 768
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/produk/sac-seraphine",
+  "finalUrl": "/produk/sac-seraphine",
+  "status": 200,
+  "w": 1366,
+  "h": 768,
+  "scrollWidth": 1366,
+  "clientWidth": 1366,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.skip-link",
+    "visible": true
+   },
+   {
+    "el": "button.",
+    "visible": true
+   },
+   {
+    "el": "a.",
+    "visible": true
+   },
+   {
+    "el": "a.",
+    "visible": true
+   },
+   {
+    "el": "a.",
+    "visible": true
+   },
+   {
+    "el": "a.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 700,
+     "height": 48
+    }
+   ],
+   "covered": [],
+   "docEnd": 2428
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#storefront",
+  "w": 1366,
+  "h": 768,
+  "scrollWidth": 1366,
+  "clientWidth": 1366,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 701,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 6433
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 701,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 6433
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#studio",
+  "w": 1366,
+  "h": 768,
+  "scrollWidth": 1366,
+  "clientWidth": 1366,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 701,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 2279
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 701,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 2279
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#account",
+  "w": 1366,
+  "h": 768,
+  "scrollWidth": 1366,
+  "clientWidth": 1366,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 701,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 2169
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 701,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 2169
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#admin",
+  "w": 1366,
+  "h": 768,
+  "scrollWidth": 1366,
+  "clientWidth": 1366,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 701,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 1419
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 701,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 1419
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/",
+  "finalUrl": "/",
+  "status": 200,
+  "w": 1440,
+  "h": 900,
+  "scrollWidth": 1440,
+  "clientWidth": 1440,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.skip-link",
+    "visible": true
+   },
+   {
+    "el": "button.lang-btn",
+    "visible": true
+   },
+   {
+    "el": "button.lang-btn",
+    "visible": true
+   },
+   {
+    "el": "button.lang-btn",
+    "visible": true
+   },
+   {
+    "el": "button.lang-btn",
+    "visible": true
+   },
+   {
+    "el": "button.theme-btn",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 809,
+     "height": 67
+    }
+   ],
+   "covered": [],
+   "docEnd": 10028
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/login",
+  "finalUrl": "/login",
+  "status": 200,
+  "w": 1440,
+  "h": 900,
+  "scrollWidth": 1440,
+  "clientWidth": 1440,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.password-toggle",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 900
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/register",
+  "finalUrl": "/register",
+  "status": 200,
+  "w": 1440,
+  "h": 900,
+  "scrollWidth": 1440,
+  "clientWidth": 1440,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 1002
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/admin/login",
+  "finalUrl": "/admin/login",
+  "status": 200,
+  "w": 1440,
+  "h": 900,
+  "scrollWidth": 1440,
+  "clientWidth": 1440,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 900
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/akun",
+  "finalUrl": "/login",
+  "status": 200,
+  "w": 1440,
+  "h": 900,
+  "scrollWidth": 1440,
+  "clientWidth": 1440,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.password-toggle",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 900
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/admin",
+  "finalUrl": "/admin/login",
+  "status": 200,
+  "w": 1440,
+  "h": 900,
+  "scrollWidth": 1440,
+  "clientWidth": 1440,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 900
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/produk/sac-seraphine",
+  "finalUrl": "/produk/sac-seraphine",
+  "status": 200,
+  "w": 1440,
+  "h": 900,
+  "scrollWidth": 1440,
+  "clientWidth": 1440,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.skip-link",
+    "visible": true
+   },
+   {
+    "el": "button.",
+    "visible": true
+   },
+   {
+    "el": "a.",
+    "visible": true
+   },
+   {
+    "el": "a.",
+    "visible": true
+   },
+   {
+    "el": "a.",
+    "visible": true
+   },
+   {
+    "el": "a.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 832,
+     "height": 48
+    }
+   ],
+   "covered": [],
+   "docEnd": 2436
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#storefront",
+  "w": 1440,
+  "h": 900,
+  "scrollWidth": 1440,
+  "clientWidth": 1440,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 833,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 6561
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 833,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 6561
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#studio",
+  "w": 1440,
+  "h": 900,
+  "scrollWidth": 1440,
+  "clientWidth": 1440,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 833,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 2394
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 833,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 2394
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#account",
+  "w": 1440,
+  "h": 900,
+  "scrollWidth": 1440,
+  "clientWidth": 1440,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 833,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 2169
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 833,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 2169
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#admin",
+  "w": 1440,
+  "h": 900,
+  "scrollWidth": 1440,
+  "clientWidth": 1440,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 833,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 1419
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 833,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 1419
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/",
+  "finalUrl": "/",
+  "status": 200,
+  "w": 1650,
+  "h": 927,
+  "scrollWidth": 1650,
+  "clientWidth": 1650,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.skip-link",
+    "visible": true
+   },
+   {
+    "el": "button.lang-btn",
+    "visible": true
+   },
+   {
+    "el": "button.lang-btn",
+    "visible": true
+   },
+   {
+    "el": "button.lang-btn",
+    "visible": true
+   },
+   {
+    "el": "button.lang-btn",
+    "visible": true
+   },
+   {
+    "el": "button.theme-btn",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 851,
+     "height": 52
+    }
+   ],
+   "covered": [],
+   "docEnd": 10297
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/login",
+  "finalUrl": "/login",
+  "status": 200,
+  "w": 1650,
+  "h": 927,
+  "scrollWidth": 1650,
+  "clientWidth": 1650,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.password-toggle",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 927
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/register",
+  "finalUrl": "/register",
+  "status": 200,
+  "w": 1650,
+  "h": 927,
+  "scrollWidth": 1650,
+  "clientWidth": 1650,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 1002
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/admin/login",
+  "finalUrl": "/admin/login",
+  "status": 200,
+  "w": 1650,
+  "h": 927,
+  "scrollWidth": 1650,
+  "clientWidth": 1650,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 927
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/akun",
+  "finalUrl": "/login",
+  "status": 200,
+  "w": 1650,
+  "h": 927,
+  "scrollWidth": 1650,
+  "clientWidth": 1650,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.password-toggle",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 927
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/admin",
+  "finalUrl": "/admin/login",
+  "status": 200,
+  "w": 1650,
+  "h": 927,
+  "scrollWidth": 1650,
+  "clientWidth": 1650,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.brand",
+    "visible": true
+   },
+   {
+    "el": "a.auth-back",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "input.",
+    "visible": true
+   },
+   {
+    "el": "button.button",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [],
+   "covered": [],
+   "docEnd": 927
+  },
+  "errs": []
+ },
+ {
+  "kind": "app",
+  "path": "/produk/sac-seraphine",
+  "finalUrl": "/produk/sac-seraphine",
+  "status": 200,
+  "w": 1650,
+  "h": 927,
+  "scrollWidth": 1650,
+  "clientWidth": 1650,
+  "overflowX": 0,
+  "offenders": [],
+  "focus": [
+   {
+    "el": "a.skip-link",
+    "visible": true
+   },
+   {
+    "el": "button.",
+    "visible": true
+   },
+   {
+    "el": "a.",
+    "visible": true
+   },
+   {
+    "el": "a.",
+    "visible": true
+   },
+   {
+    "el": "a.",
+    "visible": true
+   },
+   {
+    "el": "a.",
+    "visible": true
+   }
+  ],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 859,
+     "height": 48
+    }
+   ],
+   "covered": [],
+   "docEnd": 2471
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#storefront",
+  "w": 1650,
+  "h": 927,
+  "scrollWidth": 1650,
+  "clientWidth": 1650,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 860,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 6707
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 860,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 6707
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#studio",
+  "w": 1650,
+  "h": 927,
+  "scrollWidth": 1650,
+  "clientWidth": 1650,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 860,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 2720
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 860,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 2720
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#account",
+  "w": 1650,
+  "h": 927,
+  "scrollWidth": 1650,
+  "clientWidth": 1650,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 860,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 2169
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 860,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 2169
+  },
+  "errs": []
+ },
+ {
+  "kind": "prototype",
+  "path": "/prototype/#admin",
+  "w": 1650,
+  "h": 927,
+  "scrollWidth": 1650,
+  "clientWidth": 1650,
+  "overflowX": 0,
+  "offenders": [],
+  "occlusion": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 860,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 1404
+  },
+  "occlusionSettled": {
+   "bars": [
+    {
+     "cls": "floating-luxury-dock",
+     "top": 860,
+     "height": 43
+    }
+   ],
+   "covered": [],
+   "docEnd": 1404
+  },
+  "errs": []
+ }
+]

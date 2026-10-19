@@ -1,0 +1,365 @@
+[
+  {
+    "width": 320,
+    "lang": "id",
+    "failures": [
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 320,
+    "lang": "en",
+    "failures": [
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 320,
+    "lang": "fr",
+    "failures": [
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 320,
+    "lang": "it",
+    "failures": [
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 390,
+    "lang": "id",
+    "failures": [
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 390,
+    "lang": "en",
+    "failures": [
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 390,
+    "lang": "fr",
+    "failures": [
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 390,
+    "lang": "it",
+    "failures": [
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 768,
+    "lang": "id",
+    "failures": [
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 768,
+    "lang": "en",
+    "failures": [
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 768,
+    "lang": "fr",
+    "failures": [
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 768,
+    "lang": "it",
+    "failures": [
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 820,
+    "lang": "id",
+    "failures": [
+      "announcement overlaps controls",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 820,
+    "lang": "en",
+    "failures": [
+      "announcement overlaps controls",
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 820,
+    "lang": "fr",
+    "failures": [
+      "announcement overlaps controls",
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 820,
+    "lang": "it",
+    "failures": [
+      "announcement overlaps controls",
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 821,
+    "lang": "id",
+    "failures": [
+      "announcement overlaps controls",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 821,
+    "lang": "en",
+    "failures": [
+      "announcement overlaps controls",
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 821,
+    "lang": "fr",
+    "failures": [
+      "announcement overlaps controls",
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 821,
+    "lang": "it",
+    "failures": [
+      "announcement overlaps controls",
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 900,
+    "lang": "id",
+    "failures": [
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 900,
+    "lang": "en",
+    "failures": [
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 900,
+    "lang": "fr",
+    "failures": [
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 900,
+    "lang": "it",
+    "failures": [
+      "language was not applied",
+      "mobile labels inherit ordinal typography",
+      "mobile labels wrap or overflow"
+    ]
+  },
+  {
+    "width": 901,
+    "lang": "id",
+    "failures": [
+      "announcement overlaps controls"
+    ]
+  },
+  {
+    "width": 901,
+    "lang": "en",
+    "failures": [
+      "announcement overlaps controls",
+      "language was not applied"
+    ]
+  },
+  {
+    "width": 901,
+    "lang": "fr",
+    "failures": [
+      "announcement overlaps controls",
+      "language was not applied"
+    ]
+  },
+  {
+    "width": 901,
+    "lang": "it",
+    "failures": [
+      "announcement overlaps controls",
+      "language was not applied"
+    ]
+  },
+  {
+    "width": 1024,
+    "lang": "id",
+    "failures": [
+      "announcement overlaps controls"
+    ]
+  },
+  {
+    "width": 1024,
+    "lang": "en",
+    "failures": [
+      "announcement overlaps controls",
+      "language was not applied"
+    ]
+  },
+  {
+    "width": 1024,
+    "lang": "fr",
+    "failures": [
+      "announcement overlaps controls",
+      "language was not applied"
+    ]
+  },
+  {
+    "width": 1024,
+    "lang": "it",
+    "failures": [
+      "announcement overlaps controls",
+      "language was not applied"
+    ]
+  },
+  {
+    "width": 1366,
+    "lang": "id",
+    "failures": [
+      "announcement overlaps controls"
+    ]
+  },
+  {
+    "width": 1366,
+    "lang": "en",
+    "failures": [
+      "announcement overlaps controls",
+      "language was not applied"
+    ]
+  },
+  {
+    "width": 1366,
+    "lang": "fr",
+    "failures": [
+      "announcement overlaps controls",
+      "language was not applied"
+    ]
+  },
+  {
+    "width": 1366,
+    "lang": "it",
+    "failures": [
+      "announcement overlaps controls",
+      "language was not applied"
+    ]
+  },
+  {
+    "width": 1440,
+    "lang": "id",
+    "failures": []
+  },
+  {
+    "width": 1440,
+    "lang": "en",
+    "failures": [
+      "language was not applied"
+    ]
+  },
+  {
+    "width": 1440,
+    "lang": "fr",
+    "failures": [
+      "language was not applied"
+    ]
+  },
+  {
+    "width": 1440,
+    "lang": "it",
+    "failures": [
+      "language was not applied"
+    ]
+  },
+  {
+    "width": 1650,
+    "lang": "id",
+    "failures": []
+  },
+  {
+    "width": 1650,
+    "lang": "en",
+    "failures": [
+      "language was not applied"
+    ]
+  },
+  {
+    "width": 1650,
+    "lang": "fr",
+    "failures": [
+      "language was not applied"
+    ]
+  },
+  {
+    "width": 1650,
+    "lang": "it",
+    "failures": [
+      "language was not applied"
+    ]
+  }
+]

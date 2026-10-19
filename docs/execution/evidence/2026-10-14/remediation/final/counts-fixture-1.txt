@@ -1,0 +1,1 @@
+categories=1 products=3 users=1 admins=1 addresses=1 vouchers=1 orders=0 order_items=0 

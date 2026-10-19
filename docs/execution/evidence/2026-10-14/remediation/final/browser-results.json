@@ -1,0 +1,110 @@
+{
+  "results": [
+    {
+      "name": "customer-login",
+      "status": "PASS",
+      "utc": "2026-10-14T13:24:35.247Z",
+      "evidence": {
+        "authenticated": true
+      }
+    },
+    {
+      "name": "home-add-toast-count",
+      "status": "FAIL",
+      "utc": "2026-10-14T13:24:35.923Z",
+      "error": "The input did not match the regular expression /ditambahkan/. Input:"
+    },
+    {
+      "name": "rapid-three-plus",
+      "status": "PASS",
+      "utc": "2026-10-14T13:24:36.618Z",
+      "evidence": {
+        "before": 1,
+        "clicks": 3,
+        "after": 4
+      }
+    },
+    {
+      "name": "remove-undo",
+      "status": "PASS",
+      "utc": "2026-10-14T13:24:36.924Z",
+      "evidence": {
+        "removed": true,
+        "restoredQuantity": 4
+      }
+    },
+    {
+      "name": "catalog-add-feedback",
+      "status": "PASS",
+      "utc": "2026-10-14T13:24:37.170Z",
+      "evidence": {
+        "quantity": 1,
+        "feedback": "Tas belanja diperbarui. Jumlah 1 menggantikan jumlah sebelumnya"
+      }
+    },
+    {
+      "name": "catalog-toast-count",
+      "status": "FAIL",
+      "utc": "2026-10-14T13:24:37.338Z",
+      "error": "Catalog has no shared toast"
+    },
+    {
+      "name": "checkout-summary",
+      "status": "PASS",
+      "utc": "2026-10-14T13:24:37.386Z",
+      "evidence": {
+        "lines": [
+          "Rp125.000 × 1 = Rp125.000"
+        ],
+        "subtotal": 125000
+      }
+    },
+    {
+      "name": "place-order-reference",
+      "status": "PASS",
+      "utc": "2026-10-14T13:24:38.085Z",
+      "evidence": {
+        "confirmation": "Pesanan #3 dibuat: pending / belum dibayar. Total Rp125.000. Tidak ada pembayaran online."
+      }
+    },
+    {
+      "name": "catalog-mobile-390",
+      "status": "PASS",
+      "utc": "2026-10-14T13:24:38.214Z",
+      "evidence": {
+        "closed": {
+          "viewport": 390,
+          "scroll": 390
+        },
+        "open": {
+          "viewport": 390,
+          "scroll": 390
+        },
+        "disclosureOpened": true
+      }
+    },
+    {
+      "name": "catalog-mobile-320",
+      "status": "PASS",
+      "utc": "2026-10-14T13:24:39.037Z",
+      "evidence": {
+        "closed": {
+          "viewport": 320,
+          "scroll": 320
+        },
+        "open": {
+          "viewport": 320,
+          "scroll": 320
+        },
+        "disclosureOpened": true
+      }
+    },
+    {
+      "name": "admin-login-pdf-download",
+      "status": "FAIL",
+      "utc": "2026-10-14T13:25:10.157Z",
+      "error": "page.waitForEvent: Timeout 30000ms exceeded while waiting for event \"download\""
+    }
+  ],
+  "pageErrors": []
+}

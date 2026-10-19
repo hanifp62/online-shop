@@ -1,0 +1,521 @@
+{
+  "utc": "2026-10-14T16:36:48.283797+00:00",
+  "status": "inspection-baseline-not-runtime-proof",
+  "scope": "Explicit source paths only; no secrets, DB, storage, old evidence or package read",
+  "manifest_sha256": "cf3e0d0440ea5b478885d56b9989ddc3f8fc14fdbf763d277993ac2b7df1dccc",
+  "file_count": 128,
+  "files": [
+    {
+      "path": "app/Http/Controllers/AddressController.php",
+      "sha256": "f76acbc861bcb8e922805f1ea8ba466bc407aeceb758451c49e65b4feabe9598"
+    },
+    {
+      "path": "app/Http/Controllers/AdminAuthController.php",
+      "sha256": "43474dbf2b00b7da56e4b63353dc498b594239136a69d8bbe4d0731bedfe590f"
+    },
+    {
+      "path": "app/Http/Controllers/AdminCategoryController.php",
+      "sha256": "a750d114ae289cc397c2c4b223a1bbed31a1a9ed37ab14c5a03e6bc2c1c85d97"
+    },
+    {
+      "path": "app/Http/Controllers/AdminDashboardController.php",
+      "sha256": "110587b2e7c3babbc59049c832416c03427e74d95d56cbe74f56a602adffc57f"
+    },
+    {
+      "path": "app/Http/Controllers/AdminOrderController.php",
+      "sha256": "b5c813a9404ed59787d87bba69e395bbbdfc11315c2cc702cdb98b45bc70605c"
+    },
+    {
+      "path": "app/Http/Controllers/AdminProductController.php",
+      "sha256": "641e281ee9a026595811ec0a16600cf7d71afb6fa17183d818a441ab7eecc953"
+    },
+    {
+      "path": "app/Http/Controllers/AuthController.php",
+      "sha256": "705f1ae79ce20cf08905656de8615b42c3f12312ae824af3fb47afa6733f4791"
+    },
+    {
+      "path": "app/Http/Controllers/CartController.php",
+      "sha256": "627f748e233a9a5e068c2631ac57cf298d098726d6563612b6ba85de58b5fa10"
+    },
+    {
+      "path": "app/Http/Controllers/CatalogController.php",
+      "sha256": "f1987591953aff3281d08404fbb0115bf8a35c969de847b073b6791f742fb3b2"
+    },
+    {
+      "path": "app/Http/Controllers/Controller.php",
+      "sha256": "6aa2283aff6196a19faa470a7b0b9a99ae0d83a578bae21ef6d26dd947c657b5"
+    },
+    {
+      "path": "app/Http/Controllers/FavoriteController.php",
+      "sha256": "0aefb4ebd139eaf53b823925ac52e9d9928290183d2859c3b4e7b1a526e3a6b4"
+    },
+    {
+      "path": "app/Http/Controllers/OrderController.php",
+      "sha256": "b1833af275f024e4944af91bc6e25f6b28b788a92198a11aedab12000fafe083"
+    },
+    {
+      "path": "app/Http/Controllers/ProfileController.php",
+      "sha256": "91ab2bb187bcb937d361e9268b7052cafbfc3fd09d225d0304031b6f7c61ccfb"
+    },
+    {
+      "path": "app/Http/Controllers/ReviewController.php",
+      "sha256": "11ac5901c5190b53915008f92e6065a7c1179b343c3b23b2e490b0b36163b856"
+    },
+    {
+      "path": "app/Http/Controllers/ShopController.php",
+      "sha256": "37a4125f7c906772556b8e9158983187c552283625a1c0beaa96701ec8f42ba4"
+    },
+    {
+      "path": "app/Http/Controllers/StorefrontController.php",
+      "sha256": "acce02e21bb6bbfb629722afcf4041033dca41e3aa868b6406b1693ad236e63d"
+    },
+    {
+      "path": "app/Http/Middleware/SecurityHeaders.php",
+      "sha256": "6e8362ae6b3f2aecba8fbb0692779569c4f29b9edc7cf8f7cae0867b88dc990d"
+    },
+    {
+      "path": "app/Mail/ConciergeRequested.php",
+      "sha256": "99bcc1463f7369410d5852c774419557ef48bafd47314596cd3b1325cc37d6a7"
+    },
+    {
+      "path": "app/Mail/NewsletterWelcome.php",
+      "sha256": "1159972aba672344b02a9f0ce3e90ca0cd2419ae7080a590c157eb6f104a084b"
+    },
+    {
+      "path": "app/Models/Address.php",
+      "sha256": "90b3434c47d1f87b19b7f0d2dd8cd9091e37cf7832c71dac9a29ddfc1e6189ef"
+    },
+    {
+      "path": "app/Models/Admin.php",
+      "sha256": "347ec0510ab00356745a413ce462f353cace89758100a38ed40146d51c663977"
+    },
+    {
+      "path": "app/Models/Category.php",
+      "sha256": "3d0b4393d19a969fd14d4f2de8ef6a562b280628bbb417ab42b6ebe9211693da"
+    },
+    {
+      "path": "app/Models/ConciergeRequest.php",
+      "sha256": "f351181bdd941392cde4814a9552c8ad845eb9d6d35acd6ec27c0b182e9e976a"
+    },
+    {
+      "path": "app/Models/Favorite.php",
+      "sha256": "c6a09aa8c8f2b1ca9fe295f3a85f444c7384f41f63037cfd7cb40f3a4e1a62b8"
+    },
+    {
+      "path": "app/Models/NewsletterSubscriber.php",
+      "sha256": "297975b7798be8e8f60e27deaef9010795e619b365105c522219c331a10fbc79"
+    },
+    {
+      "path": "app/Models/Order.php",
+      "sha256": "09a4a49de5fc8c610775585ea614aae44f6aed93ffc1370cec13f15e0e6dda00"
+    },
+    {
+      "path": "app/Models/OrderItem.php",
+      "sha256": "16ead93937b66a1fa54b978bb16e754c116b0c6f6d9aa519cd0963e24687f5a6"
+    },
+    {
+      "path": "app/Models/Product.php",
+      "sha256": "cb87ed8dc2d90ea250a466a781be13f27a3bb3de6f512ea0900f0fd759d3d16a"
+    },
+    {
+      "path": "app/Models/Review.php",
+      "sha256": "296eacf39910a188d57ef3abee3d29fdb4f50ce473a209765c3b7f45b370c88b"
+    },
+    {
+      "path": "app/Models/User.php",
+      "sha256": "0e6ecbaf4613cb739787464f92d65a04ffb96970cd7a656992768832709424f7"
+    },
+    {
+      "path": "app/Models/UserInfoBackup.php",
+      "sha256": "380355d87f4cb5c006c9b019d906248815bf24a6806c3707b308e699a11bdbd0"
+    },
+    {
+      "path": "app/Models/Voucher.php",
+      "sha256": "b564b1e0deea917dd8cf63e2cfadbb9b5662adad2cd672f80cb85f696362517d"
+    },
+    {
+      "path": "app/Observers/UserObserver.php",
+      "sha256": "7905d78af2f610576b3c7ed2e44978e4a6d14ada0145b4e4c1737dbb0104ac82"
+    },
+    {
+      "path": "app/Providers/AppServiceProvider.php",
+      "sha256": "ad956150da693652c0c464a927af2f6d7b23ab1a38910be995d1233d167941ba"
+    },
+    {
+      "path": "app/Services/CheckoutService.php",
+      "sha256": "4e27e486d16518e7cb90289e82fb6eaad27f7c7ba62f64a918772a29b6012f90"
+    },
+    {
+      "path": "app/Services/PdfDocumentService.php",
+      "sha256": "a93e022cf4057b76c8c0c76b2534c68873645d7d352e43135d484ea7f69ba90b"
+    },
+    {
+      "path": "app/Support/ComposerHooks.php",
+      "sha256": "54b64ad8390ee864aa041db4da2131f40f3d4a09d2bbae81be8bce7c729293e3"
+    },
+    {
+      "path": "bootstrap/app.php",
+      "sha256": "ee6cc3258c349b0a61b7e72391cf514ad354146ac84dbae7c2fc51757738636c"
+    },
+    {
+      "path": "bootstrap/providers.php",
+      "sha256": "f720e185207a343d4c19fc99dbb317a4187efbcd7d38a303a695bbdd77ffb943"
+    },
+    {
+      "path": "config/amadis.php",
+      "sha256": "e43cddfdbff45d6c5fe191540150d4fed75f7ac5962507b119742c6ca3abab1c"
+    },
+    {
+      "path": "config/app.php",
+      "sha256": "78dcd36b226fd7b24057cb95f567cb6e96561c2406653892d8aef6dcea8461e4"
+    },
+    {
+      "path": "config/auth.php",
+      "sha256": "7a67dd91e55354be679647e9226ba410d5c3dc07adfd05b509b03cbd6b7b979b"
+    },
+    {
+      "path": "config/cache.php",
+      "sha256": "b8bcf382283330b94c0a602ff06452de819041ea709e28eea5065d51d1d7d085"
+    },
+    {
+      "path": "config/database.php",
+      "sha256": "edcbef9e80ec069241b3b6d898b358785df36ed74c61ac3a73a9ce9636941038"
+    },
+    {
+      "path": "config/filesystems.php",
+      "sha256": "ba7060d7a23e490c3ce830656f6d24ad3ccf5b868e3293f2a12e411959dc5635"
+    },
+    {
+      "path": "config/logging.php",
+      "sha256": "299ec1ba5b5a803c8e20f666ae7628e442e856cc2ff7ac9e2adb17b97e8ad63b"
+    },
+    {
+      "path": "config/mail.php",
+      "sha256": "c43ff49a31c5f32ce21eb7159f2a4b3cd2f4074eaed5838d265646dbfedd3474"
+    },
+    {
+      "path": "config/queue.php",
+      "sha256": "6101774da7c8b79af46d0028f2b8b31a484c3f7eda10b76e5b27b6093ad364a4"
+    },
+    {
+      "path": "config/security.php",
+      "sha256": "e391deb2c1755d68e82c85503cc55ae6aa934eaa368c32dbf6b57b045584f327"
+    },
+    {
+      "path": "config/services.php",
+      "sha256": "8258c4487eb1d73a97e569eb0e411e3f25368044812df4cba807860432be1d92"
+    },
+    {
+      "path": "config/session.php",
+      "sha256": "f2e75e189021597e29940c0859c00c3088ec591e403768fff5143c5687a80f59"
+    },
+    {
+      "path": "config/trustedproxy.php",
+      "sha256": "db9c6c752b254768a097b66f97a37bc13872e1ff9a04321924ff769db55a5342"
+    },
+    {
+      "path": "database/migrations/0001_01_01_000000_create_users_table.php",
+      "sha256": "10d79883bc08ce46510f9ad8b1830b4d06d586dc56ae2c8bac3b3e491f69a90f"
+    },
+    {
+      "path": "database/migrations/0001_01_01_000001_create_cache_table.php",
+      "sha256": "2ca8398390ecef8eaf72aeac7fefce67f7de631b6f2ec7b7081c8db8953215dc"
+    },
+    {
+      "path": "database/migrations/0001_01_01_000002_create_jobs_table.php",
+      "sha256": "7c9c712adf4091c87bf2612f4d0dccdfa1df4501553e4ac068b83d7bd5462fa5"
+    },
+    {
+      "path": "database/migrations/2026_08_31_000000_create_concierge_requests_table.php",
+      "sha256": "7b5f0c5c80462fdb9a411c45714f0f80a795da00d1bfb9c365f6d9cbd8803c8a"
+    },
+    {
+      "path": "database/migrations/2026_08_31_000001_create_newsletter_subscribers_table.php",
+      "sha256": "1839533fe432f6a3551826be515639c37acf0d101c2c58fc0c81939aa146c9d4"
+    },
+    {
+      "path": "database/migrations/2026_09_07_034040_create_categories_table.php",
+      "sha256": "385ea578e4b68045e49f85b78ce9fe8b46224df1b0d6035def0ca4f116874d27"
+    },
+    {
+      "path": "database/migrations/2026_09_07_034058_create_products_table.php",
+      "sha256": "504a4f1f820b2457d7a4d360fa4c6949dd53050e2fa320963005ab544164bf54"
+    },
+    {
+      "path": "database/migrations/2026_09_07_120000_add_product_details_columns.php",
+      "sha256": "b752ed9312e45d7556cf56ef235019a980615f040aad175013abceeb14e667b5"
+    },
+    {
+      "path": "database/migrations/2026_09_07_125000_make_concierge_schedule_nullable.php",
+      "sha256": "e6ee0c9005add56187b8cafcd76aa5fe0797a5d9083fee8eecf92684d1df5543"
+    },
+    {
+      "path": "database/migrations/2026_09_14_000001_add_legacy_profile_fields_to_users_table.php",
+      "sha256": "bf478f04cb3c401eb72de1380914ac93dd2b3cb9efc624be4d36b41b1b1d8a13"
+    },
+    {
+      "path": "database/migrations/2026_09_14_000002_create_admins_table.php",
+      "sha256": "691d021c935d3c4fd2e0ea552a773969c673673bfb4e56aff0d4d872d3eec599"
+    },
+    {
+      "path": "database/migrations/2026_09_14_000003_create_user_info_backups_table.php",
+      "sha256": "2162d59f53ccd4a3cb74c289f0b6458a3281887251fad1ee3864256761f407e9"
+    },
+    {
+      "path": "database/migrations/2026_09_14_000004_create_getcat_procedure.php",
+      "sha256": "d3c0eeebd3040495756ba5334d1ca1c977dc94bb472f6091349c3893dde15a89"
+    },
+    {
+      "path": "database/migrations/2026_09_14_000005_add_remember_token_to_admins_table.php",
+      "sha256": "f37437a4898b1c3b9627d7abf8e63d493742af3f70b570fdd3f79b79ea3e0ec6"
+    },
+    {
+      "path": "database/migrations/2026_09_14_000006_add_user_id_to_concierge_requests_table.php",
+      "sha256": "c27d6d110e0ba29c8ca5a17eaf868dbf6f2640008e6522e735197736e631a527"
+    },
+    {
+      "path": "database/migrations/2026_09_21_000001_add_product_quality_columns.php",
+      "sha256": "efefafc5f2c28dbb27a97d498f407b12aa63f3a8f8222d063f9e0df66896bee7"
+    },
+    {
+      "path": "database/migrations/2026_09_21_000002_add_unique_to_product_slug.php",
+      "sha256": "a29ec587e8befb0d2141726c03cb23cd84b7bd6ebd1470d1c9ba0722f2e47d60"
+    },
+    {
+      "path": "database/migrations/2026_10_12_000001_add_stock_and_active_to_products_table.php",
+      "sha256": "f431e9a97c1d8dd5c9bca5ba21648ecf4b0fbfadef1c72bfa212df2ea8fcfb17"
+    },
+    {
+      "path": "database/migrations/2026_10_12_000002_create_vouchers_table.php",
+      "sha256": "a39fbd80460e8e27fa0a9305221d07ba79d9a5226e80635f34b281f2a0ab998e"
+    },
+    {
+      "path": "database/migrations/2026_10_12_000003_create_orders_table.php",
+      "sha256": "395b459ff638ec60bcddcae9805b0b44b08d28d455d50c060fd6c64f368bfd9f"
+    },
+    {
+      "path": "database/migrations/2026_10_12_000004_create_order_items_table.php",
+      "sha256": "92aa9211680afeac2114c2f381d868864d342fc8e98a000a638f8e39576717ed"
+    },
+    {
+      "path": "database/migrations/2026_10_12_000005_create_addresses_table.php",
+      "sha256": "f1e5df67ef93b8bf2c6daa4dd4433f55830cb99ec75789f702a1fe71139351e7"
+    },
+    {
+      "path": "database/migrations/2026_10_12_000006_create_reviews_table.php",
+      "sha256": "2765a39727dcfbcea8e03872a4ee3ab7dc936381ee10b6a4f20a2325bf6d9fb8"
+    },
+    {
+      "path": "database/migrations/2026_10_12_000007_create_favorites_table.php",
+      "sha256": "08552f17e96fcd5bd17950f42aaf6b096b49a309cb8dd98b0beea4459c97ebd3"
+    },
+    {
+      "path": "resources/css/app.css",
+      "sha256": "dce55a3ed41e3ae9f668f0342d1aff474951942e769cbf014ce2a97d5d669ac2"
+    },
+    {
+      "path": "resources/fonts/NotoSansSC-Regular.provenance.json",
+      "sha256": "4b888995364b5f59df2810e11ecabe4795592338178de67f4bacebc2de65a2e6"
+    },
+    {
+      "path": "resources/fonts/NotoSansSC-Regular.ttf",
+      "sha256": "09e1417d9e3ae2fc7db6f136d51905f10f3ec10851da7383c60c5ed38c20c31a"
+    },
+    {
+      "path": "resources/fonts/NotoSansSC-VF.ttf",
+      "sha256": "a3041811a78c361b1de50f953c805e0244951c21c5bd412f7232ef0d899af0da"
+    },
+    {
+      "path": "resources/fonts/OFL.txt",
+      "sha256": "1c05c68c34f9708415aada51f17e1b0092d2cea709bf4a94cd38114f9e73d7d9"
+    },
+    {
+      "path": "resources/js/app.js",
+      "sha256": "4a10ffe7146f6cbbab17debb13862b8f139062adea21e432e11c63f2c800e90e"
+    },
+    {
+      "path": "resources/js/bootstrap.js",
+      "sha256": "b19739662a4ffc5dcfffd0f0067fd3e038abddf752063bf498a86d110b8c6105"
+    },
+    {
+      "path": "resources/views/account/show.blade.php",
+      "sha256": "ed97307fe7d6b8ae3a568892f7683d5095e8d393df08dd743ef6cd0c78d35b7d"
+    },
+    {
+      "path": "resources/views/admin/dashboard.blade.php",
+      "sha256": "452bf8ed1e3714bc379677f6f4ff9c651d82d5915442d055ad8fb5a89f3d7744"
+    },
+    {
+      "path": "resources/views/admin/login.blade.php",
+      "sha256": "2039b274a6e362b1d9e913687a65f88381e16006c5c0d2b2ba66591b1d950e7a"
+    },
+    {
+      "path": "resources/views/auth/login.blade.php",
+      "sha256": "0443eea8dd6de48530468e23f932cab419071e829747cf1f9ef90bdc36f21a2d"
+    },
+    {
+      "path": "resources/views/auth/register.blade.php",
+      "sha256": "ff0a767755f81a5e451a6ee827946a8df22062d9b1b8422787fb54501a9607ed"
+    },
+    {
+      "path": "resources/views/catalog/index.blade.php",
+      "sha256": "855f104dd791eae703e93a3fce52e4dc9bccef6f55e40340f215d09516d5cd80"
+    },
+    {
+      "path": "resources/views/catalog/labels.php",
+      "sha256": "176716db1b9589528dff8a73888c0ba9c46b5d2cf1e0c98a1718e56c2d81791e"
+    },
+    {
+      "path": "resources/views/components/brand-mark.blade.php",
+      "sha256": "8becc5e1fe201346b8e615889d52f676fe000be909f673be2b77869ef9728914"
+    },
+    {
+      "path": "resources/views/mail/concierge-requested.blade.php",
+      "sha256": "cb780f0fc370f43f13be8b307184f20b79c50e7758c1a8c70a583fd64cdd29ee"
+    },
+    {
+      "path": "resources/views/mail/newsletter-welcome.blade.php",
+      "sha256": "ba9df1a22b278beff02903f3094dfaf7de93b31109fdb25e02e2e998d6163e90"
+    },
+    {
+      "path": "resources/views/partials/product-footer.blade.php",
+      "sha256": "8dec05aa70789fe1076d2fbf41d91e40a016175486d09cef33a2f6e27bbcb31a"
+    },
+    {
+      "path": "resources/views/partials/product-header.blade.php",
+      "sha256": "e59889c41fc028f072d51469c56851d1846a3c3f906cad7cdfedc7c93ed456dd"
+    },
+    {
+      "path": "resources/views/partials/purchase-cart.blade.php",
+      "sha256": "f938e11108bca13df6f50ec8cbd6204fcf3a58c524bc3d68d559e4b45d98f77b"
+    },
+    {
+      "path": "resources/views/products/show.blade.php",
+      "sha256": "d114014ba0bc48ac86c6b12a68a3dc6d55d988dfb5bf4294f9fba04c425c0fd7"
+    },
+    {
+      "path": "resources/views/shop/index.blade.php",
+      "sha256": "5f03b26300f3501615bb1923911a1fe9ccced8f5ec15c0f8da410858aa2b71e6"
+    },
+    {
+      "path": "resources/views/shop/request.blade.php",
+      "sha256": "5b8a04ffc1aa306f4e0e4ac70686ccc6396ee0014dc1f764a71df2578203d1bd"
+    },
+    {
+      "path": "resources/views/sitemap.blade.php",
+      "sha256": "8ef51a64c4ba4293e5c0641f2c446a6cc93c6d6384c9b937887289485dc3c371"
+    },
+    {
+      "path": "resources/views/welcome.blade.php",
+      "sha256": "073d676896e52ae4be99976185591c3b324ac1749f34c575c9be97fce044610e"
+    },
+    {
+      "path": "routes/console.php",
+      "sha256": "9adccc33e7dd400683e434774077c7fdb2f299c5712cedf16a43fdf56f2850fa"
+    },
+    {
+      "path": "routes/web.php",
+      "sha256": "f73870eea9afa10137a307046220884b648c45f9cfb6541ed775cf117c92219a"
+    },
+    {
+      "path": "scripts/manual/acceptance.py",
+      "sha256": "b593d769dac4c190a863b23f0b47964bd685276761bf0765e91c3f122b6d6aad"
+    },
+    {
+      "path": "scripts/manual/fixture.php",
+      "sha256": "230692a8790ee7b5146d4f2e7c34a3c72a121a8cee9eb87b2db59c69aea603f9"
+    },
+    {
+      "path": "scripts/manual/fixture.sh",
+      "sha256": "5e29b1f948183e3f030216cd5b1f28e2dca8a0564b2638790e3b2ebfb1330954"
+    },
+    {
+      "path": "scripts/manual/preflight.py",
+      "sha256": "86d618f0c248f8999e2bcbaffc5ea85829e01af3e83ec0e1b760c13ee546df85"
+    },
+    {
+      "path": "scripts/manual/setup.sh",
+      "sha256": "ff427d478372f512ed4adabbc8f677a9e863c4fe8b6b72347c3348012607ba93"
+    },
+    {
+      "path": "scripts/manual/start-server.sh",
+      "sha256": "c9b948abcf53eb1919830ebacf8c0913a4444c5a83496e27d88abe7066da41ac"
+    },
+    {
+      "path": "prototype/app.css",
+      "sha256": "b5ddd9e5653f5f5962118f60cf5409d2eb940b63956faac62c5ee505ffef979f"
+    },
+    {
+      "path": "prototype/app.js",
+      "sha256": "9cdbbf6a3ce1dbb4932243e4684a07439e9598380221a2f19bb60d20993f64bb"
+    },
+    {
+      "path": "prototype/assets/chemise_riviere.jpg",
+      "sha256": "1992d04c429823d0da4a751676121a0aaf55c317c96e94d7e793088a55626b80"
+    },
+    {
+      "path": "prototype/assets/echarpe_eclat.jpg",
+      "sha256": "8f69e9304dddda38de7271da9729e7c657becfb54e9d7666bfc2cc82795237ac"
+    },
+    {
+      "path": "prototype/assets/hero_couture.jpg",
+      "sha256": "6455f0848a0965613c585d6c2e3a27cb9d9544f2ee4421f3bee012d2968dd94d"
+    },
+    {
+      "path": "prototype/assets/manteau_firenze.jpg",
+      "sha256": "1b6ed45e71041ccaf0526946fb6fa048bb03c3f4dabb62d193042682a45eb399"
+    },
+    {
+      "path": "prototype/assets/minaudiere_saphir.jpg",
+      "sha256": "cc3c7289109002d8db973c219291f91bc73a1309a0d88d97233231ad42e20731"
+    },
+    {
+      "path": "prototype/assets/mocassin_riva.jpg",
+      "sha256": "216f73822b9955e33758ad1d3ef3bc2cf3d1bc638bf9a14bf22c94f818c08a91"
+    },
+    {
+      "path": "prototype/assets/robe_aurore.jpg",
+      "sha256": "48ca9708d6c3d3c8b6887b97c79c9a0be31e6b444ec85158cf83dcf10c64cc22"
+    },
+    {
+      "path": "prototype/assets/robe_elan.jpg",
+      "sha256": "ce279255c6dfe10cfc2b7748877de092fe3fc3b73dd7e49a34fb864417bdde0d"
+    },
+    {
+      "path": "prototype/index.html",
+      "sha256": "b1b636d373ea3f1a295c90444e18e457fad46231283acf99298bb0d11ab0c8fa"
+    },
+    {
+      "path": "prototype/zafira-core.js",
+      "sha256": "b41998b442ea92855a7ca399cdcda0d85bd5ca267fc0ca8ad63d38df5ad7d21d"
+    },
+    {
+      "path": "artisan",
+      "sha256": "f91a517c0c5d3a904c3f390933964a5e08ec1fc68146882730daac4aca4ffcec"
+    },
+    {
+      "path": "composer.json",
+      "sha256": "11396e0b0c5fc144d23bc3ed5e1fdcaba249649f7b23fb49025874934f9e4954"
+    },
+    {
+      "path": "composer.lock",
+      "sha256": "264a34fe618b23a99deaff6648c7d71595057755e74069d8830a47ed14d651b6"
+    },
+    {
+      "path": "package.json",
+      "sha256": "f4184f3a3adffe89196ba0326947655c7adf0015b3511869cf87ce4912338d0a"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "1d8cfd9d644a176b0ecdc47ef81dbeaf623de53940ad9c8795ea92d168dff7fc"
+    },
+    {
+      "path": "vite.config.js",
+      "sha256": "b981a284135bcb7da21ea5e1aaa2dc31c8daeef92d9b4e5c79538bdb8dfaf6f0"
+    },
+    {
+      "path": "public/js/zafira-core.js",
+      "sha256": "bdd538632d7eadc0dcb9cfc68eb8b51e74db3509f87fcce875512b386b8b210c"
+    }
+  ]
+}

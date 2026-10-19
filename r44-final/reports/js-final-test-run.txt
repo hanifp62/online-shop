@@ -1,0 +1,179 @@
+✔ FR-R44-001: cancel dirty INPUT/text in companion POST form (3.557875ms)
+✔ FR-R44-001: cancel dirty TEXTAREA/ in companion POST form (0.362625ms)
+✔ FR-R44-001: cancel dirty INPUT/checkbox in companion POST form (0.193459ms)
+✔ FR-R44-001: cancel dirty INPUT/radio in companion POST form (0.139ms)
+✔ FR-R44-001: cancel dirty SELECT/ in companion POST form (0.244833ms)
+✔ FR-R44-001: filter submit also guards dirty POST controls (7.702667ms)
+✔ FR-R44-001: accepting dirty-form warning permits normal fetch and push (8.951167ms)
+✔ FR-R44-001: cancelled popstate restores last rendered URL and query state (9.024292ms)
+✔ FR-R44-001: rejecting Back aborts pending fetch without losing POST draft or rendered URL (4.667125ms)
+✔ FR-R44-001: unchanged POST controls never prompt (0.515708ms)
+✔ FR-R44-001: single select with no selected attribute and untouched first option is pristine (0.313458ms)
+✔ FR-R44-001: single select with no selected attribute moved to a later option is dirty (0.1305ms)
+✔ FR-R44-001: single select implicit default skips a disabled first option (0.127416ms)
+✔ FR-R44-001: single select implicit default skips an option inside a disabled optgroup (0.108458ms)
+✔ FR-R44-001: single select with explicit size 1 behaves like a dropdown (0.106583ms)
+✔ FR-R44-001: multiple select that keeps its default selections is pristine (0.121792ms)
+✔ FR-R44-001: multiple select that loses a default selection is dirty (0.085917ms)
+✔ FR-R44-001: single select with explicit default after a disabled first option is pristine (0.112708ms)
+✔ FR-R44-001: single select with explicit default stays pristine on that option (0.097541ms)
+✔ FR-R44-001: single select with explicit default is dirty after moving to the first option (0.108625ms)
+✔ FR-R44-001: single select with several selected attributes defaults to the last one (0.110709ms)
+✔ FR-R44-001: multiple select keeps per-option comparison: first option selected without default is dirty (0.081042ms)
+✔ FR-R44-001: multiple select with nothing selected and no defaults is pristine (0.093958ms)
+✔ FR-R44-001: listbox (size>1) gets no implicit first-option default: nothing selected is pristine (0.114417ms)
+✔ FR-R44-001: listbox (size>1) with a picked option is dirty (0.079458ms)
+✔ FR-R44-001: select without options is pristine (0.099833ms)
+✔ FR-R44-001: a draft in a form outside the table regions survives the swap and never prompts (7.716708ms)
+✔ a11y: click navigation does not steal focus when the user moved outside the tables meanwhile (4.018166ms)
+✔ HCI-03: redirect offers trusted login link (fallback) (3.811083ms)
+✔ HCI-03: redirect offers trusted login link (/atelier/login) (0.331709ms)
+✔ HCI-03: redirect offers trusted login link (https://untrusted.test/login) (0.206875ms)
+✔ HCI-03: redirect offers trusted login link (javascript:alert(1)) (0.187208ms)
+✔ HCI-03: HTTP 403 gets retry copy without raw details (0.77225ms)
+✔ HCI-03: HTTP 500 gets retry copy without raw details (0.191125ms)
+✔ HCI-03: HTTP 503 gets retry copy without raw details (0.199417ms)
+✔ HCI-03: fetch failure keeps network copy (0.200583ms)
+✔ HCI-03: successful retry clears login link (1.519833ms)
+✔ HCI-03: abort and stale failure remain silent (0.332042ms)
+✔ NFR-R44-headers: partial requests accept HTML and identify XMLHttpRequest (5.475125ms)
+✔ FR-R44-selection: deselect-all clears boxes and disables action (9.699916ms)
+✔ FR-R44-selection: swap clears selection in replacement markup (0.912417ms)
+✔ FR-R44-selection: orders selection never modifies another table (0.542125ms)
+✔ a11y-R44-announcement: successful swap reads response page summary (1.776ms)
+✔ FR-R44-density: kategori defaults compact and restores comfortable after swap (0.627917ms)
+✔ FR-R44-density: produk defaults compact and restores comfortable after swap (0.334917ms)
+✔ FR-R44-density: pesanan defaults compact and restores comfortable after swap (0.298833ms)
+✔ FR-R44-density: user defaults compact and restores comfortable after swap (0.322584ms)
+✔ FR-R44-density: audit defaults compact and restores comfortable after swap (0.445959ms)
+✔ FR-R44-density: concierge defaults compact and restores comfortable after swap (0.461417ms)
+✔ FR-R44-density: subscriber defaults compact and restores comfortable after swap (0.344542ms)
+✔ UX-R44-click: modified clicks on [data-table-link] are ignored (0.222167ms)
+✔ UX-R44-error: exact error text on failure and retry hides previous banner immediately (17.675959ms)
+✔ UX-R44-dirty: dirty control in GET filter form never triggers window.confirm (2.337209ms)
+✔ UX-R44-api: direct load with wrong origin fails closed, clears announcement, reveals error banner (0.288375ms)
+✔ UX-R44-api: direct load with wrong pathname fails closed, clears announcement, reveals error banner (0.090084ms)
+✔ FR-R47-001: pagination link fetches and swaps only the table region, then pushes URL and focuses heading (35.371625ms)
+✔ FR-R47-001: form submit builds GET URL from form fields without reloading (0.699375ms)
+✔ NFR: newer request aborts the older one so a stale response never replaces fresh results (5.803292ms)
+✖ NFR: network/HTTP failure shows an alert, clears busy state and keeps the old table (3.84775ms)
+✔ NFR: response without the table region is treated as failure (4.906958ms)
+✖ NFR: redirects outside admin page are rejected before parsing response HTML (2.722584ms)
+✔ NFR: links outside current admin path are left to the browser (0.671167ms)
+✔ FR-R47-001: modified clicks and cross-origin links are left to the browser (0.265583ms)
+✔ FR-R47-001: back/forward reloads the table for the restored URL without pushing history (5.509417ms)
+✔ FR-R47-001: concierge link swaps concierge and refreshes user region so both carry the same URL state (1.192ms)
+✔ NFR: a cross-origin form action is left to the browser instead of being fetched and swapped (0.317875ms)
+✔ NFR: both swapped regions announce busy and none stays busy after the swap (2.188625ms)
+✔ NFR: without fetch support the handlers never bind so plain GET navigation survives (0.3435ms)
+✔ FR-R47-001: hash-only history moves (in-page anchors) do not refetch tables (0.12725ms)
+✔ NFR: back during an in-flight request supersedes it so the stale push never lands (2.297875ms)
+✔ NFR: response missing the companion region swaps nothing and pushes no URL (1.761958ms)
+✔ NFR: successful popstate preserves null history state for later failure recovery (5.6885ms)
+✔ NFR: successful popstate preserves custom history state for later failure recovery (5.548458ms)
+✔ NFR: failed popstate HTTP response restores the last rendered URL and state (2.048708ms)
+✔ NFR: failed popstate missing-region response restores the last rendered URL and state (1.799333ms)
+✔ NFR: popstate network rejection restores initial rendered URL and null state (0.913291ms)
+✔ NFR: failed popstate restores a non-null state present at page load (0.674291ms)
+✔ NFR: cancelled popstate replaces the current entry with the rendered URL and state (2.108667ms)
+✔ a11y: back/forward recovers focus to the new heading of the table that held it (1.245ms)
+✔ a11y: back/forward leaves focus alone when it was outside the tables (0.585416ms)
+✔ a11y: popstate respects focus moving outside tables while fetch is pending (1.522958ms)
+✔ a11y: popstate restores focus moved inside tables while fetch is pending (0.333042ms)
+✔ FR-R47-001: GET form fields replace the action query string (0.24225ms)
+✔ FR-R47-001: pending User pagination preserves focus moved to Concierge (1.528875ms)
+✔ FR-R47-001: focus kept in the triggering table still lands on its heading (1.41325ms)
+✔ FR-R44-001: discovers every dashboard [data-admin-table] section and swaps all atomically (1.66075ms)
+✔ FR-R44-001: response missing any dashboard region (e.g. subscriber) swaps nothing (1.943625ms)
+✖ FR-R44-001: HTTP error shows alert in the triggering non-user section and clears busy everywhere (1.89075ms)
+✔ FR-R44-001: popstate restores a non-user table key and keeps focus in the table that held it (1.741458ms)
+✔ FR-R44-001: discovers a new table key without requiring legacy regions (1.4065ms)
+✔ FR-R44-001: popstate with unknown state falls back to the first dashboard table (1.428708ms)
+✔ FR-R47-001: navigating pages 2 then 3 and going back twice keeps URL, history state, and table content consistent (4.944959ms)
+✔ NFR: replaceState updates location and current history entry in place (0.203042ms)
+✔ NFR: stale response that ignores abort and resolves after newer response does not overwrite table (2.682ms)
+✔ NFR: stale request failing after a newer request starts shows no error and leaves aria-busy accurate (2.657583ms)
+✔ NFR: Back supersedes a pending click even when its aborted response arrives last (3.885625ms)
+✔ NFR: stale network rejection after newer request completes shows no error and keeps aria-busy false (2.603542ms)
+✔ FR-R44-001 HCI-02: reject a draft typed during fetch without replacing any table region (34.229292ms)
+✔ FR-R44-001: unchanged accepted POST draft prompts only once (1.533583ms)
+✔ FR-R44-001 HCI-02: changed accepted draft is re-confirmed and rejected swap clears loading announcement (2.861791ms)
+✔ FR-R44-001: reject Back restores latest hash-only traversal URL and state (17.11225ms)
+✔ FR-R44-001: fail Back restores latest hash-only traversal URL and state (6.841875ms)
+✔ FR-R44-003: denied storage writes retain per-table density after swap (read denied: false) (1.632375ms)
+✔ FR-R44-003: denied storage writes retain per-table density after swap (read denied: true) (0.389375ms)
+✔ change on select-all updates the toolbar without fetching (2.871833ms)
+✔ change on a row checkbox updates the toolbar without fetching (1.550959ms)
+✔ submitting a GET filter form with sort/dir fetches the query and swaps the table (10.145833ms)
+✔ FR-R44-002: bulk selection reveals toolbar, select-all checks visible rows, partial state is indeterminate (2.713125ms)
+✔ FR-R44-003: density defaults compact, persists choice and survives localStorage failure (0.607ms)
+✔ FR-R44-002: copy with two boxes checked writes formatted IDs to clipboard and announces success via live region (9.854959ms)
+✔ FR-R44-002: writeText rejection produces accessible failure message without throwing (2.436833ms)
+✔ FR-R44-002: missing navigator.clipboard produces accessible failure/fallback message without throwing (6.752625ms)
+✔ a11y: persistent live region announces loading, then the new page summary after swap (9.801333ms)
+✔ a11y: popstate targeting table A keeps focus in table B at swap time (3.099833ms)
+✔ a11y: popstate leaves focus outside all tables untouched (4.048292ms)
+✔ FR-R44-003: density toggles are independent per table key (1.03475ms)
+✔ FR-R44-003: stored density is restored per key on enhance, other keys fall back (0.373208ms)
+✔ FR-R44-003: density is reapplied per key after the table regions are swapped (4.804834ms)
+ℹ tests 118
+ℹ suites 0
+ℹ pass 115
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 215.466917
+
+✖ failing tests:
+
+test at tests/admin-table-navigation.test.mjs:68:1
+✖ NFR: network/HTTP failure shows an alert, clears busy state and keeps the old table (3.84775ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /gagal/i. Input:
+  
+  'Tabel belum dapat diperbarui. Coba lagi.'
+  
+      at TestContext.<anonymous> (file:///Users/hanifpriyambodo/Documents/online-shop/tests/admin-table-navigation.test.mjs:77:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Tabel belum dapat diperbarui. Coba lagi.',
+    expected: /gagal/i,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests/admin-table-navigation.test.mjs:88:1
+✖ NFR: redirects outside admin page are rejected before parsing response HTML (2.722584ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /gagal/i. Input:
+  
+  'Sesi admin tidak aktif. Masuk kembali untuk melanjutkan.'
+  
+      at TestContext.<anonymous> (file:///Users/hanifpriyambodo/Documents/online-shop/tests/admin-table-navigation.test.mjs:110:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Sesi admin tidak aktif. Masuk kembali untuk melanjutkan.',
+    expected: /gagal/i,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests/admin-table-navigation.test.mjs:537:1
+✖ FR-R44-001: HTTP error shows alert in the triggering non-user section and clears busy everywhere (1.89075ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /gagal/i. Input:
+  
+  'Tabel belum dapat diperbarui. Coba lagi.'
+  
+      at TestContext.<anonymous> (file:///Users/hanifpriyambodo/Documents/online-shop/tests/admin-table-navigation.test.mjs:555:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Tabel belum dapat diperbarui. Coba lagi.',
+    expected: /gagal/i,
+    operator: 'match',
+    diff: 'simple'
+  }

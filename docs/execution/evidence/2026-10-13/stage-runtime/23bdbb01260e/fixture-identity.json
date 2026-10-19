@@ -1,0 +1,9 @@
+{
+  "root": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-23bdbb01260e",
+  "database": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-23bdbb01260e/database.sqlite",
+  "repo": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-stage-23bdbb01260e/repo",
+  "source_repo": "/Users/hanifpriyambodo/Documents/online-shop",
+  "source_git_head": "2f355e1624306d7277f7828ee319321b21bee0ea",
+  "source_dirty": true,
+  "stage_manifest_sha256": "465850f66f448305867f7e1be1fb6f7424ba6a8062356c669601d16051db92ec"
+}

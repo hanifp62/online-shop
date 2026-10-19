@@ -1,0 +1,73 @@
+ZAFIRA - LAPORAN PESANAN
+Periode (UTC): 13-10-2026 00:00 hingga 13-10-2026 23:59 UTC
+Pesanan dibuat: 48 (dibatalkan: 8)
+Nilai pesanan non-batal: Rp 4.960.000
+Catatan: nilai pesanan tercatat, bukan pendapatan terbayar/terverifikasi.
+Status PENDING: 40
+Status PAID: 0
+Status PROCESSING: 0
+Status SHIPPED: 0
+Status COMPLETED: 0
+Status CANCELLED: 8
+#1 | 13-10-2026 08:01 | PENDING | Pelanggan: 王小明 | Rp 101.000
+#2 | 13-10-2026 08:02 | PENDING | Pelanggan: Madame Élodie de Longueville | Rp 102.000
+#3 | 13-10-2026 08:03 | PENDING | Pelanggan: Yang Mulia Putri Cantika Maharani Sasikirana
+Kusumaningrat dari Keraton Surakarta | Rp 103.000
+#4 | 13-10-2026 08:04 | PENDING | Pelanggan: - | Rp 104.000
+#5 | 13-10-2026 08:05 | PENDING | Pelanggan: 王小明 | Rp 105.000
+#6 | 13-10-2026 08:06 | CANCELLED | Pelanggan: Madame Élodie de Longueville | Rp 106.000
+#7 | 13-10-2026 08:07 | PENDING | Pelanggan: Yang Mulia Putri Cantika Maharani Sasikirana
+Kusumaningrat dari Keraton Surakarta | Rp 107.000
+#8 | 13-10-2026 08:08 | PENDING | Pelanggan: - | Rp 108.000
+#9 | 13-10-2026 08:09 | PENDING | Pelanggan: 王小明 | Rp 109.000
+#10 | 13-10-2026 08:10 | PENDING | Pelanggan: Madame Élodie de Longueville | Rp 110.000
+#11 | 13-10-2026 08:11 | PENDING | Pelanggan: Yang Mulia Putri Cantika Maharani Sasikirana
+Kusumaningrat dari Keraton Surakarta | Rp 111.000
+#12 | 13-10-2026 08:12 | CANCELLED | Pelanggan: - | Rp 112.000
+#13 | 13-10-2026 08:13 | PENDING | Pelanggan: 王小明 | Rp 113.000
+#14 | 13-10-2026 08:14 | PENDING | Pelanggan: Madame Élodie de Longueville | Rp 114.000
+#15 | 13-10-2026 08:15 | PENDING | Pelanggan: Yang Mulia Putri Cantika Maharani Sasikirana
+Kusumaningrat dari Keraton Surakarta | Rp 115.000
+#16 | 13-10-2026 08:16 | PENDING | Pelanggan: - | Rp 116.000
+#17 | 13-10-2026 08:17 | PENDING | Pelanggan: 王小明 | Rp 117.000
+#18 | 13-10-2026 08:18 | CANCELLED | Pelanggan: Madame Élodie de Longueville | Rp 118.000
+#19 | 13-10-2026 08:19 | PENDING | Pelanggan: Yang Mulia Putri Cantika Maharani Sasikirana
+Kusumaningrat dari Keraton Surakarta | Rp 119.000
+#20 | 13-10-2026 08:20 | PENDING | Pelanggan: - | Rp 120.000
+#21 | 13-10-2026 08:21 | PENDING | Pelanggan: 王小明 | Rp 121.000
+#22 | 13-10-2026 08:22 | PENDING | Pelanggan: Madame Élodie de Longueville | Rp 122.000
+#23 | 13-10-2026 08:23 | PENDING | Pelanggan: Yang Mulia Putri Cantika Maharani Sasikirana
+Kusumaningrat dari Keraton Surakarta | Rp 123.000
+#24 | 13-10-2026 08:24 | CANCELLED | Pelanggan: - | Rp 124.000
+#25 | 13-10-2026 08:25 | PENDING | Pelanggan: 王小明 | Rp 125.000
+#26 | 13-10-2026 08:26 | PENDING | Pelanggan: Madame Élodie de Longueville | Rp 126.000
+Halaman 1 dari 2ZAFIRA - LAPORAN PESANAN
+#27 | 13-10-2026 08:27 | PENDING | Pelanggan: Yang Mulia Putri Cantika Maharani Sasikirana
+Kusumaningrat dari Keraton Surakarta | Rp 127.000
+#28 | 13-10-2026 08:28 | PENDING | Pelanggan: - | Rp 128.000
+#29 | 13-10-2026 08:29 | PENDING | Pelanggan: 王小明 | Rp 129.000
+#30 | 13-10-2026 08:30 | CANCELLED | Pelanggan: Madame Élodie de Longueville | Rp 130.000
+#31 | 13-10-2026 08:31 | PENDING | Pelanggan: Yang Mulia Putri Cantika Maharani Sasikirana
+Kusumaningrat dari Keraton Surakarta | Rp 131.000
+#32 | 13-10-2026 08:32 | PENDING | Pelanggan: - | Rp 132.000
+#33 | 13-10-2026 08:33 | PENDING | Pelanggan: 王小明 | Rp 133.000
+#34 | 13-10-2026 08:34 | PENDING | Pelanggan: Madame Élodie de Longueville | Rp 134.000
+#35 | 13-10-2026 08:35 | PENDING | Pelanggan: Yang Mulia Putri Cantika Maharani Sasikirana
+Kusumaningrat dari Keraton Surakarta | Rp 135.000
+#36 | 13-10-2026 08:36 | CANCELLED | Pelanggan: - | Rp 136.000
+#37 | 13-10-2026 08:37 | PENDING | Pelanggan: 王小明 | Rp 137.000
+#38 | 13-10-2026 08:38 | PENDING | Pelanggan: Madame Élodie de Longueville | Rp 138.000
+#39 | 13-10-2026 08:39 | PENDING | Pelanggan: Yang Mulia Putri Cantika Maharani Sasikirana
+Kusumaningrat dari Keraton Surakarta | Rp 139.000
+#40 | 13-10-2026 08:40 | PENDING | Pelanggan: - | Rp 140.000
+#41 | 13-10-2026 08:41 | PENDING | Pelanggan: 王小明 | Rp 141.000
+#42 | 13-10-2026 08:42 | CANCELLED | Pelanggan: Madame Élodie de Longueville | Rp 142.000
+#43 | 13-10-2026 08:43 | PENDING | Pelanggan: Yang Mulia Putri Cantika Maharani Sasikirana
+Kusumaningrat dari Keraton Surakarta | Rp 143.000
+#44 | 13-10-2026 08:44 | PENDING | Pelanggan: - | Rp 144.000
+#45 | 13-10-2026 08:45 | PENDING | Pelanggan: 王小明 | Rp 145.000
+#46 | 13-10-2026 08:46 | PENDING | Pelanggan: Madame Élodie de Longueville | Rp 146.000
+#47 | 13-10-2026 08:47 | PENDING | Pelanggan: Yang Mulia Putri Cantika Maharani Sasikirana
+Kusumaningrat dari Keraton Surakarta | Rp 147.000
+#48 | 13-10-2026 08:48 | CANCELLED | Pelanggan: - | Rp 148.000
+Halaman 2 dari 2

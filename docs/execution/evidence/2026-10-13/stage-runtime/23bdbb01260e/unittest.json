@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python3",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.python.test_amadis_docker_stage"
+  ],
+  "start": "2026-10-13T05:14:07.330972+00:00",
+  "finish": "2026-10-13T05:14:07.626303+00:00",
+  "returncode": 0
+}

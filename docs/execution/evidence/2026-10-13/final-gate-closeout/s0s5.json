@@ -1,0 +1,11 @@
+{
+  "label": "s0s5",
+  "command": [
+    "node",
+    "scripts/amadis/browser-lifecycle.cjs"
+  ],
+  "start": "2026-10-13T05:24:52.135276+00:00",
+  "finish": "2026-10-13T05:25:02.917865+00:00",
+  "seconds": 10.782618957979139,
+  "returncode": 0
+}

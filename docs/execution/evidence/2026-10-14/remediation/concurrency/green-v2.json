@@ -1,0 +1,224 @@
+{
+    "harness_sha256": "10927fb5f0c3f5e745b806582ac04d7883f259f840906fb564a3c89f3f15d566",
+    "service_sha256": "b1b88e542d59e4d55009007cf99f4120b8cce0fb3bf7a2a6fc56a063b58df90f",
+    "php": "8.5.11",
+    "engine": "3.53.4",
+    "transaction_mode": "DEFERRED",
+    "journal_mode": "wal",
+    "busy_timeout_ms": 50,
+    "database": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/checkout-proof-0411edd1befb45aa/disposable.sqlite",
+    "mysql": "NOT_RUN",
+    "scenarios": {
+        "same-key": {
+            "workers": [
+                {
+                    "pid": 20192,
+                    "start": 1791982456.948118,
+                    "barrier": 1791982456.951238,
+                    "end": 1791982456.953824,
+                    "status": 201,
+                    "error": null
+                },
+                {
+                    "pid": 20193,
+                    "start": 1791982456.948365,
+                    "barrier": 1791982456.95125,
+                    "end": 1791982456.983424,
+                    "status": 200,
+                    "error": null
+                }
+            ],
+            "statuses": [
+                200,
+                201
+            ],
+            "expected": [
+                200,
+                201
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 9,
+            "used": 0,
+            "pass": true
+        },
+        "changed-address": {
+            "workers": [
+                {
+                    "pid": 20194,
+                    "start": 1791982456.991225,
+                    "barrier": 1791982456.99289,
+                    "end": 1791982457.023193,
+                    "status": 409,
+                    "error": {
+                        "class": "Symfony\\Component\\HttpKernel\\Exception\\HttpException",
+                        "code": 0
+                    }
+                },
+                {
+                    "pid": 20195,
+                    "start": 1791982456.991642,
+                    "barrier": 1791982456.993165,
+                    "end": 1791982456.994961,
+                    "status": 201,
+                    "error": null
+                }
+            ],
+            "statuses": [
+                201,
+                409
+            ],
+            "expected": [
+                201,
+                409
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 9,
+            "used": 0,
+            "pass": true
+        },
+        "distinct-voucher": {
+            "workers": [
+                {
+                    "pid": 20196,
+                    "start": 1791982457.030866,
+                    "barrier": 1791982457.032534,
+                    "end": 1791982457.067632,
+                    "status": 422,
+                    "error": {
+                        "class": "Illuminate\\Validation\\ValidationException",
+                        "code": 0
+                    }
+                },
+                {
+                    "pid": 20197,
+                    "start": 1791982457.031121,
+                    "barrier": 1791982457.032629,
+                    "end": 1791982457.034568,
+                    "status": 201,
+                    "error": null
+                }
+            ],
+            "statuses": [
+                201,
+                422
+            ],
+            "expected": [
+                201,
+                422
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 9,
+            "used": 1,
+            "pass": true
+        },
+        "distinct-key": {
+            "workers": [
+                {
+                    "pid": 20198,
+                    "start": 1791982457.07534,
+                    "barrier": 1791982457.077058,
+                    "end": 1791982457.11041,
+                    "status": 201,
+                    "error": null
+                },
+                {
+                    "pid": 20199,
+                    "start": 1791982457.075799,
+                    "barrier": 1791982457.077299,
+                    "end": 1791982457.079153,
+                    "status": 201,
+                    "error": null
+                }
+            ],
+            "statuses": [
+                201,
+                201
+            ],
+            "expected": [
+                201,
+                201
+            ],
+            "orders": 2,
+            "items": 2,
+            "stock": 8,
+            "used": 0,
+            "pass": true
+        },
+        "exact-one-stock": {
+            "workers": [
+                {
+                    "pid": 20200,
+                    "start": 1791982457.118723,
+                    "barrier": 1791982457.120509,
+                    "end": 1791982457.156178,
+                    "status": 422,
+                    "error": {
+                        "class": "Illuminate\\Validation\\ValidationException",
+                        "code": 0
+                    }
+                },
+                {
+                    "pid": 20201,
+                    "start": 1791982457.11923,
+                    "barrier": 1791982457.120835,
+                    "end": 1791982457.122725,
+                    "status": 201,
+                    "error": null
+                }
+            ],
+            "statuses": [
+                201,
+                422
+            ],
+            "expected": [
+                201,
+                422
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 0,
+            "used": 0,
+            "pass": true
+        },
+        "double-cancel": {
+            "workers": [
+                {
+                    "pid": 20202,
+                    "start": 1791982457.166997,
+                    "barrier": 1791982457.167984,
+                    "end": 1791982457.169974,
+                    "status": 409,
+                    "error": {
+                        "class": "Symfony\\Component\\HttpKernel\\Exception\\HttpException",
+                        "code": 0
+                    }
+                },
+                {
+                    "pid": 20203,
+                    "start": 1791982457.167494,
+                    "barrier": 1791982457.168301,
+                    "end": 1791982457.169239,
+                    "status": 200,
+                    "error": null
+                }
+            ],
+            "statuses": [
+                200,
+                409
+            ],
+            "expected": [
+                200,
+                409
+            ],
+            "orders": 1,
+            "items": 1,
+            "stock": 10,
+            "used": 0,
+            "pass": true
+        }
+    },
+    "pass": true
+}

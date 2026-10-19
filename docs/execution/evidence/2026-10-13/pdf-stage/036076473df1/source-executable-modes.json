@@ -1,0 +1,23 @@
+{
+  "vendor/bin/pint": "0o700",
+  "vendor/bin/yaml-lint": "0o700",
+  "vendor/bin/php-parse": "0o700",
+  "vendor/bin/pint.bat": "0o700",
+  "vendor/bin/patch-type-declarations": "0o700",
+  "vendor/bin/patch-type-declarations.bat": "0o700",
+  "vendor/bin/var-dump-server.bat": "0o700",
+  "vendor/bin/yaml-lint.bat": "0o700",
+  "vendor/bin/carbon": "0o700",
+  "vendor/bin/psysh": "0o700",
+  "vendor/bin/psysh.bat": "0o700",
+  "vendor/bin/var-dump-server": "0o700",
+  "vendor/bin/carbon.bat": "0o700",
+  "vendor/bin/sail": "0o700",
+  "vendor/bin/phpunit": "0o700",
+  "vendor/bin/phpunit.bat": "0o700",
+  "vendor/bin/php-parse.bat": "0o700",
+  "vendor/bin/sail.bat": "0o700",
+  "vendor/symfony/console/Resources/bin/hiddeninput.exe": "0o700",
+  "vendor/nesbot/carbon/bin/carbon.bat": "0o700",
+  "scripts/amadis/launch.sh": "0o700"
+}

@@ -1,0 +1,13 @@
+ZAFIRA - LAPORAN PESANAN
+Periode (UTC): 13-10-2026 00:00 hingga 13-10-2026 23:59 UTC
+Pesanan dibuat: 1 (dibatalkan: 1)
+Nilai pesanan non-batal: Rp 0
+Catatan: nilai pesanan tercatat, bukan pendapatan terbayar/terverifikasi.
+Status PENDING: 0
+Status PAID: 0
+Status PROCESSING: 0
+Status SHIPPED: 0
+Status COMPLETED: 0
+Status CANCELLED: 1
+#1 | 13-10-2026 18:01 | CANCELLED | Pelanggan: 王小明 | Rp 18.750.000
+Halaman 1 dari 1

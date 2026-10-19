@@ -1,0 +1,12 @@
+{
+  "label": "php-test-standard",
+  "command": [
+    "scripts/amadis/launch.sh",
+    "test",
+    "--log-junit=/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-b1c2b260873e62981566ae7f/evidence/php-test-standard.xml"
+  ],
+  "start": "2026-10-13T05:22:40.126455+00:00",
+  "finish": "2026-10-13T05:24:01.928086+00:00",
+  "seconds": 81.80176349999965,
+  "returncode": 0
+}

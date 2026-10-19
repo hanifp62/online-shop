@@ -1,0 +1,186 @@
+[
+  {
+    "surface": "/",
+    "width": 390,
+    "state": "base",
+    "theme": "dark/dark",
+    "measured": 163,
+    "sampled": 26,
+    "unmeasured": 0,
+    "failCount": 0,
+    "exemptCount": 1,
+    "fails": [],
+    "exempts": [
+      {
+        "cls": "",
+        "text": "Depuis 2026",
+        "note": "exempt+image"
+      }
+    ]
+  },
+  {
+    "surface": "/",
+    "width": 390,
+    "state": "search",
+    "theme": "dark/dark",
+    "measured": 10,
+    "sampled": 0,
+    "unmeasured": 0,
+    "failCount": 0,
+    "exemptCount": 0,
+    "fails": [],
+    "exempts": []
+  },
+  {
+    "surface": "/",
+    "width": 390,
+    "state": "cart",
+    "theme": "dark/dark",
+    "measured": 6,
+    "sampled": 0,
+    "unmeasured": 0,
+    "failCount": 0,
+    "exemptCount": 0,
+    "fails": [],
+    "exempts": []
+  },
+  {
+    "surface": "/",
+    "width": 390,
+    "state": "concierge",
+    "skipped": "opener hidden"
+  },
+  {
+    "surface": "/",
+    "width": 1366,
+    "state": "base",
+    "theme": "dark/dark",
+    "measured": 198,
+    "sampled": 26,
+    "unmeasured": 0,
+    "failCount": 0,
+    "exemptCount": 4,
+    "fails": [],
+    "exempts": [
+      {
+        "tag": "SPAN",
+        "cls": "lang-divider",
+        "text": "/",
+        "ratio": 2.27,
+        "need": 4.5,
+        "via": "css"
+      },
+      {
+        "tag": "SPAN",
+        "cls": "lang-divider",
+        "text": "/",
+        "ratio": 2.27,
+        "need": 4.5,
+        "via": "css"
+      },
+      {
+        "tag": "SPAN",
+        "cls": "lang-divider",
+        "text": "/",
+        "ratio": 2.27,
+        "need": 4.5,
+        "via": "css"
+      },
+      {
+        "cls": "",
+        "text": "Depuis 2026",
+        "note": "exempt+image"
+      }
+    ]
+  },
+  {
+    "surface": "/",
+    "width": 1366,
+    "state": "search",
+    "theme": "dark/dark",
+    "measured": 10,
+    "sampled": 0,
+    "unmeasured": 0,
+    "failCount": 0,
+    "exemptCount": 0,
+    "fails": [],
+    "exempts": []
+  },
+  {
+    "surface": "/",
+    "width": 1366,
+    "state": "cart",
+    "theme": "dark/dark",
+    "measured": 6,
+    "sampled": 0,
+    "unmeasured": 0,
+    "failCount": 0,
+    "exemptCount": 0,
+    "fails": [],
+    "exempts": []
+  },
+  {
+    "surface": "/",
+    "width": 1366,
+    "state": "concierge",
+    "theme": "dark/dark",
+    "measured": 13,
+    "sampled": 0,
+    "unmeasured": 0,
+    "failCount": 0,
+    "exemptCount": 0,
+    "fails": [],
+    "exempts": []
+  },
+  {
+    "surface": "/prototype/",
+    "width": 390,
+    "state": "base",
+    "theme": "dark/dark",
+    "measured": 117,
+    "sampled": 9,
+    "unmeasured": 0,
+    "failCount": 0,
+    "exemptCount": 0,
+    "fails": [],
+    "exempts": []
+  },
+  {
+    "surface": "/prototype/",
+    "width": 1366,
+    "state": "base",
+    "theme": "dark/dark",
+    "measured": 142,
+    "sampled": 9,
+    "unmeasured": 0,
+    "failCount": 0,
+    "exemptCount": 3,
+    "fails": [],
+    "exempts": [
+      {
+        "tag": "SPAN",
+        "cls": "lang-divider",
+        "text": "·",
+        "ratio": 2.28,
+        "need": 4.5,
+        "via": "css"
+      },
+      {
+        "tag": "SPAN",
+        "cls": "lang-divider",
+        "text": "·",
+        "ratio": 2.28,
+        "need": 4.5,
+        "via": "css"
+      },
+      {
+        "tag": "SPAN",
+        "cls": "lang-divider",
+        "text": "·",
+        "ratio": 2.28,
+        "need": 4.5,
+        "via": "css"
+      }
+    ]
+  }
+]

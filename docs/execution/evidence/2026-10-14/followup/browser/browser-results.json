@@ -1,0 +1,219 @@
+{
+  "utc": "2026-10-14T16:43:50.161Z",
+  "root": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-manual-followup-8018",
+  "results": [
+    {
+      "name": "customer-login",
+      "status": "PASS",
+      "evidence": {
+        "authenticated": true
+      }
+    },
+    {
+      "name": "home-add-toast-count",
+      "status": "PASS",
+      "evidence": {
+        "count": 1,
+        "quantity": 1,
+        "toast": "MANUAL — Synthetic Sapphire ditambahkan ke tas Anda."
+      }
+    },
+    {
+      "name": "rapid-three-plus",
+      "status": "PASS",
+      "evidence": {
+        "before": 1,
+        "clicks": 3,
+        "after": 4
+      }
+    },
+    {
+      "name": "remove-undo",
+      "status": "PASS",
+      "evidence": {
+        "removed": true,
+        "restoredQuantity": 4
+      }
+    },
+    {
+      "name": "refresh-persistence",
+      "status": "PASS",
+      "evidence": {
+        "quantityAfterRefresh": 4,
+        "serverQuantity": 4
+      }
+    },
+    {
+      "name": "catalog-add-feedback",
+      "status": "PASS",
+      "evidence": {
+        "quantity": 1,
+        "feedback": "Tas belanja diperbarui. Jumlah 1 menggantikan jumlah sebelumnya"
+      }
+    },
+    {
+      "name": "catalog-toast-count",
+      "status": "FAIL",
+      "error": "locator.waitFor: Timeout 10000ms exceeded."
+    },
+    {
+      "name": "checkout-summary",
+      "status": "PASS",
+      "evidence": {
+        "lines": [
+          "Rp125.000 × 1 = Rp125.000"
+        ],
+        "subtotal": 125000
+      }
+    },
+    {
+      "name": "place-order-reference",
+      "status": "PASS",
+      "evidence": {
+        "confirmation": "Pesanan #6 dibuat: pending / belum dibayar. Total Rp125.000. Tidak ada pembayaran online."
+      }
+    },
+    {
+      "name": "order-history-and-cancel",
+      "status": "PASS",
+      "evidence": {
+        "orderId": 6,
+        "uiStatus": "cancelled",
+        "serverStatus": "cancelled"
+      }
+    },
+    {
+      "name": "catalog-mobile-390",
+      "status": "PASS",
+      "evidence": {
+        "viewport": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "name": "catalog-mobile-320",
+      "status": "PASS",
+      "evidence": {
+        "viewport": 320,
+        "scroll": 320
+      }
+    },
+    {
+      "name": "admin-status-no-paid",
+      "status": "PASS",
+      "evidence": {
+        "selects": 3,
+        "options": [
+          "cancelled",
+          "cancelled",
+          "",
+          "new",
+          "contacted",
+          "confirmed",
+          "completed",
+          "cancelled"
+        ],
+        "paidAbsent": true
+      }
+    },
+    {
+      "name": "admin-login-pdf-download",
+      "status": "PASS",
+      "evidence": {
+        "status": 200,
+        "contentType": "application/pdf",
+        "bytes": 7857
+      }
+    }
+  ],
+  "pageErrors": [],
+  "networkFailures": [
+    {
+      "url": "https://fonts.bunny.net/css",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "https://fonts.bunny.net/css",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "https://fonts.bunny.net/css",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "https://fonts.bunny.net/css",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "https://fonts.bunny.net/css",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "https://fonts.bunny.net/css",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "https://fonts.bunny.net/css",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "https://fonts.bunny.net/css",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "https://fonts.bunny.net/css",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "https://fonts.bunny.net/css",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "https://fonts.bunny.net/css",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "https://fonts.bunny.net/css",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "https://fonts.bunny.net/css",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "https://fonts.bunny.net/css",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "https://fonts.bunny.net/css",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "https://fonts.bunny.net/css",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "url": "http://127.0.0.1:8018/admin/reports/orders.pdf",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "httpFailures": [],
+  "blockedExternal": [
+    "https://fonts.bunny.net/css",
+    "https://fonts.bunny.net/css",
+    "https://fonts.bunny.net/css",
+    "https://fonts.bunny.net/css",
+    "https://fonts.bunny.net/css",
+    "https://fonts.bunny.net/css",
+    "https://fonts.bunny.net/css",
+    "https://fonts.bunny.net/css",
+    "https://fonts.bunny.net/css",
+    "https://fonts.bunny.net/css",
+    "https://fonts.bunny.net/css",
+    "https://fonts.bunny.net/css",
+    "https://fonts.bunny.net/css",
+    "https://fonts.bunny.net/css",
+    "https://fonts.bunny.net/css",
+    "https://fonts.bunny.net/css"
+  ]
+}

@@ -1,0 +1,386 @@
+{
+  "collected_at": "2026-10-14T08:55:21.385462+07:00",
+  "retailer_set": "user-specified: Amazon, Alibaba/Tmall, JD.com, PDD/Temu, Walmart, eBay, MercadoLibre, Sea/Shopee, Rakuten, Coupang",
+  "scope": "Public official pages only. No application HTTP, no credentials.",
+  "limits": [
+    "HTTP status proves reachability only, never feature parity or service quality.",
+    "Retailers whose policy prose is client-rendered or blocked stay UNKNOWN; no text is reconstructed from memory.",
+    "No comparative capability scoring was produced; competitive position remains NOT RUN.",
+    "An OBSERVED fetch is not necessarily relevant policy evidence: Walmart primary URL is a soft-404, Coupang secondary source is corporate overview, and Rakuten evidence covers contact routing only."
+  ],
+  "observed_count": 4,
+  "unknown_count": 6,
+  "sources": [
+    {
+      "name": "Amazon",
+      "overall_evidence_status": "OBSERVED",
+      "quoted_source": "https://www.amazon.com/gp/help/customer/display.html?nodeId=GKM69DUUYKQWKWX7",
+      "comparative_score": "NOT RUN",
+      "attempts": [
+        {
+          "role": "primary",
+          "url": "https://www.amazon.com/gp/help/customer/display.html?nodeId=GKM69DUUYKQWKWX7",
+          "final_url": "https://www.amazon.com/gp/help/customer/display.html?nodeId=GKM69DUUYKQWKWX7",
+          "http_status": 200,
+          "reachable": true,
+          "charset": "utf-8",
+          "plain_text_chars": 15562,
+          "policy_text_observable": true,
+          "evidence_status": "OBSERVED",
+          "unknown_reason": null,
+          "excerpts": [
+            "Amazon Return Policy - Amazon Customer Service Skip to Main content Keyboard shortcuts Search opt + / Cart shift + opt + C Home shift + opt + H Orders shift + opt + O Show/Hide shortcuts shift + opt + Z To move between items, use your keyboard's up or down arrows. .us Deliver to Indonesia All Select the department you want to search in All Departments Arts & Crafts Automotive Baby Beauty & Personal Care Books Boys' Fashion ",
+            "isability Customer Support Help & Customer Service Find more solutions Returns and Refunds › Returns › Amazon Return Policy Easy shopping, simple returns - that's our promise . At Amazon, we're committed to making your shopping experience as seamless and worry-free as possible. We understand that there may be times when a purchase may not meet your expectations or your needs might change. When that happens, we make completing a return simple and convenient. Most items can be returned for a refund or replacement/exchange with",
+            "a purchase may not meet your expectations or your needs might change. When that happens, we make completing a return simple and convenient. Most items can be returned for a refund or replacement/exchange within 30 days of delivery as long as they are in original or unused condition. For eligible items, you can enjoy free returns at many locations near you. For information on an item's return eligibility, please check the product detail page before placing your order. After placing an order, you can find relevant information ",
+            "hange. When that happens, we make completing a return simple and convenient. Most items can be returned for a refund or replacement/exchange within 30 days of delivery as long as they are in original or unused condition. For eligible items, you can enjoy free returns at many locations near you. For information on an item's return eligibility, please check the product detail page before placing your order. After placing an order, you can find relevant information on an item's return eligibility in your Order History . A refun",
+            "ns, we make completing a return simple and convenient. Most items can be returned for a refund or replacement/exchange within 30 days of delivery as long as they are in original or unused condition. For eligible items, you can enjoy free returns at many locations near you. For information on an item's return eligibility, please check the product detail page before placing your order. After placing an order, you can find relevant information on an item's return eligibility in your Order History . A refund will be provided if ",
+            "ing a return simple and convenient. Most items can be returned for a refund or replacement/exchange within 30 days of delivery as long as they are in original or unused condition. For eligible items, you can enjoy free returns at many locations near you. For information on an item's return eligibility, please check the product detail page before placing your order. After placing an order, you can find relevant information on an item's return eligibility in your Order History . A refund will be provided if Amazon (or the thir"
+          ]
+        },
+        {
+          "role": "secondary",
+          "url": "https://www.aboutamazon.com/news/retail",
+          "final_url": "https://www.aboutamazon.com/news/retail",
+          "http_status": 200,
+          "reachable": true,
+          "charset": "utf-8",
+          "plain_text_chars": 1976,
+          "policy_text_observable": true,
+          "evidence_status": "OBSERVED",
+          "unknown_reason": null,
+          "excerpts": [
+            "Retail News Retail 504 results - showing results 1 - 12 504 results < Previous Next > Prime Big Deal Days 2026 ends tonight: 200 of the best deals to shop now Retail Amazon Prime Big Deal Days: Everything you need to know Retail Prime Big Deal Days is back October 6-7: Here’s what to expect Retail Prime Big Deal Days 2026: Early deals you can shop right now Retail Prime Big Deal Days: Our biggest deals to kick off fall and holiday shopping October 6-7 Retail Amazon's Holiday Kids Gift Book is back with 600+ toys, ga",
+            " Next > Prime Big Deal Days 2026 ends tonight: 200 of the best deals to shop now Retail Amazon Prime Big Deal Days: Everything you need to know Retail Prime Big Deal Days is back October 6-7: Here’s what to expect Retail Prime Big Deal Days 2026: Early deals you can shop right now Retail Prime Big Deal Days: Our biggest deals to kick off fall and holiday shopping October 6-7 Retail Amazon's Holiday Kids Gift Book is back with 600+ toys, games, and gifts for every age Retail How Prime members can double their fuel savings eve",
+            "e best deals to shop now Retail Amazon Prime Big Deal Days: Everything you need to know Retail Prime Big Deal Days is back October 6-7: Here’s what to expect Retail Prime Big Deal Days 2026: Early deals you can shop right now Retail Prime Big Deal Days: Our biggest deals to kick off fall and holiday shopping October 6-7 Retail Amazon's Holiday Kids Gift Book is back with 600+ toys, games, and gifts for every age Retail How Prime members can double their fuel savings every Friday this holiday season Retail Merchants can now a",
+            " you need to know Retail Prime Big Deal Days is back October 6-7: Here’s what to expect Retail Prime Big Deal Days 2026: Early deals you can shop right now Retail Prime Big Deal Days: Our biggest deals to kick off fall and holiday shopping October 6-7 Retail Amazon's Holiday Kids Gift Book is back with 600+ toys, games, and gifts for every age Retail How Prime members can double their fuel savings every Friday this holiday season Retail Merchants can now add fast, free Prime delivery to their own websites and save up to 25% ",
+            "re’s what to expect Retail Prime Big Deal Days 2026: Early deals you can shop right now Retail Prime Big Deal Days: Our biggest deals to kick off fall and holiday shopping October 6-7 Retail Amazon's Holiday Kids Gift Book is back with 600+ toys, games, and gifts for every age Retail How Prime members can double their fuel savings every Friday this holiday season Retail Merchants can now add fast, free Prime delivery to their own websites and save up to 25% on fulfillment fees with Amazon Supply Chain Services Retail How Ama",
+            "ordable for American families Retail 8 Amazon AI features to help you find the best deals this Prime Big Deal Days Retail Amazon One Medical’s weight management care is now available in 48 states and Washington, D.C. Retail Prime Big Deal Days regresa del 6 al 7 de octubre: Esto es lo que puedes esperar Retail 504 results - showing results 1 - 12 504 results < Previous Next > Scroll to top button Amazon News Press Center Amazon.com Investor Resources Country & Language: EN Careers Site Map More from Amazon Amazon.com Conditi"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Alibaba/Tmall",
+      "overall_evidence_status": "UNKNOWN",
+      "quoted_source": null,
+      "comparative_score": "NOT RUN",
+      "attempts": [
+        {
+          "role": "primary",
+          "url": "https://rulechannel.alibaba.com/icbu?type=detail&ruleId=2041&cId=1306",
+          "final_url": "https://rulechannel.alibaba.com/icbu?type=detail&ruleId=2041&cId=1306",
+          "http_status": 200,
+          "reachable": true,
+          "charset": "utf-8",
+          "plain_text_chars": 1042,
+          "policy_text_observable": false,
+          "evidence_status": "UNKNOWN",
+          "unknown_reason": "HTTP reachable but policy prose not present in server HTML (client-rendered or gated)",
+          "excerpts": []
+        },
+        {
+          "role": "secondary",
+          "url": "https://helpcenter.alibaba.com/s/buyer?categoryId=1000088727&questionId2=20147614&pageId=128&language=en",
+          "final_url": "https://helpcenter.alibaba.com/s/buyer?categoryId=1000088727&questionId2=20147614&pageId=128&language=en",
+          "http_status": 200,
+          "reachable": true,
+          "charset": "utf-8",
+          "plain_text_chars": 11,
+          "policy_text_observable": false,
+          "evidence_status": "UNKNOWN",
+          "unknown_reason": "HTTP reachable but policy prose not present in server HTML (client-rendered or gated)",
+          "excerpts": []
+        }
+      ]
+    },
+    {
+      "name": "JD.com",
+      "overall_evidence_status": "UNKNOWN",
+      "quoted_source": null,
+      "comparative_score": "NOT RUN",
+      "attempts": [
+        {
+          "role": "primary",
+          "url": "https://help.jd.com/user/issue/109-188.html",
+          "final_url": "https://help.jd.com/user/issue/109-188.html",
+          "http_status": 200,
+          "reachable": true,
+          "charset": "gbk",
+          "plain_text_chars": 3407,
+          "policy_text_observable": false,
+          "evidence_status": "UNKNOWN",
+          "unknown_reason": "HTTP reachable but policy prose not present in server HTML (client-rendered or gated)",
+          "excerpts": []
+        },
+        {
+          "role": "secondary",
+          "url": "https://ir.jd.com/",
+          "reachable": false,
+          "evidence_status": "UNKNOWN",
+          "error": "HTTP Error 403: Forbidden"
+        }
+      ]
+    },
+    {
+      "name": "PDD/Temu",
+      "overall_evidence_status": "UNKNOWN",
+      "quoted_source": null,
+      "comparative_score": "NOT RUN",
+      "attempts": [
+        {
+          "role": "primary",
+          "url": "https://www.temu.com/return-and-refund-policy.html",
+          "reachable": false,
+          "evidence_status": "UNKNOWN",
+          "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.temu.com'. (_ssl.c:1082)>"
+        },
+        {
+          "role": "secondary",
+          "url": "https://investor.pddholdings.com/",
+          "reachable": false,
+          "evidence_status": "UNKNOWN",
+          "error": "HTTP Error 403: Forbidden"
+        }
+      ]
+    },
+    {
+      "name": "Walmart",
+      "overall_evidence_status": "UNKNOWN",
+      "quoted_source": "https://www.walmart.com/help/article/returns/87f4b5a3d5b6427b8f8b4a8c2d8e5d8f",
+      "comparative_score": "NOT RUN",
+      "attempts": [
+        {
+          "role": "primary",
+          "url": "https://www.walmart.com/help/article/returns/87f4b5a3d5b6427b8f8b4a8c2d8e5d8f",
+          "final_url": "https://www.walmart.com/help/article/returns/87f4b5a3d5b6427b8f8b4a8c2d8e5d8f",
+          "http_status": 200,
+          "reachable": true,
+          "charset": "utf-8",
+          "plain_text_chars": 996,
+          "policy_text_observable": true,
+          "evidence_status": "OBSERVED",
+          "unknown_reason": null,
+          "excerpts": [
+            "Pickup & delivery Member benefits How may we help you? Search help topics Sorry... This page no longer exists Return to help page Didn't find what you were looking for? All Departments Store Directory Careers Our Company Sell on Walmart.com Help Product Recalls Accessibility Tax Exempt Program Get the Walmart App Safety Data Sheet Terms of Use Privacy Notice California Supply Chain Act Your Privacy Choices Notice at Collection AdChoices Consumer Health Data Privacy Notices Learn about Spark Driver Brand Shop Directory Walmar"
+          ]
+        },
+        {
+          "role": "secondary",
+          "url": "https://corporate.walmart.com/policies",
+          "final_url": "https://corporate.walmart.com/policies",
+          "http_status": 200,
+          "reachable": true,
+          "charset": "utf-8",
+          "plain_text_chars": 152021,
+          "policy_text_observable": true,
+          "evidence_status": "OBSERVED",
+          "unknown_reason": null,
+          "excerpts": [
+            "d Guidelines Find a list of Walmart's most frequently requested public policies and guidelines, including our return policy, coupon policy and more. Animal Welfare Position Sustainable Products at Walmart U.S. and Sam’s Club U.S.: Our Pledge to Customers and Members Our customers and members count on Walmart U.S. and Sam’s Club U.S. to deliver affordable products in a way that is sustainable for people and for the planet. To meet those needs, we work with collaborators all along the supply chain to improve the sustainability",
+            "t with reductions necessary to keep warming below 2 o C. Conflict Minerals Policy Overview The Securities and Exchange Commission (“SEC”) requires publicly traded companies to report on products they manufacture or contract to manufacture that contain conflict minerals mined in the Covered Countries under circumstances that contribute to or support human rights violations. Walmart is dedicated to doing business the right way. Our Standards for Suppliers sets forth expectations for suppliers of products sold to or sourced by ",
+            "ntage (i.e. buy the first item at full price get 50% off the 2nd item). Returns When an item is returned, the refund credit will not include any manufacturer coupon credit that applied to the original transaction. Coupons will not be given back upon return of the merchandise. Walmart reserves the right to decline the return of items purchased with manufacturer coupons. Exclusions Walmart does not accept (mobile) digital coupons, (example: coupons scanned off a digital device). Walmart does not accept expired coupons. Walmart",
+            " any manufacturer coupon credit that applied to the original transaction. Coupons will not be given back upon return of the merchandise. Walmart reserves the right to decline the return of items purchased with manufacturer coupons. Exclusions Walmart does not accept (mobile) digital coupons, (example: coupons scanned off a digital device). Walmart does not accept expired coupons. Walmart prohibits the use of a manufacturer coupon on prepaid products or gift cards. Walmart does not accept vouchers or gift certificates. Walmar",
+            "ion. Coupons will not be given back upon return of the merchandise. Walmart reserves the right to decline the return of items purchased with manufacturer coupons. Exclusions Walmart does not accept (mobile) digital coupons, (example: coupons scanned off a digital device). Walmart does not accept expired coupons. Walmart prohibits the use of a manufacturer coupon on prepaid products or gift cards. Walmart does not accept vouchers or gift certificates. Walmart does not accept UPC-A coupon barcodes. Walmart reserves the right t",
+            "aimer In all situations, we reserve the right to refuse, or limit the use of any coupon and/or the subsequent return for any reason, including if the customer behavior becomes disruptive (reoccurring) or the items are deemed not to be for the purpose of usage or gifting. Store Management has the final decision in taking care of the customer. Walmart will work with the appropriate law enforcement authorities to prosecute individuals using counterfeit coupons or using coupons inappropriately. Walmart reserves the right to upda"
+          ]
+        }
+      ],
+      "relevance_status": "NOT_RETURN_POLICY",
+      "relevance_note": "Primary URL returns HTTP 200 soft-404 (\"This page no longer exists\"); secondary corporate page only lists policy names. No return-policy text observed.",
+      "relevance_reviewed_at": "2026-10-14 (remediation, manual reading of stored excerpts)"
+    },
+    {
+      "name": "eBay",
+      "overall_evidence_status": "OBSERVED",
+      "quoted_source": "https://www.ebay.com/help/buying/returns-refunds/return-item-refund?id=4041",
+      "comparative_score": "NOT RUN",
+      "attempts": [
+        {
+          "role": "primary",
+          "url": "https://www.ebay.com/help/buying/returns-refunds/return-item-refund?id=4041",
+          "final_url": "https://www.ebay.com/help/buying/returns-refunds/return-item-refund?id=4041",
+          "http_status": 200,
+          "reachable": true,
+          "charset": "utf-8",
+          "plain_text_chars": 8316,
+          "policy_text_observable": true,
+          "evidence_status": "OBSERVED",
+          "unknown_reason": null,
+          "excerpts": [
+            "Return an item for a refund | eBay 933001789349 b50adf6e-20b4-440a-a041-0de60a1abcea:1a1381ee159 19997 Skip to main content Hi ! Hi! Sign in or register Deals Brand Outlet Help & Contact Sell Watchlist Expand Watch List My eBay Expand My eBay Summary Recently Viewed Bids/Offers Watchlist Purchase History Buy Again Selling Saved Feed Saved Searches Saved Sellers Payments My Garage Preferences My Collection Messages PS",
+            "Return an item for a refund | eBay 933001789349 b50adf6e-20b4-440a-a041-0de60a1abcea:1a1381ee159 19997 Skip to main content Hi ! Hi! Sign in or register Deals Brand Outlet Help & Contact Sell Watchlist Expand Watch List My eBay Expand My eBay Summary Recently Viewed Bids/Offers Watchlist Purchase History Buy Again Selling Saved Feed Saved Searches Saved Sellers Payments My Garage Preferences My Collection Messages PSA Vault Issue Resolut",
+            "g... eBay Home Home Customer Service Returns and refunds Customer Service Returns and refunds Returning items Return an item for a refund This is search service rlogid: Search service rlogid = Suggested Articles Suggested queries Suggested queries The more details you provide, the better i can understand and assist you, Need more help? Go to Help home 4 min article Return an item for a refund On this page How your return gets resolved Open a return request Send the item back Get your refund Ask eBay to step in and help Close",
+            "ustomer Service Returns and refunds Customer Service Returns and refunds Returning items Return an item for a refund This is search service rlogid: Search service rlogid = Suggested Articles Suggested queries Suggested queries The more details you provide, the better i can understand and assist you, Need more help? Go to Help home 4 min article Return an item for a refund On this page How your return gets resolved Open a return request Send the item back Get your refund Ask eBay to step in and help Close a return request If ",
+            "etails you provide, the better i can understand and assist you, Need more help? Go to Help home 4 min article Return an item for a refund On this page How your return gets resolved Open a return request Send the item back Get your refund Ask eBay to step in and help Close a return request If you've changed your mind about an item you bought, or there's something wrong with it, you can request a return - and you're protected the whole way through. To improve your experience, please sign into your account. Sign in You're cover",
+            "he better i can understand and assist you, Need more help? Go to Help home 4 min article Return an item for a refund On this page How your return gets resolved Open a return request Send the item back Get your refund Ask eBay to step in and help Close a return request If you've changed your mind about an item you bought, or there's something wrong with it, you can request a return - and you're protected the whole way through. To improve your experience, please sign into your account. Sign in You're covered by the eBay Money "
+          ]
+        },
+        {
+          "role": "secondary",
+          "url": "https://www.ebay.com/help/policies/ebay-money-back-guarantee-policy/ebay-money-back-guarantee-policy?id=4210",
+          "final_url": "https://www.ebay.com/help/policies/ebay-money-back-guarantee-policy/ebay-money-back-guarantee-policy?id=4210",
+          "http_status": 200,
+          "reachable": true,
+          "charset": "utf-8",
+          "plain_text_chars": 36081,
+          "policy_text_observable": true,
+          "evidence_status": "OBSERVED",
+          "unknown_reason": null,
+          "excerpts": [
+            "eBay Money Back Guarantee policy 933001792074 7cce4c4e-701e-486b-ba64-21a445f09fb4:1a1381eec30 19997 Skip to main content Hi ! Hi! Sign in or register Deals Brand Outlet Help & Contact Sell Watchlist Expand Watch List My eBay Expand My eBay Summary Recently Viewed Bids/Offers Watchlist Purchase History Buy Again Selling Saved Feed Saved Searches Saved Sellers Payments My Garage Preferences My Collection Messages PSA Vault Issue Reso",
+            "lution Center Notifications Loading... Expand Cart Loading... eBay Home Home Customer Service eBay Money Back Guarantee policy This is search service rlogid: Search service rlogid = Suggested Articles Suggested queries Suggested queries The more details you provide, the better i can understand and assist you, Need more help? Go to Help home 13 min article eBay Money Back Guarantee policy On this page Coverage, eligibility requirements, and exclusions When the buyer doesn't receive an item When the item received by the buyer ",
+            "e, the better i can understand and assist you, Need more help? Go to Help home 13 min article eBay Money Back Guarantee policy On this page Coverage, eligibility requirements, and exclusions When the buyer doesn't receive an item When the item received by the buyer doesn't match the listing eBay Authenticity Guarantee When the seller doesn't fulfill their return policy Return requirements and return shipping Estimated and actual delivery dates Appeals and extensions Refunds, payment holds and reimbursements Loss of coverage ",
+            "buyer doesn't receive an item When the item received by the buyer doesn't match the listing eBay Authenticity Guarantee When the seller doesn't fulfill their return policy Return requirements and return shipping Estimated and actual delivery dates Appeals and extensions Refunds, payment holds and reimbursements Loss of coverage Other terms and related policies eBay Money Back Guarantee covers most transactions on eBay. It means buyers can get their money back if an item didn't arrive, is faulty or damaged, or doesn't match t",
+            "ived by the buyer doesn't match the listing eBay Authenticity Guarantee When the seller doesn't fulfill their return policy Return requirements and return shipping Estimated and actual delivery dates Appeals and extensions Refunds, payment holds and reimbursements Loss of coverage Other terms and related policies eBay Money Back Guarantee covers most transactions on eBay. It means buyers can get their money back if an item didn't arrive, is faulty or damaged, or doesn't match the listing. For all the details of how eBay Mone",
+            "yer doesn't match the listing eBay Authenticity Guarantee When the seller doesn't fulfill their return policy Return requirements and return shipping Estimated and actual delivery dates Appeals and extensions Refunds, payment holds and reimbursements Loss of coverage Other terms and related policies eBay Money Back Guarantee covers most transactions on eBay. It means buyers can get their money back if an item didn't arrive, is faulty or damaged, or doesn't match the listing. For all the details of how eBay Money Back Guarant"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "MercadoLibre",
+      "overall_evidence_status": "OBSERVED",
+      "quoted_source": "https://www.mercadolibre.com.mx/compra-protegida",
+      "comparative_score": "NOT RUN",
+      "attempts": [
+        {
+          "role": "primary",
+          "url": "https://www.mercadolibre.com.mx/ayuda/compra-protegida_986",
+          "final_url": "https://www.mercadolibre.com.mx/compra-protegida",
+          "http_status": 200,
+          "reachable": true,
+          "charset": "utf-8",
+          "plain_text_chars": 3137,
+          "policy_text_observable": true,
+          "evidence_status": "OBSERVED",
+          "unknown_reason": null,
+          "excerpts": [
+            " elegir que te devuelvan el dinero a tu cuenta de Mercado Pago o a la tarjeta. Si eliges la tarjeta, verás la devolución en el próximo resumen o en el subsiguiente, dependiendo de la fecha de anulación del pago. En caso de haber pagado con tarjeta de débito, podrás ver el monto devuelto en tu Home Banking. ¿Cómo reclamo si el paquete se demora con Envíos de Mercado Libre? ¡No hay reclamo! Cuando está en camino, te mantenemos al tanto del estado del envío y te avisamos en caso de que se retrase. Si se demora demasiado, podrás"
+          ]
+        },
+        {
+          "role": "secondary",
+          "url": "https://www.mercadolibre.com.mx/compra-protegida",
+          "final_url": "https://www.mercadolibre.com.mx/compra-protegida",
+          "http_status": 200,
+          "reachable": true,
+          "charset": "utf-8",
+          "plain_text_chars": 3137,
+          "policy_text_observable": true,
+          "evidence_status": "OBSERVED",
+          "unknown_reason": null,
+          "excerpts": [
+            " elegir que te devuelvan el dinero a tu cuenta de Mercado Pago o a la tarjeta. Si eliges la tarjeta, verás la devolución en el próximo resumen o en el subsiguiente, dependiendo de la fecha de anulación del pago. En caso de haber pagado con tarjeta de débito, podrás ver el monto devuelto en tu Home Banking. ¿Cómo reclamo si el paquete se demora con Envíos de Mercado Libre? ¡No hay reclamo! Cuando está en camino, te mantenemos al tanto del estado del envío y te avisamos en caso de que se retrase. Si se demora demasiado, podrás"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sea/Shopee",
+      "overall_evidence_status": "UNKNOWN",
+      "quoted_source": null,
+      "comparative_score": "NOT RUN",
+      "attempts": [
+        {
+          "role": "primary",
+          "url": "https://help.shopee.co.id/portal/article/77527",
+          "final_url": "https://help.shopee.co.id/portal/4/article/77527",
+          "http_status": 200,
+          "reachable": true,
+          "charset": "utf-8",
+          "plain_text_chars": 11,
+          "policy_text_observable": false,
+          "evidence_status": "UNKNOWN",
+          "unknown_reason": "HTTP reachable but policy prose not present in server HTML (client-rendered or gated)",
+          "excerpts": []
+        },
+        {
+          "role": "secondary",
+          "url": "https://help.shopee.co.id/portal/4/article/77527",
+          "final_url": "https://help.shopee.co.id/portal/4/article/77527",
+          "http_status": 200,
+          "reachable": true,
+          "charset": "utf-8",
+          "plain_text_chars": 11,
+          "policy_text_observable": false,
+          "evidence_status": "UNKNOWN",
+          "unknown_reason": "HTTP reachable but policy prose not present in server HTML (client-rendered or gated)",
+          "excerpts": []
+        }
+      ]
+    },
+    {
+      "name": "Rakuten",
+      "overall_evidence_status": "OBSERVED",
+      "quoted_source": "https://ichiba.faq.rakuten.net/detail/000002563",
+      "comparative_score": "NOT RUN",
+      "attempts": [
+        {
+          "role": "primary",
+          "url": "https://ichiba.faq.rakuten.net/detail/000002563",
+          "final_url": "https://ichiba.faq.rakuten.net/detail/000002563",
+          "http_status": 200,
+          "reachable": true,
+          "charset": "utf-8",
+          "plain_text_chars": 1153,
+          "policy_text_observable": true,
+          "evidence_status": "OBSERVED",
+          "unknown_reason": null,
+          "excerpts": [
+            "までの時間：3日前後 お問い合わせ前のご注意 楽天市場へのお問い合わせ ショップへのお問い合わせ 以下のような個別のご注文に関しては、各ショップへお問い合わせください。 ・ 支払い/商品の発送 ・ 到着/キャンセル ・ 返品/交換など ショップに関するヘルプページ 楽天グループサービスへのお問い合わせ 「楽天市場」以外の楽天グループサービスに関するご質問は、以下の サービス一覧をご参照ください。 楽天グループサービス一覧 ご意見・ご要望窓口 不適切商品･表記･価格に対するご意見 違法な商品/不当な二重価格/不適切な表現など 権利侵害に対する通知 商標権侵害/著作権侵害/意匠権侵害/特許権侵害 安心・安全のためのご注意 セキュリティ 楽天を装った不正にご注意ください なりすましサイト・偽メール報告 製品の安全 使用に注意が必要な製品 リコール製品に関する情報 カスタマーハラスメントに対する対応ポリシー 個人情報保護方針 © Rakuten Group, Inc."
+          ]
+        },
+        {
+          "role": "secondary",
+          "url": "https://www.rakuten.co.jp/",
+          "final_url": "https://www.rakuten.co.jp/",
+          "http_status": 200,
+          "reachable": true,
+          "charset": "utf-8",
+          "plain_text_chars": 42,
+          "policy_text_observable": false,
+          "evidence_status": "UNKNOWN",
+          "unknown_reason": "HTTP reachable but policy prose not present in server HTML (client-rendered or gated)",
+          "excerpts": []
+        }
+      ],
+      "relevance_status": "CONTACT_ROUTING_ONLY",
+      "relevance_note": "Observed text routes order, cancellation and return/exchange questions to each shop; it is contact routing, not return-policy terms.",
+      "relevance_reviewed_at": "2026-10-14 (remediation, manual reading of stored excerpts)"
+    },
+    {
+      "name": "Coupang",
+      "overall_evidence_status": "UNKNOWN",
+      "quoted_source": "https://ir.aboutcoupang.com/overview/default.aspx",
+      "comparative_score": "NOT RUN",
+      "attempts": [
+        {
+          "role": "primary",
+          "url": "https://www.coupang.com/np/coupangglobal",
+          "reachable": false,
+          "evidence_status": "UNKNOWN",
+          "error": "HTTP Error 403: Forbidden"
+        },
+        {
+          "role": "secondary",
+          "url": "https://ir.aboutcoupang.com/",
+          "final_url": "https://ir.aboutcoupang.com/overview/default.aspx",
+          "http_status": 200,
+          "reachable": true,
+          "charset": "utf-8",
+          "plain_text_chars": 1765,
+          "policy_text_observable": true,
+          "evidence_status": "OBSERVED",
+          "unknown_reason": null,
+          "excerpts": [
+            "tor Relations Corporate Overview Coupang is a technology and Fortune 150 company listed on the New York Stock Exchange that provides retail, restaurant delivery, video streaming, and fintech services to customers around the world under brands that include Coupang, Eats, Play, Rocket Now, and Farfetch. Coupang is reimagining the commerce experience with the goal of wowing each customer from the instant they open one of our apps to the moment an order is delivered to their door. Powered by a culture of customer centricity, Cou"
+          ]
+        }
+      ],
+      "relevance_status": "NOT_RETURN_POLICY",
+      "relevance_note": "Primary blocked (403); secondary is investor-relations corporate overview (\"listed on the New York Stock Exchange\"), not a return policy.",
+      "relevance_reviewed_at": "2026-10-14 (remediation, manual reading of stored excerpts)"
+    }
+  ],
+  "observed_count_note": "Remediation 2026-10-14: Walmart and Coupang reclassified to UNKNOWN (fetched text is not return policy). Rakuten stays OBSERVED with scope contact-routing only."
+}

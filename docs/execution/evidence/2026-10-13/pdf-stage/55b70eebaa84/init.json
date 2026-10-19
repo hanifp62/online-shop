@@ -1,0 +1,6 @@
+{
+  "command": "host launch.prepare(root) + demo-key",
+  "returncode": 0,
+  "platform": "macOS host (bind-mount owner check)",
+  "error": null
+}

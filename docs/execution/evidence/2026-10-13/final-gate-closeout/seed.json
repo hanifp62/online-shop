@@ -1,0 +1,11 @@
+{
+  "label": "seed",
+  "command": [
+    "scripts/amadis/launch.sh",
+    "seed"
+  ],
+  "start": "2026-10-13T05:22:38.200735+00:00",
+  "finish": "2026-10-13T05:22:38.719355+00:00",
+  "seconds": 0.518640291003976,
+  "returncode": 0
+}

@@ -1,0 +1,5 @@
+{
+  "command": "docker network inspect amadis-stage-int-dfa208627395",
+  "returncode": 0,
+  "platform": "Linux container"
+}

@@ -1,0 +1,32 @@
+
+   INFO  Preparing database.  
+
+  Creating migration table ....................................... 2.07ms DONE
+
+   INFO  Running migrations.  
+
+  0001_01_01_000000_create_users_table ........................... 2.29ms DONE
+  0001_01_01_000001_create_cache_table ........................... 3.42ms DONE
+  0001_01_01_000002_create_jobs_table ............................ 1.58ms DONE
+  2026_08_31_000000_create_concierge_requests_table .............. 0.27ms DONE
+  2026_08_31_000001_create_newsletter_subscribers_table .......... 0.43ms DONE
+  2026_09_07_034040_create_categories_table ...................... 0.25ms DONE
+  2026_09_07_034058_create_products_table ........................ 0.41ms DONE
+  2026_09_07_120000_add_product_details_columns .................. 1.25ms DONE
+  2026_09_07_125000_make_concierge_schedule_nullable ............. 1.79ms DONE
+  2026_09_14_000001_add_legacy_profile_fields_to_users_table ..... 1.30ms DONE
+  2026_09_14_000002_create_admins_table .......................... 0.50ms DONE
+  2026_09_14_000003_create_user_info_backups_table ............... 0.49ms DONE
+  2026_09_14_000004_create_getcat_procedure ...................... 0.17ms DONE
+  2026_09_14_000005_add_remember_token_to_admins_table ........... 0.28ms DONE
+  2026_09_14_000006_add_user_id_to_concierge_requests_table ...... 1.48ms DONE
+  2026_09_21_000001_add_product_quality_columns .................. 1.21ms DONE
+  2026_09_21_000002_add_unique_to_product_slug ................... 0.27ms DONE
+  2026_10_12_000001_add_stock_and_active_to_products_table ....... 0.70ms DONE
+  2026_10_12_000002_create_vouchers_table ........................ 0.52ms DONE
+  2026_10_12_000003_create_orders_table .......................... 5.97ms DONE
+  2026_10_12_000004_create_order_items_table ..................... 0.36ms DONE
+  2026_10_12_000005_create_addresses_table ....................... 0.39ms DONE
+  2026_10_12_000006_create_reviews_table ......................... 0.57ms DONE
+  2026_10_12_000007_create_favorites_table ....................... 0.45ms DONE
+

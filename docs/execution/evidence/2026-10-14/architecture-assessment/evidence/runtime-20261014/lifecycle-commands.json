@@ -1,0 +1,112 @@
+[
+  {
+    "command": [
+      "launch.sh",
+      "snapshot"
+    ],
+    "exit": 0
+  },
+  {
+    "command": [
+      "launch.sh",
+      "serve",
+      "8043"
+    ],
+    "pid": 78175
+  },
+  {
+    "command": [
+      "stop-owned-group",
+      "78175"
+    ],
+    "exit": 0
+  },
+  {
+    "command": [
+      "launch.sh",
+      "snapshot"
+    ],
+    "exit": 0
+  },
+  {
+    "command": [
+      "launch.sh",
+      "serve",
+      "8043"
+    ],
+    "pid": 78222
+  },
+  {
+    "command": [
+      "stop-owned-group",
+      "78222"
+    ],
+    "exit": 0
+  },
+  {
+    "command": [
+      "launch.sh",
+      "snapshot"
+    ],
+    "exit": 0
+  },
+  {
+    "command": [
+      "launch.sh",
+      "serve",
+      "8043"
+    ],
+    "pid": 78255
+  },
+  {
+    "command": [
+      "stop-owned-group",
+      "78255"
+    ],
+    "exit": 0
+  },
+  {
+    "command": [
+      "launch.sh",
+      "snapshot"
+    ],
+    "exit": 0
+  },
+  {
+    "command": [
+      "launch.sh",
+      "serve",
+      "8043"
+    ],
+    "pid": 78287
+  },
+  {
+    "command": [
+      "stop-owned-group",
+      "78287"
+    ],
+    "exit": 0
+  },
+  {
+    "command": [
+      "launch.sh",
+      "snapshot"
+    ],
+    "exit": 0
+  },
+  {
+    "command": [
+      "launch.sh",
+      "serve",
+      "8043"
+    ],
+    "pid": 78320
+  },
+  {
+    "command": [
+      "stop-owned-group",
+      "78320"
+    ],
+    "exit": 0
+  }
+]

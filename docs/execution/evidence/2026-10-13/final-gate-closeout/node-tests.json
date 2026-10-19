@@ -1,0 +1,28 @@
+{
+  "label": "node-tests",
+  "command": [
+    "node",
+    "--test",
+    "tests/amadis-layout.test.mjs",
+    "tests/hit-hero-run12.test.mjs",
+    "tests/phase4-a11y.test.mjs",
+    "tests/prototype-currency.test.mjs",
+    "tests/prototype-dock.test.mjs",
+    "tests/prototype-drawer.test.mjs",
+    "tests/prototype-header-1025.test.mjs",
+    "tests/prototype-mobile-lang.test.mjs",
+    "tests/prototype-security.test.mjs",
+    "tests/sw.test.mjs",
+    "tests/sweep10-repairs.test.mjs",
+    "tests/task3.test.mjs",
+    "tests/task4-focus.test.mjs",
+    "tests/task4.test.mjs",
+    "tests/zafira-i18n.test.mjs",
+    "tests/zafira-theme.test.mjs",
+    "scripts/amadis/browser-lifecycle.test.cjs"
+  ],
+  "start": "2026-10-13T05:24:37.604421+00:00",
+  "finish": "2026-10-13T05:24:38.006543+00:00",
+  "seconds": 0.4021356249868404,
+  "returncode": 0
+}

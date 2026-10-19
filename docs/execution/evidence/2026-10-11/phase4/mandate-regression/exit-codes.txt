@@ -1,0 +1,4 @@
+phpunit_random=0
+pint_test=0
+node_test=0
+git_diff_check=0

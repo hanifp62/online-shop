@@ -1,0 +1,7 @@
+{
+  "status": "BLOCKED",
+  "phase": "download",
+  "error_type": "Error",
+  "path": "/admin",
+  "message": "locator.click: Error: strict mode violation: locator('#panel-pesanan form button[type=\"submit\"]') resolved to 13 elements:\n    1) <button type=\"submit\" class=\"button button-sapphire\">Unduh PDF</button> aka getByRole('button', { name: 'Unduh PDF' })\n    2) <button type=\"submit\">Simpan</button> aka locator('td:nth-child(4) > .status-form > button').first()\n    3) <button type=\"submit\">Simpan</button> aka locator('tr:nth-child(3) > td:nth-child(4) > .status-form > button')\n    4) <button type=\"subm"
+}

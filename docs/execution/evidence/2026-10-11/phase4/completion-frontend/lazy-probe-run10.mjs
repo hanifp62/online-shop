@@ -1,0 +1,10 @@
+import { createRequire } from 'node:module';
+import { execFileSync } from 'node:child_process';
+const require = createRequire(import.meta.url);
+const { chromium } = require(execFileSync('npm', ['root', '-g'], { encoding: 'utf8' }).trim() + '/@playwright/cli/node_modules/playwright-core');
+const browser = await chromium.launch({ executablePath: process.env.HOME + '/Library/Caches/ms-playwright/chromium_headless_shell-1228/chrome-headless-shell-mac-arm64/chrome-headless-shell' });
+const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+await page.goto('http://127.0.0.1:8015/', { waitUntil: 'networkidle' });
+await page.evaluate(async () => { for (let y = 0; y < document.documentElement.scrollHeight; y += 400) { scrollTo(0, y); await new Promise(r => setTimeout(r, 60)); } await Promise.all([...document.images].map(i => i.decode().catch(() => {}))); });
+console.log(JSON.stringify(await page.evaluate(() => [...document.images].filter(i => i.getBoundingClientRect().width > 0 && !i.naturalWidth).map(i => ({ src: i.currentSrc || i.src, alt: i.alt, cls: i.className, complete: i.complete, parent: i.parentElement.className }))), null, 1));
+await browser.close();

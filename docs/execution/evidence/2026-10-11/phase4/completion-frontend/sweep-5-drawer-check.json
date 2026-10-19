@@ -1,0 +1,98 @@
+[
+  {
+    "lang": "id",
+    "labels": [
+      "ID",
+      "EN",
+      "FR",
+      "IT",
+      "ID",
+      "EN",
+      "FR",
+      "IT"
+    ],
+    "translatedStringsVisible": false,
+    "switchedToFr": true,
+    "persistsAfterReload": false,
+    "before": {
+      "lang": "fr",
+      "stored": "fr"
+    },
+    "after": {
+      "lang": "id",
+      "stored": "id"
+    }
+  },
+  {
+    "lang": "en",
+    "labels": [
+      "ID",
+      "EN",
+      "FR",
+      "IT",
+      "ID",
+      "EN",
+      "FR",
+      "IT"
+    ],
+    "translatedStringsVisible": false,
+    "switchedToFr": true,
+    "persistsAfterReload": false,
+    "before": {
+      "lang": "fr",
+      "stored": "fr"
+    },
+    "after": {
+      "lang": "en",
+      "stored": "en"
+    }
+  },
+  {
+    "lang": "fr",
+    "labels": [
+      "ID",
+      "EN",
+      "FR",
+      "IT",
+      "ID",
+      "EN",
+      "FR",
+      "IT"
+    ],
+    "translatedStringsVisible": false,
+    "switchedToFr": true,
+    "persistsAfterReload": true,
+    "before": {
+      "lang": "fr",
+      "stored": "fr"
+    },
+    "after": {
+      "lang": "fr",
+      "stored": "fr"
+    }
+  },
+  {
+    "lang": "it",
+    "labels": [
+      "ID",
+      "EN",
+      "FR",
+      "IT",
+      "ID",
+      "EN",
+      "FR",
+      "IT"
+    ],
+    "translatedStringsVisible": false,
+    "switchedToFr": true,
+    "persistsAfterReload": false,
+    "before": {
+      "lang": "fr",
+      "stored": "fr"
+    },
+    "after": {
+      "lang": "it",
+      "stored": "it"
+    }
+  }
+]

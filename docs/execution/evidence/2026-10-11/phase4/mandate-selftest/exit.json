@@ -1,0 +1,5 @@
+{
+  "scenario": "unavailable isolated localhost endpoint 8099",
+  "exit": 1,
+  "expected": 1
+}

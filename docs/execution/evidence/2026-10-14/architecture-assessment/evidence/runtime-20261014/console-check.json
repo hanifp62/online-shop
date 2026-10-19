@@ -1,0 +1,44 @@
+[
+  {
+    "path": "/",
+    "consoleErrors": [
+      "Failed to load resource: net::ERR_FAILED",
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "pageErrors": []
+  },
+  {
+    "path": "/koleksi",
+    "consoleErrors": [
+      "Failed to load resource: net::ERR_FAILED",
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "pageErrors": []
+  },
+  {
+    "path": "/belanja",
+    "consoleErrors": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "pageErrors": []
+  },
+  {
+    "path": "/login",
+    "consoleErrors": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "pageErrors": []
+  },
+  {
+    "path": "/admin/login",
+    "consoleErrors": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "pageErrors": []
+  },
+  {
+    "abortedExternalOrigins": [
+      "https://fonts.bunny.net"
+    ]
+  }
+]

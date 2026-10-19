@@ -1,0 +1,191 @@
+[
+ {
+  "p": "/",
+  "vp": "320x568",
+  "ox": 15,
+  "off": [
+   {
+    "el": "div.footer-pref-item",
+    "right": 335
+   },
+   {
+    "el": "select.zafira-lang-select",
+    "right": 335
+   }
+  ],
+  "cov": [
+   "span:© 2026 ZAFIRA MAISON. SELURUH HAK DILIND",
+   "a:Ketentuan",
+   "a:Indonesia / ID",
+   "a:"
+  ],
+  "errs": []
+ },
+ {
+  "p": "/produk/sac-seraphine",
+  "vp": "320x568",
+  "ox": 0,
+  "off": [],
+  "cov": [
+   "span:© 2026 ZAFIRA Maison. Seluruh hak dilind",
+   "span:ZAFIRA",
+   "a:Privasi",
+   "a:Ketentuan",
+   "a:Indonesia / ID",
+   "a:"
+  ],
+  "errs": []
+ },
+ {
+  "p": "/prototype/#studio",
+  "vp": "320x568",
+  "ox": 92,
+  "off": [
+   {
+    "el": "div",
+    "right": 412
+   },
+   {
+    "el": "button.action-btn",
+    "right": 412
+   },
+   {
+    "el": "span",
+    "right": 375
+   },
+   {
+    "el": "span.badge-count.cart-count-badge",
+    "right": 401
+   }
+  ],
+  "cov": [],
+  "covSettled": [],
+  "errs": []
+ },
+ {
+  "p": "/prototype/#account",
+  "vp": "320x568",
+  "ox": 33,
+  "off": [
+   {
+    "el": "div.account-col-left",
+    "right": 353
+   },
+   {
+    "el": "div.salon-card.client-profile-card",
+    "right": 353
+   },
+   {
+    "el": "div.salon-card-header",
+    "right": 328
+   },
+   {
+    "el": "span",
+    "right": 328
+   },
+   {
+    "el": "div.client-avatar-row",
+    "right": 328
+   },
+   {
+    "el": "div.client-meta",
+    "right": 328
+   },
+   {
+    "el": "h3",
+    "right": 328
+   },
+   {
+    "el": "p",
+    "right": 328
+   }
+  ],
+  "cov": [],
+  "covSettled": [],
+  "errs": []
+ },
+ {
+  "p": "/",
+  "vp": "390x844",
+  "ox": 0,
+  "off": [],
+  "cov": [
+   "span:© 2026 ZAFIRA MAISON. SELURUH HAK DILIND",
+   "a:Indonesia / ID",
+   "a:"
+  ],
+  "errs": []
+ },
+ {
+  "p": "/produk/sac-seraphine",
+  "vp": "390x844",
+  "ox": 0,
+  "off": [],
+  "cov": [
+   "span:© 2026 ZAFIRA Maison. Seluruh hak dilind",
+   "span:ZAFIRA",
+   "a:Privasi",
+   "a:Ketentuan",
+   "a:Indonesia / ID",
+   "a:"
+  ],
+  "errs": []
+ },
+ {
+  "p": "/prototype/#studio",
+  "vp": "390x844",
+  "ox": 22,
+  "off": [
+   {
+    "el": "div",
+    "right": 412
+   },
+   {
+    "el": "button.action-btn",
+    "right": 412
+   },
+   {
+    "el": "span.badge-count.cart-count-badge",
+    "right": 401
+   }
+  ],
+  "cov": [],
+  "covSettled": [],
+  "errs": []
+ },
+ {
+  "p": "/",
+  "vp": "768x1024",
+  "ox": 0,
+  "off": [],
+  "cov": [
+   "span:© 2026 ZAFIRA MAISON. SELURUH HAK DILIND",
+   "a:Indonesia / ID",
+   "a:"
+  ],
+  "errs": []
+ },
+ {
+  "p": "/produk/sac-seraphine",
+  "vp": "768x1024",
+  "ox": 0,
+  "off": [],
+  "cov": [
+   "span:© 2026 ZAFIRA Maison. Seluruh hak dilind",
+   "a:Indonesia / ID",
+   "a:"
+  ],
+  "errs": []
+ },
+ {
+  "p": "/",
+  "vp": "1024x768",
+  "ox": 0,
+  "off": [],
+  "cov": [
+   "a:Ketentuan"
+  ],
+  "errs": []
+ }
+]
+rows 77 problem rows 10

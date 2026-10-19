@@ -1,0 +1,5 @@
+{
+  "command": "docker network connect --alias amadis-proxy amadis-stage-composer-5328339b1e33 amadis-stage-proxy-5328339b1e33",
+  "returncode": 0,
+  "platform": "Linux container"
+}

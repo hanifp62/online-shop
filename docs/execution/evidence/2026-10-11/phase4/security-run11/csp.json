@@ -1,0 +1,308 @@
+{
+  "testedAt": "2026-10-11T19:14:28.081Z",
+  "candidatePolicy": "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.bunny.net 'unsafe-inline'; font-src 'self' https://fonts.bunny.net data:; img-src 'self' data: https:; connect-src 'self'; media-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; report-uri /__qa_csp_report",
+  "status": "inventory DONE, enforcement NOT DEPLOYED",
+  "pages": [
+    {
+      "path": "/",
+      "canonicalEquivalent": "/",
+      "status": 200,
+      "reportOnlyHeader": "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.bunny.net 'unsafe-inline'; font-src 'self' https://fonts.bunny.net data:; img-src 'self' data: https:; connect-src 'self'; media-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; report-uri /__qa_csp_report",
+      "inventory": {
+        "inlineScripts": 3,
+        "inlineStyleAttributes": 92,
+        "styleBlocks": 1,
+        "inlineEventHandlers": 7,
+        "externalOrigins": {
+          "https://fonts.bunny.net": 2,
+          "https://images.unsplash.com": 6
+        }
+      },
+      "clickedActions": [
+        {
+          "name": "cart",
+          "selector": "[data-open-cart]",
+          "success": true
+        },
+        {
+          "name": "search",
+          "selector": "[data-open-search]",
+          "success": true
+        },
+        {
+          "name": "menu",
+          "selector": "button.mobile-menu-button",
+          "success": false,
+          "reason": "locator.click: Timeout 2000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button.mobile-menu-bu"
+        },
+        {
+          "name": "lang",
+          "selector": ".lang-switcher [data-set-lang=\"en\"]",
+          "success": true
+        },
+        {
+          "name": "drawer-profile",
+          "selector": "#btn-header-profile",
+          "success": true
+        },
+        {
+          "name": "onclick-ribbon-gold",
+          "selector": "#btn-ribbon-gold",
+          "success": true
+        },
+        {
+          "name": "onclick-wax-seal",
+          "selector": "#welcome-wax-seal",
+          "success": true
+        }
+      ],
+      "violationsCount": 4,
+      "violations": [
+        {
+          "directive": "script-src-elem",
+          "blockedURI": "inline",
+          "disposition": "report",
+          "sample": ""
+        },
+        {
+          "directive": "script-src-elem",
+          "blockedURI": "inline",
+          "disposition": "report",
+          "sample": ""
+        },
+        {
+          "directive": "script-src-attr",
+          "blockedURI": "inline",
+          "disposition": "report",
+          "sample": ""
+        },
+        {
+          "directive": "script-src-attr",
+          "blockedURI": "inline",
+          "disposition": "report",
+          "sample": ""
+        }
+      ]
+    },
+    {
+      "path": "/prototype/",
+      "canonicalEquivalent": "/prototype/",
+      "status": 200,
+      "reportOnlyHeader": "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.bunny.net 'unsafe-inline'; font-src 'self' https://fonts.bunny.net data:; img-src 'self' data: https:; connect-src 'self'; media-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; report-uri /__qa_csp_report",
+      "inventory": {
+        "inlineScripts": 1,
+        "inlineStyleAttributes": 436,
+        "styleBlocks": 1,
+        "inlineEventHandlers": 158,
+        "externalOrigins": {
+          "https://fonts.bunny.net": 2
+        }
+      },
+      "clickedActions": [
+        {
+          "name": "cart-onclick",
+          "selector": "button.action-btn[onclick*=\"openCartDrawer\"]",
+          "success": true
+        },
+        {
+          "name": "menu-drawer-onclick",
+          "selector": "#btn-mobile-nav-toggle",
+          "success": false,
+          "reason": "locator.click: Timeout 2000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#btn-mobile-nav-toggl"
+        },
+        {
+          "name": "profile-drawer-onclick",
+          "selector": "#btn-header-profile",
+          "success": true
+        },
+        {
+          "name": "keyboard-shortcuts-onclick",
+          "selector": "#shortcuts-toggle-btn",
+          "success": true
+        },
+        {
+          "name": "category-filter-onclick",
+          "selector": "button.cat-pill[onclick*=\"filterCategory\"]",
+          "success": true
+        },
+        {
+          "name": "rendezvous-onclick",
+          "selector": "a.announcement-rv-btn[onclick*=\"openRendezvousModal\"]",
+          "success": true
+        }
+      ],
+      "violationsCount": 8,
+      "violations": [
+        {
+          "directive": "script-src-elem",
+          "blockedURI": "inline",
+          "disposition": "report",
+          "sample": ""
+        },
+        {
+          "directive": "script-src-attr",
+          "blockedURI": "inline",
+          "disposition": "report",
+          "sample": ""
+        },
+        {
+          "directive": "script-src-attr",
+          "blockedURI": "inline",
+          "disposition": "report",
+          "sample": ""
+        },
+        {
+          "directive": "script-src-attr",
+          "blockedURI": "inline",
+          "disposition": "report",
+          "sample": ""
+        },
+        {
+          "directive": "script-src-attr",
+          "blockedURI": "inline",
+          "disposition": "report",
+          "sample": ""
+        },
+        {
+          "directive": "script-src-attr",
+          "blockedURI": "inline",
+          "disposition": "report",
+          "sample": ""
+        },
+        {
+          "directive": "script-src-attr",
+          "blockedURI": "inline",
+          "disposition": "report",
+          "sample": ""
+        },
+        {
+          "directive": "script-src-attr",
+          "blockedURI": "inline",
+          "disposition": "report",
+          "sample": ""
+        }
+      ]
+    },
+    {
+      "path": "/produk/celeste-trench",
+      "canonicalEquivalent": "/produk/celeste-trench",
+      "status": 200,
+      "reportOnlyHeader": "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.bunny.net 'unsafe-inline'; font-src 'self' https://fonts.bunny.net data:; img-src 'self' data: https:; connect-src 'self'; media-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; report-uri /__qa_csp_report",
+      "inventory": {
+        "inlineScripts": 1,
+        "inlineStyleAttributes": 16,
+        "styleBlocks": 0,
+        "inlineEventHandlers": 1,
+        "externalOrigins": {
+          "https://fonts.bunny.net": 2,
+          "https://images.unsplash.com": 3
+        }
+      },
+      "clickedActions": [],
+      "violationsCount": 0,
+      "violations": []
+    },
+    {
+      "path": "/admin/login",
+      "canonicalEquivalent": "/admin/login",
+      "status": 200,
+      "reportOnlyHeader": "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.bunny.net 'unsafe-inline'; font-src 'self' https://fonts.bunny.net data:; img-src 'self' data: https:; connect-src 'self'; media-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; report-uri /__qa_csp_report",
+      "inventory": {
+        "inlineScripts": 0,
+        "inlineStyleAttributes": 1,
+        "styleBlocks": 0,
+        "inlineEventHandlers": 0,
+        "externalOrigins": {
+          "https://fonts.bunny.net": 2
+        }
+      },
+      "clickedActions": [],
+      "violationsCount": 0,
+      "violations": []
+    },
+    {
+      "path": "/login",
+      "canonicalEquivalent": "/login",
+      "status": 200,
+      "reportOnlyHeader": "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.bunny.net 'unsafe-inline'; font-src 'self' https://fonts.bunny.net data:; img-src 'self' data: https:; connect-src 'self'; media-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; report-uri /__qa_csp_report",
+      "inventory": {
+        "inlineScripts": 0,
+        "inlineStyleAttributes": 1,
+        "styleBlocks": 0,
+        "inlineEventHandlers": 0,
+        "externalOrigins": {
+          "https://fonts.bunny.net": 2
+        }
+      },
+      "clickedActions": [],
+      "violationsCount": 0,
+      "violations": []
+    },
+    {
+      "path": "/account",
+      "canonicalEquivalent": "/akun",
+      "status": 404,
+      "reportOnlyHeader": "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.bunny.net 'unsafe-inline'; font-src 'self' https://fonts.bunny.net data:; img-src 'self' data: https:; connect-src 'self'; media-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; report-uri /__qa_csp_report",
+      "inventory": {
+        "inlineScripts": 0,
+        "inlineStyleAttributes": 0,
+        "styleBlocks": 2,
+        "inlineEventHandlers": 0,
+        "externalOrigins": {}
+      },
+      "clickedActions": [],
+      "violationsCount": 0,
+      "violations": []
+    },
+    {
+      "path": "/akun",
+      "canonicalEquivalent": "/akun",
+      "status": 200,
+      "inventory": {
+        "inlineScripts": 0,
+        "inlineStyleAttributes": 7,
+        "styleBlocks": 0,
+        "inlineEventHandlers": 0,
+        "externalOrigins": {
+          "https://fonts.bunny.net": 2
+        }
+      },
+      "clickedActions": [],
+      "violationsCount": 0,
+      "violations": []
+    },
+    {
+      "path": "/admin/dashboard",
+      "canonicalEquivalent": "/admin",
+      "status": 404,
+      "reportOnlyHeader": "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.bunny.net 'unsafe-inline'; font-src 'self' https://fonts.bunny.net data:; img-src 'self' data: https:; connect-src 'self'; media-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; report-uri /__qa_csp_report",
+      "inventory": {
+        "inlineScripts": 0,
+        "inlineStyleAttributes": 0,
+        "styleBlocks": 2,
+        "inlineEventHandlers": 0,
+        "externalOrigins": {}
+      },
+      "clickedActions": [],
+      "violationsCount": 0,
+      "violations": []
+    },
+    {
+      "path": "/admin",
+      "canonicalEquivalent": "/admin",
+      "status": 200,
+      "inventory": {
+        "inlineScripts": 0,
+        "inlineStyleAttributes": 30,
+        "styleBlocks": 1,
+        "inlineEventHandlers": 16,
+        "externalOrigins": {
+          "https://fonts.bunny.net": 2
+        }
+      },
+      "clickedActions": [],
+      "violationsCount": 0,
+      "violations": []
+    }
+  ]
+}

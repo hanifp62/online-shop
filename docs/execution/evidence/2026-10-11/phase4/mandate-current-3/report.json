@@ -1,0 +1,4232 @@
+{
+ "base": "http://127.0.0.1:8015",
+ "label": "mandate-current-3",
+ "total": 704,
+ "failed": 15,
+ "results": [
+  {
+   "scope": "home@320x568",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@320x568",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@320x568",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@320x568",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@320x568",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@320x568",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@320x568",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@320x568",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@320x568",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@320x568",
+   "name": "mobile-menu-button-visible",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@320x568",
+   "name": "mobile-menu-open",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@320x568",
+   "name": "mobile-menu-fits",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@320x568",
+   "name": "mobile-menu-escape-closes",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@320x568",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@390x844",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@390x844",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@390x844",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@390x844",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@390x844",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@390x844",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@390x844",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@390x844",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@390x844",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@390x844",
+   "name": "mobile-menu-button-visible",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@390x844",
+   "name": "mobile-menu-open",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@390x844",
+   "name": "mobile-menu-fits",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@390x844",
+   "name": "mobile-menu-escape-closes",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@390x844",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@768x1024",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@768x1024",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@768x1024",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@768x1024",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@768x1024",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@768x1024",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@768x1024",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@768x1024",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@768x1024",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@768x1024",
+   "name": "mobile-menu-button-visible",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@768x1024",
+   "name": "mobile-menu-open",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@768x1024",
+   "name": "mobile-menu-fits",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@768x1024",
+   "name": "mobile-menu-escape-closes",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@768x1024",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1024x768",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1024x768",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1024x768",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1024x768",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1024x768",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1024x768",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1024x768",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1024x768",
+   "name": "header-no-overlap",
+   "ok": false,
+   "detail": "Layanan|ZAFIRA\n    Maison de"
+  },
+  {
+   "scope": "home@1024x768",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1024x768",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1024x768",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1366x768",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1366x768",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1366x768",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1366x768",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1366x768",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1366x768",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1366x768",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1366x768",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1366x768",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1366x768",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1366x768",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1440x900",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1440x900",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1440x900",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1440x900",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1440x900",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1440x900",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1440x900",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1440x900",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1440x900",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1440x900",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1440x900",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1650x927",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1650x927",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1650x927",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1650x927",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1650x927",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1650x927",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1650x927",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1650x927",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1650x927",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1650x927",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "home@1650x927",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@320x568",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@320x568",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@320x568",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@320x568",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@320x568",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@320x568",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@320x568",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@320x568",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@320x568",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@320x568",
+   "name": "mobile-menu-button-visible",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@320x568",
+   "name": "mobile-menu-open",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@320x568",
+   "name": "mobile-menu-fits",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@320x568",
+   "name": "mobile-menu-escape-closes",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@320x568",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@390x844",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@390x844",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@390x844",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@390x844",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@390x844",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@390x844",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@390x844",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@390x844",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@390x844",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@390x844",
+   "name": "mobile-menu-button-visible",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@390x844",
+   "name": "mobile-menu-open",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@390x844",
+   "name": "mobile-menu-fits",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@390x844",
+   "name": "mobile-menu-escape-closes",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@390x844",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@768x1024",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@768x1024",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@768x1024",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@768x1024",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@768x1024",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@768x1024",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@768x1024",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@768x1024",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@768x1024",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@768x1024",
+   "name": "mobile-menu-button-visible",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@768x1024",
+   "name": "mobile-menu-open",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@768x1024",
+   "name": "mobile-menu-fits",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@768x1024",
+   "name": "mobile-menu-escape-closes",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@768x1024",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1024x768",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1024x768",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1024x768",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1024x768",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1024x768",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1024x768",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1024x768",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1024x768",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1024x768",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1024x768",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1366x768",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1366x768",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1366x768",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1366x768",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1366x768",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1366x768",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1366x768",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1366x768",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1366x768",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1366x768",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1440x900",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1440x900",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1440x900",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1440x900",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1440x900",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1440x900",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1440x900",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1440x900",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1440x900",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1440x900",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1650x927",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1650x927",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1650x927",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1650x927",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1650x927",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1650x927",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1650x927",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1650x927",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1650x927",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "pdp@1650x927",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@320x568",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@320x568",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@320x568",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@320x568",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@320x568",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@320x568",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@320x568",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@320x568",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@320x568",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@390x844",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@390x844",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@390x844",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@390x844",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@390x844",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@390x844",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@390x844",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@390x844",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@390x844",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@768x1024",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@768x1024",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@768x1024",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@768x1024",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@768x1024",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@768x1024",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@768x1024",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@768x1024",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@768x1024",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1024x768",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1024x768",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1024x768",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1024x768",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1024x768",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1024x768",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1024x768",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1024x768",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1024x768",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1366x768",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1366x768",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1366x768",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1366x768",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1366x768",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1366x768",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1366x768",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1366x768",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1366x768",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1440x900",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1440x900",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1440x900",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1440x900",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1440x900",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1440x900",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1440x900",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1440x900",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1440x900",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1650x927",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1650x927",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1650x927",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1650x927",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1650x927",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1650x927",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1650x927",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1650x927",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "login@1650x927",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@320x568",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@320x568",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@320x568",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@320x568",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@320x568",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@320x568",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@320x568",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@320x568",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@320x568",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@390x844",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@390x844",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@390x844",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@390x844",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@390x844",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@390x844",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@390x844",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@390x844",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@390x844",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@768x1024",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@768x1024",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@768x1024",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@768x1024",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@768x1024",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@768x1024",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@768x1024",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@768x1024",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@768x1024",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1024x768",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1024x768",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1024x768",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1024x768",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1024x768",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1024x768",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1024x768",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1024x768",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1024x768",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1366x768",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1366x768",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1366x768",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1366x768",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1366x768",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1366x768",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1366x768",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1366x768",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1366x768",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1440x900",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1440x900",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1440x900",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1440x900",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1440x900",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1440x900",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1440x900",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1440x900",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1440x900",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1650x927",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1650x927",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1650x927",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1650x927",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1650x927",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1650x927",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1650x927",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1650x927",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "register@1650x927",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@320x568",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@320x568",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@320x568",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@320x568",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@320x568",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@320x568",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@320x568",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@320x568",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@320x568",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@390x844",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@390x844",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@390x844",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@390x844",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@390x844",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@390x844",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@390x844",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@390x844",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@390x844",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@768x1024",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@768x1024",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@768x1024",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@768x1024",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@768x1024",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@768x1024",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@768x1024",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@768x1024",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@768x1024",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1024x768",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1024x768",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1024x768",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1024x768",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1024x768",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1024x768",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1024x768",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1024x768",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1024x768",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1366x768",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1366x768",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1366x768",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1366x768",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1366x768",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1366x768",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1366x768",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1366x768",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1366x768",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1440x900",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1440x900",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1440x900",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1440x900",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1440x900",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1440x900",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1440x900",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1440x900",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1440x900",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1650x927",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1650x927",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1650x927",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1650x927",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1650x927",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1650x927",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1650x927",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1650x927",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "adminlogin@1650x927",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@320x568",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@320x568",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@320x568",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@320x568",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@320x568",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@320x568",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@320x568",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@320x568",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@320x568",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@390x844",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@390x844",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@390x844",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@390x844",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@390x844",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@390x844",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@390x844",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@390x844",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@390x844",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@768x1024",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@768x1024",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@768x1024",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@768x1024",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@768x1024",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@768x1024",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@768x1024",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@768x1024",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@768x1024",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1024x768",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1024x768",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1024x768",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1024x768",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1024x768",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1024x768",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1024x768",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1024x768",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1024x768",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1366x768",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1366x768",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1366x768",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1366x768",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1366x768",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1366x768",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1366x768",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1366x768",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1366x768",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1440x900",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1440x900",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1440x900",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1440x900",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1440x900",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1440x900",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1440x900",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1440x900",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1440x900",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1650x927",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1650x927",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1650x927",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1650x927",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1650x927",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1650x927",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1650x927",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1650x927",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "account@1650x927",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@320x568",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@320x568",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@320x568",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@320x568",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@320x568",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@320x568",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@320x568",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@320x568",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@320x568",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@390x844",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@390x844",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@390x844",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@390x844",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@390x844",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@390x844",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@390x844",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@390x844",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@390x844",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@768x1024",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@768x1024",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@768x1024",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@768x1024",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@768x1024",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@768x1024",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@768x1024",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@768x1024",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@768x1024",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1024x768",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1024x768",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1024x768",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1024x768",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1024x768",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1024x768",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1024x768",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1024x768",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1024x768",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1366x768",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1366x768",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1366x768",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1366x768",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1366x768",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1366x768",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1366x768",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1366x768",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1366x768",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1440x900",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1440x900",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1440x900",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1440x900",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1440x900",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1440x900",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1440x900",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1440x900",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1440x900",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1650x927",
+   "name": "http-200",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1650x927",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1650x927",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1650x927",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1650x927",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1650x927",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1650x927",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1650x927",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "admin@1650x927",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@901",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@901",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@901",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@901",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@901",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@901",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@901",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@901",
+   "name": "header-no-overlap",
+   "ok": false,
+   "detail": "L'Art d'Offrir|ZAFIRA\n    Maison de; Layanan|ZAFIRA\n    Maison de"
+  },
+  {
+   "scope": "lang-id@901",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@901",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@901",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@960",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@960",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@960",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@960",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@960",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@960",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@960",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@960",
+   "name": "header-no-overlap",
+   "ok": false,
+   "detail": "Layanan|ZAFIRA\n    Maison de"
+  },
+  {
+   "scope": "lang-id@960",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@960",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@960",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1024",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1024",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1024",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1024",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1024",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1024",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1024",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1024",
+   "name": "header-no-overlap",
+   "ok": false,
+   "detail": "Layanan|ZAFIRA\n    Maison de"
+  },
+  {
+   "scope": "lang-id@1024",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1024",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1024",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1100",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1100",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1100",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1100",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1100",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1100",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1100",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1100",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1100",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1100",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1100",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1366",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1366",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1366",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1366",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1366",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1366",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1366",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1366",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1366",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1366",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-id@1366",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@901",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@901",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@901",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@901",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@901",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@901",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@901",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@901",
+   "name": "header-no-overlap",
+   "ok": false,
+   "detail": "L'Art d'Offrir|ZAFIRA\n    Maison de; Services|ZAFIRA\n    Maison de"
+  },
+  {
+   "scope": "lang-en@901",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@901",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@901",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@960",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@960",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@960",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@960",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@960",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@960",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@960",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@960",
+   "name": "header-no-overlap",
+   "ok": false,
+   "detail": "L'Art d'Offrir|ZAFIRA\n    Maison de; Services|ZAFIRA\n    Maison de"
+  },
+  {
+   "scope": "lang-en@960",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@960",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@960",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1024",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1024",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1024",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1024",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1024",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1024",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1024",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1024",
+   "name": "header-no-overlap",
+   "ok": false,
+   "detail": "L'Art d'Offrir|ZAFIRA\n    Maison de; Services|ZAFIRA\n    Maison de"
+  },
+  {
+   "scope": "lang-en@1024",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1024",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1024",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1100",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1100",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1100",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1100",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1100",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1100",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1100",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1100",
+   "name": "header-no-overlap",
+   "ok": false,
+   "detail": "L'Art d'Offrir|ZAFIRA\n    Maison de; Services|ZAFIRA\n    Maison de"
+  },
+  {
+   "scope": "lang-en@1100",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1100",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1100",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1366",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1366",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1366",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1366",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1366",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1366",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1366",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1366",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1366",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1366",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-en@1366",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@901",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@901",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@901",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@901",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@901",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@901",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@901",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@901",
+   "name": "header-no-overlap",
+   "ok": false,
+   "detail": "L'Art d'Offrir|ZAFIRA\n    Maison de; Services|ZAFIRA\n    Maison de"
+  },
+  {
+   "scope": "lang-fr@901",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@901",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@901",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@960",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@960",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@960",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@960",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@960",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@960",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@960",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@960",
+   "name": "header-no-overlap",
+   "ok": false,
+   "detail": "L'Art d'Offrir|ZAFIRA\n    Maison de; Services|ZAFIRA\n    Maison de"
+  },
+  {
+   "scope": "lang-fr@960",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@960",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@960",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1024",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1024",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1024",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1024",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1024",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1024",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1024",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1024",
+   "name": "header-no-overlap",
+   "ok": false,
+   "detail": "L'Art d'Offrir|ZAFIRA\n    Maison de; Services|ZAFIRA\n    Maison de"
+  },
+  {
+   "scope": "lang-fr@1024",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1024",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1024",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1100",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1100",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1100",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1100",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1100",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1100",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1100",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1100",
+   "name": "header-no-overlap",
+   "ok": false,
+   "detail": "Services|ZAFIRA\n    Maison de"
+  },
+  {
+   "scope": "lang-fr@1100",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1100",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1100",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1366",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1366",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1366",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1366",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1366",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1366",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1366",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1366",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1366",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1366",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-fr@1366",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@901",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@901",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@901",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@901",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@901",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@901",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@901",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@901",
+   "name": "header-no-overlap",
+   "ok": false,
+   "detail": "L'Art d'Offrir|ZAFIRA\n    Maison de; Servizi|ZAFIRA\n    Maison de"
+  },
+  {
+   "scope": "lang-it@901",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@901",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@901",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@960",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@960",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@960",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@960",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@960",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@960",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@960",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@960",
+   "name": "header-no-overlap",
+   "ok": false,
+   "detail": "L'Art d'Offrir|ZAFIRA\n    Maison de; Servizi|ZAFIRA\n    Maison de"
+  },
+  {
+   "scope": "lang-it@960",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@960",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@960",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1024",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1024",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1024",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1024",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1024",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1024",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1024",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1024",
+   "name": "header-no-overlap",
+   "ok": false,
+   "detail": "Servizi|ZAFIRA\n    Maison de"
+  },
+  {
+   "scope": "lang-it@1024",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1024",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1024",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1100",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1100",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1100",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1100",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1100",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1100",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1100",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1100",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1100",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1100",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1100",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1366",
+   "name": "lang-applied",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1366",
+   "name": "final-path",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1366",
+   "name": "no-horizontal-overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1366",
+   "name": "nav-no-wrap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1366",
+   "name": "no-demo-dock",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1366",
+   "name": "no-prototype-links",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1366",
+   "name": "header-in-viewport",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1366",
+   "name": "header-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1366",
+   "name": "announcement-no-overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1366",
+   "name": "breakpoint-matches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "lang-it@1366",
+   "name": "no-console-or-request-errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "scope": "negative-control",
+   "name": "wrong-password-stays-on-login",
+   "ok": true,
+   "detail": ""
+  }
+ ]
+}

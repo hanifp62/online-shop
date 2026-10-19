@@ -1,0 +1,170 @@
+{
+  "directory": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-b1c2b260873e62981566ae7f/evidence/run-s0s5-20261013T052452190Z",
+  "files": {
+    "S0-catalog.png": "0a7331466beb71e81cf750ed37c39c018ead754e999661d260509ea516a23071",
+    "S0-ui.json": "0a6001a607bd79c37e411120bf2a35b1a5ab4e7bad12ede99fa48c2ffc6e6941",
+    "S1-cart.png": "335f5659ff6e374d42bb5acfb536fed889703ecfb8aeac6e447f9aadc4781b04",
+    "S2-pending.png": "cc0656808c96a5164a9e91ff6ceae5ec2153fa59c2b1b09860ee038c5bf6faa9",
+    "S1-ui.json": "af13c253147e235cabbb42db12588eaa8597fe215cd7d901428a4501521f69ee",
+    "result.json": "7bc24b18078168c31e8cf589ae5b86ccbce1640769827a9af2f38cee4b59835f",
+    "sha256.json": "f394ce386d4d3b75f84be9612ed4ff5b9010cdbaad268000418dafed5dd5bb7f",
+    "S5-catalog.png": "bf1d45e1b7d74b2f35332a9d0e9694336b6c1c871e04b40bacee52d4ffe6745d",
+    "S5-snapshot.json": "9af8d560d500f64f5e3ac1c7651eb61230ee9b3fc5d440436ba9445e7ac9a048",
+    "S4-replay.png": "2c863f0c9a9cc06dac70373f305d2552f962c2b97282c7d40d51cf47e31465e3",
+    "S2-ui.json": "ecccabd85978c7002972431a4a10021539b4e413fc385b10e8a1067fa08dda9a",
+    "S2-snapshot.json": "0393e70df151838b9079a7ccb4ee1a86610b43f1ae0899b8b0072e421daaed4e",
+    "commands.json": "ae8422d83f66107653c96cdfed6248f5ef1cae70c5f0db190ee616fbc3688257",
+    "S3-catalog.json": "9a2289c2805fc3897fe40528a39ba0785999a618f1d2c45d9f1e3981421e568e",
+    "S3-snapshot.json": "9af8d560d500f64f5e3ac1c7651eb61230ee9b3fc5d440436ba9445e7ac9a048",
+    "S5-history.png": "2c863f0c9a9cc06dac70373f305d2552f962c2b97282c7d40d51cf47e31465e3",
+    "S0-snapshot.json": "805b1b6d75305eecf004a642fcb21117af4ef329d8c7f061e3e7fba42ee0d408",
+    "S4-snapshot.json": "9af8d560d500f64f5e3ac1c7651eb61230ee9b3fc5d440436ba9445e7ac9a048",
+    "S3-cancelled.png": "2c863f0c9a9cc06dac70373f305d2552f962c2b97282c7d40d51cf47e31465e3",
+    "S5-admin.png": "ce993ecf90cf96a4e70c1eecb0baaadb027769330a1fdcf87f44e6a957680507",
+    "S5-ui.json": "cc32c0494058d2bee209f006b495d685924b1599d6fa1b55d5699934765df5ac",
+    "S4-replay.json": "e10ef4bb391428a9aa05d18063db252b61f4764f17cbb48264a6826d5c74ef7e"
+  },
+  "original_manifest_valid": true,
+  "groups": [
+    {
+      "pid": 21038,
+      "group_absent": true
+    },
+    {
+      "pid": 21082,
+      "group_absent": true
+    },
+    {
+      "pid": 21101,
+      "group_absent": true
+    },
+    {
+      "pid": 21118,
+      "group_absent": true
+    },
+    {
+      "pid": 21140,
+      "group_absent": true
+    }
+  ],
+  "snapshots": {
+    "S0": {
+      "product": {
+        "product_id": 1,
+        "stock": 37,
+        "is_active": 1
+      },
+      "order_count": 0,
+      "orders": [],
+      "items": []
+    },
+    "S2": {
+      "product": {
+        "product_id": 1,
+        "stock": 34,
+        "is_active": 1
+      },
+      "order_count": 1,
+      "orders": [
+        {
+          "id": 1,
+          "status": "pending",
+          "subtotal": 3750000,
+          "discount": 0,
+          "shipping_fee": 0,
+          "total": 3750000
+        }
+      ],
+      "items": [
+        {
+          "order_id": 1,
+          "product_id": 1,
+          "quantity": 3,
+          "unit_price": 1250000,
+          "subtotal": 3750000
+        }
+      ]
+    },
+    "S3": {
+      "product": {
+        "product_id": 1,
+        "stock": 37,
+        "is_active": 1
+      },
+      "order_count": 1,
+      "orders": [
+        {
+          "id": 1,
+          "status": "cancelled",
+          "subtotal": 3750000,
+          "discount": 0,
+          "shipping_fee": 0,
+          "total": 3750000
+        }
+      ],
+      "items": [
+        {
+          "order_id": 1,
+          "product_id": 1,
+          "quantity": 3,
+          "unit_price": 1250000,
+          "subtotal": 3750000
+        }
+      ]
+    },
+    "S4": {
+      "product": {
+        "product_id": 1,
+        "stock": 37,
+        "is_active": 1
+      },
+      "order_count": 1,
+      "orders": [
+        {
+          "id": 1,
+          "status": "cancelled",
+          "subtotal": 3750000,
+          "discount": 0,
+          "shipping_fee": 0,
+          "total": 3750000
+        }
+      ],
+      "items": [
+        {
+          "order_id": 1,
+          "product_id": 1,
+          "quantity": 3,
+          "unit_price": 1250000,
+          "subtotal": 3750000
+        }
+      ]
+    },
+    "S5": {
+      "product": {
+        "product_id": 1,
+        "stock": 37,
+        "is_active": 1
+      },
+      "order_count": 1,
+      "orders": [
+        {
+          "id": 1,
+          "status": "cancelled",
+          "subtotal": 3750000,
+          "discount": 0,
+          "shipping_fee": 0,
+          "total": 3750000
+        }
+      ],
+      "items": [
+        {
+          "order_id": 1,
+          "product_id": 1,
+          "quantity": 3,
+          "unit_price": 1250000,
+          "subtotal": 3750000
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "php_tests": {
+    "command": "php artisan test",
+    "exit_code": 0,
+    "duration_seconds": 1.016,
+    "stdout_tail": [
+      "  \u2713 checkout persists valid size and monogram and rejects invalid monog\u2026 0.01s  ",
+      "  \u2713 storefront hides prototype navigation in production but keeps asset\u2026 0.01s  ",
+      "  \u2713 product and account pages do not claim fake certificates or profile\u2026 0.01s  ",
+      "",
+      "   PASS  Tests\\Feature\\TrustProxyTest",
+      "  \u2713 header forwarded palsu diabaikan tanpa proxy tepercaya               0.01s  ",
+      "  \u2713 host forge tidak memercayai header tanpa konfigurasi proxy",
+      "  \u2713 forwarded proto dihormati bila proxy tepercaya with data set \"alamat i p\"",
+      "  \u2713 forwarded proto dihormati bila proxy tepercaya with data set \"rentang c i d r\"",
+      "",
+      "  Tests:    75 passed (390 assertions)",
+      "  Duration: 0.73s"
+    ]
+  },
+  "php_random_tests": {
+    "command": "php artisan test --order-by=random",
+    "exit_code": 0,
+    "duration_seconds": 0.754,
+    "stdout_tail": [
+      "  \u2713 product detail shows provenance                                      0.01s  ",
+      "  \u2713 legacy products without quality still render                         0.01s  ",
+      "  \u2713 admin can store product quality fields                               0.01s  ",
+      "  \u2713 home carries quick view quality data                                 0.01s  ",
+      "  \u2713 product detail shows craft for heritage piece                        0.01s  ",
+      "  \u2713 product json ld includes material                                    0.01s  ",
+      "  \u2713 storefront lists nusantara and capsule categories                    0.01s  ",
+      "  \u2713 storefront shows three heritages                                     0.01s  ",
+      "",
+      "  Tests:    75 passed (390 assertions)",
+      "  Duration: 0.61s",
+      "  Random Order Seed: 1791684169"
+    ]
+  },
+  "pint": {
+    "command": "vendor/bin/pint --test",
+    "exit_code": 0,
+    "duration_seconds": 0.237,
+    "stdout_tail": [
+      "{\"tool\":\"pint\",\"result\":\"passed\"}"
+    ]
+  },
+  "npm_build": {
+    "command": "npm run build",
+    "exit_code": 0,
+    "duration_seconds": 0.737,
+    "stdout_tail": [
+      "> vite build",
+      "",
+      "vite v8.2.2 building client environment for production...",
+      "transforming...",
+      "\u2713 4 modules transformed.",
+      "rendering chunks...",
+      "computing gzip size...",
+      "public/build/manifest.json              0.33 kB \u2502 gzip:  0.16 kB",
+      "public/build/assets/app-CSnb9L1K.css  109.71 kB \u2502 gzip: 21.67 kB",
+      "public/build/assets/app-DNqUbYp9.js    19.11 kB \u2502 gzip:  6.40 kB",
+      "",
+      "\u2713 built in 311ms"
+    ]
+  },
+  "node_tests": {
+    "command": "node --test tests/prototype-currency.test.mjs tests/sw.test.mjs tests/task3.test.mjs tests/task4.test.mjs tests/task4-focus.test.mjs",
+    "exit_code": 0,
+    "duration_seconds": 0.1,
+    "stdout_tail": [
+      "\u2714 storefront overlays include focus trap, opener return, and Escape close behavior (0.42525ms)",
+      "\u2714 search and catalog filters have accessible names and exposed state (0.144292ms)",
+      "\u2714 PDP size guide is an accessible dialog and native alerts are absent (0.106042ms)",
+      "\u2714 keyboard help participates in accessible dialog flow (0.099833ms)",
+      "\u2139 tests 24",
+      "\u2139 suites 0",
+      "\u2139 pass 24",
+      "\u2139 fail 0",
+      "\u2139 cancelled 0",
+      "\u2139 skipped 0",
+      "\u2139 todo 0",
+      "\u2139 duration_ms 67.078417"
+    ]
+  },
+  "git_check": {
+    "command": "git diff --check",
+    "exit_code": 0,
+    "duration_seconds": 0.027,
+    "stdout_tail": []
+  }
+}

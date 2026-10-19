@@ -1,0 +1,22 @@
+const {chromium} = require('/opt/homebrew/lib/node_modules/@playwright/cli/node_modules/playwright');
+const fs = require('fs');
+const base = `http://127.0.0.1:${process.env.AM_PORT}`;
+const scrub = s => s.replace(/(token|password|key|secret)[^\s"]*/gi,'$1=[REDACTED]').slice(0,300);
+(async () => {
+ const browser = await chromium.launch({executablePath: `${process.env.HOME}/Library/Caches/ms-playwright/chromium-1228/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing`, headless:true});
+ const out=[];
+ try {
+  const context=await browser.newContext({viewport:{width:1365,height:900}});
+  const aborted=[];
+  await context.route('**/*', r => { const u=r.request().url(); if(u.startsWith(base+'/')) return r.continue(); aborted.push(new URL(u).origin); return r.abort(); });
+  const page=await context.newPage();
+  for(const path of ['/','/koleksi','/belanja','/login','/admin/login']) {
+   const msgs=[]; const h=m=>{if(m.type()==='error') msgs.push(scrub(m.text()));}; page.on('console',h);
+   const pe=[]; const hp=e=>pe.push(scrub(e.message)); page.on('pageerror',hp);
+   await page.goto(base+path,{waitUntil:'domcontentloaded'}); await page.waitForTimeout(300);
+   page.off('console',h); page.off('pageerror',hp);
+   out.push({path,consoleErrors:msgs,pageErrors:pe});
+  }
+  out.push({abortedExternalOrigins:[...new Set(aborted)]});
+ } finally {await browser.close(); fs.writeFileSync(process.env.AM_OUT+'/console-check.json',JSON.stringify(out,null,2)+'\n');}
+})().catch(e=>{console.error(e.name);process.exitCode=1});

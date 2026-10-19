@@ -1,0 +1,254 @@
+{
+  "base": "http://127.0.0.1:8015",
+  "isolation": {
+    "database.default": "sqlite",
+    "database.sqlite.database": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-qa/db.sqlite",
+    "database.sqlite.url": null,
+    "session.driver": "file",
+    "session.files": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-qa/storage/framework/sessions",
+    "cache.default": "array",
+    "storage": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-qa/storage",
+    "view.compiled": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-qa/storage/framework/views",
+    "logging.single.path": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-qa/storage/logs/laravel.log"
+  },
+  "total": 47,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "HTTP 8015",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "customer session rotated",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "account saved and rendered",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "newsletter create redirect",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "newsletter duplicate idempotent",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "concierge accepted",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "history shows new",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "customer logout redirect",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "customer logout rotates session",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "customer account protected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "admin session rotated",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "concierge fixture linked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "state new visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "state contacted visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "state confirmed visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "state completed visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "terminal direct regression rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "terminal completed immutable",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "terminal controls absent",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "cancel fixture accepted",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "cancelled terminal rendered",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "cancelled direct submit rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "invalid status rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "cancelled immutable",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "category create visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "category update visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "product created",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "nonempty category deletion rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "nonempty category remains",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "product delete confirm",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "cancelled product delete retains row",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "product delete accepted",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "product deleted",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "category delete confirm",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "cancelled category delete retains row",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "empty category deleted",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "subscriber visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "subscriber delete confirm",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "cancelled subscriber deletion retains row",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "subscriber delete accepted",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "sitemap xml header",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "sitemap excludes private URLs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "sitemap includes public home and product",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "admin logout redirect",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "admin logout rotates session",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "admin dashboard protected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "BLOCKED browser throttle (array cache); covered by RescueBackendAuditTest",
+      "ok": true,
+      "blocked": true,
+      "detail": "[201,201,201,201]"
+    }
+  ]
+}

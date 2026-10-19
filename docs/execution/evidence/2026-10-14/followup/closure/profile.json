@@ -1,0 +1,8 @@
+{
+  "root": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-manual-closure-20261015",
+  "port": 8018,
+  "database": "isolated SQLite; PHPUnit :memory:",
+  "operational_env_read": false,
+  "source_files": 175,
+  "drift": 0
+}

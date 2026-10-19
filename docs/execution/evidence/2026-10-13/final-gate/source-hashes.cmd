@@ -1,0 +1,1 @@
+python3 -c import hashlib,json,glob; p=["scripts/amadis/launch.py","scripts/amadis/browser-lifecycle.cjs","scripts/amadis/guard.php","scripts/amadis/server.php"]; print(json.dumps({x:hashlib.sha256(open(x,"rb").read()).hexdigest() for x in p},indent=2))

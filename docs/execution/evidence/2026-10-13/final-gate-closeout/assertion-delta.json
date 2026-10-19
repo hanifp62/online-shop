@@ -1,0 +1,28 @@
+{
+  "matched_cases": 158,
+  "same_case_set": true,
+  "delta_random_minus_standard": -1,
+  "differences": [
+    {
+      "test": "Tests.Feature.AdminOrderReportTest::test_pdf_service_embeds_unicode_font_and_sanitizes_html_and_unicode",
+      "standard": {
+        "name": "test_pdf_service_embeds_unicode_font_and_sanitizes_html_and_unicode",
+        "file": "/Users/hanifpriyambodo/Documents/online-shop/tests/Feature/AdminOrderReportTest.php",
+        "line": "80",
+        "class": "Tests\\Feature\\AdminOrderReportTest",
+        "classname": "Tests.Feature.AdminOrderReportTest",
+        "assertions": "13",
+        "time": "46.639803"
+      },
+      "random": {
+        "name": "test_pdf_service_embeds_unicode_font_and_sanitizes_html_and_unicode",
+        "file": "/Users/hanifpriyambodo/Documents/online-shop/tests/Feature/AdminOrderReportTest.php",
+        "line": "80",
+        "class": "Tests\\Feature\\AdminOrderReportTest",
+        "classname": "Tests.Feature.AdminOrderReportTest",
+        "assertions": "12",
+        "time": "0.213207"
+      }
+    }
+  ]
+}

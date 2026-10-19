@@ -1,0 +1,2656 @@
+[
+  {
+    "s": "storefront",
+    "fg": [
+      255,
+      255,
+      255
+    ],
+    "bg": [
+      38,
+      58,
+      93
+    ],
+    "large": false,
+    "unc": null,
+    "n": 4,
+    "ex": [
+      {
+        "sel": "a.skip-link",
+        "text": "Lewati ke konten utama",
+        "ctx": "body.storefront"
+      },
+      {
+        "sel": "button.filter-pill.active",
+        "text": "Semua",
+        "ctx": "section#new-arrivals.products-section"
+      }
+    ],
+    "ratio": 11.377803658290057
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      213,
+      216,
+      220
+    ],
+    "bg": [
+      23,
+      38,
+      63
+    ],
+    "large": false,
+    "unc": null,
+    "n": 3,
+    "ex": [
+      {
+        "sel": "p",
+        "text": "Complimentary signature gift wrapping & ",
+        "ctx": "body.storefront"
+      },
+      {
+        "sel": "button",
+        "text": "Rendez-vous privat",
+        "ctx": "body.storefront"
+      }
+    ],
+    "ratio": 10.599444618722933
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      178,
+      178,
+      177
+    ],
+    "bg": [
+      243,
+      239,
+      231
+    ],
+    "large": false,
+    "unc": null,
+    "n": 1,
+    "ex": [
+      {
+        "sel": "span.brand-name",
+        "text": "ZAFIRA",
+        "ctx": "header#site-header.site-header"
+      }
+    ],
+    "ratio": 1.8503848543014356
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      193,
+      195,
+      199
+    ],
+    "bg": [
+      8,
+      16,
+      29
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "span.eyebrow.light",
+        "text": "La Collection Première · 2026",
+        "ctx": "section.hero"
+      }
+    ],
+    "ratio": 10.795157915130126
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      255,
+      255,
+      255
+    ],
+    "bg": [
+      8,
+      16,
+      29
+    ],
+    "large": true,
+    "unc": null,
+    "n": 4,
+    "ex": [
+      {
+        "sel": "h1#hero-title",
+        "text": "Lahir dari Cahaya,",
+        "ctx": "section.hero"
+      },
+      {
+        "sel": "span",
+        "text": "ZAFIRA",
+        "ctx": "section#packaging-section.packaging-section"
+      }
+    ],
+    "ratio": 19.053099462656487
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      225,
+      226,
+      228
+    ],
+    "bg": [
+      8,
+      16,
+      29
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "p",
+        "text": "Keanggunan Paris bertemu keahlian Italia",
+        "ctx": "section.hero"
+      }
+    ],
+    "ratio": 14.698413872745812
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      32,
+      32,
+      29
+    ],
+    "bg": [
+      255,
+      255,
+      255
+    ],
+    "large": false,
+    "unc": null,
+    "n": 4,
+    "ex": [
+      {
+        "sel": "a.button.button-light",
+        "text": "Jelajahi koleksi",
+        "ctx": "section.hero"
+      },
+      {
+        "sel": "span",
+        "text": "Temui pengrajin",
+        "ctx": "section.editorial-banner"
+      }
+    ],
+    "ratio": 16.332731641496753
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      243,
+      239,
+      231
+    ],
+    "bg": [
+      38,
+      58,
+      93
+    ],
+    "large": false,
+    "unc": null,
+    "n": 32,
+    "ex": [
+      {
+        "sel": "span",
+        "text": "L’Esprit Parisien",
+        "ctx": "section.marquee"
+      },
+      {
+        "sel": "span.marquee-bullet",
+        "text": "·",
+        "ctx": "section.marquee"
+      }
+    ],
+    "ratio": 9.921142696061015
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      38,
+      58,
+      93
+    ],
+    "bg": [
+      243,
+      239,
+      231
+    ],
+    "large": false,
+    "unc": null,
+    "n": 10,
+    "ex": [
+      {
+        "sel": "span.eyebrow",
+        "text": "L’Univers ZAFIRA",
+        "ctx": "section#collection.category-section.section-shell"
+      }
+    ],
+    "ratio": 9.921142696061015
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      32,
+      32,
+      29
+    ],
+    "bg": [
+      243,
+      239,
+      231
+    ],
+    "large": true,
+    "unc": null,
+    "n": 22,
+    "ex": [
+      {
+        "sel": "h2",
+        "text": "Temukan dunia Anda",
+        "ctx": "section#collection.category-section.section-shell"
+      },
+      {
+        "sel": "h2#heritage-title",
+        "text": "Tiga tanah, satu Maison",
+        "ctx": "section#heritage.heritage-section.section-shell"
+      },
+      {
+        "sel": "h3",
+        "text": "L’Esprit Parisien",
+        "ctx": "section#heritage.heritage-section.section-shell"
+      }
+    ],
+    "ratio": 14.24170833829564
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      110,
+      106,
+      98
+    ],
+    "bg": [
+      243,
+      239,
+      231
+    ],
+    "large": false,
+    "unc": null,
+    "n": 26,
+    "ex": [
+      {
+        "sel": "p",
+        "text": "Setiap koleksi dirancang sebagai percaka",
+        "ctx": "section#collection.category-section.section-shell"
+      },
+      {
+        "sel": "label",
+        "text": "Pilihan Pita Sutra:",
+        "ctx": "section#packaging-section.packaging-section"
+      },
+      {
+        "sel": "span",
+        "text": "Layanan kemasan kado adibusana ini diber",
+        "ctx": "section#packaging-section.packaging-section"
+      }
+    ],
+    "ratio": 4.694060479992311
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      188,
+      188,
+      187
+    ],
+    "bg": [
+      32,
+      32,
+      29
+    ],
+    "large": false,
+    "unc": null,
+    "n": 6,
+    "ex": [
+      {
+        "sel": "span.category-number",
+        "text": "01",
+        "ctx": "section#collection.category-section.section-shell"
+      }
+    ],
+    "ratio": 8.593453033772455
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      255,
+      255,
+      255
+    ],
+    "bg": [
+      32,
+      32,
+      29
+    ],
+    "large": false,
+    "unc": null,
+    "n": 14,
+    "ex": [
+      {
+        "sel": "span",
+        "text": "Warisan Nusantara",
+        "ctx": "section#collection.category-section.section-shell"
+      }
+    ],
+    "ratio": 16.332731641496753
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      255,
+      255,
+      255
+    ],
+    "bg": [
+      32,
+      32,
+      29
+    ],
+    "large": true,
+    "unc": null,
+    "n": 8,
+    "ex": [
+      {
+        "sel": "h3",
+        "text": "Indonesia",
+        "ctx": "section#collection.category-section.section-shell"
+      },
+      {
+        "sel": "h2",
+        "text": "Songket & Sutra,",
+        "ctx": "section.editorial-banner"
+      }
+    ],
+    "ratio": 16.332731641496753
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      38,
+      58,
+      93
+    ],
+    "bg": [
+      250,
+      248,
+      243
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "span.eyebrow",
+        "text": "Les Nouveautés",
+        "ctx": "section#new-arrivals.products-section"
+      }
+    ],
+    "ratio": 10.720043241189716
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      32,
+      32,
+      29
+    ],
+    "bg": [
+      250,
+      248,
+      243
+    ],
+    "large": true,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "h2",
+        "text": "Objek-objek penuh pesona",
+        "ctx": "section#new-arrivals.products-section"
+      }
+    ],
+    "ratio": 15.388522662369985
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      110,
+      106,
+      98
+    ],
+    "bg": [
+      250,
+      248,
+      243
+    ],
+    "large": false,
+    "unc": null,
+    "n": 28,
+    "ex": [
+      {
+        "sel": "span",
+        "text": "12",
+        "ctx": "section#new-arrivals.products-section"
+      },
+      {
+        "sel": "button.filter-pill",
+        "text": "Busana Wanita",
+        "ctx": "section#new-arrivals.products-section"
+      }
+    ],
+    "ratio": 5.072049950683207
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      32,
+      32,
+      29
+    ],
+    "bg": [
+      253,
+      250,
+      245
+    ],
+    "large": false,
+    "unc": null,
+    "n": 22,
+    "ex": [
+      {
+        "sel": "span.product-badge",
+        "text": "Ikon Maison",
+        "ctx": "section#new-arrivals.products-section"
+      }
+    ],
+    "ratio": 15.686645050488123
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      110,
+      106,
+      98
+    ],
+    "bg": [
+      255,
+      253,
+      249
+    ],
+    "large": false,
+    "unc": null,
+    "n": 24,
+    "ex": [
+      {
+        "sel": "span",
+        "text": "Tas Tangan",
+        "ctx": "section#new-arrivals.products-section"
+      }
+    ],
+    "ratio": 5.298672465825065
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      32,
+      32,
+      29
+    ],
+    "bg": [
+      255,
+      253,
+      249
+    ],
+    "large": false,
+    "unc": null,
+    "n": 48,
+    "ex": [
+      {
+        "sel": "button",
+        "text": "Sac Séraphine",
+        "ctx": "section#new-arrivals.products-section"
+      },
+      {
+        "sel": "p",
+        "text": "Rp18.750.000",
+        "ctx": "section#new-arrivals.products-section"
+      }
+    ],
+    "ratio": 16.076091937904035
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      255,
+      255,
+      255
+    ],
+    "bg": [
+      23,
+      38,
+      63
+    ],
+    "large": false,
+    "unc": null,
+    "n": 4,
+    "ex": [
+      {
+        "sel": "span",
+        "text": "Depuis 2026",
+        "ctx": "section#maison.maison-story"
+      }
+    ],
+    "ratio": 15.157494569462072
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      197,
+      201,
+      207
+    ],
+    "bg": [
+      23,
+      38,
+      63
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "span.eyebrow.light",
+        "text": "L’Histoire de la Maison",
+        "ctx": "section#maison.maison-story"
+      }
+    ],
+    "ratio": 9.11594808402966
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      255,
+      255,
+      255
+    ],
+    "bg": [
+      23,
+      38,
+      63
+    ],
+    "large": true,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "h2",
+        "text": "Seperti safir,",
+        "ctx": "section#maison.maison-story"
+      }
+    ],
+    "ratio": 15.157494569462072
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      174,
+      179,
+      188
+    ],
+    "bg": [
+      23,
+      38,
+      63
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "p",
+        "text": "ZAFIRA lahir dari keyakinan bahwa kemewa",
+        "ctx": "section#maison.maison-story"
+      }
+    ],
+    "ratio": 7.1990462829571324
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      182,
+      154,
+      100
+    ],
+    "bg": [
+      23,
+      38,
+      63
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "p.story-signature",
+        "text": "Parisian in spirit. Italian by craft. In",
+        "ctx": "section#maison.maison-story"
+      }
+    ],
+    "ratio": 5.626517687810581
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      182,
+      154,
+      100
+    ],
+    "bg": [
+      243,
+      239,
+      231
+    ],
+    "large": false,
+    "unc": null,
+    "n": 26,
+    "ex": [
+      {
+        "sel": "span.heritage-number",
+        "text": "I",
+        "ctx": "section#heritage.heritage-section.section-shell"
+      },
+      {
+        "sel": "span",
+        "text": "01",
+        "ctx": "section#atelier.atelier-section.section-shell"
+      },
+      {
+        "sel": "span.service-icon",
+        "text": "01",
+        "ctx": "section#services.services-section.section-shell"
+      }
+    ],
+    "ratio": 2.349043146888338
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      32,
+      32,
+      29
+    ],
+    "bg": [
+      243,
+      239,
+      231
+    ],
+    "large": false,
+    "unc": null,
+    "n": 16,
+    "ex": [
+      {
+        "sel": "span.heritage-proof",
+        "text": "Kain Lyon & Biella · potongan bias-cut",
+        "ctx": "section#heritage.heritage-section.section-shell"
+      },
+      {
+        "sel": "div",
+        "text": "“Untuk Anda, dengan penghormatan atas ke",
+        "ctx": "section#packaging-section.packaging-section"
+      },
+      {
+        "sel": "span",
+        "text": "Atur rendez-vous",
+        "ctx": "section#services.services-section.section-shell"
+      }
+    ],
+    "ratio": 14.24170833829564
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      199,
+      166,
+      101
+    ],
+    "bg": [
+      88,
+      58,
+      40
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "span#monogram-preview-display.monogram-preview",
+        "text": "ZA",
+        "ctx": "section#atelier.atelier-section.section-shell"
+      }
+    ],
+    "ratio": 4.423058864501349
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      218,
+      192,
+      138
+    ],
+    "bg": [
+      117,
+      96,
+      58
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "span.bag-lock",
+        "text": "Z",
+        "ctx": "section#atelier.atelier-section.section-shell"
+      }
+    ],
+    "ratio": 3.4056727922594328
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      127,
+      121,
+      112
+    ],
+    "bg": [
+      221,
+      210,
+      195
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "p",
+        "text": "Pratinjau konseptual",
+        "ctx": "section#atelier.atelier-section.section-shell"
+      }
+    ],
+    "ratio": 2.890608907553102
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      32,
+      32,
+      29
+    ],
+    "bg": [
+      221,
+      210,
+      195
+    ],
+    "large": false,
+    "unc": null,
+    "n": 4,
+    "ex": [
+      {
+        "sel": "label",
+        "text": "Inisial Anda",
+        "ctx": "section#atelier.atelier-section.section-shell"
+      },
+      {
+        "sel": "span.control-label",
+        "text": "Warna foil",
+        "ctx": "section#atelier.atelier-section.section-shell"
+      }
+    ],
+    "ratio": 10.951558471841983
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      182,
+      154,
+      100
+    ],
+    "bg": [
+      217,
+      204,
+      186
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "span#welcome-monogram-counter",
+        "text": "[ 2 / 3 ]",
+        "ctx": "section#atelier.atelier-section.section-shell"
+      }
+    ],
+    "ratio": 1.7057152418154427
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      8,
+      16,
+      29
+    ],
+    "bg": [
+      243,
+      239,
+      231
+    ],
+    "large": true,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "h2#packaging-heading",
+        "text": "Kemasan Kado Ikonik & Segel Lilin Emas",
+        "ctx": "section#packaging-section.packaging-section"
+      }
+    ],
+    "ratio": 16.61379684940592
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      15,
+      28,
+      51
+    ],
+    "bg": [
+      184,
+      152,
+      88
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "button#btn-ribbon-gold.button",
+        "text": "Pita Emas (Ori)",
+        "ctx": "section#packaging-section.packaging-section"
+      }
+    ],
+    "ratio": 6.214696085210627
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      255,
+      255,
+      255
+    ],
+    "bg": [
+      15,
+      28,
+      51
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "button#btn-ribbon-sapphire.button",
+        "text": "Pita Safir (Saphir)",
+        "ctx": "section#packaging-section.packaging-section"
+      }
+    ],
+    "ratio": 17.014843789383853
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      229,
+      211,
+      170
+    ],
+    "bg": [
+      8,
+      16,
+      29
+    ],
+    "large": false,
+    "unc": null,
+    "n": 4,
+    "ex": [
+      {
+        "sel": "small",
+        "text": "Atelier Jakarta",
+        "ctx": "section#packaging-section.packaging-section"
+      },
+      {
+        "sel": "p",
+        "text": "Sentuh stempel untuk melihat pratinjau s",
+        "ctx": "section#packaging-section.packaging-section"
+      }
+    ],
+    "ratio": 12.910529754833602
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      254,
+      242,
+      242
+    ],
+    "bg": [
+      136,
+      19,
+      55
+    ],
+    "large": true,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "button#welcome-wax-seal.wax-seal-badge",
+        "text": "Z",
+        "ctx": "section#packaging-section.packaging-section"
+      }
+    ],
+    "ratio": 8.745213796755323
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      199,
+      199,
+      199
+    ],
+    "bg": [
+      32,
+      32,
+      29
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "span.eyebrow.light",
+        "text": "Le Journal · Koleksi Kapsul",
+        "ctx": "section.editorial-banner"
+      }
+    ],
+    "ratio": 9.661585862400198
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      215,
+      215,
+      214
+    ],
+    "bg": [
+      32,
+      32,
+      29
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "p.editorial-lede",
+        "text": "Palembang bertemu Lyon dalam selendang d",
+        "ctx": "section.editorial-banner"
+      }
+    ],
+    "ratio": 11.340047336387785
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      201,
+      206,
+      215
+    ],
+    "bg": [
+      38,
+      58,
+      93
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "span.eyebrow.light",
+        "text": "La Lettre ZAFIRA",
+        "ctx": "section.newsletter-section"
+      }
+    ],
+    "ratio": 7.202303276969172
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      255,
+      255,
+      255
+    ],
+    "bg": [
+      38,
+      58,
+      93
+    ],
+    "large": true,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "h2",
+        "text": "Masuk ke dunia Maison.",
+        "ctx": "section.newsletter-section"
+      }
+    ],
+    "ratio": 11.377803658290057
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      179,
+      186,
+      198
+    ],
+    "bg": [
+      38,
+      58,
+      93
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "p",
+        "text": "Terima cerita atelier, undangan privat, ",
+        "ctx": "section.newsletter-section"
+      }
+    ],
+    "ratio": 5.827465489443901
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      120,
+      133,
+      155
+    ],
+    "bg": [
+      38,
+      58,
+      93
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "small",
+        "text": "Dengan berlangganan, Anda menyetujui keb",
+        "ctx": "section.newsletter-section"
+      }
+    ],
+    "ratio": 3.0486754601903847
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      255,
+      255,
+      255
+    ],
+    "bg": [
+      24,
+      25,
+      22
+    ],
+    "large": true,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "span.brand-name",
+        "text": "ZAFIRA",
+        "ctx": "footer.site-footer"
+      }
+    ],
+    "ratio": 17.65483584071063
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      255,
+      255,
+      255
+    ],
+    "bg": [
+      24,
+      25,
+      22
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "span.brand-est",
+        "text": "Maison de Lumière",
+        "ctx": "footer.site-footer"
+      }
+    ],
+    "ratio": 17.65483584071063
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      135,
+      135,
+      134
+    ],
+    "bg": [
+      24,
+      25,
+      22
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "p",
+        "text": "Parisian in spirit. Italian by craft. In",
+        "ctx": "footer.site-footer"
+      }
+    ],
+    "ratio": 4.909738055219613
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      182,
+      154,
+      100
+    ],
+    "bg": [
+      24,
+      25,
+      22
+    ],
+    "large": false,
+    "unc": null,
+    "n": 4,
+    "ex": [
+      {
+        "sel": "h3",
+        "text": "Koleksi",
+        "ctx": "footer.site-footer"
+      }
+    ],
+    "ratio": 6.55353994539982
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      151,
+      152,
+      150
+    ],
+    "bg": [
+      24,
+      25,
+      22
+    ],
+    "large": false,
+    "unc": null,
+    "n": 16,
+    "ex": [
+      {
+        "sel": "a",
+        "text": "Wanita",
+        "ctx": "footer.site-footer"
+      },
+      {
+        "sel": "button",
+        "text": "Rendez-vous",
+        "ctx": "footer.site-footer"
+      }
+    ],
+    "ratio": 6.093068974129823
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      229,
+      211,
+      170
+    ],
+    "bg": [
+      24,
+      25,
+      22
+    ],
+    "large": false,
+    "unc": null,
+    "n": 4,
+    "ex": [
+      {
+        "sel": "label.footer-pref-label",
+        "text": "Wilayah & Bahasa",
+        "ctx": "footer.site-footer"
+      }
+    ],
+    "ratio": 11.96305534881292
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      128,
+      129,
+      127
+    ],
+    "bg": [
+      24,
+      25,
+      22
+    ],
+    "large": false,
+    "unc": null,
+    "n": 8,
+    "ex": [
+      {
+        "sel": "span",
+        "text": "© 2026 ZAFIRA MAISON. SELURUH HAK DILIND",
+        "ctx": "footer.site-footer"
+      },
+      {
+        "sel": "a",
+        "text": "Ketentuan",
+        "ctx": "footer.site-footer"
+      }
+    ],
+    "ratio": 4.509888151917967
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      143,
+      143,
+      141
+    ],
+    "bg": [
+      254,
+      254,
+      253
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "input#live-catalog-search-input[type=search]::placeholder",
+        "text": "Cari sutra, tenun, kriya…",
+        "ctx": "input"
+      }
+    ],
+    "ratio": 3.210547707865805
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      168,
+      176,
+      190
+    ],
+    "bg": [
+      38,
+      58,
+      93
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "input#newsletter-email[type=email]::placeholder",
+        "text": "nama @ contoh.id…",
+        "ctx": "input"
+      }
+    ],
+    "ratio": 5.211381313082493
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      182,
+      154,
+      100
+    ],
+    "bg": [
+      39,
+      53,
+      76
+    ],
+    "large": false,
+    "unc": null,
+    "n": 1,
+    "ex": [
+      {
+        "sel": "button.lang-btn.active",
+        "text": "ID",
+        "ctx": "body.storefront"
+      }
+    ],
+    "ratio": 4.58581126590517
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      93,
+      104,
+      121
+    ],
+    "bg": [
+      39,
+      53,
+      76
+    ],
+    "large": false,
+    "unc": null,
+    "n": 3,
+    "ex": [
+      {
+        "sel": "span.lang-divider",
+        "text": "/",
+        "ctx": "body.storefront"
+      }
+    ],
+    "ratio": 2.18937626112605
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      179,
+      184,
+      193
+    ],
+    "bg": [
+      39,
+      53,
+      76
+    ],
+    "large": false,
+    "unc": null,
+    "n": 3,
+    "ex": [
+      {
+        "sel": "button.lang-btn",
+        "text": "EN",
+        "ctx": "body.storefront"
+      }
+    ],
+    "ratio": 6.2022366704462595
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      225,
+      225,
+      224
+    ],
+    "bg": [
+      243,
+      239,
+      231
+    ],
+    "large": false,
+    "unc": null,
+    "n": 7,
+    "ex": [
+      {
+        "sel": "a",
+        "text": "Koleksi",
+        "ctx": "nav.desktop-nav"
+      },
+      {
+        "sel": "span.brand-est",
+        "text": "Maison de Lumière",
+        "ctx": "header#site-header.site-header"
+      }
+    ],
+    "ratio": 1.1410449084840495
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      225,
+      225,
+      224
+    ],
+    "bg": [
+      243,
+      239,
+      231
+    ],
+    "large": true,
+    "unc": null,
+    "n": 1,
+    "ex": [
+      {
+        "sel": "span.brand-name",
+        "text": "ZAFIRA",
+        "ctx": "header#site-header.site-header"
+      }
+    ],
+    "ratio": 1.1410449084840495
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      181,
+      183,
+      187
+    ],
+    "bg": [
+      8,
+      16,
+      29
+    ],
+    "large": false,
+    "unc": null,
+    "n": 1,
+    "ex": [
+      {
+        "sel": "div.hero-edition",
+        "text": "Édition No. 01",
+        "ctx": "section.hero"
+      }
+    ],
+    "ratio": 9.486372341000793
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      222,
+      218,
+      210
+    ],
+    "bg": [
+      121,
+      106,
+      75
+    ],
+    "large": false,
+    "unc": null,
+    "n": 1,
+    "ex": [
+      {
+        "sel": "span",
+        "text": "Découvrir",
+        "ctx": "section.hero"
+      }
+    ],
+    "ratio": 3.788817750631151
+  },
+  {
+    "s": "storefront",
+    "fg": [
+      110,
+      106,
+      98
+    ],
+    "bg": [
+      221,
+      210,
+      195
+    ],
+    "large": false,
+    "unc": null,
+    "n": 1,
+    "ex": [
+      {
+        "sel": "small#monogram-hint",
+        "text": "Maksimal 3 inisial A–Z · Pratinjau konse",
+        "ctx": "section#atelier.atelier-section.section-shell"
+      }
+    ],
+    "ratio": 3.609628606054612
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      229,
+      211,
+      170
+    ],
+    "bg": [
+      8,
+      16,
+      29
+    ],
+    "large": false,
+    "unc": null,
+    "n": 22,
+    "ex": [
+      {
+        "sel": "a.skip-to-content",
+        "text": "Lewati ke Konten Koleksi Utama",
+        "ctx": "body"
+      },
+      {
+        "sel": "span.sf-eyebrow",
+        "text": "L'Âme de la Maison ZAFIRA",
+        "ctx": "section.savoir-faire-banner"
+      },
+      {
+        "sel": "small",
+        "text": "Atelier Jakarta",
+        "ctx": "section#packaging-section.packaging-section"
+      },
+      {
+        "sel": "p",
+        "text": "Sentuh stempel lilin untuk memvalidasi s",
+        "ctx": "section#packaging-section.packaging-section"
+      },
+      {
+        "sel": "div",
+        "text": "Atelier: Paris · Lyon · Biella · Solo · ",
+        "ctx": "footer.sf-footer"
+      }
+    ],
+    "ratio": 12.910529754833602
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      235,
+      236,
+      237
+    ],
+    "bg": [
+      8,
+      16,
+      29
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "span",
+        "text": "Complimentary signature gift wrapping & ",
+        "ctx": "body"
+      }
+    ],
+    "ratio": 16.107580584978315
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      8,
+      16,
+      29
+    ],
+    "bg": [
+      254,
+      252,
+      249
+    ],
+    "large": false,
+    "unc": null,
+    "n": 1,
+    "ex": [
+      {
+        "sel": "span.sf-brand-title",
+        "text": "ZAFIRA",
+        "ctx": "header.sf-header"
+      }
+    ],
+    "ratio": 18.605114087416617
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      138,
+      120,
+      104
+    ],
+    "bg": [
+      254,
+      252,
+      249
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "span.sf-brand-sub",
+        "text": "La Maison de Lumière",
+        "ctx": "header.sf-header"
+      }
+    ],
+    "ratio": 4.128380773109851
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      255,
+      255,
+      255
+    ],
+    "bg": [
+      8,
+      16,
+      29
+    ],
+    "large": false,
+    "unc": null,
+    "n": 4,
+    "ex": [
+      {
+        "sel": "span.badge-count.cart-count-badge",
+        "text": "1",
+        "ctx": "header.sf-header"
+      },
+      {
+        "sel": "button.cat-pill.active",
+        "text": "Semua",
+        "ctx": "main#storefront-view.view-container.active"
+      }
+    ],
+    "ratio": 19.053099462656487
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      229,
+      211,
+      170
+    ],
+    "bg": [
+      15,
+      28,
+      51
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "span",
+        "text": "Création No. 09 · Broderie Main 60h",
+        "ctx": "section.editorial-hero"
+      }
+    ],
+    "ratio": 11.529391711161427
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      184,
+      152,
+      88
+    ],
+    "bg": [
+      248,
+      246,
+      241
+    ],
+    "large": false,
+    "unc": null,
+    "n": 6,
+    "ex": [
+      {
+        "sel": "span.hero-eyebrow",
+        "text": "La Collection Première · 2026",
+        "ctx": "section.editorial-hero"
+      },
+      {
+        "sel": "span",
+        "text": "Les Autres Pièces",
+        "ctx": "main#storefront-view.view-container.active"
+      }
+    ],
+    "ratio": 2.534949580355219
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      8,
+      16,
+      29
+    ],
+    "bg": [
+      248,
+      246,
+      241
+    ],
+    "large": true,
+    "unc": null,
+    "n": 10,
+    "ex": [
+      {
+        "sel": "h1.hero-title",
+        "text": "Lahir dari Cahaya,",
+        "ctx": "section.editorial-hero"
+      },
+      {
+        "sel": "h3.diptych-title",
+        "text": "Kebaya Lumière",
+        "ctx": "main#storefront-view.view-container.active"
+      },
+      {
+        "sel": "h3",
+        "text": "Koleksi Kriya Pilihan",
+        "ctx": "main#storefront-view.view-container.active"
+      },
+      {
+        "sel": "h2",
+        "text": "Kemasan Kado Ikonik & Segel Lilin Emas",
+        "ctx": "section#packaging-section.packaging-section"
+      }
+    ],
+    "ratio": 17.641149866626815
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      107,
+      102,
+      92
+    ],
+    "bg": [
+      248,
+      246,
+      241
+    ],
+    "large": false,
+    "unc": null,
+    "n": 28,
+    "ex": [
+      {
+        "sel": "p.hero-manifesto",
+        "text": "Keanggunan Paris bertemu keahlian Italia",
+        "ctx": "section.editorial-hero"
+      },
+      {
+        "sel": "p.diptych-quote",
+        "text": "“Bordir tambal-tangan 60 jam oleh empu k",
+        "ctx": "main#storefront-view.view-container.active"
+      },
+      {
+        "sel": "p",
+        "text": "Kebaya kontemporer dengan siluet Parisia",
+        "ctx": "main#storefront-view.view-container.active"
+      },
+      {
+        "sel": "span",
+        "text": "Savoir-Faire",
+        "ctx": "main#storefront-view.view-container.active"
+      },
+      {
+        "sel": "label",
+        "text": "Pilihan Pita Sutra:",
+        "ctx": "section#packaging-section.packaging-section"
+      }
+    ],
+    "ratio": 5.283275470216606
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      8,
+      16,
+      29
+    ],
+    "bg": [
+      184,
+      152,
+      88
+    ],
+    "large": false,
+    "unc": null,
+    "n": 9,
+    "ex": [
+      {
+        "sel": "span",
+        "text": "Studio Kriya & Savoir-Faire",
+        "ctx": "section.editorial-hero"
+      },
+      {
+        "sel": "button.btn-gold",
+        "text": "Studio Kriya & Savoir-Faire",
+        "ctx": "main#storefront-view.view-container.active"
+      }
+    ],
+    "ratio": 6.959171891756042
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      8,
+      16,
+      29
+    ],
+    "bg": [
+      248,
+      246,
+      241
+    ],
+    "large": false,
+    "unc": null,
+    "n": 18,
+    "ex": [
+      {
+        "sel": "span",
+        "text": "Rendez-vous privat",
+        "ctx": "section.editorial-hero"
+      },
+      {
+        "sel": "strong",
+        "text": "60+ Jam",
+        "ctx": "main#storefront-view.view-container.active"
+      },
+      {
+        "sel": "button.btn-outline",
+        "text": "Tambah",
+        "ctx": "main#storefront-view.view-container.active"
+      }
+    ],
+    "ratio": 17.641149866626815
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      186,
+      188,
+      192
+    ],
+    "bg": [
+      8,
+      16,
+      29
+    ],
+    "large": false,
+    "unc": null,
+    "n": 14,
+    "ex": [
+      {
+        "sel": "span",
+        "text": "Paris 48.85°N",
+        "ctx": "main#storefront-view.view-container.active"
+      },
+      {
+        "sel": "p",
+        "text": "Parisian in spirit. Italian by craft. In",
+        "ctx": "footer.sf-footer"
+      }
+    ],
+    "ratio": 10.018539583111078
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      184,
+      152,
+      88
+    ],
+    "bg": [
+      255,
+      255,
+      255
+    ],
+    "large": false,
+    "unc": "opacity<1 on span.sep",
+    "n": 8,
+    "ex": [
+      {
+        "sel": "span.sep",
+        "text": "/",
+        "ctx": "main#storefront-view.view-container.active"
+      }
+    ],
+    "ratio": 2.737840041747945
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      107,
+      102,
+      92
+    ],
+    "bg": [
+      255,
+      253,
+      250
+    ],
+    "large": false,
+    "unc": null,
+    "n": 24,
+    "ex": [
+      {
+        "sel": "button.cat-pill",
+        "text": "Warisan Nusantara",
+        "ctx": "main#storefront-view.view-container.active"
+      },
+      {
+        "sel": "p.product-desc-snippet",
+        "text": "Gaun sutra crepe de chine dengan drapery",
+        "ctx": "main#storefront-view.view-container.active"
+      }
+    ],
+    "ratio": 5.619873294003674
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      8,
+      16,
+      29
+    ],
+    "bg": [
+      255,
+      253,
+      250
+    ],
+    "large": false,
+    "unc": null,
+    "n": 14,
+    "ex": [
+      {
+        "sel": "span",
+        "text": "Tampilan Editorial",
+        "ctx": "main#storefront-view.view-container.active"
+      },
+      {
+        "sel": "span.product-price",
+        "text": "Rp 15.900.000",
+        "ctx": "main#storefront-view.view-container.active"
+      }
+    ],
+    "ratio": 18.76506867186085
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      107,
+      102,
+      92
+    ],
+    "bg": [
+      242,
+      238,
+      229
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "span",
+        "text": "Tampilan Galeri",
+        "ctx": "main#storefront-view.view-container.active"
+      }
+    ],
+    "ratio": 4.928114413818586
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      255,
+      255,
+      255
+    ],
+    "bg": [
+      41,
+      52,
+      71
+    ],
+    "large": false,
+    "unc": null,
+    "n": 16,
+    "ex": [
+      {
+        "sel": "span.diptych-caption-tag",
+        "text": "Warisan Nusantara · 60h Broderie",
+        "ctx": "main#storefront-view.view-container.active"
+      },
+      {
+        "sel": "span.badge-creations",
+        "text": "Kapsul Adibusana",
+        "ctx": "main#storefront-view.view-container.active"
+      }
+    ],
+    "ratio": 12.5263469322538
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      138,
+      120,
+      104
+    ],
+    "bg": [
+      248,
+      246,
+      241
+    ],
+    "large": false,
+    "unc": null,
+    "n": 4,
+    "ex": [
+      {
+        "sel": "span.diptych-origin",
+        "text": "Brokat: Calais, Prancis · Bordir Tangan:",
+        "ctx": "main#storefront-view.view-container.active"
+      }
+    ],
+    "ratio": 3.9144819850467343
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      255,
+      255,
+      255
+    ],
+    "bg": [
+      8,
+      16,
+      29
+    ],
+    "large": true,
+    "unc": null,
+    "n": 6,
+    "ex": [
+      {
+        "sel": "h2.sf-quote",
+        "text": "“Setiap jahitan adalah dialog abadi anta",
+        "ctx": "section.savoir-faire-banner"
+      },
+      {
+        "sel": "span",
+        "text": "ZAFIRA",
+        "ctx": "section#packaging-section.packaging-section"
+      },
+      {
+        "sel": "h3",
+        "text": "ZAFIRA",
+        "ctx": "footer.sf-footer"
+      }
+    ],
+    "ratio": 19.053099462656487
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      229,
+      211,
+      170
+    ],
+    "bg": [
+      8,
+      16,
+      29
+    ],
+    "large": true,
+    "unc": null,
+    "n": 6,
+    "ex": [
+      {
+        "sel": "span.sf-stat-value",
+        "text": "60+ Jam",
+        "ctx": "section.savoir-faire-banner"
+      }
+    ],
+    "ratio": 12.910529754833602
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      181,
+      183,
+      187
+    ],
+    "bg": [
+      8,
+      16,
+      29
+    ],
+    "large": false,
+    "unc": null,
+    "n": 6,
+    "ex": [
+      {
+        "sel": "span.sf-stat-label",
+        "text": "Bordir Tangan / Helai Adibusana",
+        "ctx": "section.savoir-faire-banner"
+      }
+    ],
+    "ratio": 9.486372341000793
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      138,
+      120,
+      104
+    ],
+    "bg": [
+      255,
+      253,
+      250
+    ],
+    "large": false,
+    "unc": null,
+    "n": 12,
+    "ex": [
+      {
+        "sel": "span.product-cat",
+        "text": "Busana Wanita",
+        "ctx": "main#storefront-view.view-container.active"
+      }
+    ],
+    "ratio": 4.163873886878874
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      24,
+      24,
+      22
+    ],
+    "bg": [
+      255,
+      253,
+      250
+    ],
+    "large": false,
+    "unc": null,
+    "n": 12,
+    "ex": [
+      {
+        "sel": "h4.product-title",
+        "text": "Robe Élan",
+        "ctx": "main#storefront-view.view-container.active"
+      }
+    ],
+    "ratio": 17.511589781166755
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      15,
+      28,
+      51
+    ],
+    "bg": [
+      184,
+      152,
+      88
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "button.proto-btn",
+        "text": "Pita Emas (Ori)",
+        "ctx": "section#packaging-section.packaging-section"
+      }
+    ],
+    "ratio": 6.214696085210627
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      255,
+      255,
+      255
+    ],
+    "bg": [
+      15,
+      28,
+      51
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "button.proto-btn",
+        "text": "Pita Safir (Saphir)",
+        "ctx": "section#packaging-section.packaging-section"
+      }
+    ],
+    "ratio": 17.014843789383853
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      254,
+      242,
+      242
+    ],
+    "bg": [
+      136,
+      19,
+      55
+    ],
+    "large": true,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "div#interactive-wax-seal.wax-seal-badge",
+        "text": "Z",
+        "ctx": "section#packaging-section.packaging-section"
+      }
+    ],
+    "ratio": 8.745213796755323
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      24,
+      24,
+      22
+    ],
+    "bg": [
+      248,
+      246,
+      241
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "div",
+        "text": "“Pour Madame Aurelia, dengan segala peng",
+        "ctx": "section#packaging-section.packaging-section"
+      }
+    ],
+    "ratio": 16.46274709325744
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      218,
+      219,
+      221
+    ],
+    "bg": [
+      8,
+      16,
+      29
+    ],
+    "large": false,
+    "unc": null,
+    "n": 16,
+    "ex": [
+      {
+        "sel": "a",
+        "text": "Rendez-vous privat",
+        "ctx": "footer.sf-footer"
+      },
+      {
+        "sel": "span",
+        "text": "Bordir Tangan Kebayoran",
+        "ctx": "footer.sf-footer"
+      }
+    ],
+    "ratio": 13.752512681153398
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      119,
+      124,
+      131
+    ],
+    "bg": [
+      8,
+      16,
+      29
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "div",
+        "text": "© 2026 ZAFIRA MAISON. SELURUH HAK DILIND",
+        "ctx": "footer.sf-footer"
+      }
+    ],
+    "ratio": 4.532085511471109
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      117,
+      117,
+      117
+    ],
+    "bg": [
+      28,
+      35,
+      47
+    ],
+    "large": false,
+    "unc": null,
+    "n": 2,
+    "ex": [
+      {
+        "sel": "input[type=email]::placeholder",
+        "text": "nama @ contoh.id…",
+        "ctx": "input"
+      }
+    ],
+    "ratio": 3.4247429143187325
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      229,
+      211,
+      170
+    ],
+    "bg": [
+      25,
+      33,
+      45
+    ],
+    "large": false,
+    "unc": null,
+    "n": 1,
+    "ex": [
+      {
+        "sel": "button.lang-opt.active",
+        "text": "ID",
+        "ctx": "body"
+      }
+    ],
+    "ratio": 10.97324119952296
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      83,
+      88,
+      97
+    ],
+    "bg": [
+      25,
+      33,
+      45
+    ],
+    "large": false,
+    "unc": null,
+    "n": 3,
+    "ex": [
+      {
+        "sel": "span.lang-divider",
+        "text": "·",
+        "ctx": "body"
+      }
+    ],
+    "ratio": 2.264321298769789
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      175,
+      177,
+      181
+    ],
+    "bg": [
+      25,
+      33,
+      45
+    ],
+    "large": false,
+    "unc": null,
+    "n": 3,
+    "ex": [
+      {
+        "sel": "button.lang-opt",
+        "text": "EN",
+        "ctx": "body"
+      }
+    ],
+    "ratio": 7.540960179669466
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      229,
+      211,
+      170
+    ],
+    "bg": [
+      47,
+      46,
+      42
+    ],
+    "large": false,
+    "unc": null,
+    "n": 1,
+    "ex": [
+      {
+        "sel": "span.curr-opt.active",
+        "text": "IDR",
+        "ctx": "body"
+      }
+    ],
+    "ratio": 9.20961356233926
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      255,
+      255,
+      255
+    ],
+    "bg": [
+      52,
+      59,
+      70
+    ],
+    "large": false,
+    "unc": null,
+    "n": 1,
+    "ex": [
+      {
+        "sel": "kbd",
+        "text": "?",
+        "ctx": "body"
+      }
+    ],
+    "ratio": 11.290091805385698
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      24,
+      24,
+      22
+    ],
+    "bg": [
+      254,
+      252,
+      249
+    ],
+    "large": false,
+    "unc": null,
+    "n": 8,
+    "ex": [
+      {
+        "sel": "a",
+        "text": "Koleksi",
+        "ctx": "nav.sf-nav"
+      },
+      {
+        "sel": "span",
+        "text": "Rendez-vous privat",
+        "ctx": "header.sf-header"
+      },
+      {
+        "sel": "span.profile-label",
+        "text": "Profil",
+        "ctx": "header.sf-header"
+      }
+    ],
+    "ratio": 17.36231992687602
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      8,
+      16,
+      29
+    ],
+    "bg": [
+      254,
+      252,
+      249
+    ],
+    "large": true,
+    "unc": null,
+    "n": 1,
+    "ex": [
+      {
+        "sel": "span.sf-brand-title",
+        "text": "ZAFIRA",
+        "ctx": "header.sf-header"
+      }
+    ],
+    "ratio": 18.605114087416617
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      255,
+      255,
+      255
+    ],
+    "bg": [
+      22,
+      30,
+      42
+    ],
+    "large": false,
+    "unc": null,
+    "n": 1,
+    "ex": [
+      {
+        "sel": "span.dock-brand",
+        "text": "ZAFIRA",
+        "ctx": "nav.floating-luxury-dock"
+      }
+    ],
+    "ratio": 16.756334708169017
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      229,
+      211,
+      170
+    ],
+    "bg": [
+      51,
+      52,
+      50
+    ],
+    "large": false,
+    "unc": null,
+    "n": 1,
+    "ex": [
+      {
+        "sel": "span.dock-ver",
+        "text": "v4.1 · Multi-Lang",
+        "ctx": "nav.floating-luxury-dock"
+      }
+    ],
+    "ratio": 8.480113053542857
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      148,
+      163,
+      184
+    ],
+    "bg": [
+      22,
+      30,
+      42
+    ],
+    "large": false,
+    "unc": null,
+    "n": 3,
+    "ex": [
+      {
+        "sel": "span",
+        "text": "Studio PDP",
+        "ctx": "nav.floating-luxury-dock"
+      }
+    ],
+    "ratio": 6.535126449314559
+  },
+  {
+    "s": "prototype",
+    "fg": [
+      117,
+      117,
+      117
+    ],
+    "bg": [
+      255,
+      253,
+      250
+    ],
+    "large": false,
+    "unc": null,
+    "n": 1,
+    "ex": [
+      {
+        "sel": "input#sf-search-input.search-input[type=search]::placeholder",
+        "text": "Cari sutra, tenun, kriya…",
+        "ctx": "input"
+      }
+    ],
+    "ratio": 4.5378650127487505
+  }
+]

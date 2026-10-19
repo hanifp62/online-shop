@@ -1,0 +1,5 @@
+1|cancelled|125000
+2|pending|125000
+manual-synthetic-out|0
+manual-synthetic-retired|5
+manual-synthetic-sapphire|19

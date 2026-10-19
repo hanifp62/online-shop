@@ -1,0 +1,794 @@
+[
+  {
+    "route": "/prototype/",
+    "lang": "en",
+    "width": 1440,
+    "result": {
+      "lang": "en",
+      "els": {
+        "header": [
+          {
+            "text": "COLLECTIONS\nHERITAGE\nNEW ARRIVALS\nL'ART D'OFFRIR\nSERVICES\nZAFIRA\nLA MAISON DE LUMIÈRE\nPrivate Rendez",
+            "rect": [
+              0,
+              47,
+              1440,
+              83.109375
+            ],
+            "position": "sticky",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        ],
+        ".site-header": [],
+        ".floating-dock": [],
+        ".dock": [],
+        ".hero": [],
+        "h1": [
+          {
+            "text": "Born of Light,\nShaped by Elegance",
+            "rect": [
+              813.796875,
+              311.859375,
+              562.1875,
+              109.4375
+            ],
+            "position": "static",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 562,
+            "clientWidth": 562
+          },
+          {
+            "text": "Welcome, Madame Aurelia Tan",
+            "rect": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "position": "static",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 0,
+            "clientWidth": 0
+          }
+        ],
+        ".announcement-bar": [],
+        ".announcement": [
+          {
+            "text": "ID\n·\nEN\n·\nFR\n·\nIT\nIDR\nCOMPLIMENTARY SIGNATURE GIFT WRAPPING & WHITE-GLOVE INSURED DELIVERY ACROSS TH",
+            "rect": [
+              0,
+              0,
+              1440,
+              47
+            ],
+            "position": "static",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        ]
+      },
+      "texts": []
+    }
+  },
+  {
+    "route": "/prototype/",
+    "lang": "en",
+    "width": 1650,
+    "result": {
+      "lang": "en",
+      "els": {
+        "header": [
+          {
+            "text": "COLLECTIONS\nHERITAGE\nNEW ARRIVALS\nL'ART D'OFFRIR\nSERVICES\nZAFIRA\nLA MAISON DE LUMIÈRE\nPrivate Rendez",
+            "rect": [
+              0,
+              47,
+              1650,
+              83.109375
+            ],
+            "position": "sticky",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1650,
+            "clientWidth": 1650
+          }
+        ],
+        ".site-header": [],
+        ".floating-dock": [],
+        ".dock": [],
+        ".hero": [],
+        "h1": [
+          {
+            "text": "Born of Light,\nShaped by Elegance",
+            "rect": [
+              923,
+              311.859375,
+              663,
+              109.4375
+            ],
+            "position": "static",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 663,
+            "clientWidth": 663
+          },
+          {
+            "text": "Welcome, Madame Aurelia Tan",
+            "rect": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "position": "static",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 0,
+            "clientWidth": 0
+          }
+        ],
+        ".announcement-bar": [],
+        ".announcement": [
+          {
+            "text": "ID\n·\nEN\n·\nFR\n·\nIT\nIDR\nCOMPLIMENTARY SIGNATURE GIFT WRAPPING & WHITE-GLOVE INSURED DELIVERY ACROSS TH",
+            "rect": [
+              0,
+              0,
+              1650,
+              47
+            ],
+            "position": "static",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1650,
+            "clientWidth": 1650
+          }
+        ]
+      },
+      "texts": []
+    }
+  },
+  {
+    "route": "/prototype/",
+    "lang": "en",
+    "width": 1024,
+    "result": {
+      "lang": "en",
+      "els": {
+        "header": [
+          {
+            "text": "COLLECTIONS\nHERITAGE\nNEW ARRIVALS\nL'ART D'OFFRIR\nSERVICES\nZAFIRA\nLA MAISON DE LUMIÈRE\nPrivate Rendez",
+            "rect": [
+              0,
+              47,
+              1024,
+              82.125
+            ],
+            "position": "sticky",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1024,
+            "clientWidth": 1024
+          }
+        ],
+        ".site-header": [],
+        ".floating-dock": [],
+        ".dock": [],
+        ".hero": [],
+        "h1": [
+          {
+            "text": "Born of Light,\nShaped by Elegance",
+            "rect": [
+              25,
+              581.265625,
+              975,
+              77.5
+            ],
+            "position": "static",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 975,
+            "clientWidth": 975
+          },
+          {
+            "text": "Welcome, Madame Aurelia Tan",
+            "rect": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "position": "static",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 0,
+            "clientWidth": 0
+          }
+        ],
+        ".announcement-bar": [],
+        ".announcement": [
+          {
+            "text": "ID\n·\nEN\n·\nFR\n·\nIT\nIDR\nCOMPLIMENTARY SIGNATURE GIFT WRAPPING & WHITE-GLOVE INSURED DELIVERY ACROSS TH",
+            "rect": [
+              0,
+              0,
+              1024,
+              47
+            ],
+            "position": "static",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1024,
+            "clientWidth": 1024
+          }
+        ]
+      },
+      "texts": []
+    }
+  },
+  {
+    "route": "/prototype/",
+    "lang": "en",
+    "width": 1366,
+    "result": {
+      "lang": "en",
+      "els": {
+        "header": [
+          {
+            "text": "COLLECTIONS\nHERITAGE\nNEW ARRIVALS\nL'ART D'OFFRIR\nSERVICES\nZAFIRA\nLA MAISON DE LUMIÈRE\nPrivate Rendez",
+            "rect": [
+              0,
+              47,
+              1366,
+              69
+            ],
+            "position": "sticky",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1366,
+            "clientWidth": 1366
+          }
+        ],
+        ".site-header": [],
+        ".floating-dock": [],
+        ".dock": [],
+        ".hero": [],
+        "h1": [
+          {
+            "text": "Born of Light,\nShaped by Elegance",
+            "rect": [
+              775.3125,
+              270.75,
+              526.671875,
+              109.4375
+            ],
+            "position": "static",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 527,
+            "clientWidth": 527
+          },
+          {
+            "text": "Welcome, Madame Aurelia Tan",
+            "rect": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "position": "static",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 0,
+            "clientWidth": 0
+          }
+        ],
+        ".announcement-bar": [],
+        ".announcement": [
+          {
+            "text": "ID\n·\nEN\n·\nFR\n·\nIT\nIDR\nCOMPLIMENTARY SIGNATURE GIFT WRAPPING & WHITE-GLOVE INSURED DELIVERY ACROSS TH",
+            "rect": [
+              0,
+              0,
+              1366,
+              47
+            ],
+            "position": "static",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1366,
+            "clientWidth": 1366
+          }
+        ]
+      },
+      "texts": []
+    }
+  },
+  {
+    "route": "/",
+    "lang": "id",
+    "width": 1440,
+    "result": {
+      "lang": "id",
+      "els": {
+        "header": [
+          {
+            "text": "KOLEKSI\nTERBARU\nWARISAN\nATELIER Z\nL'ART D'OFFRIR\nLAYANAN\nZAFIRA\nMAISON DE LUMIÈRE",
+            "rect": [
+              0,
+              32,
+              1440,
+              92
+            ],
+            "position": "absolute",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        ],
+        ".site-header": [
+          {
+            "text": "KOLEKSI\nTERBARU\nWARISAN\nATELIER Z\nL'ART D'OFFRIR\nLAYANAN\nZAFIRA\nMAISON DE LUMIÈRE",
+            "rect": [
+              0,
+              32,
+              1440,
+              92
+            ],
+            "position": "absolute",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        ],
+        ".floating-dock": [],
+        ".dock": [],
+        ".hero": [
+          {
+            "text": "ÉDITION NO. 01\nJAKARTA · PARIS · FIRENZE\nLA COLLECTION PREMIÈRE · 2026\nLahir dari Cahaya,\nDibentuk o",
+            "rect": [
+              0,
+              32,
+              1440,
+              900
+            ],
+            "position": "relative",
+            "overflow": "hidden",
+            "textOverflow": "clip",
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        ],
+        "h1": [
+          {
+            "text": "Lahir dari Cahaya,\nDibentuk oleh Keanggunan",
+            "rect": [
+              340,
+              328.296875,
+              760,
+              224.390625
+            ],
+            "position": "static",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 760,
+            "clientWidth": 760
+          }
+        ],
+        ".announcement-bar": [
+          {
+            "text": "COMPLIMENTARY SIGNATURE GIFT WRAPPING & PENGIRIMAN BERPENDINGIN KE SELURUH NUSANTARA\n\nID\n/\nEN\n/\nFR\n/",
+            "rect": [
+              0,
+              0,
+              1440,
+              32
+            ],
+            "position": "relative",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        ],
+        ".announcement": []
+      },
+      "texts": [
+        {
+          "key": "heritage_3_desc",
+          "text": "Batik tulis Solo, songket Palembang, tenun Flores, bordir Kebayoran — warisan hidup, bukan ornamen."
+        },
+        {
+          "key": "editorial_title",
+          "text": "Songket & Sutra,\nDeux Rives."
+        },
+        {
+          "key": "service_1_title",
+          "text": "Private Styling"
+        },
+        {
+          "key": "service_3_title",
+          "text": "Care for Life"
+        }
+      ]
+    }
+  },
+  {
+    "route": "/",
+    "lang": "it",
+    "width": 1024,
+    "result": {
+      "lang": "it",
+      "els": {
+        "header": [
+          {
+            "text": "COLLEZIONI\nNOVITÀ\nEREDITÀ\nATELIER Z\nL'ART D'OFFRIR\nSERVIZI\nZAFIRA\nMAISON DE LUMIÈRE",
+            "rect": [
+              0,
+              32,
+              1024,
+              92
+            ],
+            "position": "absolute",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1024,
+            "clientWidth": 1024
+          }
+        ],
+        ".site-header": [
+          {
+            "text": "COLLEZIONI\nNOVITÀ\nEREDITÀ\nATELIER Z\nL'ART D'OFFRIR\nSERVIZI\nZAFIRA\nMAISON DE LUMIÈRE",
+            "rect": [
+              0,
+              32,
+              1024,
+              92
+            ],
+            "position": "absolute",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1024,
+            "clientWidth": 1024
+          }
+        ],
+        ".floating-dock": [],
+        ".dock": [],
+        ".hero": [
+          {
+            "text": "ÉDITION NO. 01\nJAKARTA · PARIS · FIRENZE\nLA COLLECTION PREMIÈRE · 2026\nNata dalla Luce,\nPlasmata dal",
+            "rect": [
+              0,
+              32,
+              1024,
+              768
+            ],
+            "position": "relative",
+            "overflow": "hidden",
+            "textOverflow": "clip",
+            "scrollWidth": 1024,
+            "clientWidth": 1024
+          }
+        ],
+        "h1": [
+          {
+            "text": "Nata dalla Luce,\nPlasmata dall'Eleganza",
+            "rect": [
+              209.265625,
+              306.921875,
+              605.46875,
+              135.15625
+            ],
+            "position": "static",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 605,
+            "clientWidth": 605
+          }
+        ],
+        ".announcement-bar": [
+          {
+            "text": "CONFEZIONE REGALO D'AUTORE IN OMAGGIO & SPEDIZIONE PROTETTA IN TUTTO L'ARCIPELAGO E NEL MONDO\n\nID\n/\n",
+            "rect": [
+              0,
+              0,
+              1024,
+              32
+            ],
+            "position": "relative",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1024,
+            "clientWidth": 1024
+          }
+        ],
+        ".announcement": []
+      },
+      "texts": [
+        {
+          "key": "maison_title",
+          "text": "Come lo zaffiro,\nla vera bellezza\nnasce nella maestria."
+        },
+        {
+          "key": "heritage_3_desc",
+          "text": "Batik a cera di Solo, songket d'oro di Palembang, ikat di Flores — cultura viva e patrimonio tangibile."
+        },
+        {
+          "key": "atelier_step_2",
+          "text": "SELEZIONATE LA DORATURA A CALDO ORO, ARGENTO O ZAFFIRO"
+        },
+        {
+          "key": "packaging_desc",
+          "text": "Ogni creazione è adagiata in una scatola rigida blu zaffiro realizzata a mano, cinta da nastro di seta di Lione e sigillata con ceralacca cremisi e oro Maison ZAFIRA."
+        },
+        {
+          "key": "packaging_ribbon_sapphire",
+          "text": "NASTRO ZAFFIRO (SAPHIR)"
+        },
+        {
+          "key": "editorial_title",
+          "text": "Songket & Seta,\nDue Rive."
+        },
+        {
+          "key": "service_1_title",
+          "text": "Styling Privato"
+        },
+        {
+          "key": "service_4_title",
+          "text": "Scheda artigianale"
+        }
+      ]
+    }
+  },
+  {
+    "route": "/",
+    "lang": "it",
+    "width": 1366,
+    "result": {
+      "lang": "it",
+      "els": {
+        "header": [
+          {
+            "text": "COLLEZIONI\nNOVITÀ\nEREDITÀ\nATELIER Z\nL'ART D'OFFRIR\nSERVIZI\nZAFIRA\nMAISON DE LUMIÈRE",
+            "rect": [
+              0,
+              32,
+              1366,
+              92
+            ],
+            "position": "absolute",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1366,
+            "clientWidth": 1366
+          }
+        ],
+        ".site-header": [
+          {
+            "text": "COLLEZIONI\nNOVITÀ\nEREDITÀ\nATELIER Z\nL'ART D'OFFRIR\nSERVIZI\nZAFIRA\nMAISON DE LUMIÈRE",
+            "rect": [
+              0,
+              32,
+              1366,
+              92
+            ],
+            "position": "absolute",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1366,
+            "clientWidth": 1366
+          }
+        ],
+        ".floating-dock": [],
+        ".dock": [],
+        ".hero": [
+          {
+            "text": "ÉDITION NO. 01\nJAKARTA · PARIS · FIRENZE\nLA COLLECTION PREMIÈRE · 2026\nNata dalla Luce,\nPlasmata dal",
+            "rect": [
+              0,
+              32,
+              1366,
+              768
+            ],
+            "position": "relative",
+            "overflow": "hidden",
+            "textOverflow": "clip",
+            "scrollWidth": 1366,
+            "clientWidth": 1366
+          }
+        ],
+        "h1": [
+          {
+            "text": "Nata dalla Luce,\nPlasmata dall'Eleganza",
+            "rect": [
+              347.9375,
+              299.703125,
+              670.109375,
+              149.59375
+            ],
+            "position": "static",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 670,
+            "clientWidth": 670
+          }
+        ],
+        ".announcement-bar": [
+          {
+            "text": "CONFEZIONE REGALO D'AUTORE IN OMAGGIO & SPEDIZIONE PROTETTA IN TUTTO L'ARCIPELAGO E NEL MONDO\n\nID\n/\n",
+            "rect": [
+              0,
+              0,
+              1366,
+              32
+            ],
+            "position": "relative",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1366,
+            "clientWidth": 1366
+          }
+        ],
+        ".announcement": []
+      },
+      "texts": [
+        {
+          "key": "maison_title",
+          "text": "Come lo zaffiro,\nla vera bellezza\nnasce nella maestria."
+        },
+        {
+          "key": "heritage_3_desc",
+          "text": "Batik a cera di Solo, songket d'oro di Palembang, ikat di Flores — cultura viva e patrimonio tangibile."
+        },
+        {
+          "key": "atelier_step_2",
+          "text": "SELEZIONATE LA DORATURA A CALDO ORO, ARGENTO O ZAFFIRO"
+        },
+        {
+          "key": "packaging_desc",
+          "text": "Ogni creazione è adagiata in una scatola rigida blu zaffiro realizzata a mano, cinta da nastro di seta di Lione e sigillata con ceralacca cremisi e oro Maison ZAFIRA."
+        },
+        {
+          "key": "packaging_ribbon_sapphire",
+          "text": "NASTRO ZAFFIRO (SAPHIR)"
+        },
+        {
+          "key": "editorial_title",
+          "text": "Songket & Seta,\nDue Rive."
+        },
+        {
+          "key": "service_1_title",
+          "text": "Styling Privato"
+        },
+        {
+          "key": "service_4_title",
+          "text": "Scheda artigianale"
+        }
+      ]
+    }
+  },
+  {
+    "route": "/",
+    "lang": "en",
+    "width": 1366,
+    "result": {
+      "lang": "en",
+      "els": {
+        "header": [
+          {
+            "text": "COLLECTIONS\nNEW ARRIVALS\nHERITAGE\nATELIER Z\nL'ART D'OFFRIR\nSERVICES\nZAFIRA\nMAISON DE LUMIÈRE",
+            "rect": [
+              0,
+              32,
+              1366,
+              92
+            ],
+            "position": "absolute",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1366,
+            "clientWidth": 1366
+          }
+        ],
+        ".site-header": [
+          {
+            "text": "COLLECTIONS\nNEW ARRIVALS\nHERITAGE\nATELIER Z\nL'ART D'OFFRIR\nSERVICES\nZAFIRA\nMAISON DE LUMIÈRE",
+            "rect": [
+              0,
+              32,
+              1366,
+              92
+            ],
+            "position": "absolute",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1366,
+            "clientWidth": 1366
+          }
+        ],
+        ".floating-dock": [],
+        ".dock": [],
+        ".hero": [
+          {
+            "text": "ÉDITION NO. 01\nJAKARTA · PARIS · FIRENZE\nLA COLLECTION PREMIÈRE · 2026\nBorn of Light,\nShaped by Eleg",
+            "rect": [
+              0,
+              32,
+              1366,
+              768
+            ],
+            "position": "relative",
+            "overflow": "hidden",
+            "textOverflow": "clip",
+            "scrollWidth": 1366,
+            "clientWidth": 1366
+          }
+        ],
+        "h1": [
+          {
+            "text": "Born of Light,\nShaped by Elegance",
+            "rect": [
+              388.0625,
+              299.703125,
+              589.875,
+              149.59375
+            ],
+            "position": "static",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 590,
+            "clientWidth": 590
+          }
+        ],
+        ".announcement-bar": [
+          {
+            "text": "COMPLIMENTARY SIGNATURE GIFT WRAPPING & WHITE-GLOVE INSURED DELIVERY ACROSS THE ARCHIPELAGO & WORLDW",
+            "rect": [
+              0,
+              0,
+              1366,
+              32
+            ],
+            "position": "relative",
+            "overflow": "visible",
+            "textOverflow": "clip",
+            "scrollWidth": 1366,
+            "clientWidth": 1366
+          }
+        ],
+        ".announcement": []
+      },
+      "texts": [
+        {
+          "key": "heritage_3_desc",
+          "text": "Solo hand-drawn batik, Palembang songket, Flores ikat, Kebayoran embroidery — living culture."
+        },
+        {
+          "key": "editorial_title",
+          "text": "Songket & Silk,\nTwo Shores."
+        },
+        {
+          "key": "service_1_title",
+          "text": "Private Styling"
+        },
+        {
+          "key": "service_3_title",
+          "text": "Care for Life"
+        },
+        {
+          "key": "service_3_desc",
+          "text": "Artisanal care to preserve shape, texture, and heritage of your ZAFIRA creations for generations."
+        }
+      ]
+    }
+  }
+]

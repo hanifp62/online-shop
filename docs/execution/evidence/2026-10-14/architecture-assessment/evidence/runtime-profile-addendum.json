@@ -1,0 +1,82 @@
+{
+  "observed_at": "2026-10-14T08:56:09.710567+07:00",
+  "method": "allowlist-only direct read of env files; never printed secret values; lsof/ps inspection; sqlite URI mode=ro + query_only",
+  "default_env": {
+    "exists": true,
+    "mode_octal": "0o666",
+    "db_driver_class": "mysql",
+    "db_target": "REDACTED/NOT CONNECTED",
+    "keys_present": {
+      "APP_ENV": true,
+      "APP_DEBUG": true,
+      "DB_CONNECTION": true,
+      "DB_DATABASE": true,
+      "DB_URL": false,
+      "SESSION_DRIVER": true,
+      "CACHE_STORE": true,
+      "QUEUE_CONNECTION": true,
+      "MAIL_MAILER": true,
+      "LARAVEL_STORAGE_PATH": false,
+      "VIEW_COMPILED_PATH": false
+    },
+    "sink_drivers": {
+      "SESSION_DRIVER": "database",
+      "CACHE_STORE": "database",
+      "QUEUE_CONNECTION": "database",
+      "MAIL_MAILER": "log"
+    },
+    "debug_enabled": true
+  },
+  "manual_env": {
+    "exists": true,
+    "mode_octal": "0o600",
+    "db_driver_class": "sqlite",
+    "db_target": "REDACTED/NOT CONNECTED",
+    "keys_present": {
+      "APP_ENV": true,
+      "APP_DEBUG": true,
+      "DB_CONNECTION": true,
+      "DB_DATABASE": true,
+      "DB_URL": true,
+      "SESSION_DRIVER": true,
+      "CACHE_STORE": true,
+      "QUEUE_CONNECTION": true,
+      "MAIL_MAILER": true,
+      "LARAVEL_STORAGE_PATH": false,
+      "VIEW_COMPILED_PATH": false
+    },
+    "sink_drivers": {
+      "SESSION_DRIVER": "database",
+      "CACHE_STORE": "database",
+      "QUEUE_CONNECTION": "database",
+      "MAIL_MAILER": "log"
+    },
+    "debug_enabled": true
+  },
+  "cached_config_present": false,
+  "operational_target": "UNKNOWN: DB connection not opened and runtime configuration not bootstrapped",
+  "listeners": [
+    {
+      "port": "127.0.0.1:8016",
+      "pid": 69317,
+      "process_summary": "69317 69286 Wed Oct 14 01:11:51 2026     /opt/homebrew/Cellar/php/8.5.11/bin/php"
+    },
+    {
+      "port": "127.0.0.1:8015",
+      "pid": 76656,
+      "process_summary": "76656     1 Sun Oct 11 20:07:05 2026     /opt/homebrew/bin/php"
+    }
+  ],
+  "manual_db_readonly": {
+    "mtime": "2026-10-14T08:49:42.242940+07:00",
+    "counts": {
+      "products": 0,
+      "categories": 0,
+      "orders": 0,
+      "users": 0,
+      "sessions": 6,
+      "migrations": 24
+    }
+  },
+  "incident": "Coordinator reports two GET requests to existing 8016 server before full sink isolation: /koleksi and / both HTTP 200 near 08:48 WIB. This audit cannot independently verify exact request times or attribute individual session rows. No further application HTTP authorized. Database changed from earlier 2 sessions to 3 in coordinator report; later read has more sessions: do not attribute entire delta to the two requests."
+}

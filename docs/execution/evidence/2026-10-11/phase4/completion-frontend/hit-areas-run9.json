@@ -1,0 +1,756 @@
+{
+  "rows": [
+    {
+      "surface": "/",
+      "width": 390,
+      "selector": ".icon-button",
+      "text": "Buka menu",
+      "box": [
+        37,
+        37
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 390,
+      "selector": ".wishlist-button",
+      "text": "Tambahkan Sac Séraphine ",
+      "box": [
+        32,
+        32
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 390,
+      "selector": ".product-add",
+      "text": "Tambah",
+      "box": [
+        36,
+        36
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 390,
+      "selector": ".filter-pill",
+      "text": "SEMUA",
+      "box": [
+        70.5,
+        34.4
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 390,
+      "selector": ".foil",
+      "text": "Emas",
+      "box": [
+        20,
+        20
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 390,
+      "selector": ".footer-links a",
+      "text": "Wanita",
+      "box": [
+        49.3,
+        24
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 390,
+      "selector": ".footer-links button",
+      "text": "Rendez-vous",
+      "box": [
+        88.6,
+        24
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 390,
+      "selector": ".footer-bottom a",
+      "text": "KETENTUAN",
+      "box": [
+        54.2,
+        12.8
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 390,
+      "selector": "#btn-ribbon-gold",
+      "text": "PITA EMAS (ORI)",
+      "box": [
+        141.1,
+        36
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 390,
+      "selector": "#btn-ribbon-sapphire",
+      "text": "PITA SAFIR (SAPHIR)",
+      "box": [
+        168.2,
+        36
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 1366,
+      "selector": ".icon-button",
+      "text": "Cari",
+      "box": [
+        37,
+        37
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 1366,
+      "selector": ".wishlist-button",
+      "text": "Tambahkan Sac Séraphine ",
+      "box": [
+        37,
+        37
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 1366,
+      "selector": ".product-add",
+      "text": "Tambah",
+      "box": [
+        40,
+        40
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 1366,
+      "selector": ".filter-pill",
+      "text": "SEMUA",
+      "box": [
+        70.5,
+        34.4
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 1366,
+      "selector": ".foil",
+      "text": "Emas",
+      "box": [
+        20,
+        20
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 1366,
+      "selector": ".footer-links a",
+      "text": "Wanita",
+      "box": [
+        49.3,
+        24
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 1366,
+      "selector": ".footer-links button",
+      "text": "Rendez-vous",
+      "box": [
+        88.6,
+        24
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 1366,
+      "selector": ".footer-bottom a",
+      "text": "KETENTUAN",
+      "box": [
+        54.2,
+        12.8
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 1366,
+      "selector": "#btn-ribbon-gold",
+      "text": "PITA EMAS (ORI)",
+      "box": [
+        141.1,
+        36
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/",
+      "width": 1366,
+      "selector": "#btn-ribbon-sapphire",
+      "text": "PITA SAFIR (SAPHIR)",
+      "box": [
+        168.2,
+        36
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 390,
+      "selector": ".btn-gold",
+      "text": "STUDIO KRIYA & SAVOIR-FA",
+      "box": [
+        300.4,
+        42
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 390,
+      "selector": ".btn-outline",
+      "text": "RENDEZ-VOUS PRIVAT",
+      "box": [
+        211.5,
+        40
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 390,
+      "selector": ".view-mode-btn",
+      "text": "TAMPILAN EDITORIAL",
+      "box": [
+        180,
+        24
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 390,
+      "selector": ".proto-btn",
+      "text": "Pita Emas (Ori)",
+      "box": [
+        79.5,
+        34
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 390,
+      "selector": ".btn-quick",
+      "text": "STUDIO Z",
+      "box": [
+        160,
+        34
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 390,
+      "selector": ".cat-pill",
+      "text": "SEMUA",
+      "box": [
+        84.3,
+        44
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 390,
+      "selector": ".sf-footer-grid li a",
+      "text": "Rendez-vous privat",
+      "box": [
+        113.1,
+        15
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 1366,
+      "selector": ".sf-nav a",
+      "text": "KOLEKSI",
+      "box": [
+        58.1,
+        22.1
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 1366,
+      "selector": ".btn-gold",
+      "text": "STUDIO KRIYA & SAVOIR-FA",
+      "box": [
+        300.4,
+        42
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 1366,
+      "selector": ".btn-outline",
+      "text": "RENDEZ-VOUS PRIVAT",
+      "box": [
+        211.5,
+        40
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 1366,
+      "selector": ".view-mode-btn",
+      "text": "TAMPILAN EDITORIAL",
+      "box": [
+        180,
+        24
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 1366,
+      "selector": ".proto-btn",
+      "text": "Pita Emas (Ori)",
+      "box": [
+        99.6,
+        19
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 1366,
+      "selector": ".sound-toggle-btn",
+      "text": "ACOUSTICS: ON",
+      "box": [
+        100.7,
+        30
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 1366,
+      "selector": ".dock-btn",
+      "text": "Boutique",
+      "box": [
+        96.8,
+        27
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 1366,
+      "selector": ".btn-quick",
+      "text": "STUDIO Z",
+      "box": [
+        180.7,
+        34
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 1366,
+      "selector": ".cat-pill",
+      "text": "SEMUA",
+      "box": [
+        84.3,
+        44
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 1366,
+      "selector": ".sf-footer-grid li a",
+      "text": "Rendez-vous privat",
+      "box": [
+        113.1,
+        15
+      ],
+      "floor": 44,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": false
+    },
+    {
+      "surface": "/prototype/",
+      "width": 1366,
+      "selector": ".announcement .lang-opt",
+      "text": "ID",
+      "box": [
+        24,
+        24
+      ],
+      "floor": 24,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": true
+    },
+    {
+      "surface": "/prototype/",
+      "width": 1366,
+      "selector": ".announcement .theme-opt",
+      "text": "Mode Terang",
+      "box": [
+        24,
+        24
+      ],
+      "floor": 24,
+      "cornersHit": 4,
+      "pass": true,
+      "exception": true
+    }
+  ],
+  "clicks": [
+    {
+      "surface": "/",
+      "width": 390,
+      "label": "link",
+      "selector": ".desktop-nav a, .footer-links a",
+      "skipped": "hidden",
+      "pass": true
+    },
+    {
+      "surface": "/",
+      "width": 390,
+      "label": "filter pill",
+      "selector": ".filter-pill",
+      "activated": true,
+      "hit": "BUTTON.filter-pill active",
+      "rect": [
+        18,
+        404,
+        71,
+        34
+      ],
+      "pass": true
+    },
+    {
+      "surface": "/",
+      "width": 390,
+      "label": "product add",
+      "selector": ".product-add",
+      "activated": true,
+      "hit": "BUTTON.product-add",
+      "rect": [
+        151,
+        404,
+        36,
+        36
+      ],
+      "pass": true
+    },
+    {
+      "surface": "/",
+      "width": 390,
+      "label": "cart icon",
+      "selector": "[data-open-cart]",
+      "activated": true,
+      "hit": "BUTTON.icon-button",
+      "rect": [
+        337,
+        46,
+        37,
+        37
+      ],
+      "pass": true
+    },
+    {
+      "surface": "/",
+      "width": 390,
+      "label": "search icon",
+      "selector": "[data-open-search]",
+      "activated": true,
+      "hit": "BUTTON.icon-button",
+      "rect": [
+        247,
+        46,
+        37,
+        37
+      ],
+      "pass": true
+    },
+    {
+      "surface": "/",
+      "width": 1366,
+      "label": "link",
+      "selector": ".desktop-nav a, .footer-links a",
+      "activated": true,
+      "hit": "A.",
+      "rect": [
+        48,
+        71,
+        51,
+        14
+      ],
+      "pass": true
+    },
+    {
+      "surface": "/",
+      "width": 1366,
+      "label": "filter pill",
+      "selector": ".filter-pill",
+      "activated": true,
+      "hit": "BUTTON.filter-pill active",
+      "rect": [
+        82,
+        367,
+        71,
+        34
+      ],
+      "pass": true
+    },
+    {
+      "surface": "/",
+      "width": 1366,
+      "label": "product add",
+      "selector": ".product-add",
+      "activated": true,
+      "hit": "BUTTON.product-add",
+      "rect": [
+        326,
+        364,
+        40,
+        40
+      ],
+      "pass": true
+    },
+    {
+      "surface": "/",
+      "width": 1366,
+      "label": "cart icon",
+      "selector": "[data-open-cart]",
+      "activated": true,
+      "hit": "BUTTON.icon-button",
+      "rect": [
+        1281,
+        59,
+        37,
+        37
+      ],
+      "pass": true
+    },
+    {
+      "surface": "/",
+      "width": 1366,
+      "label": "search icon",
+      "selector": "[data-open-search]",
+      "activated": true,
+      "hit": "BUTTON.icon-button",
+      "rect": [
+        1146,
+        59,
+        37,
+        37
+      ],
+      "pass": true
+    },
+    {
+      "surface": "/prototype/",
+      "width": 390,
+      "label": "category pill",
+      "selector": ".cat-pill",
+      "activated": true,
+      "hit": "BUTTON.cat-pill active",
+      "rect": [
+        20,
+        400,
+        84,
+        44
+      ],
+      "pass": true
+    },
+    {
+      "surface": "/prototype/",
+      "width": 390,
+      "label": "dock button",
+      "selector": ".dock-btn",
+      "activated": true,
+      "hit": "BUTTON.dock-btn active",
+      "rect": [
+        76,
+        783,
+        44,
+        44
+      ],
+      "pass": true
+    },
+    {
+      "surface": "/prototype/",
+      "width": 1366,
+      "label": "category pill",
+      "selector": ".cat-pill",
+      "activated": true,
+      "hit": "BUTTON.cat-pill active",
+      "rect": [
+        48,
+        362,
+        84,
+        44
+      ],
+      "pass": true
+    },
+    {
+      "surface": "/prototype/",
+      "width": 1366,
+      "label": "dock button",
+      "selector": ".dock-btn",
+      "activated": true,
+      "hit": "BUTTON.dock-btn active",
+      "rect": [
+        566,
+        754,
+        97,
+        27
+      ],
+      "pass": true
+    }
+  ],
+  "failures": []
+}

@@ -96,10 +96,8 @@ class CheckoutService
         $priced = self::priced($cart);
         $discount = 0;
         if ($voucherCode) {
-            $voucher = Voucher::where('code', $voucherCode)->where('is_active', true)->first();
-            if ($voucher) {
-                $discount = min($voucher->discount_amount, $priced['subtotal']);
-            }
+            $voucher = $this->eligibleVoucher($user, $voucherCode);
+            $discount = min($voucher->discount_amount, $priced['subtotal']);
         }
         $shipping = self::shippingFee();
         $tax = self::tax($priced['subtotal'] - $discount);
@@ -330,7 +328,11 @@ class CheckoutService
         return $value;
     }
 
-    private function claimVoucher(User $user, string $code): Voucher
+    /**
+     * Satu aturan kelayakan voucher untuk pre-calculation dan commit:
+     * aktif, kuota global tersisa, dan batas per pengguna belum tercapai.
+     */
+    private function eligibleVoucher(User $user, string $code): Voucher
     {
         $voucher = Voucher::where('code', $code)->where('is_active', true)->first();
         if (! $voucher) {
@@ -347,6 +349,18 @@ class CheckoutService
             }
         }
 
+        if ($voucher->used >= $voucher->quota) {
+            throw ValidationException::withMessages(['voucher_code' => 'Kuota voucher sudah habis.']);
+        }
+
+        return $voucher;
+    }
+
+    private function claimVoucher(User $user, string $code): Voucher
+    {
+        $voucher = $this->eligibleVoucher($user, $code);
+
+        // Klaim atomik tetap jadi penentu akhir saat checkout paralel berebut sisa kuota.
         $claimed = Voucher::whereKey($voucher->id)
             ->where('is_active', true)
             ->whereColumn('used', '<', 'quota')

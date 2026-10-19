@@ -1,0 +1,651 @@
+[
+  {
+    "surface": "/",
+    "width": 390,
+    "theme": "dark",
+    "measured": 183,
+    "unmeasured": 27,
+    "fails": [
+      {
+        "tag": "A",
+        "cls": "button button-light",
+        "text": "Jelajahi koleksi",
+        "ratio": 1.16,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "L’Esprit Parisien",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "marquee-bullet",
+        "text": "·",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "La Mano Italiana",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "marquee-bullet",
+        "text": "·",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Jiwa Nusantara",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "marquee-bullet",
+        "text": "·",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Depuis Jakarta",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "marquee-bullet",
+        "text": "·",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "L’Esprit Parisien",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "marquee-bullet",
+        "text": "·",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "La Mano Italiana",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "marquee-bullet",
+        "text": "·",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Jiwa Nusantara",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "marquee-bullet",
+        "text": "·",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Depuis Jakarta",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "marquee-bullet",
+        "text": "·",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "eyebrow",
+        "text": "L’Univers ZAFIRA",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "eyebrow",
+        "text": "Les Nouveautés",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "eyebrow",
+        "text": "Trois Héritages · Tiga Warisan",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "eyebrow",
+        "text": "Atelier Z · Personnalisation",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Personalisasi Kreasi Anda",
+        "ratio": 1.16,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "monogram-preview",
+        "text": "ZA",
+        "ratio": 4.42,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "bag-lock",
+        "text": "Z",
+        "ratio": 3.41,
+        "large": false
+      },
+      {
+        "tag": "P",
+        "cls": "",
+        "text": "Pratinjau konseptual",
+        "ratio": 1,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "eyebrow",
+        "text": "L'Art d'Offrir ZAFIRA",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "H2",
+        "cls": "",
+        "text": "Kemasan Kado Ikonik & Segel Lilin Emas",
+        "ratio": 1.01,
+        "large": true
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Temui pengrajin",
+        "ratio": 1.16,
+        "large": false
+      }
+    ],
+    "failCount": 41
+  },
+  {
+    "surface": "/",
+    "width": 1366,
+    "theme": "dark",
+    "measured": 201,
+    "unmeasured": 27,
+    "fails": [
+      {
+        "tag": "SPAN",
+        "cls": "lang-divider",
+        "text": "/",
+        "ratio": 2.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "lang-divider",
+        "text": "/",
+        "ratio": 2.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "lang-divider",
+        "text": "/",
+        "ratio": 2.23,
+        "large": false
+      },
+      {
+        "tag": "A",
+        "cls": "button button-light",
+        "text": "Jelajahi koleksi",
+        "ratio": 1.16,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "L’Esprit Parisien",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "marquee-bullet",
+        "text": "·",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "La Mano Italiana",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "marquee-bullet",
+        "text": "·",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Jiwa Nusantara",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "marquee-bullet",
+        "text": "·",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Depuis Jakarta",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "marquee-bullet",
+        "text": "·",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "L’Esprit Parisien",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "marquee-bullet",
+        "text": "·",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "La Mano Italiana",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "marquee-bullet",
+        "text": "·",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Jiwa Nusantara",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "marquee-bullet",
+        "text": "·",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Depuis Jakarta",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "marquee-bullet",
+        "text": "·",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "eyebrow",
+        "text": "L’Univers ZAFIRA",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "eyebrow",
+        "text": "Les Nouveautés",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Tambah",
+        "ratio": 1.23,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "eyebrow",
+        "text": "Trois Héritages · Tiga Warisan",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "eyebrow",
+        "text": "Atelier Z · Personnalisation",
+        "ratio": 1.29,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "text": "Personalisasi Kreasi Anda",
+        "ratio": 1.16,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "monogram-preview",
+        "text": "ZA",
+        "ratio": 4.42,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "bag-lock",
+        "text": "Z",
+        "ratio": 3.41,
+        "large": false
+      },
+      {
+        "tag": "P",
+        "cls": "",
+        "text": "Pratinjau konseptual",
+        "ratio": 1,
+        "large": false
+      }
+    ],
+    "failCount": 44
+  },
+  {
+    "surface": "/prototype/",
+    "width": 390,
+    "theme": "dark",
+    "measured": 129,
+    "unmeasured": 9,
+    "fails": [
+      {
+        "tag": "H3",
+        "cls": "",
+        "text": "Koleksi Kriya Pilihan",
+        "ratio": 1,
+        "large": true
+      },
+      {
+        "tag": "H2",
+        "cls": "",
+        "text": "Kemasan Kado Ikonik & Segel Lilin Emas",
+        "ratio": 1,
+        "large": true
+      }
+    ],
+    "failCount": 2
+  },
+  {
+    "surface": "/prototype/",
+    "width": 1366,
+    "theme": "dark",
+    "measured": 154,
+    "unmeasured": 9,
+    "fails": [
+      {
+        "tag": "SPAN",
+        "cls": "lang-divider",
+        "text": "·",
+        "ratio": 2.19,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "lang-divider",
+        "text": "·",
+        "ratio": 2.19,
+        "large": false
+      },
+      {
+        "tag": "SPAN",
+        "cls": "lang-divider",
+        "text": "·",
+        "ratio": 2.19,
+        "large": false
+      },
+      {
+        "tag": "H3",
+        "cls": "",
+        "text": "Koleksi Kriya Pilihan",
+        "ratio": 1,
+        "large": true
+      },
+      {
+        "tag": "H2",
+        "cls": "",
+        "text": "Kemasan Kado Ikonik & Segel Lilin Emas",
+        "ratio": 1,
+        "large": true
+      }
+    ],
+    "failCount": 5
+  }
+]

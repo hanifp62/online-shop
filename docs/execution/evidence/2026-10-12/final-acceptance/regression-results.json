@@ -1,0 +1,75 @@
+[
+  {
+    "name": "php-standard",
+    "command": [
+      "php",
+      "artisan",
+      "test"
+    ],
+    "exitcode": 0
+  },
+  {
+    "name": "php-random",
+    "command": [
+      "php",
+      "artisan",
+      "test",
+      "--order-by=random",
+      "--random-order-seed=20261012"
+    ],
+    "exitcode": 0
+  },
+  {
+    "name": "pint-initial",
+    "command": [
+      "vendor/bin/pint",
+      "--test"
+    ],
+    "exitcode": 1
+  },
+  {
+    "name": "build-final",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exitcode": 0
+  },
+  {
+    "name": "node-tests",
+    "command": [
+      "sh",
+      "-c",
+      "node --test tests/*.mjs"
+    ],
+    "exitcode": 0
+  },
+  {
+    "name": "php-syntax",
+    "command": [
+      "sh",
+      "-c",
+      "find app routes tests -name '*.php' -print0 | xargs -0 -n1 php -l"
+    ],
+    "exitcode": 0
+  },
+  {
+    "name": "js-syntax",
+    "command": [
+      "sh",
+      "-c",
+      "find resources/js public/prototype -name '*.js' -print0 | xargs -0 -n1 node --check"
+    ],
+    "exitcode": 0
+  },
+  {
+    "name": "diff-check",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exitcode": 0
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "label": "git-status-after",
+  "command": [
+    "git",
+    "status",
+    "--porcelain=v1",
+    "--untracked-files=all"
+  ],
+  "start": "2026-10-13T05:25:03.154706+00:00",
+  "finish": "2026-10-13T05:25:03.196350+00:00",
+  "seconds": 0.041655249980976805,
+  "returncode": 0
+}

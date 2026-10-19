@@ -1,0 +1,51 @@
+{
+  "utc": "2026-10-14T13:28:08.516288+00:00",
+  "source_fingerprint": "61ae491c87be9c6ccb5120753d898061379bdd18ae97c8e7332e3523401647d7",
+  "source_file_count": "275",
+  "setup_drift": "",
+  "files": {
+    "app/Services/CheckoutService.php": {
+      "repo": "b1b88e542d59e4d55009007cf99f4120b8cce0fb3bf7a2a6fc56a063b58df90f",
+      "checkout": "b1b88e542d59e4d55009007cf99f4120b8cce0fb3bf7a2a6fc56a063b58df90f"
+    },
+    "resources/js/app.js": {
+      "repo": "4a10ffe7146f6cbbab17debb13862b8f139062adea21e432e11c63f2c800e90e",
+      "checkout": "4a10ffe7146f6cbbab17debb13862b8f139062adea21e432e11c63f2c800e90e"
+    },
+    "resources/views/catalog/index.blade.php": {
+      "repo": "855f104dd791eae703e93a3fce52e4dc9bccef6f55e40340f215d09516d5cd80",
+      "checkout": "855f104dd791eae703e93a3fce52e4dc9bccef6f55e40340f215d09516d5cd80"
+    },
+    "app/Services/PdfDocumentService.php": {
+      "repo": "a93e022cf4057b76c8c0c76b2534c68873645d7d352e43135d484ea7f69ba90b",
+      "checkout": "a93e022cf4057b76c8c0c76b2534c68873645d7d352e43135d484ea7f69ba90b"
+    }
+  },
+  "counts_final": {
+    "categories": 1,
+    "products": 3,
+    "users": 1,
+    "admins": 1,
+    "addresses": 3,
+    "vouchers": 1,
+    "orders": 3,
+    "order_items": 3
+  },
+  "orders": [
+    [
+      1,
+      "cancelled",
+      125000
+    ],
+    [
+      2,
+      "pending",
+      125000
+    ],
+    [
+      3,
+      "pending",
+      125000
+    ]
+  ]
+}

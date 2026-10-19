@@ -1,0 +1,5 @@
+{
+  "command": "docker network create --internal amadis-stage-sentinel-b1b23754bdc0",
+  "returncode": 0,
+  "platform": "Linux container"
+}

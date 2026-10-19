@@ -1,0 +1,5 @@
+{
+  "command": "shasum -a 256 /private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-ffcb1dd14491/composer-cache/files/masterminds/html5/3a23447f8f51e410777f7eadc5463e7a4fab38ba.zip",
+  "returncode": 0,
+  "platform": "Linux container"
+}

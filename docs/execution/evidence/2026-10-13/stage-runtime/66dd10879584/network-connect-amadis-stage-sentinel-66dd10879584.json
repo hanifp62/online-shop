@@ -1,0 +1,7 @@
+{
+  "command": "docker network connect --alias amadis-proxy amadis-stage-sentinel-66dd10879584 amadis-stage-proxy-66dd10879584",
+  "returncode": 0,
+  "platform": "Linux container",
+  "start": "2026-10-13T05:15:45Z",
+  "finish": "2026-10-13T05:15:45Z"
+}

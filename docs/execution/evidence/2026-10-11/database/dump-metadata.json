@@ -1,0 +1,95 @@
+[
+  {
+    "path": "database/zafira_ecommerce_20260921_clean.sql",
+    "bytes": 28744,
+    "sha256": "fa5031dcab9f4861f8126455f2d38ee1679bb7e21e8fe24ecfe0de35d2278ca0",
+    "create_tables": [
+      "admins",
+      "cache",
+      "cache_locks",
+      "categories",
+      "concierge_requests",
+      "failed_jobs",
+      "job_batches",
+      "jobs",
+      "migrations",
+      "newsletter_subscribers",
+      "password_reset_tokens",
+      "products",
+      "sessions",
+      "user_info_backups",
+      "users"
+    ],
+    "dangerous_statements": {
+      "^USE\\s": 0,
+      "^CREATE DATABASE": 0,
+      "DEFINER\\s*=": 1,
+      "^CREATE.*TRIGGER": 0,
+      "^DROP ": 15,
+      "^TRUNCATE ": 0,
+      "^DELIMITER": 2
+    }
+  },
+  {
+    "path": "database/zafira_ecommerce_20260921.sql",
+    "bytes": 131041,
+    "sha256": "3daec2004e10c03acbb50a661e1602e9e166d8cb38281acd685a21dfe63177a1",
+    "create_tables": [
+      "admins",
+      "cache",
+      "cache_locks",
+      "categories",
+      "concierge_requests",
+      "failed_jobs",
+      "job_batches",
+      "jobs",
+      "migrations",
+      "newsletter_subscribers",
+      "password_reset_tokens",
+      "products",
+      "sessions",
+      "user_info_backups",
+      "users"
+    ],
+    "dangerous_statements": {
+      "^USE\\s": 0,
+      "^CREATE DATABASE": 0,
+      "DEFINER\\s*=": 1,
+      "^CREATE.*TRIGGER": 0,
+      "^DROP ": 15,
+      "^TRUNCATE ": 0,
+      "^DELIMITER": 2
+    }
+  },
+  {
+    "path": "database/zafira_ecommerce_20260921_chat.sql",
+    "bytes": 24821,
+    "sha256": "123399f604dad02638576444c8eaf3f5bc49a994f3ff5ad144c65ebc44f3cc1a",
+    "create_tables": [
+      "admins",
+      "cache",
+      "cache_locks",
+      "categories",
+      "concierge_requests",
+      "failed_jobs",
+      "job_batches",
+      "jobs",
+      "migrations",
+      "newsletter_subscribers",
+      "password_reset_tokens",
+      "products",
+      "sessions",
+      "user_info_backups",
+      "users"
+    ],
+    "dangerous_statements": {
+      "^USE\\s": 0,
+      "^CREATE DATABASE": 1,
+      "DEFINER\\s*=": 0,
+      "^CREATE.*TRIGGER": 0,
+      "^DROP ": 16,
+      "^TRUNCATE ": 0,
+      "^DELIMITER": 2
+    }
+  }
+]

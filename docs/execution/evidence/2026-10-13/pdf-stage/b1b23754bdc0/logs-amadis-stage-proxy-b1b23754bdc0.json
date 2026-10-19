@@ -1,0 +1,5 @@
+{
+  "command": "docker logs amadis-stage-proxy-b1b23754bdc0",
+  "returncode": 0,
+  "platform": "Linux container"
+}

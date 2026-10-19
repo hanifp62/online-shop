@@ -1,0 +1,10 @@
+{
+  "amadis-d183833c94dbbd1638368827": {
+    "identity.json": "21ccbf4ad3fac4541451264fdf212db86022409009fee7f4685623e91308b5c8",
+    "database.sqlite": "d0d818513c540f8162cf070690ef19531fb4b34499f882ff8f4d781bfb1b5363"
+  },
+  "amadis-4ce30337e17a9a7fa8cfcb4e": {
+    "identity.json": "137b805496f5f7bb4dfb32ea98af3888fee46d4547f3f6c2a75e821805704430",
+    "database.sqlite": "8d6645b04e84e4ba8b9f7d54f0c132f1bcf325c306d48f82c12e17d5a11af101"
+  }
+}

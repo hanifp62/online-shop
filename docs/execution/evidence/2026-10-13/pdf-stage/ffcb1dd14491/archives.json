@@ -1,0 +1,27 @@
+{
+  "dompdf/dompdf": {
+    "cache_path": "files/dompdf/dompdf/3004b2fffa75420ec98f9bdf7ea5f3d189c40227.zip",
+    "local_sha256": "dc041bc855af64def8b050c915588ccebbb3d5e169ea9f452be3aa01d66cf168",
+    "upstream_shasum": null
+  },
+  "dompdf/php-font-lib": {
+    "cache_path": "files/dompdf/php-font-lib/4e8888d939e8fe62107c761d42db49a230200418.zip",
+    "local_sha256": "124fe45d1e2db72fb1b628ae4cc174cafa7029f4716c4e18adbab684797f2f4d",
+    "upstream_shasum": null
+  },
+  "dompdf/php-svg-lib": {
+    "cache_path": "files/dompdf/php-svg-lib/046b5cc5e40e74829c37df02a66ae18b98c0ce9c.zip",
+    "local_sha256": "9e62c3b1d178e593efe229913f8b1e7dc6b6b2b35e1d42358e964107ab72b43e",
+    "upstream_shasum": null
+  },
+  "masterminds/html5": {
+    "cache_path": "files/masterminds/html5/3a23447f8f51e410777f7eadc5463e7a4fab38ba.zip",
+    "local_sha256": "5be219888879460b1e73f43f27de069a52faa193ea54db7726eac9d21aa79ba0",
+    "upstream_shasum": null
+  },
+  "sabberworm/php-css-parser": {
+    "cache_path": "files/sabberworm/php-css-parser/fa1e68833a6fe6b3f03b9ad06db9439894c8d728.zip",
+    "local_sha256": "2cc14494f126f7f89aadad8ffe73939557c0a44c0a1caa2b9be1320c0a2f5bc0",
+    "upstream_shasum": null
+  }
+}

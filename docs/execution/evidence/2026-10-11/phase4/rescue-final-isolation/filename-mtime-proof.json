@@ -1,0 +1,24 @@
+{
+  "url": "http://127.0.0.1:8015/",
+  "auth": "guest, no cookies supplied",
+  "curl_exit": 0,
+  "http_status": "200",
+  "project_before": {
+    "count": 669,
+    "filename_mtime_sha256": "23f3e60a375de801a5ec02823a32c0eb70cff2431a25549684ba89c7cc74871d"
+  },
+  "project_after": {
+    "count": 669,
+    "filename_mtime_sha256": "23f3e60a375de801a5ec02823a32c0eb70cff2431a25549684ba89c7cc74871d"
+  },
+  "project_unchanged": true,
+  "temp_before": {
+    "count": 1,
+    "filename_mtime_sha256": "b91ca210b0f2a57ded60361bd5fbae6f2f662f1911318f53ce7f707ea6bdac42"
+  },
+  "temp_after": {
+    "count": 2,
+    "filename_mtime_sha256": "2ed6d63dd466d01d412372a7c83a5d6bbdec58e6e5f31b2fb7acef9d21808f38"
+  },
+  "temp_new_file": true
+}

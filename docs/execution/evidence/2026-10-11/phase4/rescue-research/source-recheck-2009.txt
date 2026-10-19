@@ -1,0 +1,8 @@
+200 https://www.similarweb.com/top-websites/e-commerce-and-shopping/
+200 https://www.similarweb.com/top-websites/indonesia/e-commerce-and-shopping/
+200 https://ecdb.com/blog/the-top-companies-in-e-commerce-worldwide/5223
+200 https://baymard.com/ux-benchmark
+200 https://baymard.com/lists/cart-abandonment-rate
+200 https://baymard.com/research/luxury-goods
+200 https://www.nngroup.com/articles/luxury-principles-ecommerce-design/
+200 https://www.w3.org/TR/WCAG22/

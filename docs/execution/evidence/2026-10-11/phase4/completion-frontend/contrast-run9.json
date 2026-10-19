@@ -1,0 +1,186 @@
+[
+  {
+    "surface": "/",
+    "width": 390,
+    "items": [
+      {
+        "selector": "#welcome-monogram-counter",
+        "text": "[ 2 / 3 ]",
+        "color": "rgb(103, 81, 46)",
+        "background": "rgba(182, 154, 100, 0.1)",
+        "declaredBackground": "#d9ccba",
+        "fontSize": "10px",
+        "fontWeight": "700",
+        "ratio": 4.76
+      },
+      {
+        "selector": "#monogram-hint",
+        "text": "Maksimal 3 inisial A–Z · Pratinjau konsep, konsultasikan pes",
+        "color": "rgb(93, 89, 79)",
+        "background": "rgba(0, 0, 0, 0)",
+        "declaredBackground": "#ddd2c3",
+        "fontSize": "7px",
+        "fontWeight": "400",
+        "ratio": 4.68
+      },
+      {
+        "selector": ".newsletter-section small",
+        "text": "Dengan berlangganan, Anda menyetujui kebijakan privasi ZAFIR",
+        "color": "rgba(255, 255, 255, 0.6)",
+        "background": "rgba(0, 0, 0, 0)",
+        "declaredBackground": "#263a5d",
+        "fontSize": "7px",
+        "fontWeight": "400",
+        "ratio": 11.38
+      },
+      {
+        "selector": "#live-catalog-search-input::placeholder",
+        "text": "Cari sutra, tenun, kriya…",
+        "color": "rgb(115, 115, 111)",
+        "background": "rgba(255, 255, 255, 0.85)",
+        "declaredBackground": "#fefefd",
+        "fontSize": "12.5px",
+        "fontWeight": "400",
+        "ratio": 4.72
+      }
+    ]
+  },
+  {
+    "surface": "/",
+    "width": 1366,
+    "items": [
+      {
+        "selector": "#welcome-monogram-counter",
+        "text": "[ 2 / 3 ]",
+        "color": "rgb(103, 81, 46)",
+        "background": "rgba(182, 154, 100, 0.1)",
+        "declaredBackground": "#d9ccba",
+        "fontSize": "10px",
+        "fontWeight": "700",
+        "ratio": 4.76
+      },
+      {
+        "selector": "#monogram-hint",
+        "text": "Maksimal 3 inisial A–Z · Pratinjau konsep, konsultasikan pes",
+        "color": "rgb(93, 89, 79)",
+        "background": "rgba(0, 0, 0, 0)",
+        "declaredBackground": "#ddd2c3",
+        "fontSize": "7px",
+        "fontWeight": "400",
+        "ratio": 4.68
+      },
+      {
+        "selector": ".newsletter-section small",
+        "text": "Dengan berlangganan, Anda menyetujui kebijakan privasi ZAFIR",
+        "color": "rgba(255, 255, 255, 0.6)",
+        "background": "rgba(0, 0, 0, 0)",
+        "declaredBackground": "#263a5d",
+        "fontSize": "7px",
+        "fontWeight": "400",
+        "ratio": 11.38
+      },
+      {
+        "selector": "#live-catalog-search-input::placeholder",
+        "text": "Cari sutra, tenun, kriya…",
+        "color": "rgb(115, 115, 111)",
+        "background": "rgba(255, 255, 255, 0.85)",
+        "declaredBackground": "#fefefd",
+        "fontSize": "12.5px",
+        "fontWeight": "400",
+        "ratio": 4.72
+      }
+    ]
+  },
+  {
+    "surface": "/prototype/",
+    "width": 390,
+    "items": [
+      {
+        "selector": ".sf-footer input[type=\"email\"]::placeholder",
+        "text": "nama @ contoh.id…",
+        "color": "rgb(154, 162, 177)",
+        "background": "rgba(255, 255, 255, 0.08)",
+        "declaredBackground": "#1c232f",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "ratio": 6.14
+      },
+      {
+        "selector": ".diptych-origin",
+        "text": "Brokat: Calais, Prancis · Bordir Tangan: Kebayoran Baru, Jak",
+        "color": "rgb(124, 107, 92)",
+        "background": "rgba(0, 0, 0, 0)",
+        "declaredBackground": "#f8f6f1",
+        "fontSize": "10.5px",
+        "fontWeight": "700",
+        "ratio": 4.73
+      },
+      {
+        "selector": ".product-cat",
+        "text": "Busana Wanita",
+        "color": "rgb(124, 107, 92)",
+        "background": "rgba(0, 0, 0, 0)",
+        "declaredBackground": "#fffdfa",
+        "fontSize": "10px",
+        "fontWeight": "700",
+        "ratio": 5.03
+      },
+      {
+        "selector": ".hero-eyebrow",
+        "text": "La Collection Première · 2026",
+        "color": "rgb(134, 107, 54)",
+        "background": "rgba(0, 0, 0, 0)",
+        "declaredBackground": "#f8f6f1",
+        "fontSize": "11px",
+        "fontWeight": "700",
+        "ratio": 4.66
+      }
+    ]
+  },
+  {
+    "surface": "/prototype/",
+    "width": 1366,
+    "items": [
+      {
+        "selector": ".sf-footer input[type=\"email\"]::placeholder",
+        "text": "nama @ contoh.id…",
+        "color": "rgb(154, 162, 177)",
+        "background": "rgba(255, 255, 255, 0.08)",
+        "declaredBackground": "#1c232f",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "ratio": 6.14
+      },
+      {
+        "selector": ".diptych-origin",
+        "text": "Brokat: Calais, Prancis · Bordir Tangan: Kebayoran Baru, Jak",
+        "color": "rgb(124, 107, 92)",
+        "background": "rgba(0, 0, 0, 0)",
+        "declaredBackground": "#f8f6f1",
+        "fontSize": "10.5px",
+        "fontWeight": "700",
+        "ratio": 4.73
+      },
+      {
+        "selector": ".product-cat",
+        "text": "Busana Wanita",
+        "color": "rgb(124, 107, 92)",
+        "background": "rgba(0, 0, 0, 0)",
+        "declaredBackground": "#fffdfa",
+        "fontSize": "10px",
+        "fontWeight": "700",
+        "ratio": 5.03
+      },
+      {
+        "selector": ".hero-eyebrow",
+        "text": "La Collection Première · 2026",
+        "color": "rgb(134, 107, 54)",
+        "background": "rgba(0, 0, 0, 0)",
+        "declaredBackground": "#f8f6f1",
+        "fontSize": "11px",
+        "fontWeight": "700",
+        "ratio": 4.66
+      }
+    ]
+  }
+]

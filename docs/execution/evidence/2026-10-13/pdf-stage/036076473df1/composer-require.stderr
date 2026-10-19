@@ -1,0 +1,35 @@
+./composer.json has been updated
+Running composer update dompdf/dompdf
+Loading composer repositories with package information
+Updating dependencies
+Dependency resolution completed in 0.000 seconds
+Analyzed 190 packages to resolve dependencies
+Analyzed 468 rules to resolve dependencies
+Dependency resolution completed in 0.000 seconds
+Lock file operations: 5 installs, 0 updates, 0 removals
+Installs: sabberworm/php-css-parser:v9.5.0, dompdf/php-svg-lib:1.0.2, dompdf/php-font-lib:1.0.2, masterminds/html5:2.11.0, dompdf/dompdf:v3.1.6
+  - Locking dompdf/dompdf (v3.1.6)
+  - Locking dompdf/php-font-lib (1.0.2)
+  - Locking dompdf/php-svg-lib (1.0.2)
+  - Locking masterminds/html5 (2.11.0)
+  - Locking sabberworm/php-css-parser (v9.5.0)
+Writing lock file
+Installing dependencies from lock file (including require-dev)
+Package operations: 5 installs, 0 updates, 0 removals
+Installs: masterminds/html5:2.11.0, sabberworm/php-css-parser:v9.5.0, dompdf/php-svg-lib:1.0.2, dompdf/php-font-lib:1.0.2, dompdf/dompdf:v3.1.6
+  - Downloading masterminds/html5 (2.11.0)
+  - Downloading sabberworm/php-css-parser (v9.5.0)
+  - Downloading dompdf/php-svg-lib (1.0.2)
+  - Downloading dompdf/php-font-lib (1.0.2)
+  - Downloading dompdf/dompdf (v3.1.6)
+  - Installing masterminds/html5 (2.11.0): Extracting archive
+  - Installing sabberworm/php-css-parser (v9.5.0): Extracting archive
+  - Installing dompdf/php-svg-lib (1.0.2): Extracting archive
+  - Installing dompdf/php-font-lib (1.0.2): Extracting archive
+  - Installing dompdf/dompdf (v3.1.6): Extracting archive
+3 package suggestions were added by new dependencies, use `composer suggest` to see details.
+Generating optimized autoload files
+> post-autoload-dump: App\Support\ComposerHooks::postAutoloadDump
+81 packages you are using are looking for funding.
+Use the `composer fund` command to find out more!
+> post-update-cmd: App\Support\ComposerHooks::postUpdate

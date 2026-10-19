@@ -1,0 +1,233 @@
+[
+  {
+    "label": "git-status-before",
+    "command": [
+      "git",
+      "status",
+      "--porcelain=v1",
+      "--untracked-files=all"
+    ],
+    "start": "2026-10-13T05:22:32.763389+00:00",
+    "finish": "2026-10-13T05:22:32.802461+00:00",
+    "seconds": 0.03889170801267028,
+    "returncode": 0
+  },
+  {
+    "label": "fonttools-version",
+    "command": [
+      "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/ft-venv/bin/python3",
+      "-c",
+      "import fontTools,sys; print(fontTools.version); print(sys.version); assert fontTools.version == \"4.66.1\""
+    ],
+    "start": "2026-10-13T05:22:32.886279+00:00",
+    "finish": "2026-10-13T05:22:32.964115+00:00",
+    "seconds": 0.07786837499588728,
+    "returncode": 0
+  },
+  {
+    "label": "init",
+    "command": [
+      "scripts/amadis/launch.sh",
+      "init"
+    ],
+    "start": "2026-10-13T05:22:33.042565+00:00",
+    "finish": "2026-10-13T05:22:37.303607+00:00",
+    "seconds": 4.261083334014984,
+    "returncode": 0
+  },
+  {
+    "label": "migrate",
+    "command": [
+      "scripts/amadis/launch.sh",
+      "migrate"
+    ],
+    "start": "2026-10-13T05:22:37.385403+00:00",
+    "finish": "2026-10-13T05:22:38.110349+00:00",
+    "seconds": 0.7249509579851292,
+    "returncode": 0
+  },
+  {
+    "label": "seed",
+    "command": [
+      "scripts/amadis/launch.sh",
+      "seed"
+    ],
+    "start": "2026-10-13T05:22:38.200735+00:00",
+    "finish": "2026-10-13T05:22:38.719355+00:00",
+    "seconds": 0.518640291003976,
+    "returncode": 0
+  },
+  {
+    "label": "provision",
+    "command": [
+      "scripts/amadis/launch.sh",
+      "provision"
+    ],
+    "start": "2026-10-13T05:22:38.818932+00:00",
+    "finish": "2026-10-13T05:22:40.037541+00:00",
+    "seconds": 1.218627042020671,
+    "returncode": 0
+  },
+  {
+    "label": "php-test-standard",
+    "command": [
+      "scripts/amadis/launch.sh",
+      "test",
+      "--log-junit=/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-b1c2b260873e62981566ae7f/evidence/php-test-standard.xml"
+    ],
+    "start": "2026-10-13T05:22:40.126455+00:00",
+    "finish": "2026-10-13T05:24:01.928086+00:00",
+    "seconds": 81.80176349999965,
+    "returncode": 0
+  },
+  {
+    "label": "php-test-random",
+    "command": [
+      "scripts/amadis/launch.sh",
+      "test",
+      "--order-by=random",
+      "--random-order-seed=20261013",
+      "--log-junit=/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-b1c2b260873e62981566ae7f/evidence/php-test-random.xml"
+    ],
+    "start": "2026-10-13T05:24:02.047814+00:00",
+    "finish": "2026-10-13T05:24:37.512317+00:00",
+    "seconds": 35.464546875009546,
+    "returncode": 0
+  },
+  {
+    "label": "node-tests",
+    "command": [
+      "node",
+      "--test",
+      "tests/amadis-layout.test.mjs",
+      "tests/hit-hero-run12.test.mjs",
+      "tests/phase4-a11y.test.mjs",
+      "tests/prototype-currency.test.mjs",
+      "tests/prototype-dock.test.mjs",
+      "tests/prototype-drawer.test.mjs",
+      "tests/prototype-header-1025.test.mjs",
+      "tests/prototype-mobile-lang.test.mjs",
+      "tests/prototype-security.test.mjs",
+      "tests/sw.test.mjs",
+      "tests/sweep10-repairs.test.mjs",
+      "tests/task3.test.mjs",
+      "tests/task4-focus.test.mjs",
+      "tests/task4.test.mjs",
+      "tests/zafira-i18n.test.mjs",
+      "tests/zafira-theme.test.mjs",
+      "scripts/amadis/browser-lifecycle.test.cjs"
+    ],
+    "start": "2026-10-13T05:24:37.604421+00:00",
+    "finish": "2026-10-13T05:24:38.006543+00:00",
+    "seconds": 0.4021356249868404,
+    "returncode": 0
+  },
+  {
+    "label": "python-tests",
+    "command": [
+      "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/ft-venv/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/python"
+    ],
+    "start": "2026-10-13T05:24:38.087437+00:00",
+    "finish": "2026-10-13T05:24:49.773165+00:00",
+    "seconds": 11.68575737500214,
+    "returncode": 0
+  },
+  {
+    "label": "pint",
+    "command": [
+      "vendor/bin/pint",
+      "--test",
+      "app/Support/ComposerHooks.php",
+      "app/Http/Controllers/AdminOrderController.php",
+      "tests/Unit/ComposerHooksTest.php",
+      "tests/Feature/AdminOrderReportTest.php",
+      "scripts/amadis/server.php",
+      "scripts/amadis/connect_proxy.php",
+      "scripts/amadis/artisan.php",
+      "scripts/amadis/pdf-ui-fixture.php"
+    ],
+    "start": "2026-10-13T05:24:49.859620+00:00",
+    "finish": "2026-10-13T05:24:50.266873+00:00",
+    "seconds": 0.40726833400549367,
+    "returncode": 0
+  },
+  {
+    "label": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "start": "2026-10-13T05:24:50.354164+00:00",
+    "finish": "2026-10-13T05:24:51.716525+00:00",
+    "seconds": 1.3623706660000607,
+    "returncode": 0
+  },
+  {
+    "label": "diff-check",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "start": "2026-10-13T05:24:51.801160+00:00",
+    "finish": "2026-10-13T05:24:51.879995+00:00",
+    "seconds": 0.0788439589960035,
+    "returncode": 0
+  },
+  {
+    "label": "port8016-before",
+    "command": [
+      "lsof",
+      "-nP",
+      "-iTCP:8016",
+      "-sTCP:LISTEN"
+    ],
+    "start": "2026-10-13T05:24:51.969646+00:00",
+    "finish": "2026-10-13T05:24:52.049039+00:00",
+    "seconds": 0.07939829200040549,
+    "returncode": 1
+  },
+  {
+    "label": "s0s5",
+    "command": [
+      "node",
+      "scripts/amadis/browser-lifecycle.cjs"
+    ],
+    "start": "2026-10-13T05:24:52.135276+00:00",
+    "finish": "2026-10-13T05:25:02.917865+00:00",
+    "seconds": 10.782618957979139,
+    "returncode": 0
+  },
+  {
+    "label": "port8016-after",
+    "command": [
+      "lsof",
+      "-nP",
+      "-iTCP:8016",
+      "-sTCP:LISTEN"
+    ],
+    "start": "2026-10-13T05:25:02.998281+00:00",
+    "finish": "2026-10-13T05:25:03.075952+00:00",
+    "seconds": 0.07768470898736268,
+    "returncode": 1
+  },
+  {
+    "label": "git-status-after",
+    "command": [
+      "git",
+      "status",
+      "--porcelain=v1",
+      "--untracked-files=all"
+    ],
+    "start": "2026-10-13T05:25:03.154706+00:00",
+    "finish": "2026-10-13T05:25:03.196350+00:00",
+    "seconds": 0.041655249980976805,
+    "returncode": 0
+  }
+]

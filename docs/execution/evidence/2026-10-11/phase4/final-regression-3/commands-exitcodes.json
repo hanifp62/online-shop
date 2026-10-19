@@ -1,0 +1,12 @@
+{
+  "php-default3": 0,
+  "php-random3": 0,
+  "pint3": 1,
+  "build3": 0,
+  "node3": 0,
+  "diffcheck3": 0,
+  "pint3-fix-evidence-artifact": 0,
+  "pint3-rerun": 0,
+  "syntax3": 0,
+  "csp3": 0
+}

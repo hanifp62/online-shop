@@ -1,0 +1,643 @@
+{
+  "f1_f2": {
+    "1024": {
+      "scrollY": 0,
+      "header": {
+        "x": 0,
+        "y": 47,
+        "w": 1024,
+        "h": 82,
+        "bottom": 129,
+        "position": "sticky",
+        "topStyle": "0px",
+        "zIndex": "100"
+      },
+      "heroTitle": {
+        "x": 25,
+        "y": 581,
+        "w": 975,
+        "h": 78,
+        "bottom": 659,
+        "position": "static",
+        "topStyle": "auto",
+        "zIndex": "auto"
+      },
+      "heroButtons": [],
+      "dock": {
+        "x": 210,
+        "y": 673,
+        "w": 605,
+        "h": 71,
+        "bottom": 744,
+        "position": "fixed",
+        "topStyle": "672.984px",
+        "zIndex": "9999"
+      },
+      "kebayaTitle": {
+        "x": 48,
+        "y": 2412,
+        "w": 928,
+        "h": 41,
+        "bottom": 2453,
+        "position": "static",
+        "topStyle": "auto",
+        "zIndex": "auto"
+      },
+      "kebayaQuote": {
+        "x": 62,
+        "y": 4639,
+        "w": 900,
+        "h": 134,
+        "bottom": 4773,
+        "position": "static",
+        "topStyle": "auto",
+        "zIndex": "auto"
+      },
+      "kebayaImg": null
+    },
+    "1366": {
+      "scrollY": 0,
+      "header": {
+        "x": 0,
+        "y": 47,
+        "w": 1366,
+        "h": 69,
+        "bottom": 116,
+        "position": "sticky",
+        "topStyle": "0px",
+        "zIndex": "100"
+      },
+      "heroTitle": {
+        "x": 775,
+        "y": 271,
+        "w": 527,
+        "h": 109,
+        "bottom": 380,
+        "position": "static",
+        "topStyle": "auto",
+        "zIndex": "auto"
+      },
+      "heroButtons": [],
+      "dock": {
+        "x": 342,
+        "y": 686,
+        "w": 683,
+        "h": 58,
+        "bottom": 744,
+        "position": "fixed",
+        "topStyle": "686px",
+        "zIndex": "9999"
+      },
+      "kebayaTitle": {
+        "x": 781,
+        "y": 1221,
+        "w": 517,
+        "h": 41,
+        "bottom": 1262,
+        "position": "static",
+        "topStyle": "auto",
+        "zIndex": "auto"
+      },
+      "kebayaQuote": {
+        "x": 233,
+        "y": 2887,
+        "w": 900,
+        "h": 134,
+        "bottom": 3022,
+        "position": "static",
+        "topStyle": "auto",
+        "zIndex": "auto"
+      },
+      "kebayaImg": null
+    },
+    "1440": {
+      "scrollY": 0,
+      "header": {
+        "x": 0,
+        "y": 47,
+        "w": 1440,
+        "h": 83,
+        "bottom": 130,
+        "position": "sticky",
+        "topStyle": "0px",
+        "zIndex": "100"
+      },
+      "heroTitle": {
+        "x": 814,
+        "y": 312,
+        "w": 562,
+        "h": 109,
+        "bottom": 421,
+        "position": "static",
+        "topStyle": "auto",
+        "zIndex": "auto"
+      },
+      "heroButtons": [],
+      "dock": {
+        "x": 366,
+        "y": 818,
+        "w": 707,
+        "h": 58,
+        "bottom": 876,
+        "position": "fixed",
+        "topStyle": "818px",
+        "zIndex": "9999"
+      },
+      "kebayaTitle": {
+        "x": 820,
+        "y": 1259,
+        "w": 532,
+        "h": 41,
+        "bottom": 1300,
+        "position": "static",
+        "topStyle": "auto",
+        "zIndex": "auto"
+      },
+      "kebayaQuote": {
+        "x": 270,
+        "y": 2948,
+        "w": 900,
+        "h": 134,
+        "bottom": 3082,
+        "position": "static",
+        "topStyle": "auto",
+        "zIndex": "auto"
+      },
+      "kebayaImg": null
+    },
+    "1650": {
+      "scrollY": 0,
+      "header": {
+        "x": 0,
+        "y": 47,
+        "w": 1650,
+        "h": 83,
+        "bottom": 130,
+        "position": "sticky",
+        "topStyle": "0px",
+        "zIndex": "100"
+      },
+      "heroTitle": {
+        "x": 923,
+        "y": 312,
+        "w": 663,
+        "h": 109,
+        "bottom": 421,
+        "position": "static",
+        "topStyle": "auto",
+        "zIndex": "auto"
+      },
+      "heroButtons": [],
+      "dock": {
+        "x": 471,
+        "y": 818,
+        "w": 707,
+        "h": 58,
+        "bottom": 876,
+        "position": "fixed",
+        "topStyle": "818px",
+        "zIndex": "9999"
+      },
+      "kebayaTitle": {
+        "x": 925,
+        "y": 1259,
+        "w": 532,
+        "h": 41,
+        "bottom": 1300,
+        "position": "static",
+        "topStyle": "auto",
+        "zIndex": "auto"
+      },
+      "kebayaQuote": {
+        "x": 375,
+        "y": 2948,
+        "w": 900,
+        "h": 134,
+        "bottom": 3082,
+        "position": "static",
+        "topStyle": "auto",
+        "zIndex": "auto"
+      },
+      "kebayaImg": null
+    }
+  },
+  "f3": [
+    {
+      "target": "Bordir",
+      "text": "“Bordir tambal-tangan 60 jam oleh empu kriya Kebayoran, bertutur dalam kemurnian brokat Prancis.”",
+      "tag": "P",
+      "dataI18n": null
+    },
+    {
+      "target": "Bordir",
+      "text": "Bordir Tangan / Helai Adibusana",
+      "tag": "SPAN",
+      "dataI18n": null
+    },
+    {
+      "target": "Bordir",
+      "text": "3. Bordir Tangan",
+      "tag": "DIV",
+      "dataI18n": null
+    },
+    {
+      "target": "Bordir",
+      "text": "Ibu Siti (Bordir)",
+      "tag": "OPTION",
+      "dataI18n": null
+    },
+    {
+      "target": "Bordir",
+      "text": "Ibu Siti (Bordir)",
+      "tag": "OPTION",
+      "dataI18n": null
+    },
+    {
+      "target": "Bordir",
+      "text": "Ibu Siti (Bordir)",
+      "tag": "OPTION",
+      "dataI18n": null
+    },
+    {
+      "target": "Bordir",
+      "text": "Ibu Siti (Bordir)",
+      "tag": "OPTION",
+      "dataI18n": null
+    },
+    {
+      "target": "Bordir",
+      "text": "Bordir Tambal-Tangan & Jahit Kriya",
+      "tag": "STRONG",
+      "dataI18n": null
+    },
+    {
+      "target": "Bordir",
+      "text": "Kapsul Adibusana (Gaun Sutra Lyon & Bordir Prancis)",
+      "tag": "SPAN",
+      "dataI18n": null
+    },
+    {
+      "target": "Bordir",
+      "text": "Tahap 3/4 · Bordir Tangan",
+      "tag": "SPAN",
+      "dataI18n": null
+    },
+    {
+      "target": "Bordir",
+      "text": "Bordir Kebayoran 60h · Est. 18 Okt 2026",
+      "tag": "SPAN",
+      "dataI18n": null
+    },
+    {
+      "target": "Canting",
+      "text": "“Canting malam 9 celupan indigo alam Laweyan disatukan kerah kemeja arsitektural Italia.”",
+      "tag": "P",
+      "dataI18n": null
+    },
+    {
+      "target": "Canting",
+      "text": "Archipelago Heritage · Canting Solo",
+      "tag": "SPAN",
+      "dataI18n": null
+    },
+    {
+      "target": "Canting",
+      "text": "Solo Wax-Resist Canting Batik",
+      "tag": "SPAN",
+      "dataI18n": "savoir_2"
+    },
+    {
+      "target": "Setiap jahitan",
+      "text": "“Setiap jahitan adalah dialog abadi antara benang emas Palembang, sutra Lyon Prancis, dan kesabaran puluhan jam para empu kriya Nusantara.”",
+      "tag": "H2",
+      "dataI18n": null
+    },
+    {
+      "target": "Koleksi Kriya Pilihan",
+      "text": "Koleksi Kriya Pilihan",
+      "tag": "H3",
+      "dataI18n": null
+    },
+    {
+      "target": "Tampilan Editorial",
+      "text": "Tampilan Editorial",
+      "tag": "SPAN",
+      "dataI18n": null
+    },
+    {
+      "target": "Jam",
+      "text": "60+ Jam",
+      "tag": "STRONG",
+      "dataI18n": null
+    },
+    {
+      "target": "Jam",
+      "text": "60+ Jam",
+      "tag": "SPAN",
+      "dataI18n": null
+    },
+    {
+      "target": "Jam",
+      "text": "4.8 Jam / Busana",
+      "tag": "DIV",
+      "dataI18n": null
+    },
+    {
+      "target": "Jam",
+      "text": "Buffer 48 Jam (Siaga)",
+      "tag": "DIV",
+      "dataI18n": null
+    },
+    {
+      "target": "Jam",
+      "text": "Pilih Sesi Jam",
+      "tag": "LABEL",
+      "dataI18n": null
+    },
+    {
+      "target": "Minggu",
+      "text": "3 Minggu",
+      "tag": "STRONG",
+      "dataI18n": null
+    },
+    {
+      "target": "Minaudière Saphir",
+      "text": "Minaudière Saphir",
+      "tag": "H4",
+      "dataI18n": null
+    }
+  ],
+  "f4_f5": {
+    "songket": {
+      "text": "Deux Rives",
+      "html": "Deux Rives",
+      "dataI18n": null,
+      "parentI18n": null
+    },
+    "privateStyling": {
+      "text": "Private Styling",
+      "dataI18n": "service_1_title"
+    },
+    "careForLife": {
+      "text": "Care for Life",
+      "dataI18n": "service_3_title"
+    }
+  },
+  "f6": [
+    {
+      "key": "service_1_title",
+      "text": "Styling Privato"
+    },
+    {
+      "key": "service_1_desc",
+      "text": "Contatta il concierge."
+    },
+    {
+      "key": "service_1_link",
+      "text": "Prenota appuntamento"
+    },
+    {
+      "key": "service_2_title",
+      "text": "Trasparenza Totale"
+    },
+    {
+      "key": "service_2_desc",
+      "text": "Ogni creazione presenta materiali, provenienza e artigiano."
+    },
+    {
+      "key": "service_2_link",
+      "text": "Scopri la tracciabilità"
+    },
+    {
+      "key": "service_3_title",
+      "text": "Cura Senza Tempo"
+    },
+    {
+      "key": "service_3_desc",
+      "text": "Manutenzione sartoriale per preservare forma, colore e storia delle vostre creazioni negli anni."
+    },
+    {
+      "key": "service_3_link",
+      "text": "Contatta il concierge"
+    },
+    {
+      "key": "service_4_title",
+      "text": "Scheda artigianale"
+    },
+    {
+      "key": "service_4_desc",
+      "text": "Informazioni prodotto."
+    },
+    {
+      "key": "service_4_link",
+      "text": "Vedi dettagli"
+    }
+  ],
+  "f7": {
+    "h1": {
+      "x": 425.0625,
+      "y": 365.703125,
+      "w": 589.875,
+      "h": 149.59375,
+      "color": "rgb(255, 255, 255)",
+      "shadow": "rgba(0, 0, 0, 0.4) 0px 4px 24px"
+    },
+    "sub": {
+      "x": 430,
+      "y": 539.296875,
+      "w": 580,
+      "h": 51
+    },
+    "hasScrim": true,
+    "scrimBg": "rgba(8, 16, 29, 0.45)",
+    "heroBg": "none"
+  },
+  "f8": {
+    "1024": {
+      "en": {
+        "text": "ID\n        ·\n        EN\n        ·\n        FR\n        ·\n        IT\n      \n      \n        IDR",
+        "scrollWidth": 247,
+        "clientWidth": 247,
+        "isTruncated": false,
+        "textOverflow": "clip",
+        "overflow": "visible",
+        "whiteSpace": "normal"
+      },
+      "fr": {
+        "text": "ID\n        ·\n        EN\n        ·\n        FR\n        ·\n        IT\n      \n      \n        IDR",
+        "scrollWidth": 247,
+        "clientWidth": 247,
+        "isTruncated": false,
+        "textOverflow": "clip",
+        "overflow": "visible",
+        "whiteSpace": "normal"
+      },
+      "id": {
+        "text": "ID\n        ·\n        EN\n        ·\n        FR\n        ·\n        IT\n      \n      \n        IDR",
+        "scrollWidth": 247,
+        "clientWidth": 247,
+        "isTruncated": false,
+        "textOverflow": "clip",
+        "overflow": "visible",
+        "whiteSpace": "normal"
+      },
+      "it": {
+        "text": "ID\n        ·\n        EN\n        ·\n        FR\n        ·\n        IT\n      \n      \n        IDR",
+        "scrollWidth": 247,
+        "clientWidth": 247,
+        "isTruncated": false,
+        "textOverflow": "clip",
+        "overflow": "visible",
+        "whiteSpace": "normal"
+      }
+    },
+    "1366": {
+      "en": {
+        "text": "ID\n        ·\n        EN\n        ·\n        FR\n        ·\n        IT\n      \n      \n        IDR",
+        "scrollWidth": 285,
+        "clientWidth": 285,
+        "isTruncated": false,
+        "textOverflow": "clip",
+        "overflow": "visible",
+        "whiteSpace": "normal"
+      },
+      "fr": {
+        "text": "ID\n        ·\n        EN\n        ·\n        FR\n        ·\n        IT\n      \n      \n        IDR",
+        "scrollWidth": 290,
+        "clientWidth": 290,
+        "isTruncated": false,
+        "textOverflow": "clip",
+        "overflow": "visible",
+        "whiteSpace": "normal"
+      },
+      "id": {
+        "text": "ID\n        ·\n        EN\n        ·\n        FR\n        ·\n        IT\n      \n      \n        IDR",
+        "scrollWidth": 287,
+        "clientWidth": 287,
+        "isTruncated": false,
+        "textOverflow": "clip",
+        "overflow": "visible",
+        "whiteSpace": "normal"
+      },
+      "it": {
+        "text": "ID\n        ·\n        EN\n        ·\n        FR\n        ·\n        IT\n      \n      \n        IDR",
+        "scrollWidth": 280,
+        "clientWidth": 280,
+        "isTruncated": false,
+        "textOverflow": "clip",
+        "overflow": "visible",
+        "whiteSpace": "normal"
+      }
+    },
+    "1440": {
+      "en": {
+        "text": "ID\n        ·\n        EN\n        ·\n        FR\n        ·\n        IT\n      \n      \n        IDR",
+        "scrollWidth": 309,
+        "clientWidth": 309,
+        "isTruncated": false,
+        "textOverflow": "clip",
+        "overflow": "visible",
+        "whiteSpace": "normal"
+      },
+      "fr": {
+        "text": "ID\n        ·\n        EN\n        ·\n        FR\n        ·\n        IT\n      \n      \n        IDR",
+        "scrollWidth": 314,
+        "clientWidth": 314,
+        "isTruncated": false,
+        "textOverflow": "clip",
+        "overflow": "visible",
+        "whiteSpace": "normal"
+      },
+      "id": {
+        "text": "ID\n        ·\n        EN\n        ·\n        FR\n        ·\n        IT\n      \n      \n        IDR",
+        "scrollWidth": 312,
+        "clientWidth": 312,
+        "isTruncated": false,
+        "textOverflow": "clip",
+        "overflow": "visible",
+        "whiteSpace": "normal"
+      },
+      "it": {
+        "text": "ID\n        ·\n        EN\n        ·\n        FR\n        ·\n        IT\n      \n      \n        IDR",
+        "scrollWidth": 305,
+        "clientWidth": 305,
+        "isTruncated": false,
+        "textOverflow": "clip",
+        "overflow": "visible",
+        "whiteSpace": "normal"
+      }
+    },
+    "1650": {
+      "en": {
+        "text": "ID\n        ·\n        EN\n        ·\n        FR\n        ·\n        IT\n      \n      \n        IDR",
+        "scrollWidth": 379,
+        "clientWidth": 379,
+        "isTruncated": false,
+        "textOverflow": "clip",
+        "overflow": "visible",
+        "whiteSpace": "normal"
+      },
+      "fr": {
+        "text": "ID\n        ·\n        EN\n        ·\n        FR\n        ·\n        IT\n      \n      \n        IDR",
+        "scrollWidth": 384,
+        "clientWidth": 384,
+        "isTruncated": false,
+        "textOverflow": "clip",
+        "overflow": "visible",
+        "whiteSpace": "normal"
+      },
+      "id": {
+        "text": "ID\n        ·\n        EN\n        ·\n        FR\n        ·\n        IT\n      \n      \n        IDR",
+        "scrollWidth": 382,
+        "clientWidth": 382,
+        "isTruncated": false,
+        "textOverflow": "clip",
+        "overflow": "visible",
+        "whiteSpace": "normal"
+      },
+      "it": {
+        "text": "ID\n        ·\n        EN\n        ·\n        FR\n        ·\n        IT\n      \n      \n        IDR",
+        "scrollWidth": 375,
+        "clientWidth": 375,
+        "isTruncated": false,
+        "textOverflow": "clip",
+        "overflow": "visible",
+        "whiteSpace": "normal"
+      }
+    }
+  },
+  "f9": {
+    "1024": {
+      "text": "Come lo zaffiro,\nla vera bellezza\nnasce nella maestria.",
+      "html": "Come lo zaffiro,<br>la vera bellezza<br>nasce nella maestria.",
+      "lineHeight": "54.0672px",
+      "fontSize": "56.32px",
+      "rect": {
+        "x": 629.734375,
+        "y": 4693.703125,
+        "w": 312.359375,
+        "h": 324.28125
+      },
+      "lineCount": 6,
+      "overflowX": false,
+      "overflowY": false,
+      "parentW": 476.171875
+    },
+    "1366": {
+      "text": "Come lo zaffiro,\nla vera bellezza\nnasce nella maestria.",
+      "html": "Come lo zaffiro,<br>la vera bellezza<br>nasce nella maestria.",
+      "lineHeight": "72.1248px",
+      "fontSize": "75.13px",
+      "rect": {
+        "x": 840.0625,
+        "y": 4228.75,
+        "w": 416.671875,
+        "h": 432.65625
+      },
+      "lineCount": 6,
+      "overflowX": false,
+      "overflowY": false,
+      "parentW": 635.203125
+    }
+  }
+}

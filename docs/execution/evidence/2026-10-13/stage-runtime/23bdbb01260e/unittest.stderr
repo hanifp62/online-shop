@@ -1,0 +1,33 @@
+test_apply_copies_only_closure_and_rolls_back_on_failed_verify (tests.python.test_amadis_docker_stage.DockerStageTests.test_apply_copies_only_closure_and_rolls_back_on_failed_verify) ... ok
+test_apply_includes_generated_autoload_maps (tests.python.test_amadis_docker_stage.DockerStageTests.test_apply_includes_generated_autoload_maps) ... ok
+test_apply_refuses_when_repo_drifted (tests.python.test_amadis_docker_stage.DockerStageTests.test_apply_refuses_when_repo_drifted) ... ok
+test_cleanup_removes_same_named_containers_before_networks (tests.python.test_amadis_docker_stage.DockerStageTests.test_cleanup_removes_same_named_containers_before_networks) ... ok
+test_command_mounts_only_independent_stage_and_is_offline (tests.python.test_amadis_docker_stage.DockerStageTests.test_command_mounts_only_independent_stage_and_is_offline) ... ok
+test_copy_rejects_symlinks_and_hardlinks (tests.python.test_amadis_docker_stage.DockerStageTests.test_copy_rejects_symlinks_and_hardlinks) ... ok
+test_copy_uses_latest_bytes_and_excludes_operational_state (tests.python.test_amadis_docker_stage.DockerStageTests.test_copy_uses_latest_bytes_and_excludes_operational_state) ... ok
+test_direct_egress_uses_literal_ips_and_passes_only_on_network_failure (tests.python.test_amadis_docker_stage.DockerStageTests.test_direct_egress_uses_literal_ips_and_passes_only_on_network_failure) ... ok
+test_failed_verify_removes_newly_created_apply_files (tests.python.test_amadis_docker_stage.DockerStageTests.test_failed_verify_removes_newly_created_apply_files) ... ok
+test_full_source_and_executable_modes (tests.python.test_amadis_docker_stage.DockerStageTests.test_full_source_and_executable_modes) ... ok
+test_gate_categorizes_missing_docker_and_redacts_output (tests.python.test_amadis_docker_stage.DockerStageTests.test_gate_categorizes_missing_docker_and_redacts_output) ... ok
+test_hooks_require_verbose_script_lines_and_root_artifacts (tests.python.test_amadis_docker_stage.DockerStageTests.test_hooks_require_verbose_script_lines_and_root_artifacts) ... ok
+test_install_crash_cannot_pass_report (tests.python.test_amadis_docker_stage.DockerStageTests.test_install_crash_cannot_pass_report) ... ok
+test_install_gate_requires_every_recorded_predicate (tests.python.test_amadis_docker_stage.DockerStageTests.test_install_gate_requires_every_recorded_predicate) ... ok
+test_install_remains_fail_closed (tests.python.test_amadis_docker_stage.DockerStageTests.test_install_remains_fail_closed) ... ok
+test_install_stage_refuses_incomplete_preflight_without_running (tests.python.test_amadis_docker_stage.DockerStageTests.test_install_stage_refuses_incomplete_preflight_without_running) ... ok
+test_lock_operations_are_parsed_exactly (tests.python.test_amadis_docker_stage.DockerStageTests.test_lock_operations_are_parsed_exactly) ... ok
+test_missing_or_crashed_probe_results_fail (tests.python.test_amadis_docker_stage.DockerStageTests.test_missing_or_crashed_probe_results_fail) ... ok
+test_networked_command_stays_hardened_and_never_publishes_ports (tests.python.test_amadis_docker_stage.DockerStageTests.test_networked_command_stays_hardened_and_never_publishes_ports) ... ok
+test_partial_copy_failure_rolls_back_to_initial_digest (tests.python.test_amadis_docker_stage.DockerStageTests.test_partial_copy_failure_rolls_back_to_initial_digest) ... ok
+test_preflight_keeps_durable_evidence_for_every_outcome (tests.python.test_amadis_docker_stage.DockerStageTests.test_preflight_keeps_durable_evidence_for_every_outcome) ... ok
+test_preflight_uses_approved_composer_digest (tests.python.test_amadis_docker_stage.DockerStageTests.test_preflight_uses_approved_composer_digest) ... ok
+test_proxy_allowlist_is_exact_and_port_bound (tests.python.test_amadis_docker_stage.DockerStageTests.test_proxy_allowlist_is_exact_and_port_bound) ... ok
+test_stage_env_satisfies_guard_and_hook_requirements (tests.python.test_amadis_docker_stage.DockerStageTests.test_stage_env_satisfies_guard_and_hook_requirements) ... ok
+test_stage_install_cli_runs_install_preflight (tests.python.test_amadis_docker_stage.DockerStageTests.test_stage_install_cli_runs_install_preflight) ... ok
+test_stage_runtime_cli_runs_without_install (tests.python.test_amadis_docker_stage.DockerStageTests.test_stage_runtime_cli_runs_without_install) ... ok
+test_topology_rejects_shared_or_missing_isolation (tests.python.test_amadis_docker_stage.DockerStageTests.test_topology_rejects_shared_or_missing_isolation) ... ok
+test_unexpected_changes_flags_writes_outside_apply_set (tests.python.test_amadis_docker_stage.DockerStageTests.test_unexpected_changes_flags_writes_outside_apply_set) ... ok
+
+----------------------------------------------------------------------
+Ran 28 tests in 0.115s
+
+OK

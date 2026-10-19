@@ -1,0 +1,1 @@
+amadis: use artisan/test/migrate/seed; raw git, database, shell and interpreter commands prohibited

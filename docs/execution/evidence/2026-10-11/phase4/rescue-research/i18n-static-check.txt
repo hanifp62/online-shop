@@ -1,0 +1,10 @@
+{ id: 309, en: 11541, fr: 22837, it: 34688 }
+files 1 used keys 118
+id dict 202 missing used: editorial_eyebrow,editorial_title,editorial_desc,editorial_cta
+en dict 203 missing used: editorial_eyebrow,editorial_title,editorial_desc,editorial_cta
+fr dict 202 missing used: editorial_eyebrow,editorial_title,editorial_desc,editorial_cta
+it dict 210 missing used: editorial_eyebrow,editorial_title,editorial_desc,editorial_cta
+id parity missing vs union: 9
+en parity missing vs union: 8
+fr parity missing vs union: 9
+it parity missing vs union: 1

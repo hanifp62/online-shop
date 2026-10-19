@@ -1,0 +1,66 @@
+[
+    {
+        "Name": "amadis-stage-int-dfa208627395",
+        "Id": "1f0c91afaec7b3a7f399268f8316ffd6a88840bc069e52ab12e114be74450598",
+        "Created": "2026-10-12T19:27:55.709897055Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+            ]
+        },
+        "Internal": true,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {
+            "com.docker.network.enable_ipv4": "true",
+            "com.docker.network.enable_ipv6": "false"
+        },
+        "Labels": {},
+        "Containers": {
+            "50c415e79d1f133655e8260c7dc993487f4445da61118291d0d22a0aff60f80e": {
+                "Name": "amadis-stage-sentinel-dfa208627395",
+                "EndpointID": "a482f882fb1ef169ed3764550e54b704c3c55de9f705779ca5c0a765d78a9ebb",
+                "MacAddress": "2e:14:f8:1d:66:0e",
+                "IPv4Address": "172.18.0.3/16",
+                "IPv6Address": ""
+            },
+            "51aa7f9ffe1fbd7e6461c531afa16784674a0b6a655c1c81c89cda5e3900c90d": {
+                "Name": "amadis-stage-composer-dfa208627395",
+                "EndpointID": "2e821e037513407e1eabd163a14c160da920f9b6aaee7ed7b8044255c10726aa",
+                "MacAddress": "fa:63:d7:d1:f4:41",
+                "IPv4Address": "172.18.0.4/16",
+                "IPv6Address": ""
+            },
+            "a61d950c8a8b4fc7be936c372108ad46740561146d7e6d33dc773d244ae81d4b": {
+                "Name": "amadis-stage-proxy-dfa208627395",
+                "EndpointID": "2f151c8a93d6fa678bd931b39b1f63b387e07d27ecf05b9c441342bdee5cf473",
+                "MacAddress": "0a:92:a8:65:d1:3e",
+                "IPv4Address": "172.18.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "172.18.0.0/16": {
+                        "IPsInUse": 6,
+                        "DynamicIPsAvailable": 65530
+                    }
+                }
+            }
+        }
+    }
+]

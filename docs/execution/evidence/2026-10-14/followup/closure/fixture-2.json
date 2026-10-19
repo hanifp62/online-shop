@@ -1,0 +1,10 @@
+{
+  "command": [
+    "bash",
+    "scripts/manual/fixture.sh"
+  ],
+  "cwd": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/zafira-manual-closure-20261015",
+  "utc_start": "2026-10-14T17:13:01.866431+00:00",
+  "utc_end": "2026-10-14T17:13:02.439198+00:00",
+  "returncode": 0
+}

@@ -1,0 +1,2 @@
+{"uid": 501, "gid": 20, "route": ["Iface\tDestination\tGateway \tFlags\tRefCnt\tUse\tMetric\tMask\t\tMTU\tWindow\tIRTT                                                       "]}
+[["1.1.1.1", 101], ["8.8.8.8", 101], ["9.9.9.9", 101]]

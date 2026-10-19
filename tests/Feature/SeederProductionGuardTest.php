@@ -66,6 +66,10 @@ class SeederProductionGuardTest extends TestCase
         $this->seed(AdminSeeder::class);
 
         $this->assertDatabaseHas('admins', ['email' => 'admin@gmail.com']);
+        $this->assertNotNull(\App\Models\Admin::where('email', 'admin@gmail.com')->value('totp_required_at'));
+        $admin = \App\Models\Admin::where('email', 'admin@gmail.com')->firstOrFail();
+        $this->assertNotNull($admin->totp_secret);
+        $this->assertSame(8, $admin->totpRecoveryCodes()->count());
     }
 
     public function test_admin_seeder_does_not_use_hardcoded_plaintext_password_in_testing(): void
