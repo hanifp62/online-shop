@@ -79,6 +79,20 @@ class CheckoutService
         return (int) $matches[1];
     }
 
+    /** Rincian biaya tanpa voucher, memakai aturan ongkir dan pajak yang sama dengan createOrder(). */
+    public static function baseQuote(array $priced): array
+    {
+        $shipping = self::shippingFee();
+        $tax = self::tax($priced['subtotal']);
+
+        return [
+            'shipping_fee' => $shipping,
+            'discount' => 0,
+            'tax' => $tax,
+            'total' => $priced['subtotal'] + $tax + $shipping,
+        ];
+    }
+
     public function checkout(User $user, Address $address, array $cart, string $key, ?string $voucherCode): array
     {
         self::validateCart($cart);
