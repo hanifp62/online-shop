@@ -424,9 +424,9 @@ Untuk menyelaraskan nuansa adibusana internasional dan menghormati akar seni kri
 
 ### E. Bukti Pengujian Otomatis & Verifikasi Visual (Execution Evidence)
 
-#### 1. Pengujian Playwright Otomatis (`test_theme_lang_v41.py`)
+#### 1. Pengujian Playwright Otomatis (`scripts/benchmarks/test_theme_lang.py`)
 ```bash
-poetry run python test_theme_lang_v41.py
+python scripts/benchmarks/test_theme_lang.py
 
 --- 1. VERIFYING LARAVEL STOREFRONT (http://127.0.0.1:8000/) ---
 Initial Theme: light

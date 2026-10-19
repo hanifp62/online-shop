@@ -27,3 +27,11 @@ Thumbs.db
 
 # Local database dumps
 database/zafira_ecommerce_20260921*.sql
+
+# Python local artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local audit locks and generated bundles
+.amadis-pdf-dependency.lock
