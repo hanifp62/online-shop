@@ -9,13 +9,23 @@
   <script>
     (function() {
       try {
-        var t = localStorage.getItem('zafira-theme') || 'system';
-        var resolved = t === 'system' ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : t;
-        document.documentElement.setAttribute('data-theme', resolved);
+        var t = 'system', l = 'id';
+        var read = function(key, legacy, ok) {
+          var v = localStorage.getItem(key);
+          if (v !== null) return ok(v) ? v : null;
+          v = localStorage.getItem(legacy);
+          return ok(v) ? v : null;
+        };
+        t = read('zafira_theme', 'zafira-theme', function(v) { return v === 'light' || v === 'dark' || v === 'system'; }) || 'system';
+        l = read('zafira_lang', 'zafira-lang', function(v) { return v === 'id' || v === 'en' || v === 'fr' || v === 'it'; }) || 'id';
+        document.documentElement.setAttribute('data-theme', t === 'system' ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : t);
         document.documentElement.setAttribute('data-theme-setting', t);
-        var l = localStorage.getItem('zafira-lang') || 'id';
         document.documentElement.setAttribute('lang', l);
-      } catch (e) {}
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme-setting', 'system');
+        document.documentElement.setAttribute('lang', 'id');
+      }
     })();
   </script>
   <link rel="preconnect" href="https://fonts.bunny.net">
@@ -53,10 +63,8 @@
         <span class="lang-divider">·</span>
         <button type="button" class="lang-opt" data-set-lang="it" aria-pressed="false" title="Italiano">IT</button>
       </div>
-      <div class="announcement-currency" id="currency-switcher">
-        <span class="curr-opt active" data-curr="IDR" onclick="setCurrency('IDR')">IDR</span>
-        <span class="curr-opt" data-curr="EUR" onclick="setCurrency('EUR')">EUR</span>
-        <span class="curr-opt" data-curr="USD" onclick="setCurrency('USD')">USD</span>
+      <div class="announcement-currency" id="currency-switcher" aria-label="Mata uang: Rupiah Indonesia">
+        <span class="curr-opt active" data-curr="IDR">IDR</span>
       </div>
     </div>
 
@@ -68,17 +76,17 @@
     <!-- Col Right: Aesthetic Controls & Concierge -->
     <div class="announcement-col-right">
       <div class="theme-switcher" role="group" aria-label="Thème / Appearance">
-        <button type="button" class="theme-opt" data-set-theme="light" title="Mode Terang" aria-label="Mode Terang">
+        <button type="button" class="theme-opt" data-set-theme="light" title="Mode Terang" aria-label="Mode Terang" data-i18n-title="theme_light" data-i18n-aria-label="theme_light">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
         </button>
-        <button type="button" class="theme-opt" data-set-theme="dark" title="Mode Gelap" aria-label="Mode Gelap">
+        <button type="button" class="theme-opt" data-set-theme="dark" title="Mode Gelap" aria-label="Mode Gelap" data-i18n-title="theme_dark" data-i18n-aria-label="theme_dark">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
         </button>
-        <button type="button" class="theme-opt" data-set-theme="system" title="Sistem" aria-label="Sistem">
+        <button type="button" class="theme-opt" data-set-theme="system" title="Sistem" aria-label="Sistem" data-i18n-title="theme_system" data-i18n-aria-label="theme_system">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
         </button>
       </div>
-      <a onclick="openRendezvousModal()" class="announcement-rv-btn" data-i18n="rendezvous_btn">Rendez-vous Privat</a>
+      <a href="#" onclick="openRendezvousModal()" class="announcement-rv-btn" data-i18n="rendezvous_btn">Rendez-vous Privat</a>
       <button class="sound-toggle-btn" id="sound-toggle-btn" onclick="toggleAudioFeedback()" title="Suara Atelier Ambient">
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
         <span id="sound-label">Acoustics: On</span>
@@ -96,16 +104,16 @@
 
     <!-- Luxury Floating Glassmorphic Header -->
     <header class="sf-header">
-      <button class="mobile-nav-toggle" id="btn-mobile-nav-toggle" onclick="openMobileNavDrawer()" aria-label="Buka Menu Navigasi" title="Navigasi Kategori">
+      <button class="mobile-nav-toggle" id="btn-mobile-nav-toggle" onclick="openMobileNavDrawer()" aria-label="Buka Menu Navigasi" data-i18n-aria-label="mobile_nav_open" title="Navigasi Kategori">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
 
       <nav class="sf-nav">
-        <a onclick="filterCategory('all')" data-i18n="nav_collection">Koleksi</a>
-        <a onclick="filterCategory(8)" data-i18n="nav_heritage">Warisan</a>
-        <a onclick="filterCategory(9)" data-i18n="nav_arrivals">Adibusana</a>
+        <a href="#catalog-content-area" onclick="filterCategory('all')" data-i18n="nav_collection">Koleksi</a>
+        <a href="#catalog-content-area" onclick="filterCategory(8)" data-i18n="nav_heritage">Warisan</a>
+        <a href="#catalog-content-area" onclick="filterCategory(9)" data-i18n="nav_arrivals">Adibusana</a>
         <a href="#packaging-section" data-i18n="nav_packaging">Kemasan</a>
-        <a onclick="openRendezvousModal()" data-i18n="nav_services">Concierge</a>
+        <a href="#" onclick="openRendezvousModal()" data-i18n="nav_services">Concierge</a>
       </nav>
 
       <a class="sf-brand" href="#storefront" onclick="switchView('storefront')">
@@ -262,10 +270,10 @@
         <div>
           <h4 style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-light); margin-bottom:16px;" data-i18n="footer_services">Layanan Maison</h4>
           <ul style="list-style:none; font-size:12.5px; line-height:2.4; color:rgba(255,255,255,0.85);">
-            <li><a onclick="openRendezvousModal()" style="cursor:pointer;" data-i18n="rendezvous_btn">Rendez-vous Privat</a></li>
-            <li><a onclick="switchView('account')" style="cursor:pointer;" data-i18n="footer_account_portal">Portal Klien VIP</a></li>
-            <li><a onclick="openCartDrawer()" style="cursor:pointer;" data-i18n="cart_aria">Tas Belanja Maison</a></li>
-            <li><a onclick="switchView('studio')" style="cursor:pointer;" data-i18n="nav_digital_atelier">Studio Produk Kriya</a></li>
+            <li><a href="#" onclick="openRendezvousModal()" data-i18n="rendezvous_btn">Rendez-vous Privat</a></li>
+            <li><a href="#" onclick="switchView('account')" style="cursor:pointer;" data-i18n="footer_account_portal">Portal Klien VIP</a></li>
+            <li><a href="#" onclick="openCartDrawer()" style="cursor:pointer;" data-i18n="cart_aria">Tas Belanja Maison</a></li>
+            <li><a href="#" onclick="switchView('studio')" style="cursor:pointer;" data-i18n="nav_digital_atelier">Studio Produk Kriya</a></li>
           </ul>
         </div>
         <div>
@@ -292,13 +300,13 @@
         <div class="footer-pref-item">
           <label class="footer-pref-label" for="proto-footer-lang-select" data-i18n="footer_lang_label">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-            <span data-i18n="footer_lang_label">Wilayah &amp; Bahasa</span>
+            <span data-i18n="footer_lang_label">Bahasa</span>
           </label>
-          <select id="proto-footer-lang-select" class="zafira-lang-select" aria-label="Pilih Bahasa / Select Language">
-            <option value="id">Indonesia · Bahasa Indonesia (IDR Rp)</option>
-            <option value="en">International · English (USD $)</option>
-            <option value="fr">France · Français (EUR €)</option>
-            <option value="it">Italia · Italiano (EUR €)</option>
+          <select id="proto-footer-lang-select" class="zafira-lang-select" aria-label="Pilih Bahasa / Select Language" data-i18n-aria-label="lang_selector">
+            <option value="id">Indonesia · Bahasa Indonesia</option>
+            <option value="en">International · English</option>
+            <option value="fr">France · Français</option>
+            <option value="it">Italia · Italiano</option>
           </select>
         </div>
         <div class="footer-pref-item">
@@ -307,9 +315,9 @@
             <span data-i18n="footer_theme_label">Pilihan Tampilan</span>
           </label>
           <select id="proto-footer-theme-select" class="zafira-theme-select" aria-label="Mode Tampilan / Display Mode">
-            <option value="light">Mode Terang (Clair)</option>
-            <option value="dark">Mode Gelap (Sombre)</option>
-            <option value="system">Sesuai Perangkat (Système)</option>
+            <option value="light" data-i18n="theme_light">Mode Terang (Clair)</option>
+            <option value="dark" data-i18n="theme_dark">Mode Gelap (Sombre)</option>
+            <option value="system" data-i18n="theme_system">Sesuai Perangkat (Système)</option>
           </select>
         </div>
       </div>
@@ -459,12 +467,12 @@
 
             <!-- Language & Currency -->
             <div style="margin-bottom:14px;">
-              <label class="form-label" style="font-size:10px; margin-bottom:6px;">Wilayah, Bahasa &amp; Mata Uang</label>
+              <label class="form-label" style="font-size:10px; margin-bottom:6px;">Bahasa Katalog</label>
               <select class="profile-lang-select" onchange="setAppLanguage(this.value)">
-                <option value="id">Bahasa Indonesia (IDR Rp)</option>
-                <option value="en">English (USD $)</option>
-                <option value="fr">Français (EUR €)</option>
-                <option value="it">Italiano (EUR €)</option>
+                <option value="id">Bahasa Indonesia</option>
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+                <option value="it">Italiano</option>
               </select>
             </div>
 
@@ -573,14 +581,14 @@
             </a>
           </li>
           <li>
-            <a class="admin-nav-item" onclick="switchView('storefront')">
+            <a href="#" class="admin-nav-item" onclick="switchView('storefront')">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
               <span data-i18n="msi_nav_storefront">Lihat Storefront</span>
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
             </a>
           </li>
           <li>
-            <a class="admin-nav-item" onclick="switchView('account')">
+            <a href="#" class="admin-nav-item" onclick="switchView('account')">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
               <span data-i18n="msi_nav_account">Portal Akun Klien</span>
             </a>
@@ -1029,7 +1037,7 @@
             </div>
             <div class="profile-order-step-desc">
               <span>Bordir Kebayoran 60h · Est. 18 Okt 2026</span>
-              <a onclick="closeProfileDrawer(); openWorkOrderModal('ord-1');" class="profile-wo-link">Fiche Kriya &rarr;</a>
+              <a href="#" onclick="closeProfileDrawer(); openWorkOrderModal('ord-1');" class="profile-wo-link">Fiche Kriya &rarr;</a>
             </div>
           </div>
         </div>
@@ -1070,15 +1078,15 @@
             <span class="setting-desc" data-i18n="profile_theme_desc">Pilih pencahayaan salon</span>
           </div>
           <div class="profile-theme-segmented" role="radiogroup" aria-label="Mode Tampilan">
-            <button type="button" class="theme-seg-btn" data-set-theme="light" title="Mode Terang (Clair)">
+            <button type="button" class="theme-seg-btn" data-set-theme="light" title="Mode Terang (Clair)" data-i18n-title="theme_light" aria-label="" data-i18n-aria-label="theme_light">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
               <span>Clair</span>
             </button>
-            <button type="button" class="theme-seg-btn" data-set-theme="dark" title="Mode Gelap (Sombre)">
+            <button type="button" class="theme-seg-btn" data-set-theme="dark" title="Mode Gelap (Sombre)" data-i18n-title="theme_dark" aria-label="" data-i18n-aria-label="theme_dark">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
               <span>Sombre</span>
             </button>
-            <button type="button" class="theme-seg-btn" data-set-theme="system" title="Mengikuti Sistem">
+            <button type="button" class="theme-seg-btn" data-set-theme="system" title="Mengikuti Sistem" data-i18n-title="theme_system" aria-label="" data-i18n-aria-label="theme_system">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
               <span>Auto</span>
             </button>
@@ -1088,14 +1096,14 @@
         <!-- Pilihan Bahasa & Mata Uang -->
         <div class="profile-setting-row">
           <div class="setting-info">
-            <span class="setting-name" data-i18n="profile_lang_label">Bahasa &amp; Mata Uang</span>
+            <span class="setting-name" data-i18n="profile_lang_label">Bahasa</span>
             <span class="setting-desc" data-i18n="profile_lang_desc">Pilih edisi bahasa katalog</span>
           </div>
-          <select class="zafira-lang-select profile-lang-select" aria-label="Pilih Bahasa">
-            <option value="id">Bahasa Indonesia (IDR Rp)</option>
-            <option value="en">English (USD $)</option>
-            <option value="fr">Français (EUR €)</option>
-            <option value="it">Italiano (EUR €)</option>
+          <select class="zafira-lang-select profile-lang-select" aria-label="Pilih Bahasa" data-i18n-aria-label="lang_selector">
+            <option value="id">Bahasa Indonesia</option>
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+            <option value="it">Italiano</option>
           </select>
         </div>
 
@@ -1125,34 +1133,40 @@
   </aside>
 
   <!-- Mobile Navigation Drawer (For Responsive Screens <= 900px) -->
-  <aside class="mobile-nav-drawer" id="mobile-nav-drawer" role="dialog" aria-modal="true" aria-label="Navigasi Kriya Mobile">
+  <aside class="mobile-nav-drawer" id="mobile-nav-drawer" role="dialog" aria-modal="true" aria-label="Navigasi Kriya Mobile" data-i18n-aria-label="mobile_nav_label">
     <div class="drawer-header">
       <div>
         <span style="font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); font-weight:700;">Maison ZAFIRA</span>
-        <h3 style="font-family:var(--serif); font-size:22px; margin:2px 0 0;">Navigasi Kriya</h3>
+        <h3 style="font-family:var(--serif); font-size:22px; margin:2px 0 0;" data-i18n="mobile_nav_heading">Navigasi Kriya</h3>
       </div>
-      <button class="btn-close" onclick="closeMobileNavDrawer()" aria-label="Tutup Navigasi">
+      <button class="btn-close" onclick="closeMobileNavDrawer()" aria-label="Tutup Navigasi" data-i18n-aria-label="mobile_nav_close">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
     </div>
     <div class="drawer-body" style="padding:24px 28px;">
       <nav class="mobile-nav-links">
-        <a onclick="filterCategory('all'); closeMobileNavDrawer();" data-i18n="nav_collection">Koleksi</a>
-        <a onclick="filterCategory(8); closeMobileNavDrawer();" data-i18n="nav_heritage">Warisan Nusantara</a>
-        <a onclick="filterCategory(9); closeMobileNavDrawer();" data-i18n="nav_arrivals">Kapsul Adibusana</a>
+        <a href="#catalog-content-area" onclick="filterCategory('all'); closeMobileNavDrawer();" data-i18n="nav_collection">Koleksi</a>
+        <a href="#catalog-content-area" onclick="filterCategory(8); closeMobileNavDrawer();" data-i18n="nav_heritage">Warisan Nusantara</a>
+        <a href="#catalog-content-area" onclick="filterCategory(9); closeMobileNavDrawer();" data-i18n="nav_arrivals">Kapsul Adibusana</a>
         <a href="#packaging-section" onclick="closeMobileNavDrawer();" data-i18n="nav_packaging">Kemasan &amp; L'Art d'Offrir</a>
-        <a onclick="closeMobileNavDrawer(); openRendezvousModal();" data-i18n="nav_services">Concierge Privat</a>
-        <a onclick="closeMobileNavDrawer(); openProductStudio(9);" style="color:var(--gold); font-weight:600;" data-i18n="dock_studio">Studio Kriya (PDP)</a>
-        <a onclick="closeMobileNavDrawer(); switchView('account');" style="font-weight:600;" data-i18n="dock_account">Espace Klien VIP</a>
+        <a href="#" onclick="closeMobileNavDrawer(); openRendezvousModal();" data-i18n="nav_services">Concierge Privat</a>
+        <a href="#" onclick="closeMobileNavDrawer(); openProductStudio(9);" style="color:var(--gold); font-weight:600;" data-i18n="dock_studio">Studio Kriya (PDP)</a>
+        <a href="#" onclick="closeMobileNavDrawer(); switchView('account');" style="font-weight:600;" data-i18n="dock_account">Espace Klien VIP</a>
       </nav>
 
       <div style="margin-top:28px; padding-top:20px; border-top:1px solid var(--line);">
-        <span style="font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--taupe); font-weight:700; display:block; margin-bottom:12px;">Mata Uang</span>
-        <div class="mobile-curr-group" style="display:flex; gap:8px;">
-          <button class="curr-opt active" data-curr="IDR" onclick="setCurrency('IDR')">IDR Rp</button>
-          <button class="curr-opt" data-curr="EUR" onclick="setCurrency('EUR')">EUR €</button>
-          <button class="curr-opt" data-curr="USD" onclick="setCurrency('USD')">USD $</button>
+        <span id="mobile-lang-label" data-i18n="lang_selector" style="font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--taupe); font-weight:700; display:block; margin-bottom:12px;">Bahasa</span>
+        <div class="mobile-lang-group" role="group" aria-labelledby="mobile-lang-label">
+          <button type="button" class="lang-opt active" data-set-lang="id" aria-pressed="true" title="Bahasa Indonesia" lang="id">ID</button>
+          <button type="button" class="lang-opt" data-set-lang="en" aria-pressed="false" title="English" lang="en">EN</button>
+          <button type="button" class="lang-opt" data-set-lang="fr" aria-pressed="false" title="Français" lang="fr">FR</button>
+          <button type="button" class="lang-opt" data-set-lang="it" aria-pressed="false" title="Italiano" lang="it">IT</button>
         </div>
+      </div>
+
+      <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--line);">
+        <span style="font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--taupe); font-weight:700; display:block; margin-bottom:12px;" data-i18n="mobile_currency_heading">Mata Uang</span>
+        <p class="mobile-curr-group" style="margin:0;" data-i18n="mobile_currency_description">Seluruh harga ditampilkan dalam IDR (Rp).</p>
       </div>
 
       <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--line);">

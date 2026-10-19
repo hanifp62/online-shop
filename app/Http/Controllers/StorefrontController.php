@@ -37,7 +37,7 @@ class StorefrontController extends Controller
                 return [
                     'id' => $product->product_slug ?? 'product-'.$product->product_id,
                     'name' => $product->product_title,
-                    'stock' => (int) $product->stock,
+                    'stock' => max(0, (int) $product->stock),
                     'category' => $product->category?->cat_title ?? 'Koleksi',
                     'price' => (int) $product->product_price,
                     'price_label' => 'Rp'.number_format($product->product_price, 0, ',', '.'),

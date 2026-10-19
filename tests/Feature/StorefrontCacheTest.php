@@ -28,15 +28,19 @@ class StorefrontCacheTest extends TestCase
         $this->get(route('products.show', $product->product_slug))->assertOk();
         Cache::put('unrelated:marker', 'keep', 300);
         $this->postJson('/newsletter', ['email' => 'client@example.com'])->assertOk();
+        $relatedKey = "storefront:related:{$category->cat_id}:{$product->product_id}:v3";
+        // Guard against vacuous passes: the live keys must be warm before invalidation.
+        $this->assertNotNull(Cache::get('storefront:products:v3'));
+        $this->assertNotNull(Cache::get('storefront:categories:v2'));
+        $this->assertNotNull(Cache::get($relatedKey));
 
         $this->actingAs(Admin::firstOrFail(), 'admin')
             ->patch(route('admin.categories.update', $category), ['cat_title' => 'Atelier Baru'])
             ->assertRedirect();
 
-        $this->assertNull(Cache::get('storefront:products:v1'));
-        $this->assertNull(Cache::get('storefront:categories:v1'));
-        $this->assertNull(Cache::get('storefront:product:tas-atelier:v1'));
-        $this->assertNull(Cache::get("storefront:related:{$category->cat_id}:{$product->product_id}:v1"));
+        $this->assertNull(Cache::get('storefront:products:v3'));
+        $this->assertNull(Cache::get('storefront:categories:v2'));
+        $this->assertNull(Cache::get($relatedKey));
         $this->assertSame('keep', Cache::get('unrelated:marker'));
         $this->postJson('/newsletter', ['email' => 'client@example.com'])->assertOk();
         $this->postJson('/newsletter', ['email' => 'client@example.com'])->assertOk();
@@ -57,9 +61,9 @@ class StorefrontCacheTest extends TestCase
         $this->get(route('products.show', 'tas-atelier'))->assertOk();
         $this->actingAs(Admin::firstOrFail(), 'admin')
             ->patch(route('admin.products.update', $product), ['product_slug' => 'tas-baru'])->assertRedirect();
-        $this->assertNull(Cache::get('storefront:product:tas-atelier:v1'));
+        $this->assertNull(Cache::get('storefront:product:tas-atelier:v2'));
         $this->get(route('products.show', 'tas-baru'))->assertOk();
         $this->delete(route('admin.products.destroy', $product))->assertRedirect();
-        $this->assertNull(Cache::get('storefront:product:tas-baru:v1'));
+        $this->assertNull(Cache::get('storefront:product:tas-baru:v2'));
     }
 }

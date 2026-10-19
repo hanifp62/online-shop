@@ -25,7 +25,9 @@ function harness() {
         selectAll: (_, layer) => layer ? [layer.button] : [],
     };
     vm.createContext(context);
-    vm.runInContext(source.slice(source.indexOf("    const mobileMenu = select('.mobile-menu');") + "    const mobileMenu = select('.mobile-menu');".length, source.indexOf('    const productCards =')), context);
+    const mobileMenuStart = source.indexOf('    const mobileMenu = select(');
+    const mobileMenuEnd = source.indexOf('    const productCards =');
+    vm.runInContext(source.slice(mobileMenuStart + source.indexOf('\n', mobileMenuStart) - mobileMenuStart + 1, mobileMenuEnd), context);
     vm.runInContext(source.slice(source.indexOf('    function syncOverlay()'), source.indexOf('    function updateCounts()')), context);
     return { ...context, context, layers, trigger, focus: () => focused, run: code => vm.runInContext(code, context) };
 }

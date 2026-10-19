@@ -2,7 +2,7 @@
 
 > Bahasa: Indonesia. Nama tool/term tetap English. Status: riset evidence-based, Okt 2026.
 > Legenda: **[Fakta]** = ada sumber URL | **[Inferensi]** = gabungan sumber, label eksplisit | **[Unknown]** = belum terverifikasi / tulis `unverified`.
-> ZAFIRA konteks: Laravel luxury shop — concierge request/appointment ganti payments, products/categories, wishlist, localStorage cart, admin CRUD, MVP tanpa tabel Order.
+> ZAFIRA konteks: Laravel luxury shop — concierge request/appointment ganti payments, products/categories, wishlist, localStorage cart, admin CRUD, MVP tanpa tabel Order. *(Koreksi 2026-10-19: konteks ini historis. Cart kini di tabel `carts`/`cart_items` (migrasi `2026_10_19_000002_create_carts_tables.php`); localStorage hanya rekonsiliasi legacy. Tabel `orders`/`order_items` kini ada.)*
 
 ## 1. Mytheresa (luxury multi-brand curator)
 

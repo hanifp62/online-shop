@@ -10,9 +10,9 @@ const footer = readFileSync(new URL('../resources/views/partials/product-footer.
 test('storefront overlays include focus trap, opener return, and Escape close behavior', () => {
     assert.match(app, /function openElement\(element, trigger = document\.activeElement\)/);
     assert.match(app, /function closeElement\(element, restoreFocus = true\)/);
-    assert.match(app, /element\.setAttribute\('aria-hidden', 'false'\)/);
-    assert.match(app, /event\.key === 'Escape'[\s\S]*?closeAll\(\)/);
-    assert.match(app, /event\.key === 'Tab'[\s\S]*?event\.preventDefault\(\)/);
+    assert.match(app, /element\.setAttribute\((['"])aria-hidden\1, \1false\1\)/);
+    assert.match(app, /event\.key === (['"])Escape\1[\s\S]*?closeAll\(\)/);
+    assert.match(app, /event\.key === (['"])Tab\1[\s\S]*?event\.preventDefault\(\)/);
 });
 
 test('search and catalog filters have accessible names and exposed state', () => {
@@ -28,7 +28,7 @@ test('PDP size guide is an accessible dialog and native alerts are absent', () =
     assert.match(product, /data-size-guide[^>]+role="dialog"[^>]+aria-modal="true"/);
     // PDP body carries .storefront so sizeGuideDrawer wiring inside if(storefront) is active.
     assert.match(product, /<body[^>]+class="storefront/);
-    assert.match(app, /selectAll\('\[data-open-size-guide\]'\)/);
+    assert.match(app, /selectAll\((['"])\[data-open-size-guide\]\1\)/);
 });
 
 test('keyboard help participates in accessible dialog flow', () => {

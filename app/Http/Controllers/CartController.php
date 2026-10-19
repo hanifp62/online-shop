@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Services\CartStore;
 use App\Services\CheckoutService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -28,25 +29,62 @@ class CartController extends Controller
             return response()->json(['message' => 'Stok produk tidak mencukupi atau produk tidak aktif.'], 422);
         }
 
-        $cart = CheckoutService::cart($request);
-        $cart[$validated['product_id']] = $validated['quantity'];
-        $request->session()->put(CheckoutService::cartKey($request), $cart);
+        $cart = CartStore::locked($request, function (int $id) use ($validated) {
+            CartStore::set($id, (int) $validated['product_id'], (int) $validated['quantity']);
+
+            return CartStore::items($id);
+        }, create: true);
+
+        return response()->json(CheckoutService::priced($cart));
+    }
+
+    public function adjust(Request $request, int $productId): JsonResponse
+    {
+        $validated = $request->validate([
+            'delta' => ['required', 'integer', 'not_in:0', 'between:-99,99'],
+            'size' => ['prohibited'],
+            'monogram' => ['prohibited'],
+        ]);
+        $delta = (int) $validated['delta'];
+        $cart = CartStore::locked($request, function (?int $id, array $items) use ($productId, $delta) {
+            $product = Product::findOrFail($productId);
+            $quantity = max(0, ($items[$productId] ?? 0) + $delta);
+            if ($delta > 0 && (! $product->is_active || $quantity > (int) $product->stock || $quantity > CheckoutService::MAX_QUANTITY)) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'delta' => 'Stok produk tidak mencukupi, batas jumlah terlampaui, atau produk tidak aktif.',
+                ]);
+            }
+            if ($id !== null) {
+                if ($quantity === 0) {
+                    CartStore::remove($id, $productId);
+                } else {
+                    CartStore::set($id, $productId, $quantity);
+                }
+            }
+
+            return $id === null ? [] : CartStore::items($id);
+        }, create: $delta > 0);
 
         return response()->json(CheckoutService::priced($cart));
     }
 
     public function destroy(Request $request, int $productId): JsonResponse
     {
-        $cart = CheckoutService::cart($request);
-        unset($cart[$productId]);
-        $request->session()->put(CheckoutService::cartKey($request), $cart);
+        [$cart, $removedQuantity] = CartStore::locked($request, function (?int $id, array $items) use ($productId) {
+            if ($id === null) {
+                return [[], 0];
+            }
+            CartStore::remove($id, $productId);
 
-        return response()->json(CheckoutService::priced($cart));
+            return [CartStore::items($id), $items[$productId] ?? 0];
+        });
+
+        return response()->json(CheckoutService::priced($cart) + ['removed_quantity' => $removedQuantity]);
     }
 
     public function clear(Request $request): JsonResponse
     {
-        $request->session()->forget(CheckoutService::cartKey($request));
+        CartStore::locked($request, fn (?int $id) => $id === null ? null : CartStore::remove($id));
 
         return response()->json(['items' => [], 'subtotal' => 0]);
     }

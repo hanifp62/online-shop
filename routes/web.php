@@ -12,12 +12,14 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\GuestCheckoutController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\StorefrontController;
 use App\Http\Middleware\EnsureAdminTotp;
+use App\Http\Middleware\NoStore;
 use Illuminate\Cache\RateLimiting\Limit;
 use App\Http\Controllers\AdminAuthEventController;
 use App\Services\AuthEventRecorder;
@@ -69,6 +71,24 @@ RateLimiter::for('register', fn ($job) => Limit::perHour(5)->by($job->ip()));
 RateLimiter::for('concierge', fn ($job) => Limit::perHour(3)->by($job->ip()));
 RateLimiter::for('newsletter', fn ($job) => Limit::perDay(5)->by($job->ip()));
 RateLimiter::for('checkout', fn ($job) => Limit::perMinute(10)->by($job->user()?->id ?: $job->ip()));
+// Throttle aborts before the NoStore middleware can post-process, so set it here too.
+RateLimiter::for('cart', fn ($request) => Limit::perMinute(60)->by('cart|'.$request->ip())
+    ->response(fn ($request, array $headers) => response()->json(
+        ['message' => 'Terlalu banyak permintaan tas belanja.'],
+        429,
+        $headers + ['Cache-Control' => 'no-store'],
+    )));
+RateLimiter::for('track', function ($request) {
+    // Throttle aborts before the NoStore middleware can post-process, so set it here too.
+    $respond = fn ($request, array $headers) => response()->json(['message' => 'Terlalu banyak percobaan pelacakan.'], 429, $headers + ['Cache-Control' => 'no-store']);
+    $token = $request->isJson() ? $request->json('token') : $request->request->get('token');
+    $limits = [Limit::perMinute(10)->by('track|ip|'.$request->ip())->response($respond)];
+    if (is_string($token) && $token !== '') {
+        $limits[] = Limit::perMinute(10)->by('track|token|'.hash('sha256', $token))->response($respond);
+    }
+
+    return $limits;
+});
 
 Route::get('/', [StorefrontController::class, 'index'])->name('home');
 Route::get('/koleksi', [CatalogController::class, 'index'])->name('catalog.index');
@@ -83,10 +103,15 @@ Route::post('/newsletter', [StorefrontController::class, 'subscribe'])
     ->middleware('throttle:newsletter')
     ->name('newsletter.store');
 
-Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
-Route::post('/cart/items', [CartController::class, 'store'])->name('cart.items.store');
-Route::delete('/cart/items/{productId}', [CartController::class, 'destroy'])->whereNumber('productId')->name('cart.items.destroy');
-Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
+Route::get('/cart', [CartController::class, 'show'])->middleware([NoStore::class, 'throttle:cart'])->block(10, 10)->name('cart.show');
+Route::post('/cart/items', [CartController::class, 'store'])->middleware([NoStore::class, 'throttle:cart'])->block(10, 10)->name('cart.items.store');
+Route::post('/cart/items/{productId}/delta', [CartController::class, 'adjust'])->whereNumber('productId')->middleware([NoStore::class, 'throttle:cart'])->block(10, 10)->name('cart.items.adjust');
+Route::delete('/cart/items/{productId}', [CartController::class, 'destroy'])->whereNumber('productId')->middleware([NoStore::class, 'throttle:cart'])->block(10, 10)->name('cart.items.destroy');
+Route::delete('/cart', [CartController::class, 'clear'])->middleware([NoStore::class, 'throttle:cart'])->block(10, 10)->name('cart.clear');
+Route::get('/checkout', fn () => redirect('/belanja'));
+Route::post('/checkout', [OrderController::class, 'store'])->middleware([NoStore::class, 'throttle:checkout'])->block(10, 10)->name('checkout.store');
+Route::get('/orders/track', fn () => redirect('/belanja'))->name('orders.track.form');
+Route::post('/orders/track', [GuestCheckoutController::class, 'track'])->middleware([NoStore::class, 'throttle:track'])->name('orders.track');
 Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
 
 Route::middleware('guest')->group(function () {
@@ -113,7 +138,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/addresses/{id}', [AddressController::class, 'update'])->whereNumber('id')->name('addresses.update');
     Route::delete('/addresses/{id}', [AddressController::class, 'destroy'])->whereNumber('id')->name('addresses.destroy');
 
-    Route::post('/checkout', [OrderController::class, 'store'])->middleware('throttle:checkout')->name('checkout.store');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [OrderController::class, 'show'])->whereNumber('id')->name('orders.show');
     Route::post('/orders/{id}/cancel', [OrderController::class, 'cancel'])->whereNumber('id')->name('orders.cancel');
@@ -133,7 +157,7 @@ Route::middleware('guest:admin')->group(function () {
 });
 
 // Admin sudah login tetapi belum lolos faktor kedua: hanya boleh verifikasi atau keluar.
-Route::middleware('auth:admin')->group(function () {
+Route::middleware([NoStore::class, 'auth:admin'])->group(function () {
     Route::get('/admin/totp', [AdminTotpController::class, 'show'])->name('admin.totp.challenge');
     Route::post('/admin/totp', [AdminTotpController::class, 'verify'])->name('admin.totp.verify');
     Route::post('/admin/totp/recovery', [AdminTotpController::class, 'recovery'])->name('admin.totp.recovery');
@@ -144,7 +168,7 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 });
 
-Route::middleware(['auth:admin', EnsureAdminTotp::class])->group(function () {
+Route::middleware([NoStore::class, 'auth:admin', EnsureAdminTotp::class])->group(function () {
     Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::patch('/admin/concierge/{concierge}', [AdminDashboardController::class, 'updateConcierge'])->name('admin.concierge.update');
     Route::patch('/admin/password', [AdminDashboardController::class, 'updatePassword'])->name('admin.password.update');

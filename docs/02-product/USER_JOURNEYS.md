@@ -27,8 +27,10 @@ journey
       Modal Berubah ke Mode Checkout: 5: Pelanggan
       Isi Nama, Email, Nomor WhatsApp, dan Catatan Ukuran: 5: Pelanggan
       Kirim Permintaan Pesanan: 5: Pelanggan
-      Menerima Notifikasi Toast Sukses & Email Konfirmasi: 5: Pelanggan
+      Menerima Toast Sukses: 5: Pelanggan
 ```
+
+> **Catatan audit 2026-10-11:** `StorefrontController::bookConcierge` mengantrekan `ConciergeRequested` setelah record dibuat. Pengiriman nyata bergantung pada worker queue dan konfigurasi mail; belum diverifikasi. Respons tidak memuat nomor referensi. Skor 1–5 pada diagram adalah perkiraan tim, bukan hasil riset pengguna.
 
 ---
 
@@ -49,10 +51,12 @@ journey
     section Pemrosesan Pesanan
       Buka Modul Pesanan / Concierge: 5: Admin
       Tinjau Rincian Produk & Catatan Monogram: 5: Admin
-      Hubungi Pelanggan via WhatsApp: 5: Admin
+      Hubungi Pelanggan secara Manual (kanal di luar sistem): 4: Admin
       Perbarui Status (New -> Contacted -> Confirmed): 5: Admin
       Pelanggan Melihat Status Berubah di /akun: 5: Admin, Pelanggan
 ```
+
+> **Catatan audit 2026-10-11:** Integrasi WhatsApp belum menjadi requirement. Statusnya `investigate` pada [D-06](../research/ZAFIRA_DIFFERENTIATION.md); kontak pelanggan dilakukan manual di luar aplikasi dan tidak ada otomatisasi pesan.
 
 ---
 
@@ -69,5 +73,5 @@ journey
       Melihat Ringkasan Profil: 4: Pelanggan
       Memperbarui Nomor HP / Alamat Pengiriman: 4: Pelanggan
       Melihat Kartu Riwayat Pesanan / Concierge: 5: Pelanggan
-      Mengecek Badge Status Real-Time (Misal: Confirmed): 5: Pelanggan
+      Mengecek Status Tersimpan Saat Halaman Dimuat (Misal: Confirmed): 5: Pelanggan
 ```

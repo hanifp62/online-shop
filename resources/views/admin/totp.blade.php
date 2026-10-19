@@ -20,14 +20,14 @@
             @endif
             <form method="POST" action="{{ route('admin.totp.verify') }}" novalidate>
                 @csrf
-                <div class="field"><label for="code">Kode 6 digit</label><input id="code" name="code" type="text" inputmode="numeric" pattern="\d{6}" maxlength="6" autocomplete="one-time-code" required autofocus></div>
+                <div class="field"><label for="code">Kode 6 digit</label><input id="code" name="code" type="text" inputmode="numeric" pattern="\d{6}" maxlength="6" autocomplete="one-time-code" required autofocus @error('code') aria-invalid="true" aria-describedby="code-error" @enderror>@error('code')<p id="code-error" class="form-error">{{ $message }}</p>@enderror</div>
                 <button class="button button-sapphire" type="submit">Verifikasi</button>
             </form>
             <details>
                 <summary>Tidak bisa membuka autentikator?</summary>
                 <form method="POST" action="{{ route('admin.totp.recovery') }}" novalidate>
                     @csrf
-                    <div class="field"><label for="recovery_code">Kode cadangan</label><input id="recovery_code" name="recovery_code" type="text" autocomplete="off" spellcheck="false" required></div>
+                    <div class="field"><label for="recovery_code">Kode cadangan</label><input id="recovery_code" name="recovery_code" type="text" autocomplete="off" spellcheck="false" required @error('recovery_code') aria-invalid="true" aria-describedby="recovery_code-error" @enderror>@error('recovery_code')<p id="recovery_code-error" class="form-error">{{ $message }}</p>@enderror</div>
                     <button class="button" type="submit">Pakai kode cadangan</button>
                 </form>
             </details>

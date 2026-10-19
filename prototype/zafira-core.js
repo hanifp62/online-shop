@@ -19,7 +19,7 @@
       nav_packaging: "L'Art d'Offrir",
       nav_services: "Layanan",
       nav_digital_atelier: "Atelier Digital",
-      search_placeholder: "Cari sutra, tenun, kriya…",
+      search_placeholder: "Cari…",
       search_aria: "Cari",
       wishlist_aria: "Favorit",
       cart_aria: "Tas Belanja",
@@ -129,7 +129,7 @@
       newsletter_desc: "Terima cerita atelier, undangan privat, dan akses pertama ke koleksi terbaru.",
       newsletter_placeholder: "nama @ contoh.id…",
       newsletter_privacy: "Dengan berlangganan, Anda menyetujui kebijakan privasi ZAFIRA.",
-      footer_motto: "Parisian in spirit. Italian by craft. Indonesian at heart.",
+      footer_motto: "Parisian dalam jiwa. Italia dalam kriya. Indonesia di hati.",
       footer_col_collection: "Koleksi",
       footer_women: "Wanita",
       footer_men: "Pria",
@@ -230,7 +230,7 @@
       profile_theme_label: "Mode Tampilan",
       profile_theme_desc: "Pilih suasana visual ruang pamer",
       profile_lang_label: "Wilayah & Bahasa",
-      profile_lang_desc: "Penyelarasan bahasa dan mata uang internasional",
+      profile_lang_desc: "Penyelarasan bahasa katalog resmi ZAFIRA",
       profile_sound_label: "Akustik Kriya Atelier",
       profile_sound_desc: "Umpan balik audio lembut saat berinteraksi",
       profile_full_portal: "Buka Portal Akun Lengkap →",
@@ -240,7 +240,13 @@
       theme_light: "Mode Terang",
       theme_dark: "Mode Gelap",
       theme_system: "Sistem",
-      lang_selector: "Bahasa"
+      lang_selector: "Bahasa",
+      mobile_nav_open: "Buka Menu Navigasi",
+      mobile_nav_label: "Navigasi Kriya Mobile",
+      mobile_nav_heading: "Navigasi Kriya",
+      mobile_nav_close: "Tutup Navigasi",
+      mobile_currency_heading: "Mata Uang",
+      mobile_currency_description: "Seluruh harga ditampilkan dalam IDR (Rp)."
     },
 
     en: {
@@ -254,7 +260,7 @@
       nav_packaging: "L'Art d'Offrir",
       nav_services: "Services",
       nav_digital_atelier: "Digital Atelier",
-      search_placeholder: "Search silk, weaving, craftsmanship…",
+      search_placeholder: "Search…",
       search_aria: "Search",
       wishlist_aria: "Wishlist",
       cart_aria: "Shopping Bag",
@@ -466,7 +472,7 @@
       profile_theme_label: "Appearance Mode",
       profile_theme_desc: "Select digital salon visual ambiance",
       profile_lang_label: "Region & Language",
-      profile_lang_desc: "Synchronize international language & currency",
+      profile_lang_desc: "Language selection for ZAFIRA official catalog",
       profile_sound_label: "Atelier Acoustic Soundscape",
       profile_sound_desc: "Subtle tactile audio feedback on interactions",
       profile_full_portal: "Open Full VIP Account Portal →",
@@ -476,7 +482,13 @@
       theme_light: "Light Mode",
       theme_dark: "Dark Mode",
       theme_system: "System Default",
-      lang_selector: "Language"
+      lang_selector: "Language",
+      mobile_nav_open: "Open Navigation Menu",
+      mobile_nav_label: "Mobile Craft Navigation",
+      mobile_nav_heading: "Craft Navigation",
+      mobile_nav_close: "Close Navigation",
+      mobile_currency_heading: "Currency",
+      mobile_currency_description: "All prices are displayed in IDR (Rp)."
     },
 
     fr: {
@@ -490,7 +502,7 @@
       nav_packaging: "L'Art d'Offrir",
       nav_services: "Services",
       nav_digital_atelier: "Atelier Numérique",
-      search_placeholder: "Rechercher soie, tissage, savoir-faire…",
+      search_placeholder: "Chercher…",
       search_aria: "Recherche",
       wishlist_aria: "Favoris",
       cart_aria: "Panier",
@@ -600,7 +612,7 @@
       newsletter_desc: "Recevez les carnets de l'atelier, des invitations privées et les avant-premières exclusives.",
       newsletter_placeholder: "votre-nom @ domaine.fr…",
       newsletter_privacy: "En vous abonnant, vous acceptez la politique de confidentialité de ZAFIRA.",
-      footer_motto: "Parisian in spirit. Italian by craft. Indonesian at heart.",
+      footer_motto: "Parisienne d’esprit. Italienne par le savoir-faire. Indonésienne de cœur.",
       footer_col_collection: "Collections",
       footer_women: "Femme",
       footer_men: "Homme",
@@ -701,7 +713,7 @@
       profile_theme_label: "Mode d'Affichage",
       profile_theme_desc: "Choisissez l'ambiance visuelle du salon",
       profile_lang_label: "Région & Langue",
-      profile_lang_desc: "Synchroniser langue et devise internationale",
+      profile_lang_desc: "Sélection de la langue du catalogue officiel ZAFIRA",
       profile_sound_label: "Ambiance Acoustique de l'Atelier",
       profile_sound_desc: "Retour sonore délicat lors des interactions",
       profile_full_portal: "Accéder à l'Espace Client Complet →",
@@ -711,7 +723,13 @@
       theme_light: "Mode Clair",
       theme_dark: "Mode Sombre",
       theme_system: "Système",
-      lang_selector: "Langue"
+      lang_selector: "Langue",
+      mobile_nav_open: "Ouvrir le menu de navigation",
+      mobile_nav_label: "Navigation mobile des créations",
+      mobile_nav_heading: "Navigation des créations",
+      mobile_nav_close: "Fermer la navigation",
+      mobile_currency_heading: "Devise",
+      mobile_currency_description: "Tous les prix sont affichés en IDR (Rp)."
     },
 
     it: {
@@ -725,7 +743,7 @@
       nav_packaging: "L'Art d'Offrir",
       nav_services: "Servizi",
       nav_digital_atelier: "Atelier Digitale",
-      search_placeholder: "Cerca seta, tessitura, mestieri d'arte…",
+      search_placeholder: "Cerca",
       search_aria: "Cerca",
       wishlist_aria: "Desideri",
       cart_aria: "Borsa Shopping",
@@ -835,7 +853,7 @@
       newsletter_desc: "Ricevete le cronache dell'atelier, inviti ai salotti privati e anteprime assolute.",
       newsletter_placeholder: "nome @ dominio.it…",
       newsletter_privacy: "Iscrivendoti, accetti la politica sulla privacy di ZAFIRA.",
-      footer_motto: "Parisian in spirit. Italian by craft. Indonesian at heart.",
+      footer_motto: "Parigina nello spirito. Italiana nel mestiere. Indonesiana nel cuore.",
       footer_col_collection: "Collezioni",
       footer_women: "Donna",
       footer_men: "Uomo",
@@ -936,7 +954,7 @@
       profile_theme_label: "Modalità di Visualizzazione",
       profile_theme_desc: "Seleziona l'atmosfera visiva del salone",
       profile_lang_label: "Regione & Lingua",
-      profile_lang_desc: "Sincronizza lingua e valuta internazionale",
+      profile_lang_desc: "Selezione della lingua per il catalogo ufficiale ZAFIRA",
       profile_sound_label: "Acustica Artigianale dell'Atelier",
       profile_sound_desc: "Feedback sonoro delicato durante le interazioni",
       profile_full_portal: "Apri Portale Clienti Completo →",
@@ -946,7 +964,13 @@
       theme_light: "Modalità Chiara",
       theme_dark: "Modalità Scura",
       theme_system: "Sistema Predefinito",
-      lang_selector: "Lingua"
+      lang_selector: "Lingua",
+      mobile_nav_open: "Apri il menu di navigazione",
+      mobile_nav_label: "Navigazione mobile dell'artigianato",
+      mobile_nav_heading: "Navigazione dell'artigianato",
+      mobile_nav_close: "Chiudi la navigazione",
+      mobile_currency_heading: "Valuta",
+      mobile_currency_description: "Tutti i prezzi sono indicati in IDR (Rp)."
     }
   };
 
@@ -1326,20 +1350,54 @@
   const THEME_KEY = 'zafira_theme';
   const LANG_KEY = 'zafira_lang';
 
+  function safeGet(key) {
+    try { return localStorage.getItem(key); } catch (e) { return null; }
+  }
+
+  function safeSet(key, value) {
+    try { localStorage.setItem(key, value); } catch (e) {}
+  }
+
+  let themeSetting;
+  let languageSetting;
+
+  // A present canonical key wins, even when invalid; only absent keys migrate.
+  function readPref(key, legacyKey, isValid) {
+    const current = safeGet(key);
+    if (current !== null) return isValid(current) ? current : null;
+    const legacy = safeGet(legacyKey);
+    if (isValid(legacy)) {
+      safeSet(key, legacy);
+      return legacy;
+    }
+    return null;
+  }
+
+  function isValidTheme(value) {
+    return value === 'light' || value === 'dark' || value === 'system';
+  }
+
+  function isValidLanguage(value) {
+    return !!value && Object.prototype.hasOwnProperty.call(I18N, value);
+  }
+
   function getTheme() {
-    return localStorage.getItem(THEME_KEY) || 'light';
+    return themeSetting || (themeSetting = readPref(THEME_KEY, 'zafira-theme', isValidTheme) || 'system');
   }
 
   function applyTheme(mode) {
     const root = document.documentElement;
-    localStorage.setItem(THEME_KEY, mode);
-    root.setAttribute('data-theme', mode);
+    if (!isValidTheme(mode)) mode = 'system';
+    themeSetting = mode;
+    safeSet(THEME_KEY, mode);
 
     let effectiveTheme = mode;
     if (mode === 'system') {
       const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
       effectiveTheme = isDark ? 'dark' : 'light';
     }
+    root.setAttribute('data-theme', effectiveTheme);
+    root.setAttribute('data-theme-setting', mode);
 
     // Apply color-scheme meta
     let meta = document.querySelector('meta[name="color-scheme"]');
@@ -1376,12 +1434,13 @@
   }
 
   function getLanguage() {
-    return localStorage.getItem(LANG_KEY) || 'id';
+    return languageSetting || (languageSetting = readPref(LANG_KEY, 'zafira-lang', isValidLanguage) || 'id');
   }
 
   function applyLanguage(lang) {
     if (!I18N[lang]) lang = 'id';
-    localStorage.setItem(LANG_KEY, lang);
+    languageSetting = lang;
+    safeSet(LANG_KEY, lang);
     document.documentElement.setAttribute('lang', lang);
     document.documentElement.setAttribute('data-lang', lang);
 
@@ -1412,6 +1471,12 @@
       const key = el.getAttribute('data-i18n-title');
       if (dict[key] !== undefined) {
         el.setAttribute('title', dict[key]);
+      }
+    });
+    document.querySelectorAll('[data-i18n-aria-label]').forEach(el => {
+      const key = el.getAttribute('data-i18n-aria-label');
+      if (dict[key] !== undefined) {
+        el.setAttribute('aria-label', dict[key]);
       }
     });
 
@@ -1450,17 +1515,8 @@
     return dict[key] !== undefined ? dict[key] : fallback;
   }
 
-  // Currency Formatter
-  function formatPrice(amountIdr, langOrCurr) {
-    if (!langOrCurr) langOrCurr = getLanguage();
-    const l = String(langOrCurr).toLowerCase();
-    if (l === 'fr' || l === 'it' || l === 'eur') {
-      const eur = Math.round(amountIdr / 16800);
-      return eur.toLocaleString('fr-FR') + ' €';
-    } else if (l === 'en' || l === 'usd') {
-      const usd = Math.round(amountIdr / 15700);
-      return '$ ' + usd.toLocaleString('en-US');
-    }
+  // Currency Formatter — ZAFIRA mengikat seluruh etalase pada valuta resmi IDR.
+  function formatPrice(amountIdr, _langOrCurr) {
     return 'Rp ' + Number(amountIdr || 0).toLocaleString('id-ID');
   }
 

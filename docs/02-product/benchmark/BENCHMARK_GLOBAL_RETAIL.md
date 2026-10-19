@@ -1,6 +1,6 @@
 # Benchmark Global Retail: Temu, Shein, Etsy
 
-> Konteks: referensi pola adopsi untuk ZAFIRA — Laravel luxury shop, MVP: concierge request (tanpa payment), products/categories, wishlist, cart di `localStorage`, admin CRUD, tanpa tabel Order di MVP. Bahasa Indonesia; nama tool/term dalam English.
+> Konteks: referensi pola adopsi untuk ZAFIRA — Laravel luxury shop, MVP: concierge request (tanpa payment), products/categories, wishlist, cart di `localStorage`, admin CRUD, tanpa tabel Order di MVP. Bahasa Indonesia; nama tool/term dalam English. *(Koreksi 2026-10-19: konteks ini historis. Cart kini di tabel `carts`/`cart_items` (migrasi `2026_10_19_000002_create_carts_tables.php`); localStorage hanya rekonsiliasi legacy. Tabel `orders`/`order_items` kini ada.)*
 
 Legenda bukti: **[F]** = Fakta terverifikasi (dengan URL sumber) · **[I]** = Inferensi beralasan · **[U]** = Unverified/belum tersedia.
 

@@ -68,17 +68,27 @@
   padding: 0;
 }
 html {
+  --dock-band: 84px;
   scroll-behavior: smooth;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  height: 100%;
+  overflow: hidden;
 }
+/* Reserved dock band: body is the page scroller and stops above the fixed dock,
+   so no content can ever scroll, paint or receive focus underneath the dock. */
 body {
   font-family: var(--sans);
   color: var(--ink);
   background: var(--ivory);
   line-height: 1.65;
   font-size: 14px;
+  height: calc(100vh - var(--dock-band));
+  height: calc(100dvh - var(--dock-band));
   overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
 }
 
 /* WCAG 2.2 AAA Accessible Focus & Skip Link */
@@ -214,8 +224,10 @@ body {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: #fff;
-  width: 24px;
-  height: 24px;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  min-width: 44px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -282,14 +294,15 @@ body {
 }
 .announcement-col-center {
   text-align: center;
-  flex: 2 1 0%;
+  flex: 2 1 auto;
+  min-width: 0;
   font-size: 10.5px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.92);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  line-height: 1.35;
+  overflow: visible;
   padding: 0 16px;
 }
 .announcement-col-right {
@@ -456,6 +469,7 @@ body {
   align-items: center;
 }
 .search-input {
+  min-height: 44px;
   padding: 8px 14px 8px 34px;
   font-size: 12px;
   border: 1px solid var(--line);
@@ -478,6 +492,7 @@ body {
   pointer-events: none;
 }
 .action-btn {
+  min-height: 44px;
   background: transparent;
   border: 1px solid var(--line);
   border-radius: var(--radius-xs);
@@ -528,7 +543,10 @@ body {
   overflow: hidden;
   background: #0f1c33;
 }
+/* Pane height comes from min-height/grid row, never from the image's intrinsic height (1024 stacked hero inflated to 1700px). */
 .hero-media-img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -660,6 +678,9 @@ body {
 /* ==========================================================================
    ATELIER PROVENANCE STRIP
    ========================================================================== */
+@media (min-width: 1025px) {
+  .provenance-strip { margin-top: 40px; }
+}
 .provenance-strip {
   background: var(--sapphire-midnight);
   color: rgba(255, 255, 255, 0.72);
@@ -700,6 +721,7 @@ body {
   flex-wrap: wrap;
 }
 .cat-pill {
+  min-height: 44px;
   background: var(--white);
   border: 1px solid var(--line);
   padding: 7px 18px;
@@ -1071,7 +1093,9 @@ body {
   background: var(--ivory);
 }
 .studio-top-nav {
-  padding: 14px 48px;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px clamp(16px, 4vw, 48px);
   border-bottom: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
@@ -1880,6 +1904,8 @@ body {
   background: var(--white);
 }
 .qty-btn {
+  min-height: 44px;
+  min-width: 44px;
   background: transparent;
   border: none;
   padding: 4px 10px;
@@ -2050,12 +2076,33 @@ button:active, .btn-gold:active, .btn-outline:active, .proto-btn:active, .dock-b
   .hero-title { font-size: 40px; }
 }
 
+@media (min-width: 1025px) and (max-width: 1400px) {
+  .sf-actions { gap: 8px; }
+  .sf-actions .action-btn { padding-inline: 8px; }
+  .sf-header { padding: 12px 20px; }
+  .sf-nav { gap: 4px; }
+  .sf-nav a { font-size: 10px; letter-spacing: 0.04em; }
+  .sf-brand-title { font-size: 22px; }
+  .search-input { width: 100px; padding: 8px 6px 8px 30px; }
+  .search-input:focus { width: 130px; }
+}
+
 @media (max-width: 1024px) {
+  .sf-header { padding: 12px 20px; }
+  .sf-nav { gap: 10px; }
+  .sf-nav a { font-size: 10px; }
+  .sf-brand-title { font-size: 22px; }
+  .sf-actions { gap: 8px; }
+  .search-input { width: 100px; padding: 8px 6px 8px 30px; }
+  .search-input:focus { width: 130px; }
+  .action-btn { padding: 6px 10px; font-size: 10.5px; }
+  .profile-action-btn .profile-label { display: none; }
   .editorial-hero { grid-template-columns: 1fr; }
   .hero-media-pane { min-height: 380px; }
   .hero-text-pane { padding: 40px 24px; }
   .hero-title { font-size: 34px; }
-  .diptych-row, .diptych-row.reverse { grid-template-columns: 1fr; gap: 32px; }
+  .diptych-row, .diptych-row.reverse { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .diptych-metrics { flex-wrap: wrap; gap: 16px; }
   .studio-layout { grid-template-columns: 1fr; }
   .studio-panel-pane { height: auto; position: static; padding: 32px 24px; }
   .packaging-inner { grid-template-columns: 1fr; gap: 40px; }
@@ -2087,16 +2134,12 @@ button:active, .btn-gold:active, .btn-outline:active, .proto-btn:active, .dock-b
     max-width: 100%;
     text-align: center;
     font-size: 10.5px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    overflow: visible;
+    line-height: 1.35;
   }
   .announcement-col-center span {
-    display: inline-block;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    display: inline;
     vertical-align: middle;
   }
   .provenance-strip { gap: 12px; font-size: 9px; padding: 10px 16px; }
@@ -2114,6 +2157,11 @@ button:active, .btn-gold:active, .btn-outline:active, .proto-btn:active, .dock-b
   .msi-tabs-nav { flex-direction: column; }
   .msi-tab-btn { min-width: 100%; }
   .hero-scroll { display: none !important; }
+  /* Keep hero copy clear of the fixed dock band (54px dock + 12px offset) at first paint. */
+  .hero-text-pane { padding-top: 112px; }
+  /* Stacked hero: media fills the first screen so the copy starts below the dock band, not under it. */
+  .hero-media-pane { min-height: calc(100vh - 216px); min-height: calc(100svh - 216px); }
+  .hero-media-img { position: absolute; inset: 0; }
 
   /* Floating Luxury Dock Mobile Adaptation */
   .floating-luxury-dock {
@@ -2140,6 +2188,8 @@ button:active, .btn-gold:active, .btn-outline:active, .proto-btn:active, .dock-b
 
 @media (max-width: 520px) {
   .sf-header { padding: 10px 12px; }
+  .editorial-flow { padding: 0 16px; }
+  .diptych-content { padding: 20px 0; }
   .sf-actions { gap: 6px; }
   .search-wrapper { display: none !important; }
   .action-btn { padding: 6px 10px; font-size: 11px; min-height: 44px; }
@@ -2441,6 +2491,8 @@ button:active, .btn-gold:active, .btn-outline:active, .proto-btn:active, .dock-b
 }
 
 /* Luxury Footer Layout */
+.sf-footer a { color: inherit; text-decoration: none; }
+.sf-footer a:hover { text-decoration: underline; }
 .sf-footer {
   background: var(--sapphire-midnight);
   color: #fff;
@@ -2520,6 +2572,77 @@ button:active, .btn-gold:active, .btn-outline:active, .proto-btn:active, .dock-b
 .zafira-lang-select option, .zafira-theme-select option {
   background: #0e1726;
   color: #fff;
+}
+
+/* Hit Area Expansions (44x44 Fitts's Law without visual regression) */
+.sf-nav a,
+.btn-gold,
+.btn-outline,
+.view-mode-btn,
+.proto-btn,
+.sound-toggle-btn,
+.dock-btn,
+.btn-quick,
+.cat-pill,
+.sf-footer-grid li a {
+  position: relative;
+}
+
+:is(.sf-nav a,
+.btn-gold,
+.btn-outline,
+.view-mode-btn,
+.proto-btn,
+.sound-toggle-btn,
+.dock-btn,
+.btn-quick,
+.cat-pill,
+.sf-footer-grid li a)::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, 44px);
+  height: max(100%, 44px);
+  transform: translate(-50%, -50%);
+  background: transparent;
+}
+/* Segmented view buttons touch edge to edge: expand vertically only so neither hit area covers its neighbour. */
+.view-mode-btn::before { width: calc(100% - 2px); }
+
+.sf-footer input[type="email"],
+.zafira-lang-select,
+.zafira-theme-select {
+  min-height: 44px;
+}
+
+.sf-footer-grid li { line-height: 2.4; }
+.sf-footer-grid li + li { margin-top: 16px; }
+
+/* Compact header toggles keep 24px targets without expanded pseudo hit areas (WCAG 2.5.8 spacing exception:
+   24px circles centred on each 32px-pitch control never overlap), so near-boundary clicks hit only the control under the pointer. */
+.announcement .lang-opt,
+.announcement .theme-opt {
+  min-width: 24px;
+  min-height: 24px;
+}
+.announcement .lang-switcher, .announcement .announcement-col-right > div { gap: 8px; }
+
+/* Color contrast overrides (WCAG 2.2 AA >= 4.5:1 on light theme) */
+html:not([data-theme="dark"]) .diptych-origin {
+  color: #7c6b5c;
+}
+html:not([data-theme="dark"]) .hero-eyebrow {
+  color: #866b36;
+}
+
+html:not([data-theme="dark"]) .product-cat {
+  color: #7c6b5c;
+}
+
+.sf-footer input[type="email"]::placeholder {
+  color: #9aa2b1;
+  opacity: 1;
 }
 
 /* ==========================================================================
@@ -2612,6 +2735,11 @@ html[data-theme="dark"] .editorial-hero h1,
 html[data-theme="dark"] .editorial-hero h2,
 html[data-theme="dark"] .editorial-hero h3 {
   color: #f5f3ee;
+}
+/* Inline headings use --sapphire-midnight, which stays dark in dark theme. */
+html[data-theme="dark"] .packaging-section h2,
+html[data-theme="dark"] .editorial-flow h3 {
+  color: #f5f3ee !important;
 }
 html[data-theme="dark"] .editorial-hero {
   background: #08101d;
@@ -3309,6 +3437,27 @@ html[data-theme="dark"] #account-history-list div[style*="background:#f8fafc"] {
   background: var(--ivory);
   color: var(--gold-dark);
 }
+.mobile-lang-group {
+  display: flex;
+  gap: 8px;
+}
+.mobile-lang-group .lang-opt {
+  flex: 1;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--sapphire-midnight);
+  background: var(--ivory);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xs);
+}
+.mobile-lang-group .lang-opt.active {
+  background: var(--sapphire-midnight);
+  color: #fff;
+  border-color: var(--sapphire-midnight);
+  text-decoration: none;
+}
 .mobile-curr-group .curr-opt {
   padding: 8px 14px;
   border: 1px solid var(--line);
@@ -3457,13 +3606,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 .account-grid {
   display: grid;
-  grid-template-columns: 360px 1fr;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
   gap: 32px;
   align-items: start;
 }
 @media (max-width: 900px) {
   .account-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 24px;
   }
 }
@@ -3585,7 +3734,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 .stepper-5 {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
   margin: 16px 0;
 }
@@ -3604,6 +3753,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   background: var(--gold);
 }
 .stepper-step-label {
+  overflow-wrap: anywhere;
   font-size: 9px;
   font-weight: 600;
   text-transform: uppercase;

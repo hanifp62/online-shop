@@ -45,7 +45,12 @@ docs/
 ├── 04-implementation/
 │   ├── IMPLEMENTATION_PLAN.md                # Rencana implementasi komprehensif & pentahapan
 │   ├── TASKS.md                              # Backlog task rinci dengan dependensi & acceptance criteria
-│   └── ACCEPTANCE_CRITERIA.md                # Rincian kriteria penerimaan per fitur
+│   ├── AGENT_OPERATING_MODEL.md              # Struktur tim subagent, aturan kerja, gate, dan metrik
+│   ├── ENGINEERING_EXCELLENCE_PROTOCOL.md    # Nilai kerja, lensa dewan audit, ricek/crosscheck, standar riset
+│   ├── ACCEPTANCE_CRITERIA.md                # Rincian kriteria penerimaan per fitur
+│   ├── R44_BROWSER_QA_PLAN.md                # Rencana QA browser tabel admin R-44
+│   ├── R44_SESSION_LEDGER.md                 # Ledger sesi dan rekonsiliasi bukti R-44
+│   └── TEAM_SUPPORT_LEDGER.md                # Ledger dukungan tim dan sekretariat
 ├── 05-quality/
 │   ├── TEST_PLAN.md                          # Rencana pengujian otomatis, manual, & browser
 │   ├── QUALITY_REVIEW.md                     # Evaluasi kualitas lintas lapisan & verifikasi hasil

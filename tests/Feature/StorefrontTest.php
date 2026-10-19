@@ -6,6 +6,7 @@ use App\Mail\ConciergeRequested;
 use App\Mail\NewsletterWelcome;
 use App\Models\ConciergeRequest;
 use App\Models\Product;
+use App\Models\User;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\ProductSeeder;
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
@@ -151,6 +152,24 @@ class StorefrontTest extends TestCase
             'email' => 'valerie@maison.id',
             'notes' => null,
         ]);
+    }
+
+    public function test_authenticated_concierge_with_alternate_contact_email_stays_in_account_history(): void
+    {
+        Mail::fake();
+        $user = User::factory()->create(['email' => 'owner@example.com']);
+        $this->actingAs($user)->postJson('/concierge', $this->conciergePayload([], [
+            'email' => 'contact@example.com', 'order_items' => null,
+        ]))->assertCreated();
+
+        $this->assertDatabaseHas('concierge_requests', [
+            'email' => 'contact@example.com', 'user_id' => $user->id,
+        ]);
+        $concierge = ConciergeRequest::where('email', 'contact@example.com')->firstOrFail();
+        $this->actingAs($user)->get('/akun')
+            ->assertOk()
+            ->assertViewHas('history', fn ($history) => $history->contains('id', $concierge->id))
+            ->assertSee('virtual-consultation');
     }
 
     public function test_concierge_rejects_invalid_order_items(): void

@@ -54,12 +54,12 @@ class AdminCategoryController extends Controller
      */
     public static function flushStorefrontCache(iterable $stale = []): void
     {
-        $keys = ['storefront:products:v1', 'storefront:categories:v1'];
+        $keys = ['storefront:products:v3', 'storefront:categories:v2'];
 
         $products = Product::get(['product_id', 'product_cat', 'product_slug']);
         foreach ([...$products, ...$stale] as $product) {
-            $keys[] = "storefront:product:{$product->product_slug}:v1";
-            $keys[] = "storefront:related:{$product->product_cat}:{$product->product_id}:v1";
+            $keys[] = "storefront:product:{$product->product_slug}:v2";
+            $keys[] = "storefront:related:{$product->product_cat}:{$product->product_id}:v3";
         }
 
         foreach (array_unique($keys) as $key) {

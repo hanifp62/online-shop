@@ -21,11 +21,55 @@ class LegacyPatchTest extends TestCase
 
     private string $adminSeedPassword;
 
+    /** @var array{server: mixed, env: mixed, getenv: string|false} */
+    private array $originalSeedPassword;
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->originalSeedPassword = [
+            'server' => $_SERVER['ADMIN_SEED_PASSWORD'] ?? null,
+            'env' => $_ENV['ADMIN_SEED_PASSWORD'] ?? null,
+            'getenv' => getenv('ADMIN_SEED_PASSWORD'),
+        ];
         $this->adminSeedPassword = Str::password();
-        putenv('ADMIN_SEED_PASSWORD='.$this->adminSeedPassword);
+        $this->setSeedPassword($this->adminSeedPassword);
+    }
+
+    protected function tearDown(): void
+    {
+        // Restore whatever .env/dotenv provided so other tests see the original state.
+        $original = $this->originalSeedPassword;
+        $this->setSeedPassword(null);
+        if ($original['server'] !== null) {
+            $_SERVER['ADMIN_SEED_PASSWORD'] = $original['server'];
+        }
+        if ($original['env'] !== null) {
+            $_ENV['ADMIN_SEED_PASSWORD'] = $original['env'];
+        }
+        if ($original['getenv'] !== false) {
+            putenv('ADMIN_SEED_PASSWORD='.$original['getenv']);
+        }
+
+        parent::tearDown();
+    }
+
+    /**
+     * env() reads $_SERVER, then $_ENV, then getenv(); dotenv fills the first two,
+     * so all three must be overridden (or cleared) for the seeder to see the test value.
+     */
+    private function setSeedPassword(?string $value): void
+    {
+        if ($value === null) {
+            unset($_SERVER['ADMIN_SEED_PASSWORD'], $_ENV['ADMIN_SEED_PASSWORD']);
+            putenv('ADMIN_SEED_PASSWORD');
+
+            return;
+        }
+
+        $_SERVER['ADMIN_SEED_PASSWORD'] = $value;
+        $_ENV['ADMIN_SEED_PASSWORD'] = $value;
+        putenv('ADMIN_SEED_PASSWORD='.$value);
     }
 
     public function test_register_with_legacy_profile_fields_creates_backup(): void
@@ -66,12 +110,14 @@ class LegacyPatchTest extends TestCase
 
     public function test_admin_seeder_creates_random_password_when_env_absent(): void
     {
-        putenv('ADMIN_SEED_PASSWORD');
+        $this->setSeedPassword(null);
+        $this->assertNull(env('ADMIN_SEED_PASSWORD'));
 
         $this->seed(AdminSeeder::class);
 
         $admin = Admin::firstOrFail();
         $this->assertFalse(Hash::check('12345678', $admin->password));
+        $this->assertFalse(Hash::check($this->adminSeedPassword, $admin->password));
         $this->assertDatabaseHas('newsletter_subscribers', ['email' => 'admin@gmail.com']);
     }
 

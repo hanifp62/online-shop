@@ -19,7 +19,7 @@
         .admin-work-breadcrumb { margin: 16px 0 10px; color: var(--muted); }
         .admin-work-breadcrumb a { text-decoration: underline; text-underline-offset: 3px; }
         .admin-work-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
-        .admin-work-nav a { padding: 10px 14px; border: 1px solid var(--line); background: var(--white); }
+        .admin-work-nav a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; padding: 10px 14px; border: 1px solid var(--line); background: var(--white); }
         .admin-work-nav a[aria-current="page"] { border-color: var(--sapphire); font-weight: 700; }
         .admin-work-header a:focus-visible, .admin-work-header button:focus-visible { outline: 3px solid var(--sapphire); outline-offset: 3px; }
         .admin-work-main { max-width: 1100px; margin: 0 auto; padding: 24px 24px 60px; }

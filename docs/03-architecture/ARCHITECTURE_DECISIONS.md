@@ -30,7 +30,7 @@
 - **Status:** Diterima (Accepted).
 - **Konteks:** Proyek warisan memiliki stored procedure `getcat(cid)` dari dump MySQL Windows, namun pengujian lokal dan lingkungan pengembang menggunakan SQLite atau server MariaDB yang tabel prosedurnya belum di-upgrade.
 - **Keputusan:** Mengimplementasikan method statis `Category::getById(int $cid)` menggunakan Eloquent query berparameter murni, dan membungkus migrasi DDL procedure dalam blok `try...catch` yang graceful.
-- **Konsekuensi:** Kode aplikasi 100% portabel dan dapat dijalankan di MySQL, MariaDB, maupun SQLite tanpa bergantung pada konfigurasi engine database lokal yang rumit.
+- **Konsekuensi:** Query aplikasi tidak bergantung pada stored procedure, sehingga kompatibel secara desain dengan MySQL, MariaDB, dan SQLite. Klaim runtime 100% lintas-engine belum dijamin: verifikasi MySQL/MariaDB **NOT_RUN**; bukti saat ini hanya mencakup lingkungan SQLite.
 
 ---
 
@@ -56,8 +56,8 @@
 
 - **Status:** Diterima (Accepted).
 - **Konteks:** Beranda, katalog, PDP, drawer, dan `/belanja` sebelumnya berisiko memiliki representasi cart berbeda.
-- **Keputusan:** Cart pembelian standar memakai session server dengan kontrak `product_id => quantity`; endpoint mutasi memakai semantik SET. Ukuran dan monogram tetap alur concierge, bukan atribut pembelian standar. Data localStorage legacy `zafira-cart` dan `zafira-cart:v1` dipertahankan untuk rekonsiliasi terbaca, tanpa merge otomatis atau duplikasi.
-- **Mutasi UI:** `cartRequest()` di `resources/js/app.js` memasukkan setiap aksi ke antrean promise. Jumlah target dihitung saat giliran aksi tiba (fungsi *intent*), bukan saat klik, sehingga klik cepat tidak terbuang dan tidak memakai angka basi. Request gagal tidak memblokir antrean. Undo menambahkan jumlah yang dihapus ke isi cart saat itu. Batas: antrean tidak dibatasi panjangnya; teks status dapat sesaat menampilkan "diperbarui" saat aksi berikutnya masih berjalan.
+- **Keputusan (koreksi 2026-10-19):** Cart pembelian standar kini disimpan di tabel `carts` dan `cart_items` melalui `CartStore`, dengan transaksi dan lock baris cart. Session `cart` adalah sumber migrasi legacy yang dibaca lalu dihapus, bukan penyimpanan utama. `POST /cart/items` tetap menyediakan semantik SET untuk kompatibilitas; UI memakai `POST /cart/items/{productId}/delta` untuk perubahan relatif. Ukuran dan monogram tetap alur concierge, bukan atribut pembelian standar. Data localStorage legacy `zafira-cart` dan `zafira-cart:v1` dipertahankan untuk rekonsiliasi terbaca, tanpa merge otomatis atau duplikasi.
+- **Mutasi UI:** `cartRequest()` di `resources/js/app.js` memasukkan setiap aksi ke antrean promise. Fungsi *intent* membaca ulang `/cart` saat giliran aksi tiba; penambahan dan perubahan jumlah mengirim delta yang diterapkan server di bawah lock cart, bukan SET berdasarkan jumlah lokal. Request gagal tidak memblokir antrean. Undo mengirim delta sebesar `removed_quantity` dari respons penghapusan. Batas: antrean tidak dibatasi panjangnya; teks status dapat sesaat menampilkan "diperbarui" saat aksi berikutnya masih berjalan.
 - **Konsekuensi:** Semua titik pembelian membaca sumber yang sama. Aksi bertumpuk dieksekusi berurutan dengan state terbaru. Halaman katalog memakai pesan inline `#catalog-feedback`, bukan toast dan badge header (celah UX terbuka).
 
 ## ADR-007: Idempotensi Checkout dan Model Stok

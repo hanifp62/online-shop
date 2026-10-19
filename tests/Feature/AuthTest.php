@@ -63,4 +63,14 @@ class AuthTest extends TestCase
         $this->post('/logout')->assertRedirect('/');
         $this->assertGuest();
     }
+
+    public function test_account_page_offers_csrf_logout(): void
+    {
+        $this->actingAs(User::factory()->create())
+            ->get('/akun')
+            ->assertOk()
+            ->assertSee('action="'.route('logout').'"', false)
+            ->assertSee('name="_token"', false)
+            ->assertSee('Keluar');
+    }
 }

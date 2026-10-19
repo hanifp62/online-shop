@@ -34,6 +34,10 @@ class OrderController extends Controller
 
     public function store(Request $request): JsonResponse
     {
+        if (! $request->user()) {
+            return app(GuestCheckoutController::class)->store($request, $this->checkout);
+        }
+
         $validated = $request->validate([
             'address_id' => ['required', 'integer'],
             'idempotency_key' => ['required', 'string', 'min:8', 'max:64'],
@@ -44,17 +48,21 @@ class OrderController extends Controller
             ->where('id', $validated['address_id'])
             ->firstOrFail();
 
-        [$order, $created] = $this->checkout->checkout(
-            $request->user(),
-            $address,
-            CheckoutService::cart($request),
-            $validated['idempotency_key'],
-            $validated['voucher_code'] ?? null
-        );
+        [$order, $created] = \App\Services\CartStore::locked($request, function (?int $id, array $cart) use ($request, $address, $validated) {
+            try {
+                $result = $this->checkout->checkout($request->user(), $address, $cart, $validated['idempotency_key'], $validated['voucher_code'] ?? null);
+            } catch (\Throwable $exception) {
+                // Preserve the legacy recovery payload on checkout failure, never as source of truth.
+                $request->session()->put('cart', $cart);
+                $request->session()->put('cart_recovery_snapshot', $cart);
+                throw $exception;
+            }
+            if ($result[1] && $id !== null) {
+                \App\Services\CartStore::remove($id);
+            }
 
-        if ($created) {
-            $request->session()->forget(CheckoutService::cartKey($request));
-        }
+            return $result;
+        });
 
         return response()->json(['order' => $order], $created ? 201 : 200);
     }

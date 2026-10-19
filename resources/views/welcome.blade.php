@@ -1,5 +1,6 @@
 @php
     $products = $products ?? [];
+    $purchaseIds = \App\Models\Product::whereIn('product_slug', collect($products)->pluck('id'))->pluck('product_id', 'product_slug');
     $localAssets = [
         'sac-seraphine' => asset('prototype/assets/minaudiere_saphir.jpg'),
         'chemise-riviere' => asset('prototype/assets/chemise_riviere.jpg'),
@@ -37,11 +38,20 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         (function() {
-            var theme = localStorage.getItem('zafira-theme') || 'system';
-            var isDark = theme === 'dark' || (theme === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            var theme = 'system', lang = 'id';
+            try {
+                var read = function(key, legacy, ok) {
+                    var v = localStorage.getItem(key);
+                    if (v !== null) return ok(v) ? v : null;
+                    v = localStorage.getItem(legacy);
+                    return ok(v) ? v : null;
+                };
+                theme = read('zafira_theme', 'zafira-theme', function(v) { return v === 'light' || v === 'dark' || v === 'system'; }) || 'system';
+                lang = read('zafira_lang', 'zafira-lang', function(v) { return v === 'id' || v === 'en' || v === 'fr' || v === 'it'; }) || 'id';
+            } catch (e) {}
+            var resolved = theme === 'dark' || (theme === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', resolved);
             document.documentElement.setAttribute('data-theme-setting', theme);
-            var lang = localStorage.getItem('zafira-lang') || 'id';
             document.documentElement.setAttribute('lang', lang);
         })();
     </script>
@@ -62,36 +72,8 @@
         .hero-scroll { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.75); font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; }
         .hero-scroll span { width: 1px; height: 32px; background: rgba(182, 154, 100, 0.65); }
         
-        /* Floating Luxury Dock */
-        .floating-luxury-dock {
-            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-            display: flex; align-items: center; gap: 6px;
-            background: rgba(14, 23, 38, 0.88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(182, 154, 100, 0.35); box-shadow: 0 16px 40px rgba(0,0,0,0.35);
-            padding: 6px 12px; border-radius: 100px; z-index: 100; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .floating-luxury-dock .dock-badge { display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-right: 1px solid rgba(255,255,255,0.15); margin-right: 4px; }
-        .floating-luxury-dock .dock-brand { font-family: 'Bodoni Moda', serif; font-size: 13px; font-weight: 600; color: #b69a64; letter-spacing: 0.1em; }
-        .floating-luxury-dock .dock-ver { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.5); }
-        .floating-luxury-dock .dock-btn {
-            display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px;
-            border-radius: 100px; font-size: 11.5px; font-weight: 500; color: rgba(255,255,255,0.85);
-            background: transparent; border: 1px solid transparent; cursor: pointer; text-decoration: none;
-            transition: all 0.2s ease;
-        }
-        .floating-luxury-dock .dock-btn:hover, .floating-luxury-dock .dock-btn.active {
-            background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(182, 154, 100, 0.4);
-        }
         @media (max-width: 768px) {
             .hero-scroll { display: none !important; }
-            .floating-luxury-dock { bottom: 14px; padding: 4px 8px; max-width: calc(100vw - 24px); }
-            .floating-luxury-dock .dock-ver { display: none; }
-            .floating-luxury-dock .dock-btn { padding: 6px 10px; font-size: 10.5px; }
-        }
-        @media (max-width: 520px) {
-            .floating-luxury-dock .dock-badge { display: none; }
-            .floating-luxury-dock .dock-btn span { display: none; }
-            .floating-luxury-dock .dock-btn { padding: 8px 12px; }
         }
         @media (max-width: 768px) {
             .desktop-only-flex { display: none !important; }
@@ -139,22 +121,22 @@
         <p data-i18n="announcement">Complimentary signature wrapping &amp; pengiriman seluruh Nusantara</p>
         <div class="desktop-only-flex" style="display:flex; align-items:center; gap:16px;">
             <div class="lang-switcher" role="radiogroup" aria-label="Language Selector">
-                <button type="button" class="lang-btn active" data-set-lang="id" aria-label="Bahasa Indonesia">ID</button>
+                <button type="button" class="lang-btn active" data-set-lang="id" aria-label="Bahasa Indonesia" role="radio" aria-checked="true">ID</button>
                 <span class="lang-divider">/</span>
-                <button type="button" class="lang-btn" data-set-lang="en" aria-label="English">EN</button>
+                <button type="button" class="lang-btn" data-set-lang="en" aria-label="English" role="radio" aria-checked="false">EN</button>
                 <span class="lang-divider">/</span>
-                <button type="button" class="lang-btn" data-set-lang="fr" aria-label="Français">FR</button>
+                <button type="button" class="lang-btn" data-set-lang="fr" aria-label="Français" role="radio" aria-checked="false">FR</button>
                 <span class="lang-divider">/</span>
-                <button type="button" class="lang-btn" data-set-lang="it" aria-label="Italiano">IT</button>
+                <button type="button" class="lang-btn" data-set-lang="it" aria-label="Italiano" role="radio" aria-checked="false">IT</button>
             </div>
             <div class="theme-switcher" role="radiogroup" aria-label="Theme Selector">
-                <button type="button" class="theme-btn" data-set-theme="light" title="Mode Terang" aria-label="Mode Terang">
+                <button type="button" class="theme-btn" data-set-theme="light" title="Mode Terang" aria-label="Mode Terang" data-i18n-title="theme_light" data-i18n-aria-label="theme_light" role="radio" aria-checked="false">
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
                 </button>
-                <button type="button" class="theme-btn" data-set-theme="dark" title="Mode Gelap" aria-label="Mode Gelap">
+                <button type="button" class="theme-btn" data-set-theme="dark" title="Mode Gelap" aria-label="Mode Gelap" data-i18n-title="theme_dark" data-i18n-aria-label="theme_dark" role="radio" aria-checked="false">
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                 </button>
-                <button type="button" class="theme-btn active" data-set-theme="system" title="Mengikuti Sistem" aria-label="Mengikuti Sistem">
+                <button type="button" class="theme-btn active" data-set-theme="system" title="Mengikuti Sistem" aria-label="Mengikuti Sistem" data-i18n-title="theme_system" data-i18n-aria-label="theme_system" role="radio" aria-checked="true">
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                 </button>
             </div>
@@ -172,11 +154,8 @@
             <a href="#new-arrivals" data-i18n="nav_arrivals">Terbaru</a>
             <a href="#heritage" data-i18n="nav_heritage">Warisan</a>
             <a href="#atelier" data-i18n="nav_atelier">Atelier Z</a>
-            <a href="#packaging-section" data-i18n="nav_packaging">L'Art d'Offrir</a>
+            <a href="#packaging-section" lang="fr" data-i18n="nav_packaging">L'Art d'Offrir</a>
             <a href="#services" data-i18n="nav_services">Layanan</a>
-            @unless(app()->environment('production'))
-            <a href="/prototype/" style="color:var(--gold); font-weight:600;" data-i18n="nav_digital_atelier">Atelier Digital</a>
-            @endunless
         </nav>
 
         <a class="brand" href="{{ route('home') }}" aria-label="ZAFIRA: kembali ke beranda">
@@ -206,38 +185,37 @@
             <button class="icon-button" type="button" data-close-menu aria-label="Tutup menu"><svg aria-hidden="true"><use href="#icon-close"/></svg></button>
         </div>
         <nav>
-            <a href="#collection"><span style="color:var(--gold);">01</span><span data-i18n="nav_collection">Koleksi</span></a>
-            <a href="#new-arrivals"><span style="color:var(--gold);">02</span><span data-i18n="nav_arrivals">Terbaru</span></a>
-            <a href="#heritage"><span style="color:var(--gold);">03</span><span data-i18n="nav_heritage">Warisan</span></a>
-            <a href="#atelier"><span style="color:var(--gold);">04</span><span data-i18n="nav_atelier">Atelier Z</span></a>
-            <a href="#packaging-section"><span style="color:var(--gold);">05</span><span data-i18n="nav_packaging">L'Art d'Offrir</span></a>
-            @unless(app()->environment('production'))
-            <a href="/prototype/" style="color:var(--gold);"><span style="color:var(--gold);">06</span><span data-i18n="nav_digital_atelier">Atelier Digital &amp; Kriya</span></a>
-            @endunless
+            <a href="#collection"><span class="mobile-menu-ordinal" aria-hidden="true">01</span><span data-i18n="nav_collection">Koleksi</span></a>
+            <a href="#new-arrivals"><span class="mobile-menu-ordinal" aria-hidden="true">02</span><span data-i18n="nav_arrivals">Terbaru</span></a>
+            <a href="#heritage"><span class="mobile-menu-ordinal" aria-hidden="true">03</span><span data-i18n="nav_heritage">Warisan</span></a>
+            <a href="#atelier"><span class="mobile-menu-ordinal" aria-hidden="true">04</span><span data-i18n="nav_atelier">Atelier Z</span></a>
+            <a href="#packaging-section"><span class="mobile-menu-ordinal" aria-hidden="true">05</span><span lang="fr" data-i18n="nav_packaging">L'Art d'Offrir</span></a>
+            <a href="#services"><span class="mobile-menu-ordinal" aria-hidden="true">06</span><span data-i18n="nav_services">Layanan</span></a>
         </nav>
         <div class="mobile-utilities" style="display:flex; flex-direction:column; gap:14px; padding:18px 0; border-top:1px solid rgba(255,255,255,0.15); border-bottom:1px solid rgba(255,255,255,0.15);">
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <span style="font-size:10px; text-transform:uppercase; letter-spacing:0.15em; color:var(--gold);" data-i18n="lang_selector">Bahasa</span>
-                <div class="lang-switcher" role="radiogroup">
-                    <button type="button" class="lang-btn active" data-set-lang="id">ID</button>
+                <div class="lang-switcher" role="radiogroup" aria-label="Bahasa">
+                    {{-- aria-checked is server default only; JS must keep it in sync. --}}
+                    <button type="button" class="lang-btn active" data-set-lang="id" role="radio" aria-checked="true">ID</button>
                     <span class="lang-divider">/</span>
-                    <button type="button" class="lang-btn" data-set-lang="en">EN</button>
+                    <button type="button" class="lang-btn" data-set-lang="en" role="radio" aria-checked="false">EN</button>
                     <span class="lang-divider">/</span>
-                    <button type="button" class="lang-btn" data-set-lang="fr">FR</button>
+                    <button type="button" class="lang-btn" data-set-lang="fr" role="radio" aria-checked="false">FR</button>
                     <span class="lang-divider">/</span>
-                    <button type="button" class="lang-btn" data-set-lang="it">IT</button>
+                    <button type="button" class="lang-btn" data-set-lang="it" role="radio" aria-checked="false">IT</button>
                 </div>
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <span style="font-size:10px; text-transform:uppercase; letter-spacing:0.15em; color:var(--gold);">Mode Tampilan</span>
-                <div class="theme-switcher" role="radiogroup">
-                    <button type="button" class="theme-btn" data-set-theme="light" title="Mode Terang">
+                <div class="theme-switcher" role="radiogroup" aria-label="Mode Tampilan">
+                    <button type="button" class="theme-btn" data-set-theme="light" title="Mode Terang" data-i18n-title="theme_light" aria-label="Mode Terang" data-i18n-aria-label="theme_light" role="radio" aria-checked="false">
                         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
                     </button>
-                    <button type="button" class="theme-btn" data-set-theme="dark" title="Mode Gelap">
+                    <button type="button" class="theme-btn" data-set-theme="dark" title="Mode Gelap" data-i18n-title="theme_dark" aria-label="Mode Gelap" data-i18n-aria-label="theme_dark" role="radio" aria-checked="false">
                         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                     </button>
-                    <button type="button" class="theme-btn active" data-set-theme="system" title="Mengikuti Sistem">
+                    <button type="button" class="theme-btn active" data-set-theme="system" title="Mengikuti Sistem" data-i18n-title="theme_system" aria-label="Mengikuti Sistem" data-i18n-aria-label="theme_system" role="radio" aria-checked="true">
                         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                     </button>
                 </div>
@@ -260,16 +238,13 @@
                 <img src="{{ asset('prototype/assets/hero_couture.jpg') }}" alt="Editorial mode ZAFIRA bernuansa klasik" fetchpriority="high" width="2000" height="2500">
             </div>
             <div class="hero-overlay"></div>
-            <div class="hero-edition">Édition No. 01<br>Jakarta · Paris · Firenze</div>
+            <div class="hero-edition"><span lang="fr">Édition No. 01</span><br>Jakarta · Paris · Firenze</div>
             <div class="hero-content reveal is-visible">
-                <span class="eyebrow light" data-i18n="hero_eyebrow">La Collection Première · 2026</span>
+                <span class="eyebrow light" lang="fr" data-i18n="hero_eyebrow">La Collection Première · 2026</span>
                 <h1 id="hero-title" data-i18n="hero_title">Lahir dari Cahaya,<br>Dibentuk oleh Keanggunan</h1>
                 <p data-i18n="hero_subtitle">Keanggunan Paris bertemu keahlian Italia dalam setiap kreasi yang memancarkan jiwa Anda.</p>
                 <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
                     <a class="button button-light" href="#new-arrivals" data-i18n="hero_cta_explore">Jelajahi koleksi <svg aria-hidden="true"><use href="#icon-arrow"/></svg></a>
-                    @unless(app()->environment('production'))
-                    <a class="button button-sapphire" href="/prototype/" style="border:1px solid rgba(182,154,100,0.6);" data-i18n="hero_cta_studio">Studio Kriya &amp; Savoir-Faire <svg aria-hidden="true"><use href="#icon-arrow"/></svg></a>
-                    @endunless
                 </div>
             </div>
             <a class="hero-scroll" href="#collection" aria-label="Gulir ke koleksi"><span></span><span data-i18n="hero_scroll">Découvrir</span></a>
@@ -277,14 +252,14 @@
 
         <section class="marquee" aria-label="Nilai ZAFIRA">
             <div class="marquee-track">
-                <span>L’Esprit Parisien</span><span class="marquee-bullet">·</span><span>La Mano Italiana</span><span class="marquee-bullet">·</span><span>Jiwa Nusantara</span><span class="marquee-bullet">·</span><span>Depuis Jakarta</span><span class="marquee-bullet">·</span>
-                <span>L’Esprit Parisien</span><span class="marquee-bullet">·</span><span>La Mano Italiana</span><span class="marquee-bullet">·</span><span>Jiwa Nusantara</span><span class="marquee-bullet">·</span><span>Depuis Jakarta</span><span class="marquee-bullet">·</span>
+                <span lang="fr">L’Esprit Parisien</span><span class="marquee-bullet">·</span><span>La Mano Italiana</span><span class="marquee-bullet">·</span><span>Jiwa Nusantara</span><span class="marquee-bullet">·</span><span lang="fr">Depuis Jakarta</span><span class="marquee-bullet">·</span>
+                <span lang="fr">L’Esprit Parisien</span><span class="marquee-bullet">·</span><span>La Mano Italiana</span><span class="marquee-bullet">·</span><span>Jiwa Nusantara</span><span class="marquee-bullet">·</span><span lang="fr">Depuis Jakarta</span><span class="marquee-bullet">·</span>
             </div>
         </section>
 
         <section class="category-section section-shell" id="collection">
             <div class="section-heading reveal">
-                <div><span class="eyebrow" data-i18n="category_eyebrow">L’Univers ZAFIRA</span><h2 data-i18n="category_title">Temukan dunia Anda</h2></div>
+                <div><span class="eyebrow" lang="fr" data-i18n="category_eyebrow">L’Univers ZAFIRA</span><h2 data-i18n="category_title">Temukan dunia Anda</h2></div>
                 <p data-i18n="category_desc">Setiap koleksi dirancang sebagai percakapan antara warisan dan modernitas.</p>
             </div>
             <div class="category-grid">
@@ -296,12 +271,12 @@
                 <a class="category-card reveal" href="#new-arrivals" data-category-link="Tas Tangan">
                     <img src="{{ asset('prototype/assets/minaudiere_saphir.jpg') }}" alt="Koleksi tas tangan ZAFIRA" loading="lazy" width="1200" height="1500">
                     <span class="category-number">02</span>
-                    <div><span>Les Icônes</span><h3 data-i18n="cat_bags">Tas Tangan</h3><span class="discover"><span data-i18n="hero_scroll">Découvrir</span> <svg aria-hidden="true"><use href="#icon-arrow"/></svg></span></div>
+                    <div><span lang="fr">Les Icônes</span><h3 data-i18n="cat_bags">Tas Tangan</h3><span class="discover"><span data-i18n="hero_scroll">Découvrir</span> <svg aria-hidden="true"><use href="#icon-arrow"/></svg></span></div>
                 </a>
                 <a class="category-card reveal" href="#new-arrivals" data-category-link="Koleksi Kapsul">
                     <img src="{{ asset('prototype/assets/robe_elan.jpg') }}" alt="Koleksi kapsul songket dan sutra ZAFIRA" loading="lazy" width="1200" height="1500">
                     <span class="category-number">03</span>
-                    <div><span>Deux Rives</span><h3 data-i18n="cat_capsule">Koleksi Kapsul</h3><span class="discover"><span data-i18n="hero_scroll">Découvrir</span> <svg aria-hidden="true"><use href="#icon-arrow"/></svg></span></div>
+                    <div><span lang="fr">Deux Rives</span><h3 data-i18n="cat_capsule">Koleksi Kapsul</h3><span class="discover"><span data-i18n="hero_scroll">Découvrir</span> <svg aria-hidden="true"><use href="#icon-arrow"/></svg></span></div>
                 </a>
             </div>
         </section>
@@ -309,7 +284,7 @@
         <section class="products-section" id="new-arrivals">
             <div class="section-shell">
                 <div class="products-heading reveal">
-                    <div><span class="eyebrow" data-i18n="products_eyebrow">Les Nouveautés</span><h2 data-i18n="products_title">Objek-objek penuh pesona</h2></div>
+                    <div><span class="eyebrow" lang="fr" data-i18n="products_eyebrow">Les Nouveautés</span><h2 data-i18n="products_title">Objek-objek penuh pesona</h2></div>
                     <p class="result-count" role="status" aria-live="polite"><span data-product-count>{{ count($products) }}</span> <span data-i18n="products_count_suffix">kreasi</span></p>
                 </div>
 
@@ -330,7 +305,7 @@
                             <svg aria-hidden="true" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); width:14px; height:14px; stroke:var(--taupe); fill:none;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </form>
                     </div>
-                    <div id="welcome-feedback-strip" role="status" aria-live="polite" style="display:none; font-size:11.5px; color:var(--muted); background:rgba(182,154,100,0.1); border-left:3px solid var(--gold); padding:6px 14px; border-radius:4px;">
+                    <div id="welcome-feedback-strip" role="status" aria-live="polite" hidden style="font-size:11.5px; color:var(--muted); background:rgba(182,154,100,0.1); border-left:3px solid var(--gold); padding:6px 14px; border-radius:4px;">
                         Menampilkan hasil kurasi instan
                     </div>
                 </div>
@@ -339,13 +314,16 @@
                     @foreach ($products as $index => $product)
                         @php
                             $imgSrc = $localAssets[$product['id']] ?? $product['image'];
+                            $purchaseId = $purchaseIds[$product['id']] ?? (preg_match('/^product-(\d+)$/', $product['id'], $idMatch) ? $idMatch[1] : '');
                         @endphp
                         <article class="product-card reveal" data-product-card
                             data-id="{{ $product['id'] }}"
+                            data-product-id="{{ $purchaseId }}"
                             data-name="{{ $product['name'] }}"
                             data-category="{{ $product['category'] }}"
                             data-price="{{ $product['price'] }}"
                             data-price-label="{{ $product['price_label'] }}"
+                            data-stock="{{ max(0, (int) $product['stock']) }}"
                             data-image="{{ $imgSrc }}"
                             data-description="{{ $product['description'] }}"
                             data-color="{{ $product['color'] }}"
@@ -363,28 +341,27 @@
                                 <span>{{ $product['category'] }}</span>
                                 <h3><button type="button" data-quick-view>{{ $product['name'] }}</button></h3>
                                 <p translate="no">{{ $product['price_label'] }}</p>
+                                @if ($product['stock'] <= 0)<p>Stok habis</p>@endif
                                 <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
                                     <div class="product-color"><i style="--swatch: {{ $product['swatch'] }}"></i>{{ $product['color'] }}</div>
-                                    @unless(app()->environment('production'))
-                                    <a href="/prototype/?p={{ $product['id'] }}#studio-view" class="text-link" style="font-size:8.5px; color:var(--gold); display:inline-flex; align-items:center; gap:4px;" title="Kustomisasi di Studio Kriya"><span>Studio Z</span> <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
-                                    @endunless
+
                                 </div>
-                                <button class="product-add" type="button" data-card-add aria-label="Tambahkan {{ $product['name'] }} ke tas"><svg aria-hidden="true"><use href="#icon-bag"/></svg><span>Tambah</span></button>
+                                <button class="product-add" type="button" data-card-add @if ($product['stock'] <= 0) disabled @endif aria-label="{{ $product['stock'] <= 0 ? $product['name'].' — stok habis' : 'Tambahkan '.$product['name'].' ke tas' }}"><svg aria-hidden="true"><use href="#icon-bag"/></svg><span>{{ $product['stock'] <= 0 ? 'Stok habis' : 'Tambah' }}</span></button>
                             </div>
                         </article>
                     @endforeach
                 </div>
-                <p class="empty-products" hidden>Tidak ada kreasi yang sesuai dengan pilihan Anda.</p>
+                <p class="empty-products" hidden role="status" aria-live="polite">Tidak ada kreasi yang sesuai. Coba kata pencarian lain, atau <button type="button" data-clear-catalog-search>hapus kata pencarian</button> untuk melihat kembali pilihan Anda.</p>
             </div>
         </section>
 
         <section class="maison-story" id="maison">
             <div class="story-image reveal">
                 <img src="{{ asset('prototype/assets/manteau_firenze.jpg') }}" alt="Suasana atelier mode klasik" loading="lazy" width="1400" height="1750">
-                <span>Depuis 2026</span>
+                <span lang="fr">Depuis 2026</span>
             </div>
             <div class="story-content reveal">
-                <span class="eyebrow light" data-i18n="maison_eyebrow">L’Histoire de la Maison</span>
+                <span class="eyebrow light" lang="fr" data-i18n="maison_eyebrow">L’Histoire de la Maison</span>
                 <h2 data-i18n="maison_title">Seperti safir,<br>keindahan sejati<br>lahir dalam proses.</h2>
                 <p data-i18n="maison_body">ZAFIRA lahir dari keyakinan bahwa kemewahan tidak perlu bersuara keras. Ia hadir dalam ketepatan jahitan, sentuhan material, dan rasa percaya diri yang tertinggal lama setelah Anda meninggalkan ruangan.</p>
                 <p class="story-signature" data-i18n="footer_motto">Parisian in spirit. Italian by craft. Indonesian at heart.</p>
@@ -400,7 +377,7 @@
             <div class="heritage-grid">
                 <article class="heritage-card reveal">
                     <span class="heritage-number">I</span>
-                    <h3 data-i18n="heritage_1_title">L’Esprit Parisien</h3>
+                    <h3 lang="fr" data-i18n="heritage_1_title">L’Esprit Parisien</h3>
                     <p data-i18n="heritage_1_desc">Siluet, drapery, dan keberanian tampil tenang — digambar di Paris, dikenakan di mana saja.</p>
                     <span class="heritage-proof" data-i18n="heritage_1_proof">Kain Lyon &amp; Biella · potongan bias-cut</span>
                 </article>
@@ -462,7 +439,7 @@
         <section class="packaging-section" id="packaging-section" aria-labelledby="packaging-heading">
             <div class="packaging-inner">
                 <div class="reveal">
-                    <span class="eyebrow" data-i18n="packaging_eyebrow">L'Art d'Offrir ZAFIRA</span>
+                    <span class="eyebrow" lang="fr" data-i18n="packaging_eyebrow">L'Art d'Offrir ZAFIRA</span>
                     <h2 id="packaging-heading" style="font-family:'Bodoni Moda', serif; font-size:clamp(28px, 4vw, 40px); margin:8px 0 16px; color:var(--sapphire-midnight);" data-i18n="packaging_title">Kemasan Kado Ikonik &amp; Segel Lilin Emas</h2>
                     <p style="color:var(--muted); line-height:1.8; margin-bottom:20px; font-size:15px;" data-i18n="packaging_desc">
                         Setiap kreasi dihantarkan dalam kotak kaku safir pekat yang dibuat dengan tangan, diikat pita sutra twill Lyon, dan dilindungi kartu kaligrafi bertanda stempel segel lilin carmine-emas Maison ZAFIRA.
@@ -485,9 +462,9 @@
                             <span style="font-family:'Bodoni Moda', serif; font-size:26px; letter-spacing:0.25em; display:block;">ZAFIRA</span>
                             <small style="font-size:9px; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold-light);">Atelier Jakarta</small>
                         </div>
-                        <div class="wax-seal-badge" id="welcome-wax-seal" onclick="stampWelcomeWaxSeal()" title="Pratinjau segel lilin" role="button" tabindex="0" aria-label="Segel lilin ZAFIRA">
+                        <button class="wax-seal-badge" id="welcome-wax-seal" type="button" onclick="stampWelcomeWaxSeal()" title="Pratinjau segel lilin" aria-label="Segel lilin ZAFIRA">
                             Z
-                        </div>
+                        </button>
                         <p style="font-size:10.5px; color:var(--gold-light); margin-top:14px; position:relative; z-index:2; display:flex; align-items:center; justify-content:center; gap:6px;">
                             <span class="indicator-dot gold" style="display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--gold);"></span> Sentuh stempel untuk melihat pratinjau segel lilin
                         </p>
@@ -550,7 +527,7 @@
     <footer class="site-footer">
         <div class="footer-brand"><a class="brand brand-horizontal" href="{{ route('home') }}"><x-brand-mark /></a><p data-i18n="footer_motto">Parisian in spirit.<br>Italian by craft.<br>Indonesian at heart.</p></div>
         <div class="footer-links"><h3 data-i18n="footer_col_collection">Koleksi</h3><a href="#new-arrivals" data-i18n="footer_women">Wanita</a><a href="#new-arrivals" data-i18n="footer_men">Pria</a><a href="#new-arrivals" data-i18n="footer_bags">Tas Tangan</a><a href="#new-arrivals" data-i18n="footer_accessories">Aksesori</a></div>
-        <div class="footer-links"><h3 data-i18n="footer_col_maison">La Maison</h3><a href="#maison" data-i18n="footer_story">Kisah Kami</a><a href="#atelier" data-i18n="footer_atelier_z">Atelier Z</a><a href="#services" data-i18n="footer_services">Layanan</a><button type="button" data-open-concierge data-i18n="footer_rendezvous">Rendez-vous</button></div>
+        <div class="footer-links"><h3 data-i18n="footer_col_maison">La Maison</h3><a href="#maison" data-i18n="footer_story">Kisah Kami</a><a href="#atelier" data-i18n="footer_atelier_z">Atelier Z</a><a href="#services" data-i18n="footer_services">Layanan</a><button type="button" data-open-concierge lang="fr" data-i18n="footer_rendezvous">Rendez-vous</button></div>
         <!-- Canonical Luxury Footer International Preferences Bar (Hermès & Chanel ATM) -->
         <div class="footer-preferences-bar">
             <div class="footer-pref-item">
@@ -558,7 +535,7 @@
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                     <span data-i18n="footer_lang_label">Wilayah &amp; Bahasa</span>
                 </label>
-                <select id="welcome-footer-lang-select" class="zafira-lang-select" aria-label="Pilih Bahasa / Select Language">
+                <select id="welcome-footer-lang-select" class="zafira-lang-select" aria-label="Pilih Bahasa / Select Language" data-i18n-aria-label="lang_selector">
                     <option value="id">Indonesia · Bahasa Indonesia (IDR Rp)</option>
                     <option value="en">International · English</option>
                     <option value="fr">France · Français</option>
@@ -571,29 +548,19 @@
                     <span data-i18n="footer_theme_label">Pilihan Tampilan</span>
                 </label>
                 <select id="welcome-footer-theme-select" class="zafira-theme-select" aria-label="Mode Tampilan / Display Mode">
-                    <option value="light">Mode Terang (Clair)</option>
-                    <option value="dark">Mode Gelap (Sombre)</option>
-                    <option value="system">Sesuai Perangkat (Système)</option>
+                    <option value="light" data-i18n="theme_light">Mode Terang (Clair)</option>
+                    <option value="dark" data-i18n="theme_dark">Mode Gelap (Sombre)</option>
+                    <option value="system" data-i18n="theme_system">Sesuai Perangkat (Système)</option>
                 </select>
             </div>
         </div>
 
-        <div class="footer-bottom"><span data-i18n="footer_legal_rights">© {{ date('Y') }} ZAFIRA Maison. Seluruh hak dilindungi.</span><div><a href="#services" data-i18n="footer_terms">Ketentuan</a><a href="#main-content">Indonesia / ID</a><a href="#main-content" aria-label="Instagram ZAFIRA"><svg aria-hidden="true"><use href="#icon-instagram"/></svg></a></div></div>
+        <div class="footer-bottom"><span data-i18n="footer_legal_rights">© {{ date('Y') }} ZAFIRA Maison. Seluruh hak dilindungi.</span><div><button type="button" class="text-link" data-open-shortcuts style="background:none; border:none; color:inherit; font:inherit; cursor:pointer; text-transform:uppercase; letter-spacing:0.12em; font-size:11px;" aria-label="Buka panduan pintasan keyboard" title="Pintasan Keyboard (Tekan ?)"><span data-i18n="shortcuts_trigger">Pintasan (?)</span></button><a href="#services" data-i18n="footer_terms">Ketentuan</a><a href="#main-content">Indonesia / ID</a><a href="#main-content" aria-label="Instagram ZAFIRA"><svg aria-hidden="true"><use href="#icon-instagram"/></svg></a></div></div>
     </footer>
 
     <div class="overlay" data-overlay></div>
 
-    <aside class="drawer cart-drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="cart-title" tabindex="-1">
-        <div class="drawer-header"><div><span class="eyebrow">Votre Sélection</span><h2 id="cart-title"><span data-i18n="cart_aria">Tas Belanja</span> <small class="cart-count-text">(0)</small></h2></div><button class="icon-button" type="button" data-close-cart aria-label="Tutup tas belanja"><svg aria-hidden="true"><use href="#icon-close"/></svg></button></div>
-        <!-- Undo Banner (Shneiderman Rule 6 / Nielsen Heuristic 3) -->
-        <div id="welcome-undo-banner" style="display:none; padding:10px 16px; background:#eff6ff; border-bottom:1px solid #bfdbfe; font-size:12px; color:#1e40af; justify-content:space-between; align-items:center;">
-            <span id="welcome-undo-text">Kreasi dihapus dari tas belanja.</span>
-            <button type="button" id="welcome-undo-btn" style="background:none; border:none; color:#1d4ed8; font-weight:700; text-decoration:underline; cursor:pointer;">Batalkan (Undo)</button>
-        </div>
-        <div class="cart-body" data-cart-items></div>
-        <div class="cart-empty" data-cart-empty><span class="empty-gem"></span><h3 data-i18n="cart_empty_title">Tas Anda masih kosong</h3><p data-i18n="cart_empty_desc">Temukan kreasi yang akan menjadi bagian dari kisah Anda.</p><button class="button button-dark" type="button" data-close-cart data-i18n="cart_empty_cta">Jelajahi koleksi</button></div>
-        <div class="cart-footer" data-cart-footer hidden><div class="cart-service-note"><svg aria-hidden="true"><use href="#icon-check"/></svg><span data-i18n="cart_service_note">Signature wrapping &amp; pengiriman complimentary</span></div><div class="cart-total"><span data-i18n="cart_total_label">Subtotal</span><strong data-cart-total translate="no">Rp0</strong></div><p data-i18n="cart_shipping_calc">Biaya pengiriman dihitung pada langkah berikutnya.</p><button class="button button-sapphire" type="button" data-checkout><span data-i18n="cart_checkout_btn">Lanjut bersama Client Advisor</span> <svg aria-hidden="true"><use href="#icon-arrow"/></svg></button></div>
-    </aside>
+    @include('partials.purchase-cart')
 
     <!-- VIP Client Profile & Atelier Salon Preferences Drawer (Alan Cooper Polite Software & Don Norman Gulf of Evaluation) -->
     <aside class="drawer profile-drawer" id="welcome-profile-drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="welcome-profile-heading" tabindex="-1">
@@ -644,15 +611,16 @@
                         <span class="setting-desc" data-i18n="profile_theme_desc">Pilih pencahayaan salon</span>
                     </div>
                     <div class="profile-theme-segmented" role="radiogroup" aria-label="Mode Tampilan">
-                        <button type="button" class="theme-seg-btn" data-set-theme="light" title="Mode Terang (Clair)">
+                        {{-- aria-checked is server default only; JS must keep it in sync (zafira-core.js currently toggles .active + aria-pressed). --}}
+                        <button type="button" class="theme-seg-btn" data-set-theme="light" title="Mode Terang (Clair)" data-i18n-title="theme_light" aria-label="Mode Terang" data-i18n-aria-label="theme_light" role="radio" aria-checked="false">
                             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-                            <span>Clair</span>
+                            <span lang="fr">Clair</span>
                         </button>
-                        <button type="button" class="theme-seg-btn" data-set-theme="dark" title="Mode Gelap (Sombre)">
+                        <button type="button" class="theme-seg-btn" data-set-theme="dark" title="Mode Gelap (Sombre)" data-i18n-title="theme_dark" aria-label="Mode Gelap" data-i18n-aria-label="theme_dark" role="radio" aria-checked="false">
                             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                            <span>Sombre</span>
+                            <span lang="fr">Sombre</span>
                         </button>
-                        <button type="button" class="theme-seg-btn" data-set-theme="system" title="Mengikuti Sistem">
+                        <button type="button" class="theme-seg-btn" data-set-theme="system" title="Mengikuti Sistem" data-i18n-title="theme_system" aria-label="Mengikuti Sistem" data-i18n-aria-label="theme_system" role="radio" aria-checked="false">
                             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                             <span>Auto</span>
                         </button>
@@ -665,7 +633,7 @@
                         <span class="setting-name" data-i18n="profile_lang_label">Bahasa</span>
                         <span class="setting-desc" data-i18n="profile_lang_desc">Pilih edisi bahasa katalog</span>
                     </div>
-                    <select class="zafira-lang-select profile-lang-select" aria-label="Pilih Bahasa">
+                    <select class="zafira-lang-select profile-lang-select" aria-label="Pilih Bahasa" data-i18n-aria-label="lang_selector">
                         <option value="id">Bahasa Indonesia</option>
                         <option value="en">English</option>
                         <option value="fr">Français</option>
@@ -697,13 +665,13 @@
 
     <section class="search-panel" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="search-title" tabindex="-1">
         <div class="search-top"><a class="brand brand-horizontal" href="{{ route('home') }}"><x-brand-mark /></a><button class="icon-button" type="button" data-close-search aria-label="Tutup pencarian"><svg aria-hidden="true"><use href="#icon-close"/></svg></button></div>
-        <div class="search-inner"><span class="eyebrow">Recherche</span><h2 id="search-title">Apa yang Anda cari?</h2><form class="search-field" role="search" aria-label="Cari produk" onsubmit="event.preventDefault()"><svg aria-hidden="true"><use href="#icon-search"/></svg><label class="sr-only" for="search-input">Cari produk</label><input id="search-input" type="search" data-search-input placeholder="Cari tas, busana, aksesori…" data-i18n-placeholder="search_placeholder" autocomplete="off" spellcheck="false" name="q"><button type="button" data-clear-search>Hapus</button></form><div class="search-suggestions"><span>Pencarian populer</span><button type="button" data-search-term="Tas Tangan">Tas ikonis</button><button type="button" data-search-term="Saphir">Saphir</button><button type="button" data-search-term="Baru">Koleksi terbaru</button></div><div class="search-results" data-search-results></div></div>
+        <div class="search-inner"><span class="eyebrow">Recherche</span><h2 id="search-title">Apa yang Anda cari?</h2><form class="search-field" role="search" aria-label="Cari produk" onsubmit="event.preventDefault()"><svg aria-hidden="true"><use href="#icon-search"/></svg><label class="sr-only" for="search-input">Cari produk</label><input id="search-input" type="search" data-search-input placeholder="Cari tas, busana, aksesori…" data-i18n-placeholder="search_placeholder" autocomplete="off" spellcheck="false" name="q"><button type="button" data-clear-search>Hapus</button></form><div class="search-suggestions"><span>Pencarian populer</span><button type="button" data-search-term="Tas Tangan">Tas ikonis</button><button type="button" data-search-term="Saphir">Saphir</button><button type="button" data-search-term="Baru">Koleksi terbaru</button></div><p class="search-status" role="status" aria-live="polite" data-search-status></p><div class="search-results" data-search-results></div></div>
     </section>
 
     <section class="quick-view-modal modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="quick-view-title" tabindex="-1">
         <button class="modal-close icon-button" type="button" data-close-modal aria-label="Tutup"><svg aria-hidden="true"><use href="#icon-close"/></svg></button>
         <div class="quick-view-media"><img data-quick-image src="" alt=""></div>
-        <div class="quick-view-content"><span class="eyebrow" data-quick-category></span><h2 id="quick-view-title" data-quick-name></h2><p class="quick-price" data-quick-price translate="no"></p><p class="quick-description" data-quick-description></p><div class="quick-detail"><span>Warna</span><strong data-quick-color></strong></div><div class="quick-detail" data-quick-material-row hidden><span>Material</span><strong data-quick-material></strong></div><div class="quick-detail" data-quick-origin-row hidden><span>Asal</span><strong data-quick-origin></strong></div><div class="quick-detail"><span>Ketersediaan</span><strong><i class="status-dot"></i>Tersedia</strong></div><button class="button button-sapphire" type="button" data-quick-add>Tambahkan ke tas <svg aria-hidden="true"><use href="#icon-bag"/></svg></button><button class="text-link" type="button" data-open-concierge>Konsultasikan dengan advisor <svg aria-hidden="true"><use href="#icon-arrow"/></svg></button><div class="assurance"><span><svg aria-hidden="true"><use href="#icon-check"/></svg>Pengiriman complimentary</span><span><svg aria-hidden="true"><use href="#icon-check"/></svg>Signature wrapping</span></div></div>
+        <div class="quick-view-content"><span class="eyebrow" data-quick-category></span><h2 id="quick-view-title" data-quick-name></h2><p class="quick-price" data-quick-price translate="no"></p><p class="quick-description" data-quick-description></p><div class="quick-detail"><span>Warna</span><strong data-quick-color></strong></div><div class="quick-detail" data-quick-material-row hidden><span>Material</span><strong data-quick-material></strong></div><div class="quick-detail" data-quick-origin-row hidden><span>Asal</span><strong data-quick-origin></strong></div><div class="quick-detail"><span>Ketersediaan</span><strong data-quick-availability><i class="status-dot"></i>Tersedia</strong></div><button class="button button-sapphire" type="button" data-quick-add>Tambahkan ke tas <svg aria-hidden="true"><use href="#icon-bag"/></svg></button><button class="text-link" type="button" data-open-concierge>Konsultasikan dengan advisor <svg aria-hidden="true"><use href="#icon-arrow"/></svg></button><div class="assurance"><span><svg aria-hidden="true"><use href="#icon-check"/></svg>Pengiriman complimentary</span><span><svg aria-hidden="true"><use href="#icon-check"/></svg>Signature wrapping</span></div></div>
     </section>
 
     <section class="concierge-modal modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="concierge-title" tabindex="-1">
@@ -722,35 +690,6 @@
         </form>
     </section>
 
-    <!-- Floating Luxury Navigation Dock (Norman, Cooper, Krug) -->
-    <nav class="floating-luxury-dock" aria-label="Navigasi Cepat ZAFIRA">
-        <div class="dock-badge">
-            <span class="dock-brand">ZAFIRA</span>
-            <span class="dock-ver">v4.1 · Multi-Lang</span>
-        </div>
-        <button type="button" class="dock-btn active" onclick="window.scrollTo({top:0, behavior:'smooth'})" title="Storefront Utama">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-            <span>Storefront</span>
-        </button>
-        @unless(app()->environment('production'))
-        <a class="dock-btn" href="/prototype/#studio-view" title="Studio Kustomisasi Monogram">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-            <span>Studio Z</span>
-        </a>
-        @endunless
-        <button type="button" class="dock-btn" data-open-profile title="Portal Akun Klien VIP">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <span>Akun VIP</span>
-        </button>
-        <a class="dock-btn" href="/admin" title="Konsol Admin Atelier">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-            <span>Admin Atelier</span>
-        </a>
-        <button type="button" class="dock-btn" data-open-shortcuts aria-label="Buka panduan pintasan keyboard" title="Pintasan Keyboard (Tekan ?)">
-            <kbd style="font-family:'JetBrains Mono', monospace; font-size:10px; background:rgba(255,255,255,0.2); padding:1px 5px; border-radius:3px; color:#fff;">?</kbd>
-            <span>Pintasan</span>
-        </button>
-    </nav>
 
     <!-- Keyboard Shortcuts Accelerator Modal (Nielsen Heuristic 7 / Shneiderman Rule 2) -->
     <div class="modal-backdrop" id="welcome-shortcuts-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="shortcuts-title" tabindex="-1" style="display:none; position:fixed; inset:0; background:rgba(8,16,29,0.72); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center;" data-close-shortcuts>

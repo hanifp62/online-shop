@@ -7,6 +7,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ConciergeRequest extends Model
 {
+    public const TRANSITIONS = [
+        'new' => ['new', 'contacted', 'confirmed', 'cancelled'],
+        'contacted' => ['contacted', 'confirmed', 'cancelled'],
+        'confirmed' => ['confirmed', 'completed', 'cancelled'],
+        'completed' => ['completed'],
+        'cancelled' => ['cancelled'],
+    ];
+
+    public function availableTransitions(): array
+    {
+        return in_array($this->status, ['completed', 'cancelled'], true)
+            ? []
+            : (self::TRANSITIONS[$this->status] ?? []);
+    }
+
     protected $fillable = [
         'user_id',
         'name',

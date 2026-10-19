@@ -50,6 +50,35 @@ class Task3RemediationTest extends TestCase
             ->assertDontSee('USD $', false)->assertDontSee('EUR €', false);
     }
 
+    public function test_customer_navigation_never_routes_to_demo_or_admin_and_keeps_shortcuts(): void
+    {
+        foreach (['local', 'testing', 'production'] as $environment) {
+            $this->app['env'] = $environment;
+            $this->get('/')->assertOk()
+                ->assertDontSee('floating-luxury-dock', false)
+                ->assertDontSee('href="/prototype/', false)
+                ->assertDontSee('href="/admin"', false)
+                ->assertSee('data-open-shortcuts', false)
+                ->assertSee('href="#services"', false);
+        }
+    }
+
+    public function test_role_pages_keep_native_navigation_without_demo_docks(): void
+    {
+        $this->get('/produk/sac-seraphine')->assertOk()
+            ->assertDontSee('floating-luxury-dock', false)
+            ->assertSee(route('home'), false);
+        $this->actingAs(User::factory()->create())->get('/akun')->assertOk()
+            ->assertDontSee('floating-luxury-dock', false)
+            ->assertDontSee('href="/prototype/', false)
+            ->assertSee(route('logout'), false);
+        $this->seed(AdminSeeder::class);
+        $this->actingAs(Admin::firstOrFail(), 'admin')->get('/admin')->assertOk()
+            ->assertDontSee('floating-luxury-dock', false)
+            ->assertDontSee('href="/prototype/', false)
+            ->assertSee(route('admin.logout'), false);
+    }
+
     public function test_product_and_account_pages_do_not_claim_fake_certificates_or_profile_data(): void
     {
         $product = Product::where('product_slug', 'sac-seraphine')->firstOrFail();
@@ -80,6 +109,6 @@ class Task3RemediationTest extends TestCase
             ->assertDontSee('SHA-256 Ledger')
             ->assertDontSee('Takt Time Pengerjaan')
             ->assertDontSee('MSI Atelier')
-            ->assertSee('Admin Atelier');
+            ->assertSee('Dashboard Maison');
     }
 }

@@ -21,7 +21,7 @@ graph LR
    - Git repository baseline.
    - Perbaikan perizinan eksekusi binary (`chmod +x`).
    - Pemasangan platform binding native Vite darwin-arm64 (`npm run build` sukses).
-   - Inisialisasi database `ecommerce` lokal dan eksekusi 17 migrasi serta seeder.
+   - Inisialisasi database `ecommerce` lokal dan eksekusi seluruh 29 file migrasi serta seeder.
    - Verifikasi 49 automated tests.
 2. **Gelombang 2 (Storefront & Detail Kriya Pelanggan) — TERJAGA & TERVERIFIKASI:**
    - Mempertahankan estetika mewah, hero banner, dan dynamic category filter.

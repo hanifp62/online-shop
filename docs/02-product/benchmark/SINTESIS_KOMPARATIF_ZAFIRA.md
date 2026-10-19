@@ -15,7 +15,7 @@ Sepuluh **referensi desain**, bukan daftar sepuluh situs paling digemari: Amazon
 
 ## HCI dan MSI: perbandingan menuju keputusan
 
-- **Norman — signifier/feedback:** pilihan ukuran dan monogram harus terlihat pada ringkasan tas dan permintaan, bukan hanya pratinjau dekoratif. Kegagalan saat ini: PDP tidak meneruskan kedua nilai; lihat `resources/views/products/show.blade.php` dan `resources/js/app.js` dalam audit fitur.
+- **Norman — signifier/feedback:** pilihan ukuran dan monogram harus terlihat pada ringkasan tas dan permintaan, bukan hanya pratinjau dekoratif. Temuan awal bahwa PDP tidak meneruskan keduanya adalah **baseline historis sebelum remediasi**; source `resources/views/products/show.blade.php`, `resources/js/app.js`, `tests/task3.test.mjs`, dan `tests/Feature/Task3RemediationTest.php` kini mencakup jalur tersebut. Status penerimaan terkini lihat [matriks](../REQUIREMENTS_TRACEABILITY.md#rantai-bukti-keputusan-prioritas).
 - **Nielsen — status/error prevention:** tampilkan konfirmasi hanya setelah POST `/concierge` sukses. Kesalahan validasi harus menjelaskan apa yang perlu diperbaiki; status akun hanya boleh memetakan nilai yang benar-benar disimpan.
 - **Shneiderman — overview/filter/detail dan reversibility:** pertahankan filter ringan dan akses PDP; pertahankan kemampuan mengubah jumlah dan membatalkan penghapusan tas, dengan feedback yang bisa dibaca.
 - **Cooper/Krug — hemat langkah, terminologi jujur:** concierge tanpa akun wajib, label sederhana, tidak menyebut permintaan konsultasi sebagai pesanan berbayar; jangan memaksa pengguna memahami model database.

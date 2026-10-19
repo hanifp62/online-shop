@@ -13,7 +13,15 @@ class ReviewController extends Controller
     {
         return response()->json(['reviews' => Review::with('user:id,name')
             ->where('product_id', $request->query('product_id'))
-            ->latest('id')->paginate(20)]);
+            ->latest('id')->paginate(20)->through(fn (Review $review) => [
+                'id' => $review->id,
+                'product_id' => $review->product_id,
+                'rating' => $review->rating,
+                'body' => $review->body,
+                'created_at' => $review->created_at,
+                'updated_at' => $review->updated_at,
+                'user' => $review->user ? ['name' => $review->user->name] : null,
+            ])]);
     }
 
     public function store(Request $request): JsonResponse

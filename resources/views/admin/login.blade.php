@@ -25,7 +25,6 @@
         <div class="auth-card">
             <span class="eyebrow">Admin Access</span>
             <h1>Masuk admin.</h1>
-            <p>Akun seed: admin@gmail.com — ganti password setelah login pertama.</p>
             @if (session('success'))
                 <div class="auth-errors" role="status"><ul><li>{{ session('success') }}</li></ul></div>
             @endif
@@ -34,9 +33,8 @@
             @endif
             <form method="POST" action="{{ route('admin.login.process') }}" data-auth-form novalidate>
                 @csrf
-                <div class="field"><label for="email">Alamat email</label><input id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email" spellcheck="false" inputmode="email"></div>
-                <div class="field"><label for="password">Kata sandi</label><input id="password" name="password" type="password" required autocomplete="current-password"></div>
-                <div class="auth-options"><label><input type="checkbox" name="remember" value="1"> Ingat saya</label></div>
+                <div class="field"><label for="email">Alamat email</label><input id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email" spellcheck="false" inputmode="email" @error('email') aria-invalid="true" aria-describedby="email-error" @enderror>@error('email')<p id="email-error" class="form-error">{{ $message }}</p>@enderror</div>
+                <div class="field"><label for="password">Kata sandi</label><input id="password" name="password" type="password" required autocomplete="current-password" @error('password') aria-invalid="true" aria-describedby="password-error" @enderror>@error('password')<p id="password-error" class="form-error">{{ $message }}</p>@enderror</div>
                 <button class="button button-sapphire" type="submit">Masuk ke dashboard</button>
             </form>
         </div>

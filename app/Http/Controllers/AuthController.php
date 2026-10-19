@@ -42,6 +42,9 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
+        $request->session()->regenerate();
+        $request->attributes->set('cart_allow_merge', true);
+        \App\Services\CheckoutService::cart($request);
 
         return redirect('/')
             ->with('success', 'Registrasi berhasil. Anda sudah login.');
@@ -69,6 +72,8 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, (bool) ($validated['remember'] ?? false))) {
             $request->session()->regenerate();
+        $request->attributes->set('cart_allow_merge', true);
+            \App\Services\CheckoutService::cart($request);
 
             return redirect('/')
                 ->with('success', 'Login berhasil.');
@@ -85,11 +90,15 @@ class AuthController extends Controller
     {
         Auth::guard('web')->logout();
 
+        // Pertahankan keranjang akun (lintas perangkat); lepaskan tautan browser saja.
+        \App\Services\CartStore::detach($request);
+
         // Guard ganda berbagi sesi: jangan hancurkan sesi bila admin
         // masih login di browser yang sama (kompatibilitas user/admin).
         if (! Auth::guard('admin')->check()) {
             $request->session()->invalidate();
         } else {
+            $request->session()->forget('cart');
             $request->session()->migrate(true);
         }
         $request->session()->regenerateToken();

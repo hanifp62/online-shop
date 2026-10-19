@@ -22,6 +22,9 @@
     <link rel="preconnect" href="https://images.unsplash.com">
     <link href="https://fonts.bunny.net/css?family=bodoni-moda:400,400i,500,500i,600&family=manrope:300,400,500,600&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        [data-product-add]:disabled { cursor: not-allowed; }
+    </style>
 </head>
 <body class="storefront product-page">
     <a class="skip-link" href="#main-content">Lewati ke konten utama</a>
@@ -75,7 +78,7 @@
                     @endif
                     @if (preg_match('/busana|dress|robe|kebaya|chemise|manteau|kemeja|gaun|mantel/i', $product->category?->cat_title.' '.$product->product_title))
                     <div style="margin: 16px 0 14px;">
-                        <label for="pdp-size" class="eyebrow" style="font-size:10px;">Pilihan ukuran</label>
+                        <label for="pdp-size" class="eyebrow" style="font-size:10px;">Ukuran (permintaan concierge)</label>
                         <select id="pdp-size" style="display:block; padding:8px; border:1px solid var(--line); background:var(--white); color:var(--ink);">
                             <option value="">Pilih ukuran</option>
                             <option value="FR 36">FR 36</option><option value="FR 38">FR 38</option>
@@ -94,10 +97,10 @@
                         <div id="pdp-monogram-badge" style="width:42px; height:42px; border-radius:50%; border:2px solid var(--gold); background:#fff; color:var(--ink); display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-size:16px; font-weight:600; box-shadow:0 2px 8px rgba(182,154,100,0.2);">Z</div>
                         <div style="flex:1;">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
-                                <label for="pdp-monogram-input" style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink); margin:0;">Personalisasi Monogram</label>
+                                <label for="pdp-monogram-input" style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink); margin:0;">Monogram (permintaan concierge)</label>
                                 <span id="pdp-monogram-counter" aria-live="polite" style="font-size:10px; font-weight:700; color:var(--muted);">0 / 3</span>
                             </div>
-                            <input type="text" id="pdp-monogram-input" maxlength="3" value="" placeholder="A-Z" aria-describedby="pdp-monogram-help" aria-label="Inisial monogram, maksimal tiga huruf" style="width:100%; padding:5px 10px; font-size:12px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; border:1px solid var(--line); border-radius:3px; background:#fff;" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 3); updatePdpMonogram(this.value)">
+                            <input type="text" id="pdp-monogram-input" maxlength="3" value="" placeholder="A-Z" aria-describedby="pdp-monogram-help" aria-label="Inisial monogram, maksimal tiga huruf" style="width:100%; padding:5px 10px; font-size:12px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; border:1px solid var(--line); border-radius:3px; background:#fff;">
                             <small id="pdp-monogram-help" style="font-size:9.5px; color:var(--muted); display:block; margin-top:2px;">Masukkan hingga tiga huruf A–Z.</small>
                         </div>
                     </div>
@@ -108,8 +111,15 @@
                         <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:4px;"><polyline points="20 6 9 17 4 12"></polyline></svg>Signature wrapping</span>
                         <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:4px;"><polyline points="20 6 9 17 4 12"></polyline></svg>Care for Life</span>
                     </div>
+                    <p class="muted" data-personalization-note>Ukuran dan monogram hanya melalui concierge; keduanya tidak masuk tas pembelian standar.</p>
+                    @php($soldOut = (int) $product->stock <= 0)
+                    @if ($soldOut)
+                        <p class="muted" id="pdp-sold-out-note">Stok habis. Hubungi advisor untuk informasi ketersediaan.</p>
+                    @endif
                     <div class="product-detail-actions">
                         <button class="button button-sapphire" type="button" data-product-add
+                            @if ($soldOut) disabled aria-describedby="pdp-sold-out-note" @endif
+                            data-product-id="{{ $product->product_id }}"
                             data-id="{{ $product->product_slug }}"
                             data-name="{{ $product->product_title }}"
                             data-category="{{ $product->category?->cat_title }}"
@@ -118,9 +128,9 @@
                             data-image="{{ $product->imageWidth(800) }}"
                             data-description="{{ $product->product_description }}"
                             data-color="{{ $product->product_color }}">
-                            Tambahkan ke tas <svg aria-hidden="true"><use href="#icon-bag"/></svg>
+                            {{ $soldOut ? 'Stok habis' : 'Tambahkan ke tas' }} <svg aria-hidden="true"><use href="#icon-bag"/></svg>
                         </button>
-                        <button class="text-link" type="button" data-open-concierge>Konsultasikan dengan advisor <svg aria-hidden="true"><use href="#icon-arrow"/></svg></button>
+                        <button class="text-link" type="button" data-open-concierge data-pdp-inquiry>Konsultasikan dengan advisor <svg aria-hidden="true"><use href="#icon-arrow"/></svg></button>
                     </div>
                 </div>
             </div>
@@ -134,11 +144,13 @@
             <div class="product-grid" data-product-grid>
                 @foreach ($related as $index => $item)
                     <article class="product-card reveal" data-product-card
+                        data-product-id="{{ $item->product_id }}"
                         data-id="{{ $item->product_slug }}"
                         data-name="{{ $item->product_title }}"
                         data-category="{{ $item->category?->cat_title }}"
                         data-price="{{ $item->product_price }}"
                         data-price-label="Rp{{ number_format($item->product_price, 0, ',', '.') }}"
+                        data-stock="{{ max(0, (int) $item->stock) }}"
                         data-image="{{ $item->imageWidth(800) }}"
                         data-description="{{ $item->product_description }}"
                         data-color="{{ $item->product_color }}"
@@ -158,8 +170,9 @@
                             <span>{{ $item->category?->cat_title }}</span>
                             <h3><button type="button" data-quick-view>{{ $item->product_title }}</button></h3>
                             <p translate="no">Rp{{ number_format($item->product_price, 0, ',', '.') }}</p>
+                            @if ($item->stock <= 0)<p>Stok habis</p>@endif
                             <div class="product-color"><i style="--swatch: {{ $item->swatchHex() }}"></i>{{ $item->product_color }}</div>
-                            <button class="product-add" type="button" data-card-add aria-label="Tambahkan {{ $item->product_title }} ke tas"><svg aria-hidden="true"><use href="#icon-bag"/></svg><span>Tambah</span></button>
+                            <button class="product-add" type="button" data-card-add @if ($item->stock <= 0) disabled @endif aria-label="{{ $item->stock <= 0 ? $item->product_title.' — stok habis' : 'Tambahkan '.$item->product_title.' ke tas' }}"><svg aria-hidden="true"><use href="#icon-bag"/></svg><span>{{ $item->stock <= 0 ? 'Stok habis' : 'Tambah' }}</span></button>
                         </div>
                     </article>
                 @endforeach
@@ -170,33 +183,6 @@
 
     @include('partials.product-footer')
 
-    <!-- Floating Luxury Navigation Dock -->
-    <nav class="floating-luxury-dock" style="position:fixed; bottom:20px; left:50%; transform:translateX(-50%); display:inline-flex; align-items:center; gap:4px; background:rgba(8, 16, 29, 0.94); backdrop-filter:blur(16px); border:1px solid rgba(182, 154, 100, 0.45); border-radius:9999px; padding:5px 10px; z-index:999; box-shadow:0 16px 36px rgba(0,0,0,0.35);" aria-label="Navigasi Cepat Prototipe &amp; Atelier">
-        <a class="dock-btn" href="{{ route('home') }}" style="background:transparent; border:none; color:rgba(255,255,255,0.78); font-size:11px; font-weight:500; padding:7px 12px; border-radius:9999px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; text-decoration:none;" title="Storefront Utama">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-            <span>Storefront</span>
-        </a>
-        <a class="dock-btn active" href="{{ url()->current() }}" style="background:rgba(182, 154, 100, 0.22); color:#fff; border:none; font-size:11px; font-weight:500; padding:7px 12px; border-radius:9999px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; text-decoration:none;" title="Studio Produk">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-            <span>Studio PDP</span>
-        </a>
-        <a class="dock-btn" href="{{ route('account.show') }}" style="background:transparent; border:none; color:rgba(255,255,255,0.78); font-size:11px; font-weight:500; padding:7px 12px; border-radius:9999px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; text-decoration:none;" title="Portal Akun Klien VIP">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <span>Akun VIP</span>
-        </a>
-        <a class="dock-btn" href="/admin" style="background:transparent; border:none; color:rgba(255,255,255,0.78); font-size:11px; font-weight:500; padding:7px 12px; border-radius:9999px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; text-decoration:none;" title="Konsol Admin Atelier">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-            <span>Admin Atelier</span>
-        </a>
-    </nav>
 
-    <script>
-        function updatePdpMonogram(val) {
-            const badge = document.getElementById('pdp-monogram-badge');
-            const counter = document.getElementById('pdp-monogram-counter');
-            if (badge) badge.textContent = val.trim() ? val : 'Z';
-            if (counter) counter.textContent = `${val.length} / 3`;
-        }
-    </script>
 </body>
 </html>

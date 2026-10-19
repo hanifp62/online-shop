@@ -265,7 +265,7 @@ class PrototypeStore {
     this.cart = this.load('zafira_v3_5_cart', [
       { productId: 9, qty: 1, size: 'FR 38', monogram: 'AT', packaging: 'gift-box' }
     ]);
-    this.currency = this.load('zafira_currency', 'IDR');
+    this.currency = 'IDR';
     this.soundEnabled = this.load('zafira_sound', true);
     this.isDockCollapsed = false;
 
@@ -478,34 +478,7 @@ class PrototypeStore {
 const store = new PrototypeStore();
 
 function formatRupiah(num) {
-  const curr = store.currency || 'IDR';
-  if (curr === 'EUR') {
-    const val = Math.round(Number(num || 0) / 17200);
-    return '€\u00A0' + val.toLocaleString('de-DE');
-  }
-  if (curr === 'USD') {
-    const val = Math.round(Number(num || 0) / 16200);
-    return '$\u00A0' + val.toLocaleString('en-US');
-  }
   return 'Rp\u00A0' + Number(num || 0).toLocaleString('id-ID');
-}
-
-function setCurrency(curr) {
-  store.currency = curr;
-  store.save('zafira_currency', curr);
-  document.querySelectorAll('.curr-opt').forEach(el => {
-    el.classList.toggle('active', el.dataset.curr === curr);
-  });
-  renderCatalog();
-  renderCartDrawer();
-  if (store.currentView === 'studio' && store.activeStudioProduct) {
-    openProductStudio(store.activeStudioProduct.id);
-  }
-  if (store.currentView === 'account') {
-    renderAccountPortal();
-  }
-  playAtelierSound('chime');
-  showToast(`Mata uang dialihkan ke ${curr} (Konversi real-time Maison ZAFIRA)`);
 }
 
 // Web Audio API Synthesis for Subtle Atelier Acoustics
@@ -603,8 +576,8 @@ function showToast(message, type = 'info', actionText = null, actionCallback = n
       <path d="M12 7v5"></path>
       <circle cx="12" cy="16" r="0.75" fill="#dfcaa0"></circle>
     </svg>
-    <span style="flex-grow:1;">${message}</span>
-    ${actionText ? `<button class="toast-action-btn" type="button">${actionText}</button>` : ''}
+    <span style="flex-grow:1;">${escapeHtml(message)}</span>
+    ${actionText ? `<button class="toast-action-btn" type="button">${escapeHtml(actionText)}</button>` : ''}
   `;
   container.appendChild(toast);
 
@@ -635,6 +608,12 @@ function showToast(message, type = 'info', actionText = null, actionCallback = n
 function escapeHtml(str) {
   if (!str) return '';
   return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]);
+}
+
+// Stored image URLs: relative paths or http(s) only; any other scheme (javascript:, data:) is dropped.
+function safeImageSrc(url) {
+  const s = String(url || '').trim();
+  return !/[\x00-\x1f\x7f\\]/.test(s) && /^(https?:\/\/|\/(?!\/)|(?![a-z][a-z0-9+.-]*:|\/\/)[^\\/])/i.test(s) ? escapeHtml(s) : '';
 }
 
 function resetSearchAndFilter() {
@@ -690,16 +669,16 @@ function renderCatalog() {
 
         <!-- Diptych 1: First Creation & Savoir-Faire -->
         <article class="diptych-row">
-          <div class="diptych-media" onclick="openProductStudio(${filtered[0].id})" style="cursor:pointer;">
-            <img src="${filtered[0].images[0]}" alt="${store.getProductLocalized(filtered[0]).title}">
-            <span class="diptych-caption-tag">${store.getProductLocalized(filtered[0]).badge || 'Haute Couture'} · 60h Broderie</span>
+          <div class="diptych-media" onclick="openProductStudio(${Number(filtered[0].id)})" style="cursor:pointer;">
+            <img src="${safeImageSrc(filtered[0].images[0])}" alt="${escapeHtml(store.getProductLocalized(filtered[0]).title)}">
+            <span class="diptych-caption-tag">${escapeHtml(store.getProductLocalized(filtered[0]).badge || 'Haute Couture')} · 60h Broderie</span>
           </div>
           <div class="diptych-content">
-            <span class="diptych-origin">${store.getProductLocalized(filtered[0]).origin || 'Atelier Paris · Bordir Tangan Kebayoran'}</span>
-            <h3 class="diptych-title">${store.getProductLocalized(filtered[0]).title}</h3>
-            <p class="diptych-quote">“${store.getProductLocalized(filtered[0]).hero_quote || 'Kemurnian kriya adibusana.'}”</p>
+            <span class="diptych-origin">${escapeHtml(store.getProductLocalized(filtered[0]).origin || 'Atelier Paris · Bordir Tangan Kebayoran')}</span>
+            <h3 class="diptych-title">${escapeHtml(store.getProductLocalized(filtered[0]).title)}</h3>
+            <p class="diptych-quote">“${escapeHtml(store.getProductLocalized(filtered[0]).hero_quote || 'Kemurnian kriya adibusana.')}”</p>
             <p style="font-size:13.5px; color:var(--muted); line-height:1.8; margin-bottom:20px;">
-              ${store.getProductLocalized(filtered[0]).desc}
+              ${escapeHtml(store.getProductLocalized(filtered[0]).desc)}
             </p>
             <div class="diptych-metrics">
               <div class="metric-col">
@@ -716,8 +695,8 @@ function renderCatalog() {
               </div>
             </div>
             <div style="display:flex; gap:12px; align-items:center;">
-              <button class="btn-gold" onclick="openProductStudio(${filtered[0].id})">${window.Zafira ? window.Zafira.t('hero_cta_studio', 'Buka Studio Kriya') : 'Buka Studio Kriya'}</button>
-              <button class="btn-outline" onclick="quickAddToCart(${filtered[0].id})">${window.Zafira ? window.Zafira.t('card_add', 'Tambah ke Tas') : 'Tambah ke Tas'}</button>
+              <button class="btn-gold" onclick="openProductStudio(${Number(filtered[0].id)})">${window.Zafira ? window.Zafira.t('hero_cta_studio', 'Buka Studio Kriya') : 'Buka Studio Kriya'}</button>
+              <button class="btn-outline" onclick="quickAddToCart(${Number(filtered[0].id)})">${window.Zafira ? window.Zafira.t('card_add', 'Tambah ke Tas') : 'Tambah ke Tas'}</button>
             </div>
           </div>
         </article>
@@ -726,11 +705,11 @@ function renderCatalog() {
         ${filtered[1] ? `
         <article class="diptych-row reverse">
           <div class="diptych-content">
-            <span class="diptych-origin">${store.getProductLocalized(filtered[1]).origin || 'Batik Tulis Laweyan · Kerah Neapolitan'}</span>
-            <h3 class="diptych-title">${store.getProductLocalized(filtered[1]).title}</h3>
-            <p class="diptych-quote">“${store.getProductLocalized(filtered[1]).hero_quote || 'Kemegahan busana kriya.'}”</p>
+            <span class="diptych-origin">${escapeHtml(store.getProductLocalized(filtered[1]).origin || 'Batik Tulis Laweyan · Kerah Neapolitan')}</span>
+            <h3 class="diptych-title">${escapeHtml(store.getProductLocalized(filtered[1]).title)}</h3>
+            <p class="diptych-quote">“${escapeHtml(store.getProductLocalized(filtered[1]).hero_quote || 'Kemegahan busana kriya.')}”</p>
             <p style="font-size:13.5px; color:var(--muted); line-height:1.8; margin-bottom:20px;">
-              ${store.getProductLocalized(filtered[1]).desc}
+              ${escapeHtml(store.getProductLocalized(filtered[1]).desc)}
             </p>
             <div class="diptych-metrics">
               <div class="metric-col">
@@ -747,13 +726,13 @@ function renderCatalog() {
               </div>
             </div>
             <div style="display:flex; gap:12px; align-items:center;">
-              <button class="btn-gold" onclick="openProductStudio(${filtered[1].id})">${window.Zafira ? window.Zafira.t('hero_cta_studio', 'Buka Studio Kriya') : 'Buka Studio Kriya'}</button>
-              <button class="btn-outline" onclick="quickAddToCart(${filtered[1].id})">${window.Zafira ? window.Zafira.t('card_add', 'Tambah ke Tas') : 'Tambah ke Tas'}</button>
+              <button class="btn-gold" onclick="openProductStudio(${Number(filtered[1].id)})">${window.Zafira ? window.Zafira.t('hero_cta_studio', 'Buka Studio Kriya') : 'Buka Studio Kriya'}</button>
+              <button class="btn-outline" onclick="quickAddToCart(${Number(filtered[1].id)})">${window.Zafira ? window.Zafira.t('card_add', 'Tambah ke Tas') : 'Tambah ke Tas'}</button>
             </div>
           </div>
-          <div class="diptych-media" onclick="openProductStudio(${filtered[1].id})" style="cursor:pointer;">
-            <img src="${filtered[1].images[0]}" alt="${store.getProductLocalized(filtered[1]).title}">
-            <span class="diptych-caption-tag">${store.getProductLocalized(filtered[1]).badge || 'Pewarna Alami'} · Canting Solo</span>
+          <div class="diptych-media" onclick="openProductStudio(${Number(filtered[1].id)})" style="cursor:pointer;">
+            <img src="${safeImageSrc(filtered[1].images[0])}" alt="${escapeHtml(store.getProductLocalized(filtered[1]).title)}">
+            <span class="diptych-caption-tag">${escapeHtml(store.getProductLocalized(filtered[1]).badge || 'Pewarna Alami')} · Canting Solo</span>
           </div>
         </article>
         ` : ''}
@@ -817,22 +796,22 @@ function renderProductCardHtml(rawP) {
   const addLabel = window.Zafira ? window.Zafira.t('card_add', 'Ke Tas') : 'Ke Tas';
 
   return `
-    <article class="product-card" data-id="${p.id}">
-      <div class="product-media" onclick="openProductStudio(${p.id})" style="cursor:pointer;">
-        <img src="${p.images[0]}" alt="${p.title}">
-        ${p.badge ? `<span class="badge-creations">${p.badge}</span>` : ''}
+    <article class="product-card" data-id="${Number(p.id)}">
+      <div class="product-media" onclick="openProductStudio(${Number(p.id)})" style="cursor:pointer;">
+        <img src="${safeImageSrc(p.images[0])}" alt="${escapeHtml(p.title)}">
+        ${p.badge ? `<span class="badge-creations">${escapeHtml(p.badge)}</span>` : ''}
         <div class="product-overlay-actions" onclick="event.stopPropagation()">
-          <button class="btn-quick" onclick="openProductStudio(${p.id})">${studioLabel}</button>
-          <button class="btn-quick" style="background:var(--sapphire-midnight); color:#fff; border-color:var(--sapphire-midnight);" onclick="quickAddToCart(${p.id})">+ ${addLabel}</button>
+          <button class="btn-quick" onclick="openProductStudio(${Number(p.id)})">${studioLabel}</button>
+          <button class="btn-quick" style="background:var(--sapphire-midnight); color:#fff; border-color:var(--sapphire-midnight);" onclick="quickAddToCart(${Number(p.id)})">+ ${addLabel}</button>
         </div>
       </div>
       <div class="product-info">
-        <span class="product-cat">${cat}</span>
-        <h4 class="product-title" onclick="openProductStudio(${p.id})" style="cursor:pointer;">${p.title}</h4>
-        <p class="product-desc-snippet">${p.desc.substring(0, 80)}...</p>
+        <span class="product-cat">${escapeHtml(cat)}</span>
+        <h4 class="product-title" onclick="openProductStudio(${Number(p.id)})" style="cursor:pointer;">${escapeHtml(p.title)}</h4>
+        <p class="product-desc-snippet">${escapeHtml(String(p.desc).substring(0, 80))}...</p>
         <div class="product-meta">
           <span class="product-price">${p.formattedPrice}</span>
-          ${p.color_hex ? `<span class="color-dot" style="background:${p.color_hex}" title="${p.color}"></span>` : ''}
+          ${p.color_hex ? `<span class="color-dot" style="background:${escapeHtml(p.color_hex)}" title="${escapeHtml(p.color)}"></span>` : ''}
         </div>
       </div>
     </article>
@@ -866,7 +845,7 @@ function openProductStudio(productId) {
         <span data-i18n="studio_back_btn">${window.Zafira ? window.Zafira.t('studio_back_btn', 'Kembali ke Penjelajahan') : 'Kembali ke Penjelajahan'}</span>
       </button>
       <div style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--taupe); font-weight:700;">
-        ${cat} · Création No. ${p.id}
+        ${escapeHtml(cat)} · Création No. ${Number(p.id)}
       </div>
       <div style="display:flex; align-items:center; gap:8px;">
         <button class="action-btn" onclick="openProfileDrawer()" title="Profil &amp; Pilihan Salon">
@@ -875,7 +854,7 @@ function openProductStudio(productId) {
         </button>
         <button class="action-btn" onclick="openCartDrawer()">
           <span data-i18n="studio_cart_btn">${window.Zafira ? window.Zafira.t('studio_cart_btn', 'Tas Belanja') : 'Tas Belanja'}</span>
-          <span class="badge-count cart-count-badge">${store.cart.reduce((s, i) => s + i.qty, 0)}</span>
+          <span class="badge-count cart-count-badge">${store.cart.reduce((s, i) => s + Number(i.qty), 0)}</span>
         </button>
       </div>
     </div>
@@ -887,7 +866,7 @@ function openProductStudio(productId) {
       <div class="studio-gallery-pane">
         ${p.images.map((imgUrl, i) => `
           <div class="studio-img-card">
-            <img src="${imgUrl}" alt="${p.title} Angle ${i+1}">
+            <img src="${safeImageSrc(imgUrl)}" alt="${escapeHtml(p.title)} Angle ${i+1}">
           </div>
         `).join('')}
       </div>
@@ -896,15 +875,15 @@ function openProductStudio(productId) {
       <div class="studio-panel-pane">
         <!-- Steve Krug Trunk Test: Contextual Breadcrumbs -->
         <div class="studio-breadcrumbs">
-          <a onclick="switchView('storefront')">Maison ZAFIRA</a>
+          <a href="#" onclick="switchView('storefront')">Maison ZAFIRA</a>
           <span>/</span>
-          <a onclick="switchView('storefront'); filterCategory(${p.cat_id})">${cat}</a>
+          <a href="#" onclick="switchView('storefront'); filterCategory(${Number(p.cat_id)})">${escapeHtml(cat)}</a>
           <span>/</span>
-          <span class="active">${p.title}</span>
+          <span class="active">${escapeHtml(p.title)}</span>
         </div>
 
-        <span class="studio-category-label">${cat}</span>
-        <h1 class="studio-product-title">${p.title}</h1>
+        <span class="studio-category-label">${escapeHtml(cat)}</span>
+        <h1 class="studio-product-title">${escapeHtml(p.title)}</h1>
         <div class="studio-price">${p.formattedPrice}</div>
 
         <!-- 4-Tab Craftsmanship Navigation -->
@@ -917,17 +896,17 @@ function openProductStudio(productId) {
 
         <!-- Tab 1: Siluet & Narasi -->
         <div class="qv-tab-pane ${store.selectedStudioTab === 'story' ? 'active' : ''}" id="studio-pane-story">
-          <p style="margin-bottom:12px;">${p.desc}</p>
+          <p style="margin-bottom:12px;">${escapeHtml(p.desc)}</p>
           <p style="font-size:12px; color:var(--muted); font-style:italic; border-left:2px solid var(--gold); padding-left:12px;">
-            “${p.hero_quote}”
+            “${escapeHtml(p.hero_quote)}”
           </p>
         </div>
 
         <!-- Tab 2: Material & Asal Bahan -->
         <div class="qv-tab-pane ${store.selectedStudioTab === 'material' ? 'active' : ''}" id="studio-pane-material">
           <div style="background:var(--ivory); padding:14px; border-radius:var(--radius-xs); border-left:3px solid var(--sapphire-midnight); margin-bottom:8px;">
-            <p><strong data-i18n="studio_label_composition">${window.Zafira ? window.Zafira.t('studio_label_composition', 'Komposisi:') : 'Komposisi:'}</strong> ${p.material}</p>
-            <p style="margin-top:6px;"><strong data-i18n="studio_label_provenance">${window.Zafira ? window.Zafira.t('studio_label_provenance', 'Provenance:') : 'Provenance:'}</strong> ${p.origin}</p>
+            <p><strong data-i18n="studio_label_composition">${window.Zafira ? window.Zafira.t('studio_label_composition', 'Komposisi:') : 'Komposisi:'}</strong> ${escapeHtml(p.material)}</p>
+            <p style="margin-top:6px;"><strong data-i18n="studio_label_provenance">${window.Zafira ? window.Zafira.t('studio_label_provenance', 'Provenance:') : 'Provenance:'}</strong> ${escapeHtml(p.origin)}</p>
           </div>
           <small style="color:var(--muted); font-size:11px;">Tersertifikasi serat alami bebas pewarna sintetis berat.</small>
         </div>
@@ -935,7 +914,7 @@ function openProductStudio(productId) {
         <!-- Tab 3: Savoir-Faire Kriya -->
         <div class="qv-tab-pane ${store.selectedStudioTab === 'craft' ? 'active' : ''}" id="studio-pane-craft">
           <div style="background:var(--ivory); padding:14px; border-radius:var(--radius-xs); border-left:3px solid var(--gold); margin-bottom:8px;">
-            <p><strong data-i18n="studio_label_craft">${window.Zafira ? window.Zafira.t('studio_label_craft', 'Keahlian Tangan:') : 'Keahlian Tangan:'}</strong> ${p.craft}</p>
+            <p><strong data-i18n="studio_label_craft">${window.Zafira ? window.Zafira.t('studio_label_craft', 'Keahlian Tangan:') : 'Keahlian Tangan:'}</strong> ${escapeHtml(p.craft)}</p>
           </div>
           <small style="color:var(--muted); font-size:11px;">Dikerjakan di bawah supervisi Direktur Kreatif ZAFIRA.</small>
         </div>
@@ -943,7 +922,7 @@ function openProductStudio(productId) {
         <!-- Tab 4: Panduan Perawatan -->
         <div class="qv-tab-pane ${store.selectedStudioTab === 'care' ? 'active' : ''}" id="studio-pane-care">
           <div style="background:var(--ivory); padding:14px; border-radius:var(--radius-xs); border-left:3px solid #64748b; margin-bottom:8px;">
-            <p><strong data-i18n="studio_label_care">${window.Zafira ? window.Zafira.t('studio_label_care', 'Perawatan Busana:') : 'Perawatan Busana:'}</strong> ${p.care}</p>
+            <p><strong data-i18n="studio_label_care">${window.Zafira ? window.Zafira.t('studio_label_care', 'Perawatan Busana:') : 'Perawatan Busana:'}</strong> ${escapeHtml(p.care)}</p>
           </div>
         </div>
 
@@ -955,19 +934,19 @@ function openProductStudio(productId) {
           </div>
           <div class="size-pills">
             ${sizeKeys.map(sizeKey => `
-              <button class="size-pill ${store.selectedStudioSize === sizeKey ? 'active' : ''}" onclick="selectStudioSize('${sizeKey}')">
-                ${sizeKey.replace('FR ', '')}
+              <button class="size-pill ${store.selectedStudioSize === sizeKey ? 'active' : ''}" onclick="selectStudioSize(${escapeHtml(JSON.stringify(sizeKey))})">
+                ${escapeHtml(sizeKey.replace('FR ', ''))}
               </button>
             `).join('')}
           </div>
           <div style="font-size:11.5px; color:var(--muted); margin-top:8px;" id="size-measurement-feedback">
-            ${p.measurements ? p.measurements[store.selectedStudioSize] || '' : ''}
+            ${p.measurements ? escapeHtml(p.measurements[store.selectedStudioSize] || '') : ''}
           </div>
         </div>
 
         <!-- Live Monogram Studio with Norman Affordance & Active Counter -->
         <div class="monogram-studio-card">
-          <div class="monogram-stamp-badge" id="studio-monogram-stamp">${store.activeStudioMonogram || 'AT'}</div>
+          <div class="monogram-stamp-badge" id="studio-monogram-stamp">${escapeHtml(store.activeStudioMonogram || 'AT')}</div>
           <div style="flex-grow:1;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
               <label class="form-label" style="margin-bottom:0;" data-i18n="studio_monogram_title">${window.Zafira ? window.Zafira.t('studio_monogram_title', 'Personalisasi Monogram Emas') : 'Personalisasi Monogram Emas'}</label>
@@ -975,7 +954,7 @@ function openProductStudio(productId) {
                 ${(store.activeStudioMonogram || 'AT').length} / 3
               </span>
             </div>
-            <input type="text" id="studio-monogram-input" class="form-input" maxlength="3" value="${store.activeStudioMonogram || 'AT'}" placeholder="Misal: AT"
+            <input type="text" id="studio-monogram-input" class="form-input" maxlength="3" value="${escapeHtml(store.activeStudioMonogram || 'AT')}" placeholder="Misal: AT"
               style="padding:6px 12px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;"
               oninput="this.value = this.value.toUpperCase().replace(/[^A-Z]/g, ''); updateStudioMonogramBadge(this.value)">
             <small style="font-size:10px; color:var(--taupe); display:flex; align-items:center; gap:4px; margin-top:3px;">
@@ -1005,7 +984,7 @@ function openProductStudio(productId) {
             <strong style="font-size:12px; color:var(--sapphire-midnight); display:block;">84 Jam Kriya Tangan · Sertifikat Keaslian Digital</strong>
             <span style="font-size:11px; color:var(--muted);">Terdaftar dalam Ledger SHA-256 Maison ZAFIRA</span>
           </div>
-          <button type="button" class="btn-outline" style="padding:6px 12px; font-size:10.5px; display:inline-flex; align-items:center; gap:5px;" onclick="openAuthenticityModal(${p.id})">
+          <button type="button" class="btn-outline" style="padding:6px 12px; font-size:10.5px; display:inline-flex; align-items:center; gap:5px;" onclick="openAuthenticityModal(${Number(p.id)})">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
             <span>Verifikasi Keaslian</span>
           </button>
@@ -1026,7 +1005,7 @@ function openProductStudio(productId) {
   `;
 
   switchView('studio');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.body.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function switchStudioTab(tabKey) {
@@ -1096,46 +1075,44 @@ function quickAddToCart(productId) {
 // CART DRAWER & CHECKOUT
 // ==========================================================================
 
-function openCartDrawer() {
-  document.getElementById('cart-drawer')?.classList.add('open');
-  document.getElementById('drawer-backdrop')?.classList.add('open');
-  playAtelierSound('swoosh');
-}
+let drawerOpener = null;
+const drawerFocusable = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-function closeCartDrawer() {
-  document.getElementById('cart-drawer')?.classList.remove('open');
-  document.getElementById('drawer-backdrop')?.classList.remove('open');
-}
-
-function openProfileDrawer() {
+function openDrawer(el, opener = document.activeElement) {
+  if (!el) return;
+  const currentDrawer = document.querySelector('#cart-drawer.open, #profile-drawer.open, #mobile-nav-drawer.open');
+  if (currentDrawer) opener = drawerOpener || opener;
   closeAllModals();
-  document.getElementById('profile-drawer')?.classList.add('open');
+  drawerOpener = opener;
+  el.classList.add('open');
   document.getElementById('drawer-backdrop')?.classList.add('open');
+  (el.querySelector(drawerFocusable) || el).focus();
   playAtelierSound('swoosh');
 }
 
-function closeProfileDrawer() {
-  document.getElementById('profile-drawer')?.classList.remove('open');
+function closeDrawer() {
+  document.querySelectorAll('#cart-drawer, #profile-drawer, #mobile-nav-drawer').forEach(el => el.classList.remove('open'));
   document.getElementById('drawer-backdrop')?.classList.remove('open');
+  const opener = drawerOpener;
+  drawerOpener = null;
+  if (opener?.isConnected) opener.focus();
 }
 
-function openMobileNavDrawer() {
-  closeAllModals();
-  document.getElementById('mobile-nav-drawer')?.classList.add('open');
-  document.getElementById('drawer-backdrop')?.classList.add('open');
-  playAtelierSound('swoosh');
-}
-
-function closeMobileNavDrawer() {
-  document.getElementById('mobile-nav-drawer')?.classList.remove('open');
-  document.getElementById('drawer-backdrop')?.classList.remove('open');
-}
+function openCartDrawer() { openDrawer(document.getElementById('cart-drawer')); }
+function closeCartDrawer() { closeDrawer(); }
+function openProfileDrawer() { openDrawer(document.getElementById('profile-drawer')); }
+function closeProfileDrawer() { closeDrawer(); }
+function openMobileNavDrawer() { openDrawer(document.getElementById('mobile-nav-drawer')); }
+function closeMobileNavDrawer() { closeDrawer(); }
 
 function renderCartDrawer() {
   const container = document.getElementById('cart-items-container');
   const subtotalEl = document.getElementById('cart-subtotal');
   const badgeCounts = document.querySelectorAll('.cart-count-badge');
-  const lang = (window.Zafira && window.Zafira.getLang) ? window.Zafira.getLang() : (localStorage.getItem('zafira-lang') || 'id');
+  let lang = 'id';
+  try {
+    lang = window.Zafira ? window.Zafira.getLanguage() : (localStorage.getItem('zafira_lang') || localStorage.getItem('zafira-lang') || 'id');
+  } catch (e) {}
 
   const totalCount = store.cart.reduce((sum, item) => sum + item.qty, 0);
   badgeCounts.forEach(el => el.textContent = totalCount);
@@ -1144,7 +1121,7 @@ function renderCartDrawer() {
 
   if (store.cart.length === 0) {
     const emptyMsg = window.Zafira ? window.Zafira.t('cart_empty_title', 'Tas belanja Maison Anda saat ini kosong.') : 'Tas belanja Maison Anda saat ini kosong.';
-    container.innerHTML = `<div style="text-align:center; padding:60px 20px; color:var(--muted);">${emptyMsg}</div>`;
+    container.innerHTML = `<div style="text-align:center; padding:60px 20px; color:var(--muted);">${escapeHtml(emptyMsg)}</div>`;
     if (subtotalEl) subtotalEl.textContent = window.Zafira ? window.Zafira.formatPrice(0, store.currency) : 'Rp0';
     return;
   }
@@ -1160,19 +1137,19 @@ function renderCartDrawer() {
     const itemPriceFormatted = window.Zafira ? window.Zafira.formatPrice(p.price, store.currency) : formatRupiah(p.price);
     return `
       <div class="cart-item">
-        <img src="${p.images[0]}" alt="${p.title}">
+        <img src="${safeImageSrc(p.images[0])}" alt="${escapeHtml(p.title)}">
         <div class="cart-item-detail">
-          <h4 class="cart-item-title">${p.title}</h4>
+          <h4 class="cart-item-title">${escapeHtml(p.title)}</h4>
           <div class="cart-item-price">${itemPriceFormatted}</div>
           <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;">
-            ${item.size ? `<span style="font-size:10px; background:#f1f5f9; color:var(--sapphire-midnight); font-weight:700; padding:2px 7px; border-radius:2px; border:1px solid #e2e8f0;">${sizeLabel} ${item.size}</span>` : ''}
-            ${item.monogram ? `<span style="font-size:10px; background:rgba(184,152,88,0.15); color:#876831; font-weight:700; padding:2px 7px; border-radius:2px; border:1px solid var(--gold); display:inline-flex; align-items:center; gap:4px;"><span class="indicator-dot gold" style="margin-right:2px;"></span> ${monogramLabel} ${item.monogram}</span>` : ''}
+            ${item.size ? `<span style="font-size:10px; background:#f1f5f9; color:var(--sapphire-midnight); font-weight:700; padding:2px 7px; border-radius:2px; border:1px solid #e2e8f0;">${sizeLabel} ${escapeHtml(item.size)}</span>` : ''}
+            ${item.monogram ? `<span style="font-size:10px; background:rgba(184,152,88,0.15); color:#876831; font-weight:700; padding:2px 7px; border-radius:2px; border:1px solid var(--gold); display:inline-flex; align-items:center; gap:4px;"><span class="indicator-dot gold" style="margin-right:2px;"></span> ${monogramLabel} ${escapeHtml(item.monogram)}</span>` : ''}
             <span style="font-size:10px; background:#f8fafc; color:#15803d; font-weight:600; padding:2px 7px; border-radius:2px;">Signature Box &amp; Seal</span>
           </div>
           <div class="cart-item-controls">
             <div class="qty-stepper">
               <button class="qty-btn" onclick="stepCartQty(${idx}, -1)" aria-label="Kurangi Jumlah"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
-              <span class="qty-val">${item.qty}</span>
+              <span class="qty-val">${Number(item.qty)}</span>
               <button class="qty-btn" onclick="stepCartQty(${idx}, 1)" aria-label="Tambah Jumlah"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
             </div>
             <button class="btn-remove" onclick="removeCartItem(${idx})">${removeLabel}</button>
@@ -1322,19 +1299,19 @@ function renderKanbanBoard() {
           ${items.map(item => `
             <div class="kanban-card">
               <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                <span class="kanban-card-title">#${item.id} · ${item.name}</span>
+                <span class="kanban-card-title">#${Number(item.id)} · ${escapeHtml(item.name)}</span>
               </div>
               <div class="kanban-card-meta">
-                ${item.phone} · ${item.service}<br>
-                <small style="color:var(--taupe);">${item.date}</small>
+                ${escapeHtml(item.phone)} · ${escapeHtml(item.service)}<br>
+                <small style="color:var(--taupe);">${escapeHtml(item.date)}</small>
               </div>
-              <div class="kanban-card-notes">${item.notes}</div>
+              <div class="kanban-card-notes">${escapeHtml(item.notes)}</div>
 
               <!-- MSI Atelier Controls: Artisan & Authenticity Certificate & Work Order -->
               <div style="margin-top:10px; padding-top:8px; border-top:1px solid #f1f5f9; display:flex; flex-direction:column; gap:6px;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                   <span style="font-size:10px; color:var(--muted); font-weight:700;">Artisan Kriya:</span>
-                  <select class="form-select" style="width:auto; padding:2px 8px; font-size:11px;" onchange="adminAssignArtisan(${item.id}, this.value)">
+                  <select class="form-select" style="width:auto; padding:2px 8px; font-size:11px;" onchange="adminAssignArtisan(${Number(item.id)}, this.value)">
                     <option value="Ibu Siti Khodijah" ${item.artisan === 'Ibu Siti Khodijah' ? 'selected' : ''}>Ibu Siti (Bordir)</option>
                     <option value="Madame Hélène" ${item.artisan === 'Madame Hélène' ? 'selected' : ''}>Mme Hélène (Paris Drape)</option>
                     <option value="Bapak Nyoman Sujana" ${item.artisan === 'Bapak Nyoman Sujana' ? 'selected' : ''}>Pak Nyoman (Pahat Logam)</option>
@@ -1343,10 +1320,10 @@ function renderKanbanBoard() {
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
                   <div style="display:flex; gap:4px;">
-                    <button class="btn-outline" style="padding:3px 6px; font-size:10px; display:inline-flex; align-items:center; gap:3px;" onclick="openAuthenticityModal(${item.id})"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> Sertifikat</button>
-                    <button class="btn-outline" style="padding:3px 6px; font-size:10px; display:inline-flex; align-items:center; gap:3px;" onclick="openWorkOrderModal(${item.id})"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line></svg> Work Order</button>
+                    <button class="btn-outline" style="padding:3px 6px; font-size:10px; display:inline-flex; align-items:center; gap:3px;" onclick="openAuthenticityModal(${Number(item.id)})"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> Sertifikat</button>
+                    <button class="btn-outline" style="padding:3px 6px; font-size:10px; display:inline-flex; align-items:center; gap:3px;" onclick="openWorkOrderModal(${Number(item.id)})"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line></svg> Work Order</button>
                   </div>
-                  <select class="form-select" style="width:auto; padding:2px 6px; font-size:11px;" onchange="adminUpdateOrderStatus(${item.id}, this.value)">
+                  <select class="form-select" style="width:auto; padding:2px 6px; font-size:11px;" onchange="adminUpdateOrderStatus(${Number(item.id)}, this.value)">
                     <option value="new" ${item.status === 'new' ? 'selected' : ''}>New</option>
                     <option value="contacted" ${item.status === 'contacted' ? 'selected' : ''}>Contacted</option>
                     <option value="confirmed" ${item.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
@@ -1420,9 +1397,9 @@ function renderAccountPortal() {
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
         <div>
           <span style="font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--taupe); font-weight:700;">${orderTitle}</span>
-          <h4 style="font-family:var(--serif); font-size:20px; color:var(--sapphire-midnight); margin:2px 0 0;">Commande N° ${c.id}</h4>
+          <h4 style="font-family:var(--serif); font-size:20px; color:var(--sapphire-midnight); margin:2px 0 0;">Commande N° ${escapeHtml(c.id)}</h4>
         </div>
-        <span class="badge-status badge-${c.status}">${c.status}</span>
+        <span class="badge-status badge-${escapeHtml(c.status)}">${escapeHtml(c.status)}</span>
       </div>
 
       <!-- Haute Couture 5-Stage Stepper -->
@@ -1450,16 +1427,16 @@ function renderAccountPortal() {
       </div>
 
       <p style="font-size:12.5px; color:var(--muted); margin-bottom:12px;">
-        ${serviceLabel} <strong>${c.service}</strong> · ${scheduleLabel} <strong>${c.date}</strong> · ${valueLabel} <strong style="font-variant-numeric:tabular-nums;">${formattedPrice}</strong>
+        ${serviceLabel} <strong>${escapeHtml(c.service)}</strong> · ${scheduleLabel} <strong>${escapeHtml(c.date)}</strong> · ${valueLabel} <strong style="font-variant-numeric:tabular-nums;">${formattedPrice}</strong>
       </p>
 
-      <div style="font-size:12px; background:var(--ivory); padding:12px 14px; border-radius:var(--radius-xs); border-left:3px solid var(--gold); white-space:pre-wrap; margin-bottom:14px; line-height:1.5;">${c.notes}</div>
+      <div style="font-size:12px; background:var(--ivory); padding:12px 14px; border-radius:var(--radius-xs); border-left:3px solid var(--gold); white-space:pre-wrap; margin-bottom:14px; line-height:1.5;">${escapeHtml(c.notes)}</div>
 
       <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--line); padding-top:12px; flex-wrap:wrap; gap:8px;">
-        <span style="font-size:11px; color:var(--muted);">Artisan: <strong>${c.artisan || 'Ibu Siti Khodijah'}</strong> · Atelier Jakarta</span>
+        <span style="font-size:11px; color:var(--muted);">Artisan: <strong>${escapeHtml(c.artisan || 'Ibu Siti Khodijah')}</strong> · Atelier Jakarta</span>
         <div style="display:flex; gap:8px;">
-          <button class="proto-btn" style="padding:6px 12px; font-size:10.5px; background:var(--sapphire-midnight); color:#fff;" onclick="openWorkOrderModal('${c.id}')">Fiche de Travail</button>
-          <button class="btn-outline" style="padding:6px 12px; font-size:10.5px; display:inline-flex; align-items:center; gap:5px;" onclick="openAuthenticityModal(${c.id})"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> ${certBtnText}</button>
+          <button class="proto-btn" style="padding:6px 12px; font-size:10.5px; background:var(--sapphire-midnight); color:#fff;" onclick="openWorkOrderModal(${Number(c.id)})">Fiche de Travail</button>
+          <button class="btn-outline" style="padding:6px 12px; font-size:10.5px; display:inline-flex; align-items:center; gap:5px;" onclick="openAuthenticityModal(${Number(c.id)})"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> ${certBtnText}</button>
         </div>
       </div>
     </article>
@@ -1537,11 +1514,11 @@ function renderMsiWipAndInventory() {
       return `
         <div class="msi-wip-card">
           <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
-            <strong style="font-size:13px; color:var(--sapphire-midnight);">${station.name}</strong>
+            <strong style="font-size:13px; color:var(--sapphire-midnight);">${escapeHtml(station.name)}</strong>
             ${statusPill}
           </div>
           <div style="font-size:24px; font-family:var(--serif); font-weight:600; color:var(--sapphire-midnight);">
-            ${station.current} <small style="font-size:13px; font-family:var(--sans); color:var(--muted);">/ ${station.limit} maks WIP</small>
+            ${Number(station.current)} <small style="font-size:13px; font-family:var(--sans); color:var(--muted);">/ ${Number(station.limit)} maks WIP</small>
           </div>
           <div class="msi-progress-bar">
             <div class="msi-progress-fill" style="width:${pct}%; background:${barColor};"></div>
@@ -1562,14 +1539,14 @@ function renderMsiWipAndInventory() {
       }
       return `
         <tr>
-          <td><strong style="font-family:monospace; font-size:11px;">${mat.code}</strong></td>
-          <td>${mat.name}</td>
-          <td style="color:var(--muted);">${mat.origin}</td>
-          <td><strong>${mat.stock.toFixed(1)} ${mat.unit}</strong></td>
-          <td style="color:var(--muted);">${mat.safetyStock} ${mat.unit}</td>
+          <td><strong style="font-family:monospace; font-size:11px;">${escapeHtml(mat.code)}</strong></td>
+          <td>${escapeHtml(mat.name)}</td>
+          <td style="color:var(--muted);">${escapeHtml(mat.origin)}</td>
+          <td><strong>${Number(mat.stock).toFixed(1)} ${escapeHtml(mat.unit)}</strong></td>
+          <td style="color:var(--muted);">${Number(mat.safetyStock)} ${escapeHtml(mat.unit)}</td>
           <td>${statusHtml}</td>
           <td>
-            <button class="btn-outline" style="padding:4px 10px; font-size:10.5px;" onclick="restockMaterialItem('${mat.id}', 10)">+ Restock 10</button>
+            <button class="btn-outline" style="padding:4px 10px; font-size:10.5px;" onclick="restockMaterialItem(${escapeHtml(JSON.stringify(String(mat.id)))}, 10)">+ Restock 10</button>
           </td>
         </tr>
       `;
@@ -1611,12 +1588,12 @@ function renderAuditTrail() {
 
   tbody.innerHTML = store.auditLogs.map(log => `
     <tr>
-      <td style="white-space:nowrap; font-size:11px; color:var(--muted);">${log.timestamp}</td>
-      <td><strong>${log.actor}</strong></td>
-      <td><span class="badge-status badge-confirmed" style="text-transform:uppercase; font-size:10px;">${log.role}</span></td>
-      <td><strong style="font-family:monospace; font-size:11px; color:#0369a1;">${log.module}</strong></td>
-      <td style="font-size:12px;">${log.action}</td>
-      <td><span class="hash-pill">${log.hash.substring(0, 16)}...</span></td>
+      <td style="white-space:nowrap; font-size:11px; color:var(--muted);">${escapeHtml(log.timestamp)}</td>
+      <td><strong>${escapeHtml(log.actor)}</strong></td>
+      <td><span class="badge-status badge-confirmed" style="text-transform:uppercase; font-size:10px;">${escapeHtml(log.role)}</span></td>
+      <td><strong style="font-family:monospace; font-size:11px; color:#0369a1;">${escapeHtml(log.module)}</strong></td>
+      <td style="font-size:12px;">${escapeHtml(log.action)}</td>
+      <td><span class="hash-pill">${escapeHtml(String(log.hash).substring(0, 16))}...</span></td>
     </tr>
   `).join('');
 }
@@ -1650,26 +1627,26 @@ function openAuthenticityModal(orderId) {
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:12px;">
             <div>
               <span style="color:var(--muted); font-size:11px; display:block;">Nomor Seri Koleksi (Batch Lot):</span>
-              <strong style="font-family:monospace; font-size:14px; color:var(--sapphire-midnight);">${serial}</strong>
+              <strong style="font-family:monospace; font-size:14px; color:var(--sapphire-midnight);">${escapeHtml(serial)}</strong>
             </div>
             <div>
               <span style="color:var(--muted); font-size:11px; display:block;">Pemilik Terdaftar (VIC Client):</span>
-              <strong style="color:var(--sapphire-midnight);">${item.name}</strong>
+              <strong style="color:var(--sapphire-midnight);">${escapeHtml(item.name)}</strong>
             </div>
           </div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:12px; border-top:1px solid #f1f5f9; padding-top:10px;">
             <div>
               <span style="color:var(--muted); font-size:11px; display:block;">Kreasi Adibusana:</span>
-              <strong>${item.service}</strong>
+              <strong>${escapeHtml(item.service)}</strong>
             </div>
             <div>
               <span style="color:var(--muted); font-size:11px; display:block;">Master Artisan Penanggung Jawab:</span>
-              <strong style="color:var(--gold);">${artisan}</strong>
+              <strong style="color:var(--gold);">${escapeHtml(artisan)}</strong>
             </div>
           </div>
           <div style="border-top:1px solid #f1f5f9; padding-top:10px;">
             <span style="color:var(--muted); font-size:11px; display:block;">Spesifikasi & Detail Pesanan:</span>
-            <p style="color:var(--sapphire-midnight); font-size:12px; margin-top:4px; white-space:pre-wrap;">${item.notes}</p>
+            <p style="color:var(--sapphire-midnight); font-size:12px; margin-top:4px; white-space:pre-wrap;">${escapeHtml(item.notes)}</p>
           </div>
         </div>
 
@@ -1739,10 +1716,7 @@ function filterCategory(catId) {
 
 function closeAllModals() {
   document.querySelectorAll('.modal-window').forEach(m => m.classList.remove('open'));
-  document.getElementById('drawer-backdrop')?.classList.remove('open');
-  document.getElementById('cart-drawer')?.classList.remove('open');
-  document.getElementById('profile-drawer')?.classList.remove('open');
-  document.getElementById('mobile-nav-drawer')?.classList.remove('open');
+  closeDrawer();
 }
 
 function toggleDockCollapse() {
@@ -1797,22 +1771,22 @@ function openWorkOrderModal(orderId) {
         <div style="display:flex; justify-content:space-between; border-bottom:2px solid #0f1c33; padding-bottom:12px; margin-bottom:16px;">
           <div>
             <h2 style="font-family:var(--serif); font-size:22px; color:#0f1c33; margin:0;">ZAFIRA ATELIER · FICHE DE TRAVAIL</h2>
-            <span style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#b89858; font-weight:700;">Lembar Instruksi Kriya Haute Couture No. WO-${order.id}</span>
+            <span style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#b89858; font-weight:700;">Lembar Instruksi Kriya Haute Couture No. WO-${escapeHtml(order.id)}</span>
           </div>
           <div style="text-align:right;">
-            <strong style="font-size:14px; font-family:monospace; color:#0f1c33;">${order.serial || 'ZFR-2026-' + order.id}</strong><br>
-            <small style="color:var(--muted); font-size:10px;">Tanggal Terbit: ${order.date}</small>
+            <strong style="font-size:14px; font-family:monospace; color:#0f1c33;">${escapeHtml(order.serial || 'ZFR-2026-' + order.id)}</strong><br>
+            <small style="color:var(--muted); font-size:10px;">Tanggal Terbit: ${escapeHtml(order.date)}</small>
           </div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; font-size:12px;">
           <div style="background:#f8fafc; padding:12px; border-radius:2px; border:1px solid #e2e8f0;">
             <strong style="color:var(--sapphire-midnight);">Klien / Pemesan:</strong><br>
-            ${order.name}<br>
-            <span style="color:var(--muted);">${order.phone}</span>
+            ${escapeHtml(order.name)}<br>
+            <span style="color:var(--muted);">${escapeHtml(order.phone)}</span>
           </div>
           <div style="background:#f8fafc; padding:12px; border-radius:2px; border:1px solid #e2e8f0;">
             <strong style="color:var(--sapphire-midnight);">Master Artisan Bertugas:</strong><br>
-            <span style="color:#b89858; font-weight:700;">${order.artisan || 'Ibu Siti Khodijah (Senior Artisan)'}</span><br>
+            <span style="color:#b89858; font-weight:700;">${escapeHtml(order.artisan || 'Ibu Siti Khodijah (Senior Artisan)')}</span><br>
             <small style="color:var(--muted);">Supervisi: Direktur Kreatif ZAFIRA</small>
           </div>
         </div>
@@ -1854,7 +1828,7 @@ function openWorkOrderModal(orderId) {
 
         <div style="border:1px solid #e2e8f0; padding:14px; margin-bottom:16px; font-size:12px; background:#fff; border-left:3px solid var(--gold);">
           <strong style="color:var(--sapphire-midnight);">Instruksi Pengerjaan & Spesifikasi Khusus Klien:</strong>
-          <p style="white-space:pre-wrap; margin-top:6px; color:#1e293b; line-height:1.6;">${order.notes}</p>
+          <p style="white-space:pre-wrap; margin-top:6px; color:#1e293b; line-height:1.6;">${escapeHtml(order.notes)}</p>
         </div>
         <div style="display:flex; justify-content:space-between; align-items:flex-end; border-top:1px dashed #cbd5e1; padding-top:16px; font-size:11px; color:#64748b;">
           <div>
@@ -1880,16 +1854,14 @@ function openWorkOrderModal(orderId) {
 // ==========================================================================
 
 // Floating Dock Scroll Intelligence (Auto-Tuck on Scroll Down, Reveal on Scroll Up / Hover)
-let lastScrollY = window.scrollY;
+// body is the page scroller (html is overflow:hidden for the dock band); drawers/panels must not tuck the dock.
+let lastScrollY = document.body.scrollTop;
 let isDockHovered = false;
 
 window.addEventListener('scroll', (e) => {
   const dock = document.querySelector('.floating-luxury-dock');
-  if (!dock || store.isDockCollapsed) return;
-  let currentScrollY = window.scrollY;
-  if (e.target && e.target.scrollTop !== undefined && e.target !== document) {
-    currentScrollY = e.target.scrollTop;
-  }
+  if (!dock || store.isDockCollapsed || e.target !== document.body) return;
+  const currentScrollY = document.body.scrollTop;
   if (currentScrollY > 70 && currentScrollY > lastScrollY && !isDockHovered) {
     dock.classList.add('dock-tucked');
   } else if (currentScrollY < lastScrollY || currentScrollY <= 70) {
@@ -1918,29 +1890,8 @@ document.addEventListener('DOMContentLoaded', () => {
   renderMsiEisCockpit();
   renderAuditTrail();
 
-  // Initialize currency pills
-  document.querySelectorAll('.curr-opt').forEach(el => {
-    el.classList.toggle('active', el.dataset.curr === (store.currency || 'IDR'));
-  });
-
   // Live Re-rendering on Language and Theme Changes (HCI Nielsen Heuristic 1 & Cooper)
-  window.addEventListener('zafira:lang-changed', (e) => {
-    const lang = (e.detail && e.detail.lang) || localStorage.getItem('zafira-lang') || 'id';
-
-    // Automatically harmonize default currency with standard international luxury practice
-    if (lang === 'fr' || lang === 'it') {
-      store.currency = 'EUR';
-    } else if (lang === 'en') {
-      store.currency = 'USD';
-    } else {
-      store.currency = 'IDR';
-    }
-    store.save('zafira_currency', store.currency);
-
-    document.querySelectorAll('.curr-opt').forEach(el => {
-      el.classList.toggle('active', el.dataset.curr === store.currency);
-    });
-
+  window.addEventListener('zafira:lang-changed', () => {
     // Re-render currently active view
     if (store.currentView === 'storefront') {
       renderCatalog();
@@ -1955,6 +1906,12 @@ document.addEventListener('DOMContentLoaded', () => {
       renderAccountPortal();
     }
     renderCartDrawer();
+  });
+
+  // Action links carry href="#" only for keyboard reachability; block the hash jump.
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href="#"]');
+    if (link) e.preventDefault();
   });
 
   // Handle URL Hash or Query Routing (Bridge between Storefront & Prototype)
@@ -2001,6 +1958,18 @@ document.addEventListener('DOMContentLoaded', () => {
       closeAllModals();
       return;
     }
+    if (e.key === 'Tab') {
+      const drawer = document.querySelector('#cart-drawer.open, #profile-drawer.open, #mobile-nav-drawer.open');
+      if (drawer) {
+        const items = [...drawer.querySelectorAll(drawerFocusable)];
+        if (!items.length) { e.preventDefault(); drawer.focus(); return; }
+        // Redirect focus that has drifted outside (rerender removed the focused node, or a shortcut moved it).
+        if (!drawer.contains(document.activeElement)) { e.preventDefault(); (e.shiftKey ? items.at(-1) : items[0]).focus(); return; }
+        if (e.shiftKey && document.activeElement === items[0]) { e.preventDefault(); items.at(-1).focus(); }
+        else if (!e.shiftKey && document.activeElement === items.at(-1)) { e.preventDefault(); items[0].focus(); }
+      }
+      return;
+    }
 
     // Do not trigger hotkeys if user is currently typing in an input, textarea, or select
     const activeEl = document.activeElement;
@@ -2008,6 +1977,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (tagName === 'input' || tagName === 'textarea' || tagName === 'select') {
       return;
     }
+
+    // Drawer shortcuts C/U may reopen or switch drawers; suppress all background actions while a drawer is open.
+    const drawerOpen = document.querySelector('#cart-drawer.open, #profile-drawer.open, #mobile-nav-drawer.open');
+    if (drawerOpen && !['c', 'C', 'u', 'U'].includes(e.key)) return;
 
     if (e.key === '?' || (e.shiftKey && e.key === '/')) {
       e.preventDefault();

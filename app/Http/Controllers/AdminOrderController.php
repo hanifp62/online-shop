@@ -17,28 +17,46 @@ class AdminOrderController extends Controller
 {
     private const REPORT_MAX_ORDERS = 500;
 
+    private const PER_PAGE_DEFAULT = 20;
+
+    private const PER_PAGE_MAX = 50;
+
     public function __construct(private readonly CheckoutService $checkout) {}
 
     public function index(Request $request): JsonResponse
     {
-        $orders = Order::with(['items', 'user:id,name,email'])
-            ->when($request->query('status'), fn ($q, $s) => $q->where('status', $s))
-            ->latest('id')
-            ->paginate(20);
+        $validated = $request->validate([
+            'status' => ['nullable', 'string', Rule::in(array_keys(Order::STATUS_FLOW))],
+            'page' => ['nullable', 'integer', 'min:1', 'max:1000'],
+            'per_page' => ['nullable', 'integer'],
+        ]);
+
+        $perPage = min(max((int) ($validated['per_page'] ?? self::PER_PAGE_DEFAULT), 1), self::PER_PAGE_MAX);
+        $query = Order::with('user:id,name')
+            ->when($validated['status'] ?? null, fn ($q, $s) => $q->where('status', $s))
+            ->latest('id');
+
+        $total = $query->toBase()->getCountForPagination();
+        $lastPage = max(1, (int) ceil($total / $perPage));
+        $page = min(max(1, (int) ($validated['page'] ?? 1)), $lastPage);
+        $orders = $query->paginate($perPage, ['*'], 'page', $page, $total)
+            ->through(fn (Order $order) => $this->orderJson($order));
 
         return response()->json($orders);
     }
 
     public function show(int $id): JsonResponse
     {
-        return response()->json(['order' => Order::with(['items', 'voucher', 'user'])->findOrFail($id)]);
+        $order = Order::with(['items', 'user:id,name'])->findOrFail($id);
+
+        return response()->json(['order' => $this->orderJson($order, true)]);
     }
 
     public function updateStatus(Request $request, int $id): JsonResponse|RedirectResponse
     {
         $order = Order::with('items')->findOrFail($id);
         $validated = $request->validate([
-            'status' => ['required', 'string', Rule::in(['paid', 'processing', 'shipped', 'completed', 'cancelled'])],
+            'status' => ['required', 'string', Rule::in(array_keys(Order::STATUS_FLOW))],
         ]);
 
         $order = $this->checkout->transition($order, $validated['status']);
@@ -47,7 +65,38 @@ class AdminOrderController extends Controller
             return back()->with('success', "Status pesanan #{$order->id} menjadi {$order->status}.");
         }
 
-        return response()->json(['order' => $order]);
+        return response()->json(['order' => $this->orderJson($order)]);
+    }
+
+    private function orderJson(Order $order, bool $detail = false): array
+    {
+        $data = [
+            'id' => $order->id,
+            'status' => $order->status,
+            'subtotal' => $order->subtotal,
+            'discount' => $order->discount,
+            'shipping_fee' => $order->shipping_fee,
+            'total' => $order->total,
+            'user' => $order->relationLoaded('user') && $order->user
+                ? ['id' => $order->user->id, 'name' => $order->user->name]
+                : null,
+            'created_at' => $order->created_at?->toISOString(),
+            'updated_at' => $order->updated_at?->toISOString(),
+        ];
+
+        if ($detail) {
+            $data['shipping_address'] = $order->shipping_address;
+            $data['items'] = $order->items->map(fn ($item) => [
+                'id' => $item->id,
+                'product_id' => $item->product_id,
+                'product_title' => $item->product_title,
+                'unit_price' => $item->unit_price,
+                'quantity' => $item->quantity,
+                'subtotal' => $item->subtotal,
+            ])->values()->all();
+        }
+
+        return $data;
     }
 
     /** Laporan PDF berdasarkan created_at UTC; nilai pesanan bukan bukti pembayaran. */
@@ -103,7 +152,7 @@ class AdminOrderController extends Controller
         $lines[] = '';
 
         foreach ($orders as $order) {
-            $customer = trim((string) ($order->user?->name ?? '')) ?: '-';
+            $customer = trim((string) ($order->customer_name ?? $order->user?->name ?? '')) ?: '-';
             $lines[] = sprintf('#%d | %s | %s | Pelanggan: %s | Rp %s', $order->id, $order->created_at->format('d-m-Y H:i'), strtoupper($order->status), $customer, number_format($order->total, 0, ',', '.'));
         }
 
@@ -124,11 +173,13 @@ class AdminOrderController extends Controller
     {
         $order = Order::with(['items', 'user'])->findOrFail($id);
         $addr = $order->shipping_address ?? [];
+        $customerName = $order->customer_name ?? $order->user?->name ?? '-';
+        $customerEmail = $order->customer_email ?? $order->user?->email ?? '-';
 
         $html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Slip Pesanan #'.$order->id.'</title>'
             .'<style>body{font-family:serif;max-width:700px;margin:20px auto;color:#1c1b1a}h1{letter-spacing:2px;font-size:20px}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{border-bottom:1px solid #ddd;padding:8px;text-align:left}th:last-child,td:last-child{text-align:right}</style></head>'
             .'<body><h1>ZAFIRA &mdash; SLIP PESANAN #'.$order->id.'</h1>'
-            .'<p>Tanggal: '.$order->created_at->format('d M Y H:i').'<br>Klien: '.e($order->user->name).' ('.e($order->user->email).')<br>'
+            .'<p>Tanggal: '.$order->created_at->format('d M Y H:i').'<br>Klien: '.e($customerName).' ('.e($customerEmail).')<br>'
             .'Status: '.strtoupper($order->status).'<br>Tujuan: '.e($addr['line1'] ?? '-').', '.e($addr['city'] ?? '-').' '.e($addr['postal_code'] ?? '').'</p>'
             .'<table><thead><tr><th>Produk</th><th>Jml</th><th>Harga</th><th>Subtotal</th></tr></thead><tbody>';
 

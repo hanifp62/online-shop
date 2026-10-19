@@ -3,9 +3,13 @@
 **Proyek:** ZAFIRA (La Maison de Lumière — `online-shop`)  
 **Fokus:** Human-Computer Interaction (HCI/IMK), Haute Couture UI/UX Architecture, dan Re-Engineering Prototype  
 **Tanggal:** 2026-10-10  
-**Status:** Dokumen Riset & Fondasi Redesain Prototype v3.0
+**Status:** Dokumen historis; audit 2026-10-11 mengoreksi klaim yang tak terverifikasi. Ini bukan hasil uji pengguna, audit UX kompetitor, atau persetujuan ahli independen. Lihat [register metodologi dan batas akses](../research/RESEARCH_METHODOLOGY.md); sumber UX publik yang berhasil dibaca meliputi Hermès dan Mytheresa, sedangkan sebagian besar situs luxury lain gagal diekstraksi.
 
 ---
+
+## Catatan audit klaim dan scope (2026-10-11)
+
+Dokumen ini memuat proposal konseptual, bukan tren industri 2025–2026 yang dibuktikan sampel memadai. The Row, Lemaire, Jacquemus, Chanel, Dior, SSENSE, dan Farfetch tidak memiliki observasi yang mendukung deskripsi spesifik di bawah; URL luxury yang gagal akses tercatat pada metodologi. Akses Hermès/Mytheresa berupa ekstraksi teks, bukan audit layout/interaksi. Klaim "WCAG 2.2 AAA" dan target 44×44px tidak membuktikan conformance; WCAG 2.2 SC 2.5.8 AA minimum 24×24 CSS px dengan pengecualian. Kisah Lyon, Solo, Flores, jam kerja, packaging, wax seal, lokasi Jakarta, WhatsApp, kalender, serta mata uang adalah contoh/ide desain, bukan fakta operasional ZAFIRA. Prinsip Norman, Hick, Fitts, Gestalt dan Nielsen merupakan lensa analisis, bukan review oleh para tokoh atau hasil eksperimen. Scope/requirement kanonis ada di [sintesis](benchmark/SINTESIS_KOMPARATIF_ZAFIRA.md); blueprint pada bagian 5 bukan komitmen implementasi.
 
 ## 1. Latar Belakang & Identifikasi Masalah Desain Sebelumnya
 
@@ -102,9 +106,11 @@ Berdasarkan riset industri dan analisis komparatif rumah mode terkemuka dunia, t
 
 ---
 
-## 5. Blueprint Arsitektur Prototype v3.0
+## 5. Blueprint Arsitektur Prototype v3.0 — proposal historis, bukan backlog MVP
 
-Untuk mentransformasikan prototype menjadi standar flagship museum mode:
+**Keputusan yang mengungguli daftar ini:** [Sintesis kanonis](benchmark/SINTESIS_KOMPARATIF_ZAFIRA.md) membatasi MVP pada FR-201–204/NFR-201–203. Dual-view, unboxing/wax seal, kalender tersinkron WhatsApp, mata uang tanpa konversi, Kanban/OMS dan sinkronisasi real-time **bukan scope yang disetujui**. Validasi hari kerja, lokasi atelier, jam kerja kriya dan packaging memerlukan data nyata. Daftar berikut dipertahankan hanya sebagai riwayat ide, tanpa klaim sudah berjalan.
+
+Proposal historis:
 
 1. **Header & Navigation Bar:**
    - Navigasi transparan melayang dengan efek kaca (*liquid glass/backdrop-filter*).

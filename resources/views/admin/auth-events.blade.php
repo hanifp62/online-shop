@@ -142,6 +142,8 @@
         @endif
     </form>
 
+    <p data-result-count>{{ $events->total() }} hasil</p>
+
     <div class="auth-events-table-wrap">
     <table>
         <thead>
