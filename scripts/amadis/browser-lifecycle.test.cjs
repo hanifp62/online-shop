@@ -74,6 +74,12 @@ test('isLoginContext guards login pages and phases', () => {
   assert.equal(isLoginContext('/belanja', 'S1-login'), true);
   assert.equal(isLoginContext('/belanja', 'S2-checkout'), false);
   assert.equal(isLoginContext('', 'setup'), false);
+  // Post-login cart work is attributed to its own phase, not S1-login.
+  assert.equal(isLoginContext('/koleksi', 'S1-cart'), false);
+});
+
+test('locale smoke module is import-safe', () => {
+  assert.equal(typeof require('./browser-locales.cjs').localeSmoke, 'function');
 });
 
 test('finalResult gates PASS on cleanup error', () => {

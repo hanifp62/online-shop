@@ -178,7 +178,6 @@ class CheckoutService
             }
 
             return $this->createOrder(null, $address, $cart, $key, $hash, null, $contact + [
-                'locale' => RecipientLocale::resolve(app()->getLocale()),
                 'guest_scope_hash' => $scope,
                 'tracking_token_hash' => hash('sha256', $token),
                 'tracking_expires_at' => now()->addDays(30),
@@ -327,6 +326,8 @@ class CheckoutService
             'payload_hash' => $hash,
             'shipping_address' => $address,
             'voucher_id' => $voucher?->id,
+            // Snapshot locale permintaan untuk semua pesanan agar bahasa faktur tetap setelah user ganti locale.
+            'locale' => RecipientLocale::resolve(app()->getLocale()),
         ] + $guest);
 
         foreach ($priced['items'] as $line) {

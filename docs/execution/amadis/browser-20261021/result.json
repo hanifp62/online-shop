@@ -1,0 +1,85 @@
+{
+  "status": "PASS",
+  "S0": "PASS",
+  "S1": "PASS",
+  "S2": "PASS",
+  "S3": "PASS",
+  "S4": "PASS",
+  "S5": "PASS",
+  "guests": [
+    {
+      "locale": "en",
+      "width": 1365,
+      "status": "PASS",
+      "quantity": 1,
+      "total": 1250000,
+      "tracking": true,
+      "token_cleared": true
+    },
+    {
+      "locale": "fr",
+      "width": 1365,
+      "status": "PASS",
+      "quantity": 1,
+      "total": 1250000,
+      "tracking": true,
+      "token_cleared": true
+    },
+    {
+      "locale": "it",
+      "width": 1365,
+      "status": "PASS",
+      "quantity": 1,
+      "total": 1250000,
+      "tracking": true,
+      "token_cleared": true
+    },
+    {
+      "locale": "zh",
+      "width": 1365,
+      "status": "PASS",
+      "quantity": 1,
+      "total": 1250000,
+      "tracking": true,
+      "token_cleared": true
+    },
+    {
+      "locale": "en",
+      "width": 390,
+      "status": "PASS",
+      "quantity": 1,
+      "total": 1250000,
+      "tracking": true,
+      "token_cleared": true
+    },
+    {
+      "locale": "fr",
+      "width": 390,
+      "status": "PASS",
+      "quantity": 1,
+      "total": 1250000,
+      "tracking": true,
+      "token_cleared": true
+    },
+    {
+      "locale": "it",
+      "width": 390,
+      "status": "PASS",
+      "quantity": 1,
+      "total": 1250000,
+      "tracking": true,
+      "token_cleared": true
+    },
+    {
+      "locale": "zh",
+      "width": 390,
+      "status": "PASS",
+      "quantity": 1,
+      "total": 1250000,
+      "tracking": true,
+      "token_cleared": true
+    }
+  ],
+  "browser": "149.0.7827.55",
+  "cli": "0.1.22"
+}

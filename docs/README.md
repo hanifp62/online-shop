@@ -16,6 +16,8 @@ Selamat datang di indeks dokumentasi teknis dan produk untuk proyek e-commerce *
 
 ---
 
+**Verifikasi lokal 21 Oktober 2026:** [Bukti browser lifecycle dan checkout tamu multibahasa](execution/amadis/browser-20261021/REPORT.md) mencatat S0–S5 serta delapan kombinasi locale/viewport. Pengujian ini memakai data sintetis dan database terisolasi, bukan transaksi produksi.
+
 ## Indeks Struktur Dokumentasi
 
 ```

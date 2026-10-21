@@ -61,6 +61,17 @@ class GuestCheckoutTest extends TestCase
         $this->assertDatabaseCount('users', 0);
     }
 
+    public function test_guest_locale_is_snapshotted_and_not_overwritten_by_replay(): void
+    {
+        $product = $this->product();
+        $this->withSession(['cart' => [$product->product_id => 1]]);
+        $this->postJson('/checkout?locale=fr', $this->payload())->assertCreated();
+        $this->postJson('/checkout?locale=it', $this->payload())->assertOk();
+        $this->assertSame('fr', Order::firstOrFail()->locale);
+        $this->assertDatabaseCount('orders', 1);
+        $this->assertSame(4, (int) $product->fresh()->stock);
+    }
+
     public function test_tracking_token_is_encrypted_in_session_and_recovered_on_retry(): void
     {
         $product = $this->product();

@@ -1,0 +1,18 @@
+✔ EPERM is not treated as stopped (0.79025ms)
+✔ ESRCH means group already gone: returns without waiting (0.118291ms)
+✔ group that ignores SIGTERM exhausts polls and fails (4.329708ms)
+✔ group exits during polling: reports stop-owned-group (1.367833ms)
+✔ cleanup runs every step even when an earlier one rejects (0.212084ms)
+✔ cleanup returns null on total success (0.077458ms)
+✔ cleanup bounds a hung step (51.464084ms)
+✔ isLoginContext guards login pages and phases (0.170208ms)
+✔ locale smoke module is import-safe (0.056792ms)
+✔ finalResult gates PASS on cleanup error (0.108417ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 111.172958

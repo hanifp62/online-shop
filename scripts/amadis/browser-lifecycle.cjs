@@ -6,6 +6,7 @@ const os = require('node:os');
 const assert = require('node:assert/strict');
 const crypto = require('node:crypto');
 const {spawn, spawnSync} = require('node:child_process');
+const {localeSmoke} = require('./browser-locales.cjs');
 // Import-safe: unit tests require() this file without AMADIS_ROOT, browser or server.
 const isMain = require.main === module;
 const repo = path.resolve(__dirname, '../..');
@@ -118,7 +119,7 @@ async function shot(page, selector, name) {
   await page.locator(selector).screenshot({path: path.join(out, name + '.png'), animations: 'disabled'});
 }
 async function ready(page) {
-  await page.waitForFunction(() => document.querySelector('#feedback')?.textContent === 'Tas server siap.');
+  await page.waitForFunction(() => document.querySelector('#feedback')?.textContent === 'Tas belanja siap.');
 }
 async function catalogStock(page, expected) {
   await page.goto(origin + '/koleksi?q=AM-10');
@@ -166,11 +167,12 @@ if (isMain) (async () => {
   save('S0-ui.json', {status: 'PASS', rendered: stockText, snapshot_stock: 37});
   phase = 'S1-login';
   await login(page, 'customer', credentials);
+  phase = 'S1-cart';
   await page.goto(origin + '/koleksi?q=AM-10');
   await page.locator('[data-slug="amadis-demo-stock-37"]').click();
   await page.locator('#dialog-qty').fill('3');
   await page.locator('#dialog-cart-form button').click();
-  await page.waitForFunction(() => document.body.textContent.includes('Tas server diperbarui. Jumlah 3'));
+  await page.waitForFunction(() => document.body.textContent.includes('Tas belanja diperbarui. Jumlah 3 menggantikan jumlah sebelumnya'));
   await page.goto(origin + '/belanja');
   await ready(page);
   phase = 'S1-address';
@@ -188,10 +190,10 @@ if (isMain) (async () => {
   save('S1-ui.json', {authenticated:true, quantity:3, cart_total:cartTotal, own_address_selected:true});
   phase = 'S2-checkout';
   await page.locator('#checkout-button').click();
-  await page.waitForFunction(() => /Pesanan #\d+ dibuat: pending/.test(document.querySelector('#feedback').textContent));
+  await page.waitForFunction(() => /^Pesanan #\d+ dibuat: menunggu pembayaran\. Total Rp3\.750\.000\./.test(document.querySelector('#feedback').textContent));
   const heading = await page.locator('#order-list h3').textContent();
   const orderId = Number(heading.match(/#(\d+)/)[1]);
-  assert.match(await page.locator('#order-list').textContent(), /pending.*3\.750\.000/);
+  assert.match(await page.locator('#order-list').textContent(), /menunggu pembayaran.*3\.750\.000/);
   await shot(page, '#pesanan', 'S2-pending');
   save('S2-ui.json', {order_id:orderId, status:'pending', quantity:3, total:3750000});
   await stop();
@@ -223,11 +225,13 @@ if (isMain) (async () => {
   await stop(); snapshot('S4', 37, 'cancelled'); await start();
   phase = 'S5-persistence';
   await page.reload(); await ready(page);
-  assert.match(await page.locator('#order-list').textContent(), new RegExp(`Pesanan #${orderId}[\\s\\S]*Status: cancelled`));
+  assert.match(await page.locator('#order-list').textContent(), new RegExp(`Pesanan #${orderId}[\\s\\S]*Status: dibatalkan`));
   await shot(page, '#pesanan', 'S5-history');
   await login(page, 'admin', credentials);
   const panel = page.locator('#panel-pesanan');
-  assert.match(await panel.textContent(), new RegExp(`#${orderId}[\\s\\S]*cancelled`));
+  const adminRow = panel.locator('tbody tr', {hasText: `#${orderId}`});
+  assert.equal(await adminRow.locator('.badge-status.badge-cancelled').count(), 1);
+  assert.match(await adminRow.locator('.badge-status').textContent(), /^\s*Dibatalkan\b/);
   await shot(page, '#panel-pesanan', 'S5-admin');
   save('S5-ui.json', {order_id:orderId, status:'cancelled', refreshed:true, launcher_restarted:true, admin_visible:true});
   await stop(); snapshot('S5', 37, 'cancelled');
@@ -237,14 +241,16 @@ if (isMain) (async () => {
   const after = (await page.locator('article.catalog-card', {has: page.locator('[data-slug="amadis-demo-stock-37"]')}).locator('.catalog-card-attrs', {hasText: 'Stok:'}).textContent()).trim();
   assert.equal(after, 'Stok: 37');
   await page.screenshot({path: path.join(out, 'S5-catalog.png'), animations: 'disabled'});
+  const guests = await localeSmoke(browser, origin, p => { phase = p; }, save);
   await stop();
-  outcome = {status:'PASS', S0:'PASS', S1:'PASS', S2:'PASS', S3:'PASS', S4:'PASS', S5:'PASS', browser:await browser.version(), cli:'0.1.22'};
+  outcome = {status:'PASS', S0:'PASS', S1:'PASS', S2:'PASS', S3:'PASS', S4:'PASS', S5:'PASS', guests, browser:await browser.version(), cli:'0.1.22'};
 })().catch(async error => {
   // Never serialize Playwright errors: call logs can contain filled credentials.
   let where = null;
   try {
-    where = new URL(activePage.url()).pathname;
-    if (!isLoginContext(where, phase)) {
+    // Guest contexts close locally; do not misattribute their failure to the lifecycle page.
+    where = phase.startsWith('guest-') ? null : new URL(activePage.url()).pathname;
+    if (!phase.startsWith('guest-') && !isLoginContext(where, phase)) {
       await activePage.screenshot({path: path.join(out, 'failure.png')});
     }
   } catch {}
