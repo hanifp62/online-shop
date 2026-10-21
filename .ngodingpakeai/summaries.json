@@ -246,7 +246,7 @@
     "summary": "CatalogService menyusun query produk aktif dengan filter kategori, warna, material, harga dan ketersediaan, pagination, URL serta chip filter; menyediakan fallback pencarian toleran salah ketik."
   },
   "app/Services/CheckoutService.php": {
-    "summary": "CheckoutService menghitung harga rupiah, diskon voucher, pajak dan ongkir lalu membuat checkout pelanggan atau tamu secara idempoten dengan penguncian stok dan reservasi; mengelola transisi status, pembayaran serta outbox notifikasi."
+    "summary": "CheckoutService menghitung harga rupiah, diskon voucher, pajak dan ongkir lalu membuat checkout pelanggan atau tamu secara idempoten dengan penguncian stok dan reservasi. createOrder() menyimpan snapshot locale permintaan untuk semua pesanan baru; replay tidak mengubahnya. Juga mengelola transisi status, pembayaran serta outbox notifikasi."
   },
   "app/Services/DatabaseBackupService.php": {
     "summary": "DatabaseBackupService membuat cadangan SQLite atau MySQL/MariaDB terkompresi dengan checksum, menerapkan retensi, dan memverifikasi checksum. Pemulihan uji hanya didukung untuk SQLite dengan perbandingan jumlah baris; driver MySQL/MariaDB ditolak secara fail-closed melalui RuntimeException."
@@ -828,10 +828,10 @@
     "summary": "Adaptor artisan terjaga untuk demo AMADIS yang hanya mengizinkan daftar argumen perintah tertentu lewat fungsi amadisAllowedArgv. Menolak perintah di luar allowlist sebelum aplikasi Laravel diinisialisasi."
   },
   "scripts/amadis/browser-lifecycle.cjs": {
-    "summary": "Modul Node pengelola siklus hidup browser terisolasi untuk bukti demo AMADIS: start, stop proses milik sendiri (grup proses), cleanup berurutan, login, snapshot, screenshot dan penentuan hasil akhir. Perintah aplikasi hanya dijalankan melalui launch.sh, dan PASS ditahan bila cleanup gagal."
+    "summary": "Runner Node siklus hidup browser terisolasi AMADIS: start/stop proses milik sendiri, login, keranjang (fase S1-cart), checkout, replay, pembatalan, persistensi, snapshot, dan screenshot. Menunggu salinan UI Indonesia terbaru, lalu menjalankan smoke checkout tamu multibahasa dari browser-locales.cjs; PASS ditahan bila cleanup gagal."
   },
   "scripts/amadis/browser-lifecycle.test.cjs": {
-    "summary": "Uji unit untuk helper cleanup browser-lifecycle.cjs dengan child/proses palsu tanpa server, browser atau kredensial. Menegaskan EPERM tidak dianggap berhenti, ESRCH berarti grup sudah hilang, grup yang mengabaikan SIGTERM gagal, cleanup menjalankan semua langkah walau ada yang gagal, langkah macet dibatasi waktu, dan finalResult menahan PASS saat cleanup error."
+    "summary": "Uji unit helper browser-lifecycle.cjs tanpa server atau browser: penanganan EPERM/ESRCH, grup proses yang mengabaikan SIGTERM, cleanup berurutan dengan batas waktu, finalResult menahan PASS saat cleanup error, isLoginContext untuk fase S1-cart, dan modul browser-locales.cjs aman diimpor."
   },
   "scripts/amadis/connect_proxy.php": {
     "summary": "Proxy HTTPS CONNECT minimal berbasis satu proses stream_select yang hanya mengizinkan hostname persis pada TCP/443, dipakai agar unduhan Composer paralel tidak antre. Menolak host privat, port lain, metode non-CONNECT, header tidak lengkap atau terlalu besar."
@@ -1113,7 +1113,7 @@
     "summary": "Suite PHPUnit FeatureFlagsTest (tests/Feature). Kasus uji yang ditegaskan: boundaries kill switch and invalid configuration; cohorts are stable and nested; middleware switches without route rebuild; real report route uses flag and existing authorization."
   },
   "tests/Feature/GuestCheckoutTest.php": {
-    "summary": "Suite PHPUnit GuestCheckoutTest (tests/Feature). Kasus uji yang ditegaskan: guest snapshot server price and empty cart replay; tracking token is encrypted in session and recovered on retry; guest checkout route serializes same session requests; replay token expires without rotating persisted hash; guest migration down refuses without changing guest data; guest migration down and up without guest rows; invalid guest input never mutates stock; changed contact address or cart conflicts and voucher rejected on replay; independent scopes can use same key but cannot recover other token; empty inactive and short stock carts fail atomically; account endpoints cannot read or cancel guest order."
+    "summary": "Suite PHPUnit GuestCheckoutTest: snapshot harga server dan replay keranjang kosong, snapshot locale tamu fr yang tidak tertimpa replay it, token pelacakan terenkripsi di sesi, serialisasi request sesi sama, kedaluwarsa token replay, migrasi down aman, input tidak valid tidak mengubah stok, konflik replay, isolasi scope, kegagalan atomik, dan akses endpoint akun ke pesanan tamu ditolak."
   },
   "tests/Feature/GuestTrackingTest.php": {
     "summary": "Suite PHPUnit GuestTrackingTest (tests/Feature). Kasus uji yang ditegaskan: valid token returns minimal private no store projection; invalid expired and id only requests are uniform no store; token is body only rate limited and get query never looks up; token replay is only available in issuing session."
@@ -1686,7 +1686,7 @@
     "summary": "Runbook pengujian manual melalui checkout Artisan dan SQLite terisolasi dengan fixture sintetis. Mencatat setup, server native, acceptance, penghentian, serta bukti historis tanpa menyentuh database atau data produk utama."
   },
   "docs/README.md": {
-    "summary": "Indeks utama dokumentasi produk, audit, arsitektur, implementasi, kualitas, prototype, demo, dan bukti eksekusi ZAFIRA. Menautkan pembaruan status serta laporan terbaru sambil mempertahankan dokumen historis untuk ketertelusuran."
+    "summary": "Indeks utama dokumentasi ZAFIRA: produk, audit, arsitektur, implementasi, kualitas, prototype, demo, dan bukti eksekusi. Menautkan bukti browser lokal 21 Oktober 2026 serta analisis TPS dan volume data, sambil mempertahankan dokumen historis untuk ketertelusuran."
   },
   "docs/SCREENSHOT_TO_CODE_WORKFLOW.md": {
     "summary": "Panduan layanan Screenshot to Code lokal dan integrasi hasilnya ke ZAFIRA. Membahas prasyarat, backend dan frontend, pengelolaan konfigurasi API secara aman, serta adaptasi keluaran agar mengikuti struktur proyek."
@@ -1921,5 +1921,14 @@
   },
   "vite.config.js": {
     "summary": "Konfigurasi Vite yang memakai plugin `laravel-vite-plugin` dengan entry `resources/css/app.css`, `resources/css/admin.css`, serta `resources/js/app.js`, mengaktifkan refresh, memasang plugin Tailwind, dan mengabaikan perubahan di `storage/framework/views` pada watcher dev server."
+  },
+  "docs/03-architecture/TPS_VOLUME_AND_QUALITY_ANALYSIS.md": {
+    "summary": "Analisis Transaction Processing System ZAFIRA berbasis kode: peta proses checkout, pembayaran Midtrans, status, pengiriman, retur dan refund; rumus 2L+2 INSERT per checkout dan 17 baris per order untuk lifecycle lengkap; proyeksi 100/1.000/10.000 order per hari untuk 30 dan 365 hari; enam dimensi performance, lima karakteristik kualitas TPS, usulan NFR-TPS-001..007, serta batas klaim kapasitas yang belum diukur."
+  },
+  "scripts/amadis/browser-locales.cjs": {
+    "summary": "Fungsi localeSmoke menjalankan checkout tamu sintetis untuk locale en, fr, it, zh pada lebar desktop 1365px dan mobile 390px. Memeriksa atribut lang, teks siap, kuantitas dan total, status pending terlokalisasi, pelacakan pesanan, serta tombol hapus token; token pelacakan tidak pernah disimpan."
+  },
+  "tests/Feature/CheckoutLocaleTest.php": {
+    "summary": "Suite PHPUnit CheckoutLocaleTest: checkout pengguna login untuk lima locale menyimpan locale permintaan pada orders.locale, tetap sama setelah locale profil berubah dan replay idempotensi; pesanan historis dengan locale NULL tetap memakai fallback locale pengguna lalu Indonesia."
   }
 }
