@@ -45,6 +45,7 @@ docs/
 │   ├── TARGET_ARCHITECTURE.md                # Arsitektur sistem target & struktur modul Laravel
 │   ├── MANAGEMENT_INFORMATION_SYSTEM_AND_ENTERPRISE_ARCHITECTURE.md # Kerangka kerja MSI (TPS, MIS/DSS, EIS) & DFD
 │   ├── DATABASE_DESIGN.md                    # Desain database terpadu, ERD, & kamus data
+│   ├── TPS_VOLUME_AND_QUALITY_ANALYSIS.md   # Analisis beban tulis, proyeksi volume, kualitas & gap TPS
 │   ├── ARCHITECTURE_DECISIONS.md             # Architecture Decision Records (ADR-001 s/d ADR-011)
 │   ├── ADMIN_TOTP_2FA.md                     # TOTP 2FA admin: kebijakan K5/K6, bukti, mutasi M1-M5, risiko terbuka
 │   ├── SESSION_HARDENING_86c14287.md         # Rotasi sesi, limiter akun+IP, cookie aman, error produksi
