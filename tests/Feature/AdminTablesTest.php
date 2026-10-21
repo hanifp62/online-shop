@@ -13,6 +13,7 @@ use DOMDocument;
 use DOMXPath;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\ExpectationFailedException;
 use Tests\TestCase;
 
 class AdminTablesTest extends TestCase
@@ -167,7 +168,7 @@ class AdminTablesTest extends TestCase
         $idPosition = strpos($mutatedHtml, '>ID</th>', $sortPosition);
         $this->assertNotFalse($idPosition, 'Old substring-order check accepts the wrong header');
         $this->assertNotFalse(strpos($mutatedHtml, 'Harga', $idPosition));
-        $this->expectException(\PHPUnit\Framework\ExpectationFailedException::class);
+        $this->expectException(ExpectationFailedException::class);
         $this->assertSortHeader($mutatedHtml, 'produk', 'ID', 'descending');
     }
 
@@ -198,7 +199,7 @@ class AdminTablesTest extends TestCase
         $this->assertSame(1, $xpath->query('//table[@data-table-body="produk"]//span[contains(concat(" ",normalize-space(@class)," ")," badge-cancelled ")]')->length);
         $this->assertSame(1, $xpath->query('//table[@data-table-body="concierge"]//span[contains(concat(" ",normalize-space(@class)," ")," badge-confirmed ")]')->length);
         foreach (['.badge-new { background: #e0f2fe; color: #075985; }', '.badge-contacted { background: #fef3c7; color: #92400e; }', '.badge-confirmed { background: #dcfce7; color: #166534; }', '.badge-completed { background: #f3e8ff; color: #7e22ce; }', '.badge-cancelled { background: #fee2e2; color: #991b1b; }'] as $rule) {
-            $this->assertStringContainsString($rule, $html);
+            $this->assertStringContainsString($rule, file_get_contents(resource_path('css/admin.css')));
         }
     }
 

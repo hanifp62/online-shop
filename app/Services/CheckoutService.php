@@ -2,14 +2,18 @@
 
 namespace App\Services;
 
+use App\Mail\OrderStatusChanged;
+use App\Mail\RecipientLocale;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Shipment;
 use App\Models\User;
 use App\Models\Voucher;
 use Illuminate\Database\DeadlockException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -39,7 +43,7 @@ class CheckoutService
             if (! ctype_digit((string) $productId) || is_bool($quantity)
                 || filter_var($quantity, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE) === null
                 || (int) $quantity < 1 || (int) $quantity > self::MAX_QUANTITY) {
-                throw ValidationException::withMessages(['cart' => 'Isi keranjang tidak valid.']);
+                throw ValidationException::withMessages(['cart' => __('customer_messages.checkout.invalid_cart')]);
             }
         }
     }
@@ -73,7 +77,7 @@ class CheckoutService
     public static function idr(mixed $price): int
     {
         if (! preg_match('/^([0-9]{1,12})(?:\.0+)?$/', (string) $price, $matches)) {
-            throw ValidationException::withMessages(['cart' => 'Harga produk harus berupa rupiah bulat yang valid.']);
+            throw ValidationException::withMessages(['cart' => __('customer_messages.checkout.invalid_price')]);
         }
 
         return (int) $matches[1];
@@ -93,6 +97,27 @@ class CheckoutService
         ];
     }
 
+    /**
+     * Pratinjau rincian dengan voucher sebelum pesanan dibuat (tanpa klaim kuota).
+     * Aturan kelayakan dan aritmetika sama dengan createOrder() agar tidak ada biaya kejutan.
+     */
+    public function quote(User $user, array $cart, ?string $voucherCode): array
+    {
+        $priced = self::priced($cart);
+        $voucherCode = $voucherCode ? mb_strtoupper(trim($voucherCode)) : null;
+        $discount = $voucherCode ? min($this->eligibleVoucher($user, $voucherCode)->discount_amount, $priced['subtotal']) : 0;
+        $shipping = self::shippingFee();
+        $tax = self::tax($priced['subtotal'] - $discount);
+
+        return $priced + [
+            'voucher_code' => $voucherCode,
+            'shipping_fee' => $shipping,
+            'discount' => $discount,
+            'tax' => $tax,
+            'total' => $priced['subtotal'] - $discount + $tax + $shipping,
+        ];
+    }
+
     public function checkout(User $user, Address $address, array $cart, string $key, ?string $voucherCode): array
     {
         self::validateCart($cart);
@@ -104,7 +129,7 @@ class CheckoutService
         }
 
         if ($cart === []) {
-            throw ValidationException::withMessages(['cart' => 'Keranjang belanja masih kosong.']);
+            throw ValidationException::withMessages(['cart' => __('customer_messages.checkout.empty')]);
         }
 
         $priced = self::priced($cart);
@@ -132,7 +157,7 @@ class CheckoutService
         $replay = function (Order $order) use ($contact, $address, $cart) {
             $items = $cart !== [] ? $cart : $order->items->pluck('quantity', 'product_id')->all();
             if (! hash_equals($order->payload_hash, $this->guestHash($contact, $address, $items, $order->shipping_fee, $order->tax))) {
-                abort(409, 'Kunci idempotensi sudah dipakai untuk pesanan berbeda.');
+                abort(409, __('customer_messages.checkout.idempotency_conflict'));
             }
 
             return $order->load('items');
@@ -141,7 +166,7 @@ class CheckoutService
             return [$replay($existing), false];
         }
         if ($cart === []) {
-            throw ValidationException::withMessages(['cart' => 'Keranjang belanja masih kosong.']);
+            throw ValidationException::withMessages(['cart' => __('customer_messages.checkout.empty')]);
         }
 
         // Tamu tanpa voucher: pajak atas subtotal penuh.
@@ -153,6 +178,7 @@ class CheckoutService
             }
 
             return $this->createOrder(null, $address, $cart, $key, $hash, null, $contact + [
+                'locale' => RecipientLocale::resolve(app()->getLocale()),
                 'guest_scope_hash' => $scope,
                 'tracking_token_hash' => hash('sha256', $token),
                 'tracking_expires_at' => now()->addDays(30),
@@ -191,7 +217,7 @@ class CheckoutService
                 }
                 if ($attempt === self::MAX_LOCK_RETRIES) {
                     // Status pulih: kunci idempotensi tetap bisa dipakai ulang oleh klien.
-                    abort(503, 'Layanan checkout sedang sibuk, coba lagi sesaat dengan kunci yang sama.');
+                    abort(503, __('customer_messages.checkout.busy'));
                 }
                 usleep(self::LOCK_RETRY_BASE_MICROSECONDS * (2 ** $attempt) + random_int(0, 5_000));
             }
@@ -235,7 +261,7 @@ class CheckoutService
         // Keranjang dikosongkan setelah commit; retry jaringan membawa keranjang kosong.
         $items = $cart !== [] ? $cart : $order->items->pluck('quantity', 'product_id')->all();
         if (! hash_equals($order->payload_hash, $this->hash($address->id, $voucherCode, $items, $order->shipping_fee, $order->tax))) {
-            abort(409, 'Kunci idempotensi sudah dipakai untuk pesanan berbeda.');
+            abort(409, __('customer_messages.checkout.idempotency_conflict'));
         }
 
         return $order->load('items');
@@ -267,7 +293,7 @@ class CheckoutService
     {
         $priced = self::priced($cart);
         if (count($priced['items']) !== count($cart)) {
-            throw ValidationException::withMessages(['cart' => 'Ada produk yang tidak lagi tersedia.']);
+            throw ValidationException::withMessages(['cart' => __('customer_messages.checkout.unavailable')]);
         }
 
         // Urutan kunci baris produk deterministik agar checkout paralel tidak saling deadlock.
@@ -280,7 +306,7 @@ class CheckoutService
                 ->where('stock', '>=', $line['quantity'])
                 ->decrement('stock', $line['quantity']);
             if ($updated !== 1) {
-                throw ValidationException::withMessages(['cart' => "Stok {$line['product_title']} tidak mencukupi."]);
+                throw ValidationException::withMessages(['cart' => __('customer_messages.checkout.stock', ['product' => $line['product_title']])]);
             }
         }
 
@@ -306,6 +332,14 @@ class CheckoutService
         foreach ($priced['items'] as $line) {
             unset($line['available']);
             $order->items()->create($line);
+        }
+        $order->statusHistory()->create(['from_status' => null, 'to_status' => 'pending']);
+        foreach ($priced['items'] as $line) {
+            $order->inventoryReservations()->create([
+                'product_id' => $line['product_id'],
+                'quantity' => $line['quantity'],
+                'expires_at' => now()->addMinutes(60),
+            ]);
         }
 
         return $order->load('items');
@@ -350,7 +384,7 @@ class CheckoutService
     {
         $voucher = Voucher::where('code', $code)->where('is_active', true)->first();
         if (! $voucher) {
-            throw ValidationException::withMessages(['voucher_code' => 'Voucher tidak valid.']);
+            throw ValidationException::withMessages(['voucher_code' => __('customer_messages.checkout.invalid_voucher')]);
         }
 
         if ($voucher->per_user_limit > 0) {
@@ -359,12 +393,12 @@ class CheckoutService
                 ->where('status', '!=', 'cancelled')
                 ->count();
             if ($used >= $voucher->per_user_limit) {
-                throw ValidationException::withMessages(['voucher_code' => 'Batas pemakaian voucher Anda sudah tercapai.']);
+                throw ValidationException::withMessages(['voucher_code' => __('customer_messages.checkout.voucher_limit')]);
             }
         }
 
         if ($voucher->used >= $voucher->quota) {
-            throw ValidationException::withMessages(['voucher_code' => 'Kuota voucher sudah habis.']);
+            throw ValidationException::withMessages(['voucher_code' => __('customer_messages.checkout.voucher_exhausted')]);
         }
 
         return $voucher;
@@ -380,7 +414,7 @@ class CheckoutService
             ->whereColumn('used', '<', 'quota')
             ->increment('used');
         if ($claimed !== 1) {
-            throw ValidationException::withMessages(['voucher_code' => 'Kuota voucher sudah habis.']);
+            throw ValidationException::withMessages(['voucher_code' => __('customer_messages.checkout.voucher_exhausted')]);
         }
 
         return $voucher;
@@ -394,29 +428,98 @@ class CheckoutService
         }
 
         if (in_array($status, Order::MANUAL_BLOCKED, true)) {
-            throw ValidationException::withMessages(['status' => 'Status paid belum tersedia: sumber bukti pembayaran tepercaya belum diimplementasikan.']);
+            throw ValidationException::withMessages(['status' => __('customer_messages.checkout.paid_unavailable')]);
         }
 
         if (! $order->canTransitionTo($status)) {
-            throw ValidationException::withMessages(['status' => "Status {$order->status} tidak dapat diubah ke {$status}."]);
+            throw ValidationException::withMessages(['status' => __('customer_messages.checkout.transition', ['from' => $order->status, 'to' => $status])]);
         }
 
         DB::transaction(function () use ($order, $status) {
-            $updated = Order::whereKey($order->id)->where('status', $order->status)->update(['status' => $status]);
-            if ($updated !== 1) {
-                abort(409, 'Status pesanan berubah, muat ulang lalu coba lagi.');
-            }
-
-            if ($status === 'cancelled') {
-                foreach ($order->items as $item) {
-                    Product::whereKey($item->product_id)->increment('stock', $item->quantity);
-                }
-                if ($order->voucher_id) {
-                    Voucher::whereKey($order->voucher_id)->where('used', '>', 0)->decrement('used');
-                }
+            $applied = $this->applyTransition($order, $status, Auth::guard('admin')->id());
+            if (! $applied) {
+                abort(409, __('customer_messages.checkout.changed'));
             }
         });
 
         return $order->refresh()->load('items');
+    }
+
+    /**
+     * Tandai lunas dari verifikasi webhook tepercaya. Dipanggil di dalam transaksi pemanggil.
+     */
+    public function markPaid(Order $order): bool
+    {
+        return $this->applyTransition($order, 'paid', null);
+    }
+
+    /** Idempoten: slot (order, status) diklaim lewat unique key sebelum email diantrekan setelah commit. */
+    private function notifyCustomer(Order $order, string $status): void
+    {
+        $email = $order->customer_email ?? $order->user?->email;
+        if (! isset(OrderStatusChanged::MESSAGES[$status]) || ! $email) {
+            return;
+        }
+        $claimed = DB::table('order_notifications')->insertOrIgnore([
+            'order_id' => $order->id, 'status' => $status, 'channel' => 'mail', 'created_at' => now(),
+        ]);
+        if ($claimed === 1) {
+            $id = (int) DB::table('order_notifications')->where('order_id', $order->id)
+                ->where('status', $status)->where('channel', 'mail')->value('id');
+            DB::afterCommit(fn () => app(OrderNotificationDispatcher::class)->dispatch($id));
+        }
+    }
+
+    private function applyTransition(Order $order, string $status, ?int $adminId): bool
+    {
+        $updated = Order::whereKey($order->id)->where('status', $order->status)->update(['status' => $status]);
+        if ($updated !== 1) {
+            return false;
+        }
+
+        $order->statusHistory()->create([
+            'from_status' => $order->status,
+            'to_status' => $status,
+            'admin_id' => $adminId,
+        ]);
+
+        $this->notifyCustomer($order, $status);
+
+        // Catatan pelacakan dilihat pelanggan, bukan admin yang memicu transisi: pakai bahasa pemilik pesanan.
+        $locale = RecipientLocale::resolve($order->locale ?? $order->user?->locale);
+
+        if ($status === 'shipped') {
+            $shipment = $order->shipment()->firstOrCreate([], ['status' => Shipment::STATUS_PENDING_MANIFEST, 'shipped_at' => now()]);
+            $shipment->trackingEvents()->create([
+                'status' => Shipment::STATUS_PENDING_MANIFEST,
+                'description' => __('customer_messages.shipment.dispatched', [], $locale),
+                'recorded_at' => now(),
+            ]);
+        }
+
+        if ($status === 'completed' && $shipment = $order->shipment) {
+            $shipment->update(['status' => Shipment::STATUS_DELIVERED, 'delivered_at' => now()]);
+            $shipment->trackingEvents()->create([
+                'status' => Shipment::STATUS_DELIVERED,
+                'description' => __('customer_messages.shipment.delivered', [], $locale),
+                'recorded_at' => now(),
+            ]);
+        }
+
+        if ($status === 'paid' || $status === 'processing' || $status === 'completed') {
+            $order->inventoryReservations()->where('status', 'reserved')->update(['status' => 'committed']);
+        }
+
+        if ($status === 'cancelled') {
+            $order->inventoryReservations()->where('status', 'reserved')->update(['status' => 'released']);
+            foreach ($order->items as $item) {
+                Product::whereKey($item->product_id)->increment('stock', $item->quantity);
+            }
+            if ($order->voucher_id) {
+                Voucher::whereKey($order->voucher_id)->where('used', '>', 0)->decrement('used');
+            }
+        }
+
+        return true;
     }
 }

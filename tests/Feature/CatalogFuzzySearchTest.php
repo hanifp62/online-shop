@@ -122,8 +122,8 @@ class CatalogFuzzySearchTest extends TestCase
 
     public function test_empty_search_recovery_is_localized_after_page_overflow_redirect(): void
     {
-        $labels = require resource_path('views/catalog/labels.php');
         foreach (['id', 'en', 'zh', 'fr', 'it'] as $locale) {
+            $labels = trans('zafira', [], $locale);
             $response = $this->get('/koleksi?q=missing&locale='.$locale.'&color=Gold&urut=harga&page=2');
             $response->assertStatus(302)->assertRedirect();
             $location = parse_url($response->headers->get('Location'));
@@ -135,9 +135,9 @@ class CatalogFuzzySearchTest extends TestCase
             $this->assertSame($expectedRedirect, $redirectQuery);
 
             $followed = $this->followRedirects($response);
-            $followed->assertOk()->assertSee($labels[$locale]['search_empty_hint'])
-                ->assertSee($labels[$locale]['clear_search']);
-            $this->assertLinkQuery($followed, $labels[$locale]['clear_search'], [
+            $followed->assertOk()->assertSee($labels['search_empty_hint'])
+                ->assertSee($labels['clear_search']);
+            $this->assertLinkQuery($followed, $labels['clear_search'], [
                 'color' => 'Gold', 'urut' => 'harga', 'locale' => $locale,
             ]);
         }

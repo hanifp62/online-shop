@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Services\CartStore;
 use App\Services\CheckoutService;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Contracts\Encryption\DecryptException;
 
 class GuestCheckoutController extends Controller
 {
@@ -63,7 +64,7 @@ class GuestCheckoutController extends Controller
             // Persist before commit so a lost response does not lose the only recoverable token.
             $session->save();
         }
-        [$order, $created] = \App\Services\CartStore::locked($request, function (?int $id, array $cart) use ($request, $checkout, $contact, $address, $data, $scope, $cached) {
+        [$order, $created] = CartStore::locked($request, function (?int $id, array $cart) use ($request, $checkout, $contact, $address, $data, $scope, $cached) {
             try {
                 $result = $checkout->checkoutGuest($contact, $address, $cart, $data['idempotency_key'], $scope, $cached['token'] ?? '');
             } catch (\Throwable $exception) {
@@ -73,7 +74,7 @@ class GuestCheckoutController extends Controller
                 throw $exception;
             }
             if ($result[1] && $id !== null) {
-                \App\Services\CartStore::remove($id);
+                CartStore::remove($id);
             }
 
             return $result;
@@ -88,7 +89,7 @@ class GuestCheckoutController extends Controller
         $response = ['order' => self::projection($order), 'tracking_token' => $token];
         if ($token === null) {
             $response['tracking_recovery'] = 'unavailable';
-            $response['message'] = 'Token pelacakan tidak dapat dipulihkan. Hubungi concierge dengan nomor pesanan #'.$order->id.'.';
+            $response['message'] = __('customer_messages.guest.tracking_unavailable', ['id' => $order->id]);
         }
 
         return response()->json($response, $created ? 201 : 200);
@@ -103,13 +104,14 @@ class GuestCheckoutController extends Controller
 
         return $order
             ? response()->json(['order' => self::projection($order)])
-            : response()->json(['message' => 'Pesanan tidak ditemukan.'], 404);
+            : response()->json(['message' => __('customer_messages.guest.not_found')], 404);
     }
 
     private static function projection(Order $order): array
     {
         return $order->only(['id', 'status', 'subtotal', 'discount', 'shipping_fee', 'total']) + [
             'items' => $order->items->map(fn ($item) => $item->only(['product_title', 'quantity', 'unit_price', 'subtotal']))->all(),
+            'shipment' => $order->shipmentSummary(),
         ];
     }
 }

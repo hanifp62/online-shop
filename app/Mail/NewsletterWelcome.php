@@ -20,7 +20,7 @@ class NewsletterWelcome extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'La Lettre ZAFIRA · Selamat datang',
+            subject: __('mail_ui.newsletter.subject', [], $this->locale),
         );
     }
 

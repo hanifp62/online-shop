@@ -37,12 +37,12 @@ class ReviewController extends Controller
             ->whereHas('items', fn ($query) => $query->where('product_id', $data['product_id']))
             ->firstOrFail();
         if ($order->status !== 'completed') {
-            return response()->json(['message' => 'Ulasan hanya untuk pesanan yang sudah selesai.'], 422);
+            return response()->json(['message' => __('customer_messages.review.incomplete')], 422);
         }
 
         if (Review::where('user_id', $request->user()->id)->where('order_id', $order->id)
             ->where('product_id', $data['product_id'])->exists()) {
-            return response()->json(['message' => 'Ulasan untuk produk ini sudah dikirim.'], 422);
+            return response()->json(['message' => __('customer_messages.review.duplicate')], 422);
         }
 
         $review = Review::firstOrCreate(
@@ -50,7 +50,7 @@ class ReviewController extends Controller
             ['rating' => $data['rating'], 'body' => $data['body'] ?? null]
         );
         if (! $review->wasRecentlyCreated) {
-            return response()->json(['message' => 'Ulasan untuk produk ini sudah dikirim.'], 422);
+            return response()->json(['message' => __('customer_messages.review.duplicate')], 422);
         }
 
         return response()->json(['review' => $review], 201);

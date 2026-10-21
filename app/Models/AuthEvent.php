@@ -15,8 +15,16 @@ class AuthEvent extends Model
         'event',
         'outcome',
         'ip',
+        'request_id',
         'context',
     ];
+
+    /** Append-only: baris audit tidak boleh diubah atau dihapus per baris. Retensi lewat `auth-events:prune` (hapus massal). */
+    protected static function booted(): void
+    {
+        static::updating(fn () => throw new \LogicException('Auth events are append-only.'));
+        static::deleting(fn () => throw new \LogicException('Auth events are append-only.'));
+    }
 
     protected function casts(): array
     {

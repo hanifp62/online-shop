@@ -1,4 +1,4 @@
-# Indeks bukti ZAFIRA AMADIS
+# Indeks bukti ZAFIRA
 
 Tanggal dibuat: 2026-10-12; diperbarui 2026-10-13. Bukti run 13 Oktober: `docs/execution/evidence/2026-10-13/acceptance-am-isolated/` (AM-01/02/06/10, SQLite terisolasi, rc 0) dan `docs/execution/evidence/2026-10-13/final-gate-closeout/` (gate penuh). Baris "NOT RUN" di bawah adalah snapshot 12 Oktober; fixture, AM-10, dan browser AM-02/06 kini superseded; test katalog/order lulus di gate closeout; audit HCI/WCAG menyeluruh tetap NOT RUN.
 

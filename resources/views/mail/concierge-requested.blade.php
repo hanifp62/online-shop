@@ -1,24 +1,24 @@
 @component('mail::message')
-# Bonjour, {{ $request->name }}
+# {{ __('mail_ui.common.greeting', ['name' => $request->name]) }}
 
-Merci. Permintaan rendez-vous pribadi Anda telah kami terima.
+{{ __('mail_ui.concierge.received') }}
 
-**Detail permintaan Anda:**
-- **Layanan :** {{ $request->service }}
+**{{ __('mail_ui.concierge.details') }}**
+- **{{ __('mail_ui.concierge.service') }}** {{ $request->service }}
 @if ($request->preferred_date)
-- **Tanggal pilihan :** {{ \Carbon\Carbon::parse($request->preferred_date)->translatedFormat('l, d F Y') }}
+- **{{ __('mail_ui.concierge.date') }}** {{ \Carbon\Carbon::parse($request->preferred_date)->translatedFormat('l, d F Y') }}
 @endif
 @if ($request->preferred_time)
-- **Waktu :** {{ $request->preferred_time }}
+- **{{ __('mail_ui.concierge.time') }}** {{ $request->preferred_time }}
 @endif
 @if ($request->notes)
-- **Catatan :** {{ $request->notes }}
+- **{{ __('mail_ui.concierge.notes') }}** {{ $request->notes }}
 @endif
 
-Client Advisor kami akan menghubungi Anda melalui **{{ $request->phone }}** atau email dalam kurang dari 1×24 jam untuk mengonfirmasi jadwal.
+{{ __('mail_ui.concierge.contact_before') }} **{{ $request->phone }}** {{ __('mail_ui.concierge.contact_after') }}
 
-Jangan ragu membalas email ini jika ada kebutuhan tambahan.
+{{ __('mail_ui.concierge.reply') }}
 
-Dengan hormat,
+{{ __('mail_ui.common.regards') }}
 **ZAFIRA — La Maison de Lumière**
 @endcomponent

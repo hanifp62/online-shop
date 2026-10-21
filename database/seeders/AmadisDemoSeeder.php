@@ -75,7 +75,7 @@ class AmadisDemoSeeder extends Seeder
                     'product_badge' => 'Données de démonstration',
                     'product_color' => ['Sapphire', 'Noir', 'Crème', 'Espresso'][$index % 4],
                     'product_alt' => 'Produk sintetis untuk demonstrasi; bukan foto produk nyata.',
-                    'product_description' => 'Fixture sintetis AMADIS. Harga, stok, dan narasi bukan inventori atau transaksi operasional.',
+                    'product_description' => 'Fixture sintetis ZAFIRA. Harga, stok, dan narasi bukan inventori atau transaksi operasional.',
                     'product_material' => $category['material'],
                     'product_composition' => 'Komposisi simulasi; bukan klaim sertifikasi bahan.',
                     'product_origin' => 'Atelier demonstrasi — provenance simulasi.',

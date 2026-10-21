@@ -7,6 +7,7 @@ use App\Services\CartStore;
 use App\Services\CheckoutService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class CartController extends Controller
 {
@@ -28,7 +29,7 @@ class CartController extends Controller
 
         $product = Product::findOrFail($validated['product_id']);
         if (! $product->is_active || (int) $product->stock < $validated['quantity']) {
-            return response()->json(['message' => 'Stok produk tidak mencukupi atau produk tidak aktif.'], 422);
+            return response()->json(['message' => __('customer_messages.cart.stock')], 422);
         }
 
         $cart = CartStore::locked($request, function (int $id) use ($validated) {
@@ -54,8 +55,8 @@ class CartController extends Controller
             $product = Product::findOrFail($productId);
             $quantity = max(0, ($items[$productId] ?? 0) + $delta);
             if ($delta > 0 && (! $product->is_active || $quantity > (int) $product->stock || $quantity > CheckoutService::MAX_QUANTITY)) {
-                throw \Illuminate\Validation\ValidationException::withMessages([
-                    'delta' => 'Stok produk tidak mencukupi, batas jumlah terlampaui, atau produk tidak aktif.',
+                throw ValidationException::withMessages([
+                    'delta' => __('customer_messages.cart.adjust_stock'),
                 ]);
             }
             if ($id !== null) {

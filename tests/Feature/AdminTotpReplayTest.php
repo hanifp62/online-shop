@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Admin;
 use App\Services\TotpService;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -56,7 +57,7 @@ class AdminTotpReplayTest extends TestCase
 
     public function test_same_code_replayed_after_logout_and_relogin_is_rejected(): void
     {
-        $this->travelTo(\Illuminate\Support\Carbon::parse('2026-10-19 12:00:05', 'UTC'));
+        $this->travelTo(Carbon::parse('2026-10-19 12:00:05', 'UTC'));
         // Google2FA uses time(), so bridge only its clock to Laravel's frozen clock.
         // Code generation, verification, transaction and CAS remain real.
         $g = new class extends Google2FA

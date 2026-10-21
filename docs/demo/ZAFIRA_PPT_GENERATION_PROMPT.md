@@ -1,11 +1,11 @@
-# Prompt pembuatan PPT ZAFIRA AMADIS
+# Prompt pembuatan PPT ZAFIRA
 
 Tanggal: 2026-10-12.
 
 Salin blok berikut ke generator presentasi. Isi `docs/demo/ZAFIRA_PRESENTATION_CONTENT.md` adalah sumber isi.
 
 ```text
-Buat 10 slide PPT 16:9 dalam Bahasa Indonesia untuk demo ZAFIRA AMADIS.
+Buat 10 slide PPT 16:9 dalam Bahasa Indonesia untuk demo ZAFIRA.
 
 Sumber tunggal: docs/demo/ZAFIRA_PRESENTATION_CONTENT.md. Gunakan docs/demo/ZAFIRA_ACCEPTANCE_MATRIX.csv untuk status. Jangan menambah fakta, angka, hasil tes, screenshot, tanggal, atau klaim.
 

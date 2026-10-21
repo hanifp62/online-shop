@@ -3,11 +3,12 @@
 namespace App\Services;
 
 use App\Models\Admin;
+use App\Models\AdminTotpRecoveryCode;
+use App\Models\User;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
-use App\Models\AdminTotpRecoveryCode;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -69,6 +70,84 @@ class TotpService
                 'code_hash' => Hash::make(self::normalizeRecoveryCode($code)),
             ]);
         }
+    }
+
+    /** Cek kode terhadap rahasia yang belum disimpan (pendaftaran). @return int|false timestamp langkah */
+    public function verifyPendingSecret(#[\SensitiveParameter] string $secret, #[\SensitiveParameter] string $code): int|false
+    {
+        try {
+            $result = $this->google2fa->verifyKeyNewer($secret, trim($code), 0, 1);
+        } catch (\Throwable) {
+            return false;
+        }
+
+        return $result === false ? false : (int) $result;
+    }
+
+    /** @param list<string> $plainCodes */
+    public function replaceUserRecoveryCodes(User $user, array $plainCodes): void
+    {
+        $user->totpRecoveryCodes()->delete();
+        foreach ($plainCodes as $code) {
+            $user->totpRecoveryCodes()->create([
+                'code_hash' => Hash::make(self::normalizeRecoveryCode($code)),
+            ]);
+        }
+    }
+
+    public function verifyUserAndAdvance(int $userId, #[\SensitiveParameter] string $code): array
+    {
+        return DB::transaction(function () use ($userId, $code): array {
+            $user = User::whereKey($userId)->lockForUpdate()->first();
+            if (! $user || ! $user->hasTotp()) {
+                return ['ok' => false, 'reason' => 'not_required', 'timestamp' => null];
+            }
+            try {
+                $secret = $user->totp_secret;
+                $storedOld = $user->totp_last_used_at;
+                $result = $this->google2fa->verifyKeyNewer($secret, trim($code), $storedOld ?? 0, 1);
+            } catch (\Throwable $e) {
+                return ['ok' => false, 'reason' => 'broken_secret', 'timestamp' => null];
+            }
+            if ($result !== false) {
+                $affected = User::whereKey($userId)
+                    ->where('totp_last_used_at', $storedOld)
+                    ->update(['totp_last_used_at' => (int) $result]);
+                if ($affected === 1) {
+                    return ['ok' => true, 'reason' => 'verified', 'timestamp' => (int) $result];
+                }
+
+                return ['ok' => false, 'reason' => 'replayed', 'timestamp' => null];
+            }
+
+            return ['ok' => false, 'reason' => 'invalid_code', 'timestamp' => null];
+        });
+    }
+
+    public function consumeUserRecoveryCode(int $userId, #[\SensitiveParameter] string $code): array
+    {
+        $normalized = self::normalizeRecoveryCode($code);
+        if ($normalized === '') {
+            return ['ok' => false, 'timestamp' => null];
+        }
+
+        return DB::transaction(function () use ($userId, $normalized): array {
+            $user = User::whereKey($userId)->lockForUpdate()->first();
+            if (! $user || ! $user->hasTotp()) {
+                return ['ok' => false, 'timestamp' => null];
+            }
+            foreach ($user->totpRecoveryCodes()->get() as $record) {
+                if (Hash::check($normalized, $record->code_hash)) {
+                    $record->delete();
+                    $next = max($this->google2fa->getTimestamp(), (int) ($user->totp_last_used_at ?? 0) + 1);
+                    User::whereKey($userId)->update(['totp_last_used_at' => $next]);
+
+                    return ['ok' => true, 'timestamp' => $next];
+                }
+            }
+
+            return ['ok' => false, 'timestamp' => null];
+        });
     }
 
     /** Logs only the class and admin id: exception messages/traces may carry codes or secrets. */

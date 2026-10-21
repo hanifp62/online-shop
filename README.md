@@ -4,8 +4,9 @@ ZAFIRA is a Laravel storefront prototype for a luxury atelier. It includes a pro
 
 ## Stack
 
-- Laravel 12
-- PHP 8.2+
+- Laravel 13
+- PHP 8.4+
+- Node.js 22 (see `.nvmrc`)
 - Vite
 - Blade and vanilla JavaScript
 - SQLite or MySQL

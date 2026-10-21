@@ -230,18 +230,29 @@ test('runtime translations cannot restore removed claims in any language', () =>
     for (const [lang, translations] of Object.entries(dict)) {
         assert.ok(!/certificat|certificato|certificate|sertifikat/i.test(translations.service_4_title), lang);
         assert.ok(!/3.?5|3 à 5|3 a 5/.test(translations.atelier_step_3), lang);
-        assert.match(translations.toast_rendezvous_registered, /simula/i);
+        const simulationPattern = { id: /simula/i, en: /simula/i, fr: /simula/i, it: /simula/i, zh: /模拟/ }[lang];
+        assert.ok(simulationPattern, `missing simulation pattern for ${lang}`);
+        assert.match(translations.toast_rendezvous_registered, simulationPattern, lang);
         for (const key of Object.keys(translations)) assert.ok(!/^(telemetry_|account_cert|account_step_|profile_(advisor|silhouette|registered_size|chest_waist|vic_badge))/.test(key), `${lang}:${key}`);
     }
     assert.ok(!welcome.includes('Madame Aurelia'));
     assert.ok(!welcome.includes('(3–5 hari)'));
 });
 
-test('both runtime dictionaries omit unsupported claims and keep four languages', () => {
-    for (const path of ['../public/js/zafira-core.js', '../prototype/zafira-core.js']) {
+test('runtime dictionaries omit unsupported claims; public has five locales with id key parity, prototype keeps four', () => {
+    const expectedLocales = {
+        '../public/js/zafira-core.js': ['en', 'fr', 'id', 'it', 'zh'],
+        '../prototype/zafira-core.js': ['en', 'fr', 'id', 'it'],
+    };
+    for (const [path, locales] of Object.entries(expectedLocales)) {
         const source = readFileSync(new URL(path, import.meta.url), 'utf8');
         const dictionary = vm.runInNewContext(`${source.slice(source.indexOf('const I18N ='), source.indexOf('// --- 2.'))}; I18N`);
-        assert.deepEqual(Object.keys(dictionary).sort(), ['en', 'fr', 'id', 'it'], path);
+        assert.deepEqual(Object.keys(dictionary).sort(), locales, path);
+        if (locales.includes('zh')) {
+            const idKeys = Object.keys(dictionary.id).sort();
+            assert.deepEqual(Object.keys(dictionary.zh).sort(), idKeys, `${path}: zh key parity with id`);
+            for (const key of idKeys) assert.ok(typeof dictionary.zh[key] === 'string' && dictionary.zh[key].trim() !== '', `${path}: zh.${key} empty`);
+        }
         const productBlock = source.slice(source.indexOf('const MULTI_PRODUCTS'), source.indexOf('// Cross-reference aliases'));
         assert.doesNotMatch(productBlock, /\b(?:60 hours|60 jam|soixante heures|sessanta ore|3 minggu|12 jam|twelve hours|douze heures|dodici ore|24k|serial|nomor seri|numéro de série|numero di serie|measurements:)\b/i, path);
         for (const translations of Object.values(dictionary)) {

@@ -2,11 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Console\Commands\AdminTotpProvision;
 use App\Http\Middleware\EnsureAdminTotp;
 use App\Models\Admin;
 use App\Models\AdminTotpRecoveryCode;
 use App\Models\User;
 use App\Services\TotpService;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -14,8 +16,13 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException;
+use PragmaRX\Google2FA\Exceptions\InvalidCharactersException;
+use PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException;
 use PragmaRX\Google2FA\Google2FA;
 use Tests\TestCase;
 
@@ -86,7 +93,7 @@ class AdminTotpTest extends TestCase
 
     public function test_test_app_key_supports_encrypted_eloquent_cast(): void
     {
-        $model = new class extends \Illuminate\Database\Eloquent\Model
+        $model = new class extends Model
         {
             protected $casts = ['secret' => 'encrypted'];
         };
@@ -353,7 +360,7 @@ class AdminTotpTest extends TestCase
     {
         [$admin, , $codes] = $this->totpAdmin();
         $user = User::factory()->create(['email' => $admin->email]);
-        $broker = \Illuminate\Support\Facades\Password::broker('users');
+        $broker = Password::broker('users');
         $reset = $broker->createToken($user);
 
         $this->assertTrue($broker->tokenExists($user, $reset));
@@ -561,6 +568,29 @@ class AdminTotpTest extends TestCase
         foreach ([$pw[1], $key[1], ...$codes[1]] as $secretText) {
             $this->assertStringNotContainsString($secretText, $blob);
         }
+    }
+
+    public function test_cli_prints_password_verbatim_despite_console_style_markup(): void
+    {
+        // Backslash-before-"<" and style tags are what Symfony's formatter would eat.
+        $generated = 'Aa1\\<error>Xy</error>-<b>z\\<q9';
+        Artisan::registerCommand(new class($generated) extends AdminTotpProvision
+        {
+            public function __construct(private readonly string $fixedPassword)
+            {
+                parent::__construct();
+            }
+
+            protected function newPassword(): string
+            {
+                return $this->fixedPassword;
+            }
+        });
+
+        $this->assertSame(0, Artisan::call('admin:totp-provision', ['email' => 'markup@example.test']));
+        $this->assertSame(1, preg_match('/^Password: (\S+)$/m', Artisan::output(), $pw));
+        $this->assertSame($generated, $pw[1]);
+        $this->assertTrue(Hash::check($pw[1], Admin::where('email', 'markup@example.test')->firstOrFail()->password));
     }
 
     // ---- log leak ----
@@ -839,12 +869,12 @@ PHP;
      */
     public static function enrolSecretFailureProvider(): iterable
     {
-        yield 'kunci terlalu pendek' => [\PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException::class];
-        yield 'karakter tidak valid' => [\PragmaRX\Google2FA\Exceptions\InvalidCharactersException::class];
-        yield 'tidak kompatibel google authenticator' => [\PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException::class];
+        yield 'kunci terlalu pendek' => [SecretKeyTooShortException::class];
+        yield 'karakter tidak valid' => [InvalidCharactersException::class];
+        yield 'tidak kompatibel google authenticator' => [IncompatibleWithGoogleAuthenticatorException::class];
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('enrolSecretFailureProvider')]
+    #[DataProvider('enrolSecretFailureProvider')]
     public function test_enrol_secret_exceptions_alarm_instead_of_reporting_wrong_code(string $exception): void
     {
         $admin = Admin::create(['name' => 'Enrol Alarm', 'email' => 'alarm-'.md5($exception).'@example.test', 'password' => self::PW]);
@@ -878,7 +908,7 @@ PHP;
         $this->assertNull($admin->fresh()->totp_required_at);
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('enrolSecretFailureProvider')]
+    #[DataProvider('enrolSecretFailureProvider')]
     public function test_challenge_secret_exceptions_raise_operational_alarm(string $exception): void
     {
         [$admin] = $this->totpAdmin();

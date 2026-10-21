@@ -117,7 +117,9 @@ class AdminTableCoverageTest extends TestCase
             $view = 'latestConcierge';
             $values = ['name' => ['Amy', 'Zed'], 'email' => ['amy@example.test', 'zed@example.test']][$column];
         } else {
-            foreach ([['Zed', 'Zed'], ['Amy', 'Amy']] as [$name, $first]) User::factory()->create(['name' => $name, 'first_name' => $first, 'last_name' => '']);
+            foreach ([['Zed', 'Zed'], ['Amy', 'Amy']] as [$name, $first]) {
+                User::factory()->create(['name' => $name, 'first_name' => $first, 'last_name' => '']);
+            }
             $view = 'latestUsers';
             $values = ['name' => ['Amy', 'Zed'], 'email' => User::query()->orderBy('email')->pluck('email')->all()][$column];
         }
@@ -156,7 +158,9 @@ class AdminTableCoverageTest extends TestCase
             NewsletterSubscriber::create(['email' => 's'.$i.'@example.test']);
             UserInfoBackup::create(['user_id' => $user->id, 'first_name' => 'F'.$i, 'last_name' => 'L', 'email' => 'b'.$i.'@example.test']);
             ConciergeRequest::create(['name' => 'C'.$i, 'email' => 'c'.$i.'@example.test', 'phone' => '123', 'service' => 'consultation', 'preferred_date' => now()->addDay(), 'status' => 'new']);
-            if ($i < 9) Category::create(['cat_title' => 'Category '.$i]);
+            if ($i < 9) {
+                Category::create(['cat_title' => 'Category '.$i]);
+            }
         }
         $this->login();
         foreach ([['upage', 'latestUsers', 10], ['bpage', 'latestBackups', 10], ['cpage', 'latestConcierge', 20], ['kpage', 'categories', 10], ['ppage', 'latestProducts', 10], ['spage', 'latestSubscribers', 10], ['opage', 'latestOrders', 15]] as [$page, $view, $size]) {
@@ -164,7 +168,11 @@ class AdminTableCoverageTest extends TestCase
         }
         foreach ([['upage', 'latestUsers'], ['cpage', 'latestConcierge']] as [$page, $view]) {
             $one = null;
-            $this->get(route('admin.dashboard', [$page => 1]))->assertViewHas($view, function ($rows) use (&$one) { $one = $rows->items()[0]->id; return true; });
+            $this->get(route('admin.dashboard', [$page => 1]))->assertViewHas($view, function ($rows) use (&$one) {
+                $one = $rows->items()[0]->id;
+
+                return true;
+            });
             $this->get(route('admin.dashboard', [$page => 2]))->assertViewHas($view, fn ($rows) => $rows->items()[0]->id !== $one);
         }
     }

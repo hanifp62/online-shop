@@ -43,7 +43,7 @@
 @elseif (($part ?? 'sort') === 'sort')
     <div class="table-sort-controls">
         <div class="field">
-            <label for="{{ $table }}-sort">Urutkan berdasarkan</label>
+            <label for="{{ $table }}-sort">{{ __('admin_ui.common.sort_by') }}</label>
             <select id="{{ $table }}-sort" name="{{ $sortName }}">
                 @foreach ($sortOptions as $value => $label)
                     <option value="{{ $value }}" @selected($currentSort === $value)>{{ $label }}</option>
@@ -51,29 +51,29 @@
             </select>
         </div>
         <div class="field">
-            <label for="{{ $table }}-dir">Arah urutan</label>
+            <label for="{{ $table }}-dir">{{ __('admin_ui.common.sort_direction') }}</label>
             <select id="{{ $table }}-dir" name="{{ $dirName }}">
-                <option value="desc" @selected($currentDir === 'desc')>Menurun (Z–A, terbaru)</option>
-                <option value="asc" @selected($currentDir === 'asc')>Menaik (A–Z, terlama)</option>
+                <option value="desc" @selected($currentDir === 'desc')>{{ __('admin_ui.common.descending') }}</option>
+                <option value="asc" @selected($currentDir === 'asc')>{{ __('admin_ui.common.ascending') }}</option>
             </select>
         </div>
     </div>
 @elseif (($part ?? '') === 'density')
     <div class="table-density-controls" hidden data-table-enhancement>
-        <button type="button" data-table-density="{{ $table }}" aria-pressed="false">Baris ringkas</button>
+        <button type="button" data-table-density="{{ $table }}" aria-pressed="false">{{ __('admin_ui.common.compact_rows') }}</button>
     </div>
 @elseif ($paginator->hasPages())
-    <nav class="table-pagination" aria-label="Halaman tabel {{ $label ?? $table }}">
+    <nav class="table-pagination" aria-label="{{ __('admin_ui.common.table_pages', ['label' => $label ?? $table]) }}">
         @if ($paginator->onFirstPage())
-            <span class="is-disabled" aria-disabled="true">Sebelumnya</span>
+            <span class="is-disabled" aria-disabled="true">{{ __('admin_ui.common.previous') }}</span>
         @else
-            <a data-table-link rel="prev" href="{{ $paginator->previousPageUrl() }}">Sebelumnya</a>
+            <a data-table-link rel="prev" href="{{ $paginator->previousPageUrl() }}">{{ __('admin_ui.common.previous') }}</a>
         @endif
-        <span class="table-pagination-status" aria-current="page">Halaman {{ $paginator->currentPage() }} dari {{ $paginator->lastPage() }}</span>
+        <span class="table-pagination-status" aria-current="page">{{ __('admin_ui.common.page_of', ['page' => $paginator->currentPage(), 'total' => $paginator->lastPage()]) }}</span>
         @if ($paginator->hasMorePages())
-            <a data-table-link rel="next" href="{{ $paginator->nextPageUrl() }}">Berikutnya</a>
+            <a data-table-link rel="next" href="{{ $paginator->nextPageUrl() }}">{{ __('admin_ui.common.next') }}</a>
         @else
-            <span class="is-disabled" aria-disabled="true">Berikutnya</span>
+            <span class="is-disabled" aria-disabled="true">{{ __('admin_ui.common.next') }}</span>
         @endif
     </nav>
 @endif

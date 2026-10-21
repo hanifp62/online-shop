@@ -83,7 +83,6 @@ class AdminSearchWildcardTest extends TestCase
             ->assertOk()
             ->assertViewHas('latestOrders', fn ($rows) => $rows->total() === 1);
 
-
         $orderSearchSql = implode(' ', array_filter($sql, fn ($query) => str_contains($query, 'from "orders"')));
         $this->assertDoesNotMatchRegularExpression('/\b(?:orders\.)?"?id"?\s+like\b/', $orderSearchSql);
         $this->assertStringNotContainsString('"orders"."id" = ?', $orderSearchSql);
@@ -160,7 +159,7 @@ class AdminSearchWildcardTest extends TestCase
             'oq' => '%',
             'uq' => '_',
             'bq' => '%',
-            'q'  => '_',
+            'q' => '_',
             'sq' => '%',
         ]))->assertOk();
 

@@ -80,7 +80,7 @@ class IndexMigrationTest extends TestCase
             foreach ($columns as $column) {
                 $this->assertTrue(
                     Schema::hasIndex($table, "{$table}_{$column}_index"),
-                    "Index missing after double up()."
+                    'Index missing after double up().'
                 );
             }
         }

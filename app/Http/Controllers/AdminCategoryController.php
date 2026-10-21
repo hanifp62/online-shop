@@ -19,7 +19,7 @@ class AdminCategoryController extends Controller
         Category::create($validated);
         self::flushStorefrontCache();
 
-        return back()->with('success', "Kategori {$validated['cat_title']} ditambahkan.");
+        return back()->with('success', __('admin_ui.flash.category_added', ['title' => $validated['cat_title']]));
     }
 
     public function update(Request $request, Category $category): RedirectResponse
@@ -31,19 +31,19 @@ class AdminCategoryController extends Controller
         $category->update($validated);
         self::flushStorefrontCache();
 
-        return back()->with('success', "Kategori #{$category->cat_id} diperbarui.");
+        return back()->with('success', __('admin_ui.flash.category_updated', ['id' => $category->cat_id]));
     }
 
     public function destroy(Category $category): RedirectResponse
     {
         if (Product::where('product_cat', $category->cat_id)->exists()) {
-            return back()->withErrors(['cat_title' => 'Kategori dipakai produk, tidak bisa dihapus.']);
+            return back()->withErrors(['cat_title' => __('admin_ui.flash.category_in_use')]);
         }
 
         $category->delete();
         self::flushStorefrontCache();
 
-        return back()->with('success', "Kategori {$category->cat_title} dihapus.");
+        return back()->with('success', __('admin_ui.flash.category_deleted', ['title' => $category->cat_title]));
     }
 
     /**

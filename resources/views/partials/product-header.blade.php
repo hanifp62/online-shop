@@ -1,48 +1,53 @@
 <div class="announcement-bar">
-    <p>Complimentary signature wrapping & pengiriman untuk seluruh Indonesia</p>
-    <button type="button" data-open-concierge>Rendez-vous privat</button>
+    <nav class="lang-switcher" aria-label="{{ __('shop_ui.header.language_selector') }}">
+        @foreach (['id' => 'ID', 'en' => 'EN', 'fr' => 'FR', 'it' => 'IT', 'zh' => 'ZH'] as $code => $label)
+            <a href="{{ request()->fullUrlWithQuery(['locale' => $code]) }}" hreflang="{{ $code }}" @if (app()->getLocale() === $code) aria-current="true" @endif>{{ $label }}</a>
+        @endforeach
+    </nav>
+    <p>{{ __('shop_ui.header.announcement') }}</p>
+    <button type="button" data-open-concierge>Rendez-vous privé</button>
 </div>
 
 <header class="site-header is-fixed" id="site-header">
-    <button class="icon-button mobile-menu-button" type="button" aria-label="Buka menu" aria-controls="mobile-menu" aria-expanded="false">
+    <button class="icon-button mobile-menu-button" type="button" aria-label="{{ __('shop_ui.header.menu_open') }}" aria-controls="mobile-menu" aria-expanded="false">
         <svg aria-hidden="true"><use href="#icon-menu"/></svg>
     </button>
 
-    <nav class="desktop-nav" aria-label="Navigasi utama">
-        <a href="{{ route('home') }}#collection">Koleksi</a>
-        <a href="{{ route('home') }}#new-arrivals">Terbaru</a>
-        <a href="{{ route('home') }}#heritage">Warisan</a>
+    <nav class="desktop-nav" aria-label="{{ __('shop_ui.header.nav_label') }}">
+        <a href="{{ route('home') }}#collection">{{ __('shop_ui.header.nav_collection') }}</a>
+        <a href="{{ route('home') }}#new-arrivals">{{ __('shop_ui.header.nav_new') }}</a>
+        <a href="{{ route('home') }}#heritage">{{ __('shop_ui.header.nav_heritage') }}</a>
         <a href="{{ route('home') }}#maison">La Maison</a>
     </nav>
 
-    <a class="brand" href="{{ route('home') }}" aria-label="ZAFIRA — kembali ke beranda">
+    <a class="brand" href="{{ route('home') }}" aria-label="{{ __('shop_ui.header.home_aria') }}">
         <x-brand-mark />
     </a>
 
     <div class="header-actions">
-        <button class="icon-button" type="button" data-open-search aria-label="Cari">
+        <button class="icon-button" type="button" data-open-search aria-label="{{ __('shop_ui.header.search') }}">
             <svg aria-hidden="true"><use href="#icon-search"/></svg>
         </button>
         @auth
             <div class="account-wrap">
-                <button class="icon-button account-button" type="button" aria-label="Akun {{ auth()->user()->name }}" aria-expanded="false">
+                <button class="icon-button account-button" type="button" aria-label="{{ __('shop_ui.header.auth_account_aria', ['name' => auth()->user()->name]) }}" aria-expanded="false">
                     <svg aria-hidden="true"><use href="#icon-user"/></svg>
                 </button>
                 <div class="account-menu">
-                    <span>Bonjour, {{ auth()->user()->name }}</span>
-                    <a href="{{ route('account.show') }}">Profil saya</a>
-                    <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit">Keluar</button></form>
+                    <span>{{ __('shop_ui.header.auth_greeting', ['name' => auth()->user()->name]) }}</span>
+                    <a href="{{ route('account.show') }}">{{ __('shop_ui.header.auth_profile') }}</a>
+                    <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit">{{ __('shop_ui.header.auth_logout') }}</button></form>
                 </div>
             </div>
         @else
-            <a class="icon-button" href="{{ route('login') }}" aria-label="Masuk ke akun">
+            <a class="icon-button" href="{{ route('login') }}" aria-label="{{ __('shop_ui.header.login_aria') }}">
                 <svg aria-hidden="true"><use href="#icon-user"/></svg>
             </a>
         @endauth
-        <button class="icon-button wishlist-trigger" type="button" data-show-wishlist aria-label="Tampilkan favorit">
+        <button class="icon-button wishlist-trigger" type="button" data-show-wishlist aria-label="{{ __('shop_ui.header.wishlist_show') }}">
             <svg aria-hidden="true"><use href="#icon-heart"/></svg><span class="action-count wishlist-count">0</span>
         </button>
-        <button class="icon-button" type="button" data-open-cart aria-label="Buka tas belanja">
+        <button class="icon-button" type="button" data-open-cart aria-label="{{ __('shop_ui.header.cart_open') }}">
             <svg aria-hidden="true"><use href="#icon-bag"/></svg><span class="action-count cart-count">0</span>
         </button>
     </div>
@@ -50,25 +55,25 @@
 
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
     <div class="mobile-menu-top">
-        <a class="brand brand-horizontal" href="{{ route('home') }}" aria-label="ZAFIRA beranda"><x-brand-mark /></a>
-        <button class="icon-button" type="button" data-close-menu aria-label="Tutup menu"><svg aria-hidden="true"><use href="#icon-close"/></svg></button>
+        <a class="brand brand-horizontal" href="{{ route('home') }}" aria-label="{{ __('shop_ui.header.home_short_aria') }}"><x-brand-mark /></a>
+        <button class="icon-button" type="button" data-close-menu aria-label="{{ __('shop_ui.header.menu_close') }}"><svg aria-hidden="true"><use href="#icon-close"/></svg></button>
     </div>
     <nav>
-        <a href="{{ route('home') }}#collection"><span class="mobile-menu-ordinal" aria-hidden="true">01</span>Koleksi</a>
-        <a href="{{ route('home') }}#new-arrivals"><span class="mobile-menu-ordinal" aria-hidden="true">02</span>Terbaru</a>
-        <a href="{{ route('home') }}#heritage"><span class="mobile-menu-ordinal" aria-hidden="true">03</span>Warisan</a>
+        <a href="{{ route('home') }}#collection"><span class="mobile-menu-ordinal" aria-hidden="true">01</span>{{ __('shop_ui.header.nav_collection') }}</a>
+        <a href="{{ route('home') }}#new-arrivals"><span class="mobile-menu-ordinal" aria-hidden="true">02</span>{{ __('shop_ui.header.nav_new') }}</a>
+        <a href="{{ route('home') }}#heritage"><span class="mobile-menu-ordinal" aria-hidden="true">03</span>{{ __('shop_ui.header.nav_heritage') }}</a>
         <a href="{{ route('home') }}#maison"><span class="mobile-menu-ordinal" aria-hidden="true">04</span>La Maison</a>
     </nav>
     <div class="mobile-utilities">
         @auth
-            <a href="{{ route('account.show') }}"><svg aria-hidden="true"><use href="#icon-user"/></svg>Profil saya</a>
-            <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit"><svg aria-hidden="true"><use href="#icon-user"/></svg>Keluar dari akun</button></form>
+            <a href="{{ route('account.show') }}"><svg aria-hidden="true"><use href="#icon-user"/></svg>{{ __('shop_ui.header.auth_profile') }}</a>
+            <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit"><svg aria-hidden="true"><use href="#icon-user"/></svg>{{ __('shop_ui.header.auth_logout_full') }}</button></form>
         @else
-            <a href="{{ route('login') }}"><svg aria-hidden="true"><use href="#icon-user"/></svg>Masuk ke akun</a>
+            <a href="{{ route('login') }}"><svg aria-hidden="true"><use href="#icon-user"/></svg>{{ __('shop_ui.header.login_aria') }}</a>
         @endauth
-        <button type="button" data-show-wishlist><svg aria-hidden="true"><use href="#icon-heart"/></svg>Favorit <span class="wishlist-count">0</span></button>
+        <button type="button" data-show-wishlist><svg aria-hidden="true"><use href="#icon-heart"/></svg>{{ __('shop_ui.header.favorites') }} <span class="wishlist-count">0</span></button>
     </div>
-    <button class="text-link light mobile-concierge" type="button" data-open-concierge>Atur rendez-vous <svg aria-hidden="true"><use href="#icon-arrow"/></svg></button>
+    <button class="text-link light mobile-concierge" type="button" data-open-concierge>{{ __('shop_ui.header.arrange') }} <svg aria-hidden="true"><use href="#icon-arrow"/></svg></button>
 </div>
 
 <svg class="icon-sprite" aria-hidden="true">

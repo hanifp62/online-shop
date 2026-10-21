@@ -8,6 +8,7 @@ use App\Models\AuthEvent;
 use App\Services\AuthEventRecorder;
 use App\Services\TotpService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PragmaRX\Google2FA\Google2FA;
 use Tests\TestCase;
 
 class AdminNavigationTest extends TestCase
@@ -22,6 +23,47 @@ class AdminNavigationTest extends TestCase
             'email' => $email,
             'password' => 'Password123!',
         ]);
+    }
+
+    public function test_auth_events_table_is_keyboard_scrollable_and_semantic(): void
+    {
+        $html = $this->actingAs($this->createLegacyAdmin(), 'admin')
+            ->get(route('admin.auth-events.index'))->assertOk()->getContent();
+        $dom = new \DOMDocument;
+        @$dom->loadHTML($html);
+        $xpath = new \DOMXPath($dom);
+
+        $wrap = $xpath->query('//div[contains(@class,"auth-events-table-wrap")]')->item(0);
+        $this->assertSame('0', $wrap->getAttribute('tabindex'));
+        $this->assertSame('region', $wrap->getAttribute('role'));
+        $this->assertNotSame('', $wrap->getAttribute('aria-label'));
+        $this->assertSame(1, $xpath->query('//table/caption')->length);
+        $this->assertSame($xpath->query('//th')->length, $xpath->query('//th[@scope="col"]')->length);
+        $this->assertStringContainsString('min-height: 44px', $html);
+    }
+
+    public function test_admin_console_has_visible_focus_and_reduced_motion(): void
+    {
+        $css = file_get_contents(resource_path('css/admin.css'));
+        $this->assertStringContainsString('body.admin-console :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible', $css);
+        $this->assertStringContainsString('@media (prefers-reduced-motion: reduce)', $css);
+        $this->assertStringContainsString('summary', $css);
+    }
+
+    public function test_admin_console_uses_its_own_visual_system_separate_from_storefront(): void
+    {
+        $html = $this->actingAs($this->createLegacyAdmin(), 'admin')
+            ->get(route('admin.dashboard'))->assertOk()->getContent();
+
+        $this->assertStringContainsString('<body class="admin-console">', $html);
+        $this->assertStringNotContainsString('class="storefront"', $html);
+        $this->assertMatchesRegularExpression('#/build/assets/admin-[^"]+\.css#', $html);
+        // Console styles live in admin.css, not inline in the layout or dashboard.
+        $this->assertStringNotContainsString('.admin-work-header {', $html);
+        $this->assertStringNotContainsString('.stat-grid {', $html);
+
+        $storefront = $this->get(route('home'))->getContent();
+        $this->assertDoesNotMatchRegularExpression('#/build/assets/admin-[^"]+\.css#', $storefront);
     }
 
     public function test_dashboard_uses_shared_navigation_shell_with_active_marker_and_skip_link(): void
@@ -155,7 +197,7 @@ class AdminNavigationTest extends TestCase
             'totp_required_at' => now(),
         ])->save();
 
-        $g = new \PragmaRX\Google2FA\Google2FA;
+        $g = new Google2FA;
         $res = $this->actingAs($admin->fresh(), 'admin')
             ->post('/admin/totp', ['code' => $g->oathTotp($secret, $g->getTimestamp())]);
 
@@ -202,6 +244,24 @@ class AdminNavigationTest extends TestCase
             ->assertOk()
             ->assertDontSee('data-active-filter=', false)
             ->assertDontSeeText('Filter aktif:');
+    }
+
+    public function test_auth_events_can_be_filtered_by_request_id(): void
+    {
+        $admin = $this->createLegacyAdmin();
+        AuthEvent::create(['occurred_at' => now(), 'event' => 'LOGIN_FAILURE', 'outcome' => 'failure', 'request_id' => 'req-target-0001']);
+        AuthEvent::create(['occurred_at' => now(), 'event' => 'LOGIN_FAILURE', 'outcome' => 'failure', 'request_id' => 'req-other-0002']);
+
+        $this->actingAs($admin, 'admin')
+            ->get(route('admin.auth-events.index', ['request_id' => 'req-target-0001']))
+            ->assertOk()
+            ->assertSee('req-target-0001')
+            ->assertDontSee('req-other-0002')
+            ->assertSee('data-active-filter="request_id: req-target-0001"', false);
+
+        $this->actingAs($admin, 'admin')
+            ->get(route('admin.auth-events.index', ['request_id' => '<script>']))
+            ->assertSessionHasErrors('request_id');
     }
 
     public function test_auth_events_active_filter_values_are_escaped_in_view(): void

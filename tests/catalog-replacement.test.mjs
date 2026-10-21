@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 
 const view = readFileSync('resources/views/catalog/index.blade.php', 'utf8');
-const labels = JSON.parse(execFileSync('php', ['-r', 'echo json_encode(require "resources/views/catalog/labels.php");'], { encoding: 'utf8' }));
+const labels = JSON.parse(execFileSync('php', ['-r', 'echo json_encode(array_combine($l = ["id", "en", "zh", "fr", "it"], array_map(fn ($x) => require "lang/$x/zafira.php", $l)));'], { encoding: 'utf8' }));
 
 test('FR-CLOSURE-01: each locale distinguishes SET from additive cart intent', () => {
     for (const [locale, row] of Object.entries(labels)) {

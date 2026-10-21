@@ -77,7 +77,7 @@ class AdminOrderJsonTest extends TestCase
         $this->assertSame('Sutra', $detail['items'][0]['product_title']);
         $this->assertSame(['id', 'product_id', 'product_title', 'unit_price', 'quantity', 'subtotal'], array_keys($detail['items'][0]));
         $this->assertSame(['id', 'name'], array_keys($detail['user']));
-        $this->assertSame(['id', 'status', 'subtotal', 'discount', 'shipping_fee', 'total', 'user', 'created_at', 'updated_at', 'shipping_address', 'items'], array_keys($detail));
+        $this->assertSame(['id', 'status', 'subtotal', 'discount', 'shipping_fee', 'total', 'user', 'created_at', 'updated_at', 'shipping_address', 'items', 'shipment', 'status_history', 'payment'], array_keys($detail));
     }
 
     public function test_status_update_json_returns_only_order_summary(): void

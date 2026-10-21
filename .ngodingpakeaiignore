@@ -6,3 +6,12 @@
 # docs/internal/
 # *.snap
 # fixtures/
+
+# Noise: third-party skills, agent execution logs, framework caches/runtime output
+.agents/
+.claude/skills/
+agent/skills/
+.superpowers/
+docs/execution/
+storage/
+bootstrap/cache/

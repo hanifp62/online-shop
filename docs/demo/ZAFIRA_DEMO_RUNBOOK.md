@@ -1,4 +1,4 @@
-# ZAFIRA AMADIS — Demo Runbook
+# ZAFIRA — Demo Runbook
 
 Tanggal: 2026-10-12 (catatan 13 Oktober: run terisolasi AM-01/02/06/10 telah dieksekusi, lihat `docs/execution/evidence/2026-10-13/acceptance-am-isolated/REPORT.md`; aturan di bawah tetap berlaku). Runbook ini menjalankan demo **hanya pada SQLite terisolasi**. Jangan jalankan pada database operasional.
 

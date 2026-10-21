@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
 class SessionHardeningTest extends TestCase
@@ -102,7 +103,7 @@ class SessionHardeningTest extends TestCase
     public function test_production_error_response_hides_exception_details(): void
     {
         config(['app.debug' => false]);
-        \Illuminate\Support\Facades\Route::get('/session-hardening-error', function () {
+        Route::get('/session-hardening-error', function () {
             throw new \RuntimeException('private-stack-marker-86c14287');
         });
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ConciergeRequested;
 use App\Mail\NewsletterWelcome;
+use App\Mail\RecipientLocale;
 use App\Models\Category;
 use App\Models\ConciergeRequest;
 use App\Models\NewsletterSubscriber;
@@ -38,11 +39,11 @@ class StorefrontController extends Controller
                     'id' => $product->product_slug ?? 'product-'.$product->product_id,
                     'name' => $product->product_title,
                     'stock' => max(0, (int) $product->stock),
-                    'category' => $product->category?->cat_title ?? 'Koleksi',
+                    'category' => $product->category?->cat_title ?? trans('customer_messages.storefront.collection'),
                     'price' => (int) $product->product_price,
                     'price_label' => 'Rp'.number_format($product->product_price, 0, ',', '.'),
                     'image' => $product->imageWidth(800),
-                    'alt' => $product->product_alt,
+                    'alt' => $product->imageAlt(),
                     'description' => $product->product_description,
                     'badge' => $product->product_badge,
                     'color' => $product->product_color,
@@ -55,7 +56,7 @@ class StorefrontController extends Controller
                 '@context' => 'https://schema.org',
                 '@type' => 'Organization',
                 'name' => 'ZAFIRA',
-                'description' => 'Rumah mode Paris–Italia–Indonesia: siluet Paris, keahlian Italia, batik tulis, songket, dan tenun Nusantara.',
+                'description' => trans('customer_messages.storefront.organization_description'),
                 'url' => url('/'),
                 'logo' => asset('favicon.svg'),
                 'sameAs' => [],
@@ -178,9 +179,9 @@ class StorefrontController extends Controller
         unset($validated['order_items']);
 
         $concierge = ConciergeRequest::create($validated + ['user_id' => $request->user()?->id]);
-        Mail::to($concierge->email)->queue(new ConciergeRequested($concierge));
+        Mail::to($concierge->email)->locale(RecipientLocale::resolve(app()->getLocale()))->queue(new ConciergeRequested($concierge));
 
-        $message = 'Permintaan rendez-vous Anda telah diterima. ZAFIRA Concierge akan segera menghubungi Anda.';
+        $message = __('customer_messages.storefront.concierge_received');
 
         if ($request->expectsJson()) {
             return response()->json(['message' => $message], 201);
@@ -200,10 +201,10 @@ class StorefrontController extends Controller
         $subscriber = NewsletterSubscriber::firstOrCreate($validated);
 
         if ($subscriber->wasRecentlyCreated) {
-            Mail::to($subscriber->email)->queue(new NewsletterWelcome($subscriber));
+            Mail::to($subscriber->email)->locale(RecipientLocale::resolve(app()->getLocale()))->queue(new NewsletterWelcome($subscriber));
         }
 
-        $message = 'Terima kasih telah berlangganan La Lettre ZAFIRA.';
+        $message = __('customer_messages.storefront.subscribed');
 
         if ($request->expectsJson()) {
             return response()->json(['message' => $message]);

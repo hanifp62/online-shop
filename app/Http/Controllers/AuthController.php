@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\CartStore;
+use App\Services\CheckoutService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -41,13 +43,20 @@ class AuthController extends Controller
             'address2' => $validated['address2'] ?? null,
         ]);
 
+        try {
+            $user->sendEmailVerificationNotification();
+        } catch (\Throwable $e) {
+            // Gangguan SMTP tidak boleh menggagalkan akun yang sudah dibuat; pengguna bisa kirim ulang dari /akun.
+            report($e);
+        }
+
         Auth::login($user);
         $request->session()->regenerate();
         $request->attributes->set('cart_allow_merge', true);
-        \App\Services\CheckoutService::cart($request);
+        CheckoutService::cart($request);
 
         return redirect('/')
-            ->with('success', 'Registrasi berhasil. Anda sudah login.');
+            ->with('success', __('customer_messages.auth.registered', ['email' => $user->email]));
     }
 
     public function showLogin()
@@ -70,18 +79,15 @@ class AuthController extends Controller
             'password' => $validated['password'],
         ];
 
-        if (Auth::attempt($credentials, (bool) ($validated['remember'] ?? false))) {
-            $request->session()->regenerate();
-        $request->attributes->set('cart_allow_merge', true);
-            \App\Services\CheckoutService::cart($request);
-
-            return redirect('/')
-                ->with('success', 'Login berhasil.');
+        // validate() tidak membuat sesi login: akun ber-TOTP menunggu kode kedua dulu.
+        if (Auth::validate($credentials)) {
+            return CustomerTotpController::completeLogin($request, Auth::getLastAttempted(), (bool) ($validated['remember'] ?? false));
         }
 
         return back()
             ->withErrors([
-                'email' => 'Email atau password salah.',
+                // Tetap generik (tanpa membedakan email tak terdaftar) agar tidak membuka enumerasi akun.
+                'email' => __('customer_messages.auth.invalid_credentials'),
             ])
             ->onlyInput('email');
     }
@@ -91,7 +97,7 @@ class AuthController extends Controller
         Auth::guard('web')->logout();
 
         // Pertahankan keranjang akun (lintas perangkat); lepaskan tautan browser saja.
-        \App\Services\CartStore::detach($request);
+        CartStore::detach($request);
 
         // Guard ganda berbagi sesi: jangan hancurkan sesi bila admin
         // masih login di browser yang sama (kompatibilitas user/admin).
@@ -104,6 +110,6 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/')
-            ->with('success', 'Anda berhasil logout.');
+            ->with('success', __('customer_messages.auth.logout'));
     }
 }

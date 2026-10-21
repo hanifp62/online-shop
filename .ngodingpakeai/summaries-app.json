@@ -1,0 +1,821 @@
+{
+  "app/Console/Commands/AdminTotpProvision.php": {
+    "summary": "Perintah admin:totp-provision membuat satu admin baru dengan peran tervalidasi dan TOTP wajib dalam transaksi; informasi setup ditampilkan sekali setelah commit."
+  },
+  "app/Console/Commands/AdminTotpRequire.php": {
+    "summary": "Perintah admin:totp-require mewajibkan TOTP untuk semua admin hanya jika setiap akun sudah memiliki konfigurasi TOTP, sehingga akun tidak terkunci."
+  },
+  "app/Console/Commands/AuthEventsPrune.php": {
+    "summary": "Perintah auth-events:prune memvalidasi jumlah hari retensi lalu menghapus auth_events yang lebih lama dari batas tersebut."
+  },
+  "app/Console/Commands/RetryOrderNotifications.php": {
+    "summary": "Perintah orders:retry-notifications mengambil maksimal 100 outbox email order yang belum terkirim, melewati lease aktif, lalu memanggil OrderNotificationDispatcher."
+  },
+  "app/Console/Commands/SendCartReminders.php": {
+    "summary": "Perintah cart-reminders:send memilih keranjang telantar milik pelanggan terverifikasi yang opt-in, mengklaim jadwal pengingat, lalu mengantrekan SendCartReminder dengan pemulihan penanda ketika dispatch gagal."
+  },
+  "app/Enums/AuthEventName.php": {
+    "summary": "AuthEventName menetapkan daftar nama kejadian audit autentikasi, termasuk login, kegagalan TOTP, kode pemulihan, lockout, rotasi sesi dan penerbitan reset kata sandi."
+  },
+  "app/Http/Controllers/AddressController.php": {
+    "summary": "AddressController menyediakan daftar, pembuatan, pembaruan dan penghapusan addresses milik pengguna yang login, dengan validasi alamat serta pengaturan alamat utama."
+  },
+  "app/Http/Controllers/AdminAuthController.php": {
+    "summary": "AdminAuthController menangani formulir login, autentikasi dan logout guard admin, merotasi sesi serta merekam kejadian autentikasi dan mengarahkan akun yang wajib TOTP ke verifikasi."
+  },
+  "app/Http/Controllers/AdminAuthEventController.php": {
+    "summary": "AdminAuthEventController menyajikan halaman audit auth_events dengan filter tervalidasi menurut kejadian dan hasil autentikasi."
+  },
+  "app/Http/Controllers/AdminCategoryController.php": {
+    "summary": "AdminCategoryController mengelola categories, menolak penghapusan kategori yang masih dipakai products, dan membersihkan cache storefront setelah perubahan."
+  },
+  "app/Http/Controllers/AdminDashboardController.php": {
+    "summary": "AdminDashboardController menyusun dashboard berpaginasi untuk kategori, produk, pesanan, pengguna, arsip profil, concierge dan pelanggan newsletter; menangani perubahan status concierge, kata sandi admin dan penghapusan subscriber."
+  },
+  "app/Http/Controllers/AdminOrderController.php": {
+    "summary": "AdminOrderController menyediakan daftar dan rincian pesanan, transisi status melalui CheckoutService, ringkasan penjualan per rentang waktu serta laporan dan invoice PDF."
+  },
+  "app/Http/Controllers/AdminProductController.php": {
+    "summary": "AdminProductController memvalidasi pembuatan dan pembaruan products, menjaga slug unik, mengelola penghapusan produk serta membersihkan cache storefront."
+  },
+  "app/Http/Controllers/AdminTotpController.php": {
+    "summary": "AdminTotpController memverifikasi tantangan TOTP atau kode pemulihan admin dengan pembatasan percobaan, pencatatan audit dan penanda sesi setelah verifikasi berhasil."
+  },
+  "app/Http/Controllers/AdminTotpEnrolController.php": {
+    "summary": "AdminTotpEnrolController mengelola pendaftaran TOTP admin, menyiapkan QR, mengonfirmasi kode dalam transaksi dan menampilkan kode pemulihan sekali melalui sesi terenkripsi."
+  },
+  "app/Http/Controllers/AuthController.php": {
+    "summary": "AuthController menangani registrasi, login dan logout pelanggan, memvalidasi kekuatan kata sandi, mengirim verifikasi email serta meneruskan login ke pemeriksaan TOTP dan penggabungan keranjang."
+  },
+  "app/Http/Controllers/CartController.php": {
+    "summary": "CartController menyediakan JSON keranjang dan estimasi biaya, pengaturan jumlah, perubahan jumlah relatif, penghapusan item serta pengosongan keranjang melalui CartStore yang terkunci."
+  },
+  "app/Http/Controllers/CatalogController.php": {
+    "summary": "CatalogController meneruskan filter bersih dari CatalogFilterRequest ke CatalogService dan merender catalog.index beserta URL filter."
+  },
+  "app/Http/Controllers/Controller.php": {
+    "summary": "Controller dasar menyediakan normalizeEmail untuk merapikan dan menormalkan masukan email sebelum validasi controller turunan."
+  },
+  "app/Http/Controllers/CustomerTotpController.php": {
+    "summary": "CustomerTotpController menangani login tertunda, tantangan TOTP atau pemulihan, aktivasi dan penonaktifan 2FA pelanggan dengan batas percobaan dan sesi setup terenkripsi."
+  },
+  "app/Http/Controllers/EmailVerificationController.php": {
+    "summary": "EmailVerificationController mengonfirmasi tautan verifikasi email pelanggan dan menyediakan pengiriman ulang notifikasi verifikasi."
+  },
+  "app/Http/Controllers/FavoriteController.php": {
+    "summary": "FavoriteController menyediakan daftar favorit dengan produk, penambahan idempoten dan penghapusan favorites yang dibatasi pengguna saat ini."
+  },
+  "app/Http/Controllers/GuestCheckoutController.php": {
+    "summary": "GuestCheckoutController memvalidasi checkout tamu, menjaga replay idempoten dan keranjang terkunci, menerbitkan akses pelacakan terbatas serta mengembalikan proyeksi pesanan yang aman."
+  },
+  "app/Http/Controllers/HealthController.php": {
+    "summary": "HealthController memeriksa konektivitas database, cache, antrean dan penyimpanan melalui operasi singkat, mencatat kegagalan tanpa memaparkan detail internal pada respons."
+  },
+  "app/Http/Controllers/MidtransWebhookController.php": {
+    "summary": "MidtransWebhookController meneruskan badan webhook Midtrans dan data permintaan ke PaymentWebhookService lalu mengembalikan hasil penanganannya."
+  },
+  "app/Http/Controllers/OrderController.php": {
+    "summary": "OrderController mengelola daftar dan rincian pesanan pelanggan, estimasi voucher, checkout alamat tersimpan atau tamu, serta pembatalan pesanan melalui CheckoutService."
+  },
+  "app/Http/Controllers/OrderReturnController.php": {
+    "summary": "OrderReturnController menghitung kelayakan retur menurut batas waktu dan kuantitas tersisa, membuat returns beserta return_items dalam transaksi, serta menampilkan ringkasan retur pengguna."
+  },
+  "app/Http/Controllers/PasswordResetController.php": {
+    "summary": "PasswordResetController menyediakan formulir permintaan dan reset kata sandi, respons permintaan yang tidak membocorkan keberadaan akun, penerbitan token terpusat dan notifikasi perubahan kata sandi."
+  },
+  "app/Http/Controllers/ProfileController.php": {
+    "summary": "ProfileController mengelola profil dan bahasa akun, ekspor data pribadi, penghapusan akun dengan pemeriksaan transaksi aktif serta konfirmasi berhenti menerima pengingat keranjang."
+  },
+  "app/Http/Controllers/RefundController.php": {
+    "summary": "RefundController menyajikan refund pelanggan, membuat permintaan dari retur milik pengguna dan meneruskan transisi status refund ke RefundService."
+  },
+  "app/Http/Controllers/ReviewController.php": {
+    "summary": "ReviewController menampilkan ulasan produk dan menerima reviews dari pemilik pesanan yang memenuhi syarat, dengan pencegahan ulasan ganda per produk dan pesanan."
+  },
+  "app/Http/Controllers/ShopController.php": {
+    "summary": "ShopController merender halaman shop.index sebagai ruang belanja dan pengelolaan transaksi pelanggan."
+  },
+  "app/Http/Controllers/SocialAuthController.php": {
+    "summary": "SocialAuthController mengelola redirect dan callback login Google atau Apple, penautan dan pelepasan social_accounts, validasi identitas penyedia serta penyelesaian login melalui TOTP pelanggan."
+  },
+  "app/Http/Controllers/StorefrontController.php": {
+    "summary": "StorefrontController menyajikan beranda, rincian produk aktif dan sitemap memakai cache katalog; memvalidasi permintaan concierge dan langganan newsletter lalu mengantrekan email sesuai bahasa penerima."
+  },
+  "app/Http/Middleware/AuthorizeAdmin.php": {
+    "summary": "Middleware AuthorizeAdmin menegakkan kemampuan Gate terhadap pengguna guard admin dan menolak akses yang tidak diizinkan."
+  },
+  "app/Http/Middleware/CorrelationIdMiddleware.php": {
+    "summary": "CorrelationIdMiddleware memvalidasi X-Request-Id atau membuat UUID, memasukkannya ke atribut permintaan dan konteks log, lalu mengirimkannya kembali pada header respons."
+  },
+  "app/Http/Middleware/EnsureAdminTotp.php": {
+    "summary": "EnsureAdminTotp memastikan admin yang diwajibkan TOTP memiliki verifikasi sesi sesuai akun, sesi dan penanda verifikasi database terbaru; mengarahkan ke enrolment atau tantangan bila belum valid."
+  },
+  "app/Http/Middleware/FeatureFlag.php": {
+    "summary": "Middleware FeatureFlag menutup route dengan respons 404 tanpa cache ketika fitur tidak aktif untuk cohort admin saat ini."
+  },
+  "app/Http/Middleware/NoStore.php": {
+    "summary": "Middleware NoStore menambahkan header larangan penyimpanan cache pada respons endpoint sensitif."
+  },
+  "app/Http/Middleware/SecurityHeaders.php": {
+    "summary": "SecurityHeaders memasang header keamanan respons dan, bila diaktifkan, kebijakan CSP report-only untuk mengamati pelanggaran tanpa memblokir aset."
+  },
+  "app/Http/Middleware/SetLocale.php": {
+    "summary": "SetLocale memilih bahasa yang didukung dari query, sesi atau profil pengguna, menerapkannya ke aplikasi dan menyimpan pilihan sesi bila diperlukan."
+  },
+  "app/Http/Requests/CatalogFilterRequest.php": {
+    "summary": "CatalogFilterRequest mengurai kategori berulang dari query, memvalidasi pencarian, harga, warna, material, urutan dan bahasa, lalu membuang filter tidak valid tanpa menggagalkan seluruh katalog."
+  },
+  "app/Jobs/ReleaseExpiredReservations.php": {
+    "summary": "Job ReleaseExpiredReservations membatalkan pesanan pending yang reservasinya kedaluwarsa melalui CheckoutService, tetapi menahan pesanan dengan dead letter pembayaran yang belum terselesaikan."
+  },
+  "app/Jobs/SendCartReminder.php": {
+    "summary": "Job SendCartReminder memeriksa kembali persetujuan pengingat pengguna tepat sebelum mengirim email CartReminder sesuai bahasa akun."
+  },
+  "app/Mail/CartReminder.php": {
+    "summary": "Mailable CartReminder menyusun email ringkasan keranjang dengan tautan belanja dan berhenti berlangganan bertanda tangan serta header List-Unsubscribe."
+  },
+  "app/Mail/ConciergeRequested.php": {
+    "summary": "Mailable antrean ConciergeRequested menyusun konfirmasi permintaan concierge menggunakan template mail.concierge-requested dan subjek terjemahan."
+  },
+  "app/Mail/NewsletterWelcome.php": {
+    "summary": "Mailable antrean NewsletterWelcome mengirim sambutan subscriber melalui template mail.newsletter-welcome dengan subjek sesuai bahasa email."
+  },
+  "app/Mail/OrderStatusChanged.php": {
+    "summary": "Mailable OrderStatusChanged mengantrekan email setelah commit untuk status paid, shipped, completed atau cancelled dengan subjek dan pesan terjemahan."
+  },
+  "app/Mail/RecipientLocale.php": {
+    "summary": "RecipientLocale.resolve memilih kode bahasa penerima yang didukung dan menggunakan bahasa Indonesia bila nilainya tidak valid."
+  },
+  "app/Models/Address.php": {
+    "summary": "Model Eloquent Address memetakan data address dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: user. Metode domain: snapshot."
+  },
+  "app/Models/Admin.php": {
+    "summary": "Model Eloquent Admin memetakan data admin dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: totpRecoveryCodes. Metode domain: isAdmin, requiresTotp."
+  },
+  "app/Models/AdminTotpRecoveryCode.php": {
+    "summary": "Model Eloquent AdminTotpRecoveryCode memetakan data admin totp recovery code dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: admin."
+  },
+  "app/Models/AuthEvent.php": {
+    "summary": "Model Eloquent AuthEvent memetakan data auth event dengan atribut persistensi dan aturan model terkait."
+  },
+  "app/Models/Category.php": {
+    "summary": "Model Eloquent Category memetakan data category dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: products. Metode domain: getById."
+  },
+  "app/Models/ConciergeRequest.php": {
+    "summary": "Model Eloquent ConciergeRequest memetakan data concierge request dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: user. Metode domain: availableTransitions."
+  },
+  "app/Models/Favorite.php": {
+    "summary": "Model Eloquent Favorite memetakan data favorite dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: product."
+  },
+  "app/Models/InventoryReservation.php": {
+    "summary": "Model Eloquent InventoryReservation memetakan data inventory reservation dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: order, product. Metode domain: scopeActive, scopeExpired."
+  },
+  "app/Models/NewsletterSubscriber.php": {
+    "summary": "Model Eloquent NewsletterSubscriber memetakan data newsletter subscriber dengan atribut persistensi dan aturan model terkait."
+  },
+  "app/Models/Order.php": {
+    "summary": "Model Order memetakan pesanan pelanggan atau tamu beserta item, voucher, pembayaran, reservasi stok, pengiriman dan riwayat status; membatasi transisi status serta mendeteksi pembayaran lunas dan anomali pembayaran."
+  },
+  "app/Models/OrderItem.php": {
+    "summary": "Model Eloquent OrderItem memetakan data order item dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: order, product."
+  },
+  "app/Models/OrderReturn.php": {
+    "summary": "Model Eloquent OrderReturn memetakan tabel returns dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: order, user, items. Metode domain: reasons, generateReturnNumber."
+  },
+  "app/Models/OrderStatusHistory.php": {
+    "summary": "Model Eloquent OrderStatusHistory memetakan tabel order_status_history dengan atribut persistensi dan aturan model terkait."
+  },
+  "app/Models/Payment.php": {
+    "summary": "Model Eloquent Payment memetakan data payment dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: order."
+  },
+  "app/Models/PaymentDeadLetter.php": {
+    "summary": "Model Eloquent PaymentDeadLetter memetakan data payment dead letter dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: order. Metode domain: markResolved."
+  },
+  "app/Models/Product.php": {
+    "summary": "Model Product memakai kunci product_id dan relasi kategori lewat product_cat; menyediakan fallback teks alternatif gambar, srcset untuk URL berparameter lebar dan warna swatch katalog."
+  },
+  "app/Models/Refund.php": {
+    "summary": "Model Eloquent Refund memetakan data refund dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: order, user, orderReturn. Metode domain: canTransitionTo, statusLabel, generateRefundNumber."
+  },
+  "app/Models/ReturnItem.php": {
+    "summary": "Model Eloquent ReturnItem memetakan data return item dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: orderReturn, orderItem, product."
+  },
+  "app/Models/Review.php": {
+    "summary": "Model Eloquent Review memetakan data review dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: product, user."
+  },
+  "app/Models/Shipment.php": {
+    "summary": "Model Eloquent Shipment memetakan data shipment dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: order, trackingEvents. Metode domain: hasAwb, notYetShipped, trackingSummary."
+  },
+  "app/Models/ShipmentTrackingEvent.php": {
+    "summary": "Model Eloquent ShipmentTrackingEvent memetakan data shipment tracking event dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: shipment."
+  },
+  "app/Models/SocialAccount.php": {
+    "summary": "Model Eloquent SocialAccount memetakan data social account dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: user."
+  },
+  "app/Models/User.php": {
+    "summary": "Model Eloquent User memetakan data user dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: conciergeRequests, totpRecoveryCodes, socialAccounts. Metode domain: preferredLocale, hasTotp."
+  },
+  "app/Models/UserInfoBackup.php": {
+    "summary": "Model Eloquent UserInfoBackup memetakan data user info backup dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: user."
+  },
+  "app/Models/UserTotpRecoveryCode.php": {
+    "summary": "Model Eloquent UserTotpRecoveryCode memetakan data user totp recovery code dengan atribut persistensi dan aturan model terkait. Relasi yang tersedia: user."
+  },
+  "app/Models/Voucher.php": {
+    "summary": "Model Eloquent Voucher memetakan data voucher dengan atribut persistensi dan aturan model terkait."
+  },
+  "app/Notifications/PasswordChanged.php": {
+    "summary": "Notifikasi PasswordChanged mengirim email perubahan kata sandi dan petunjuk pemulihan sesuai bahasa penerima."
+  },
+  "app/Observers/UserObserver.php": {
+    "summary": "UserObserver membuat snapshot user_info_backups ketika pengguna dibuat atau bidang profil yang diaudit berubah."
+  },
+  "app/Providers/AppServiceProvider.php": {
+    "summary": "AppServiceProvider mendaftarkan UserObserver, kemampuan Gate berdasarkan peran admin atau staff, dan penyedia Apple untuk Socialite."
+  },
+  "app/Services/AuthEventRecorder.php": {
+    "summary": "AuthEventRecorder mencatat kejadian autentikasi yang diizinkan ke auth_events, menyaring konteks dan menyertakan request_id; menyediakan metode khusus login, TOTP, lockout dan reset kata sandi."
+  },
+  "app/Services/CartStore.php": {
+    "summary": "CartStore menyimpan carts dan cart_items dengan transaksi serta penguncian, menggabungkan keranjang tamu saat login, memigrasikan keranjang sesi lama dan mengelola masa berlaku serta pelepasan cookie tamu."
+  },
+  "app/Services/CatalogSearchMatcher.php": {
+    "summary": "CatalogSearchMatcher menormalkan teks pencarian dan menyediakan pencocokan toleran satu edit atau pertukaran karakter untuk fallback katalog."
+  },
+  "app/Services/CatalogService.php": {
+    "summary": "CatalogService menyusun query produk aktif dengan filter kategori, warna, material, harga dan ketersediaan, pagination, URL serta chip filter; menyediakan fallback pencarian toleran salah ketik."
+  },
+  "app/Services/CheckoutService.php": {
+    "summary": "CheckoutService menghitung harga rupiah, diskon voucher, pajak dan ongkir lalu membuat checkout pelanggan atau tamu secara idempoten dengan penguncian stok dan reservasi; mengelola transisi status, pembayaran serta outbox notifikasi."
+  },
+  "app/Services/DatabaseBackupService.php": {
+    "summary": "DatabaseBackupService membuat cadangan SQLite atau MySQL, mengelola retensi, memeriksa integritas dan menguji pemulihan dengan pembandingan jumlah baris."
+  },
+  "app/Services/OrderNotificationDispatcher.php": {
+    "summary": "OrderNotificationDispatcher mengklaim lease outbox order_notifications sebelum mengantrekan email status pesanan sesuai bahasa order, menandai dispatch berhasil dan melepas klaim bila pengiriman gagal."
+  },
+  "app/Services/PasswordResetTokenIssuer.php": {
+    "summary": "PasswordResetTokenIssuer menerbitkan token melalui broker password pengguna dan mencatat kejadian audit penerbitan tanpa memasukkan token ke log."
+  },
+  "app/Services/PaymentWebhookService.php": {
+    "summary": "PaymentWebhookService memvalidasi notifikasi Midtrans dan memeriksa status langsung ke penyedia, merekam payments secara idempoten serta mengubah pesanan menjadi dibayar; menyimpan kegagalan ke payment_dead_letters dan membatasi panggilan upstream saat bermasalah."
+  },
+  "app/Services/PdfDocumentService.php": {
+    "summary": "PdfDocumentService merender dokumen PDF melalui Dompdf dengan akses jarak jauh, PHP dan JavaScript dinonaktifkan, memakai font lokal dan normalisasi teks untuk keluaran multibahasa."
+  },
+  "app/Services/RefundService.php": {
+    "summary": "RefundService membuat refund berdasarkan retur, memvalidasi transisi status dalam transaksi terkunci, mencegah total pengembalian melebihi pembayaran dan menyusun ringkasan refund."
+  },
+  "app/Services/TotpService.php": {
+    "summary": "TotpService menyediakan setup QR TOTP, verifikasi anti-replay dengan transaksi dan pembaruan timestamp atomik, serta kode pemulihan sekali pakai untuk admin dan pelanggan."
+  },
+  "app/Support/ComposerHooks.php": {
+    "summary": "ComposerHooks menjalankan hook Composer dalam mode biasa atau isolasi AMADIS, memvalidasi identitas repository serta direktori cache dan storage, dan menolak resource tertaut maupun uninstall ketika terisolasi."
+  },
+  "app/Support/FeatureFlags.php": {
+    "summary": "FeatureFlags memutuskan aktivasi fitur dan persentase rollout melalui cohort deterministik; konfigurasi tidak dikenal atau tidak valid ditolak secara tertutup."
+  },
+  "bootstrap/app.php": {
+    "summary": "Bootstrap Laravel mendaftarkan route web, console dan health, alias serta pipeline middleware keamanan, bahasa dan admin, pengecualian CSRF webhook, dan respons kesalahan khusus."
+  },
+  "bootstrap/providers.php": {
+    "summary": "Daftar penyedia aplikasi Laravel yang memuat AppServiceProvider."
+  },
+  "config/amadis.php": {
+    "summary": "Konfigurasi Laravel untuk jalur root, database dan evidence untuk lingkungan isolasi AMADIS."
+  },
+  "config/app.php": {
+    "summary": "Konfigurasi Laravel untuk identitas aplikasi, lingkungan, zona waktu, bahasa yang didukung, enkripsi dan mode pemeliharaan."
+  },
+  "config/auth.php": {
+    "summary": "Konfigurasi Laravel untuk guard sesi web dan admin, penyedia model pengguna serta broker reset kata sandi."
+  },
+  "config/backup.php": {
+    "summary": "Konfigurasi Laravel untuk direktori cadangan database dan jumlah berkas yang dipertahankan."
+  },
+  "config/cache.php": {
+    "summary": "Konfigurasi Laravel untuk store cache, kunci konkurensi, failover dan kelas yang boleh diserialisasi."
+  },
+  "config/database.php": {
+    "summary": "Konfigurasi Laravel untuk koneksi database Laravel, opsi SQLite dan keluarga SQL lain, migrasi serta Redis melalui konfigurasi lingkungan."
+  },
+  "config/features.php": {
+    "summary": "Konfigurasi Laravel untuk aktivasi dan persentase rollout fitur admin_sales_summary."
+  },
+  "config/filesystems.php": {
+    "summary": "Konfigurasi Laravel untuk disk lokal, publik dan S3 beserta symbolic link penyimpanan publik."
+  },
+  "config/logging.php": {
+    "summary": "Konfigurasi Laravel untuk kanal log stack, single, daily, stderr dan layanan log eksternal."
+  },
+  "config/mail.php": {
+    "summary": "Konfigurasi Laravel untuk transport email, batas waktu SMTP, mekanisme failover dan identitas pengirim dari konfigurasi lingkungan."
+  },
+  "config/queue.php": {
+    "summary": "Konfigurasi Laravel untuk koneksi antrean, retry, batching dan penyimpanan pekerjaan gagal."
+  },
+  "config/security.php": {
+    "summary": "Konfigurasi Laravel untuk saklar kebijakan CSP report-only."
+  },
+  "config/services.php": {
+    "summary": "Konfigurasi Laravel untuk konfigurasi layanan email, login Google dan Apple, Midtrans serta notifikasi Slack melalui variabel lingkungan."
+  },
+  "config/session.php": {
+    "summary": "Konfigurasi Laravel untuk driver, umur, penyimpanan, enkripsi dan atribut keamanan cookie sesi."
+  },
+  "config/trustedproxy.php": {
+    "summary": "Konfigurasi Laravel untuk daftar proxy terpercaya yang diambil dari konfigurasi lingkungan."
+  },
+  "database/.gitignore": {
+    "summary": "Aturan Git mengabaikan berkas database lokal SQLite di direktori database."
+  },
+  "database/factories/UserFactory.php": {
+    "summary": "UserFactory menyediakan data pengguna sintetis untuk pengujian, termasuk keadaan email belum terverifikasi dan kata sandi factory yang di-hash."
+  },
+  "database/migrations/0001_01_01_000000_create_users_table.php": {
+    "summary": "Migrasi membuat tabel users, password_reset_tokens, sessions. Bidang terkait meliputi name, email, email_verified_at, password, token, created_at, id, user_id, ip_address, user_agent. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/0001_01_01_000001_create_cache_table.php": {
+    "summary": "Migrasi membuat tabel cache, cache_locks. Bidang terkait meliputi key, owner. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/0001_01_01_000002_create_jobs_table.php": {
+    "summary": "Migrasi membuat tabel jobs, job_batches, failed_jobs. Bidang terkait meliputi queue, attempts, reserved_at, available_at, created_at, id, name, uuid, connection, failed_at. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_08_31_000000_create_concierge_requests_table.php": {
+    "summary": "Migrasi membuat tabel concierge_requests. Bidang terkait meliputi name, email, phone, service, preferred_date, preferred_time, notes, status. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_08_31_000001_create_newsletter_subscribers_table.php": {
+    "summary": "Migrasi membuat tabel newsletter_subscribers. Bidang terkait meliputi email. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_09_07_034040_create_categories_table.php": {
+    "summary": "Migrasi membuat tabel categories. Bidang terkait meliputi cat_title. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_09_07_034058_create_products_table.php": {
+    "summary": "Migrasi membuat tabel products. Bidang terkait meliputi product_cat, product_brand, product_title, product_price, product_image. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_09_07_120000_add_product_details_columns.php": {
+    "summary": "Migrasi mengubah tabel products. Bidang terkait meliputi product_slug, product_badge, product_color, product_alt, product_description. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_09_07_125000_make_concierge_schedule_nullable.php": {
+    "summary": "Migrasi mengubah tabel concierge_requests. Bidang terkait meliputi preferred_date, preferred_time. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_09_14_000001_add_legacy_profile_fields_to_users_table.php": {
+    "summary": "Migrasi mengubah tabel users. Bidang terkait meliputi first_name, last_name, mobile, address1, address2. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_09_14_000002_create_admins_table.php": {
+    "summary": "Migrasi membuat tabel admins. Bidang terkait meliputi name, email, password. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_09_14_000003_create_user_info_backups_table.php": {
+    "summary": "Migrasi membuat tabel user_info_backups. Bidang terkait meliputi user_id, first_name, last_name, email, mobile, address1, address2. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_09_14_000004_create_getcat_procedure.php": {
+    "summary": "Migrasi membuat prosedur legacy getcat hanya pada MySQL dan menyediakan penghapusannya pada rollback."
+  },
+  "database/migrations/2026_09_14_000005_add_remember_token_to_admins_table.php": {
+    "summary": "Migrasi mengubah tabel admins. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_09_14_000006_add_user_id_to_concierge_requests_table.php": {
+    "summary": "Migrasi mengubah tabel concierge_requests. Bidang terkait meliputi user_id. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_09_21_000001_add_product_quality_columns.php": {
+    "summary": "Migrasi mengubah tabel products. Bidang terkait meliputi product_material, product_composition, product_origin, product_care, product_craft. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_09_21_000002_add_unique_to_product_slug.php": {
+    "summary": "Migrasi menambahkan indeks unik product_slug pada products untuk mencegah URL produk ganda dan menghapus indeks itu pada rollback."
+  },
+  "database/migrations/2026_10_12_000001_add_stock_and_active_to_products_table.php": {
+    "summary": "Migrasi mengubah tabel products. Bidang terkait meliputi stock, is_active. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_12_000002_create_vouchers_table.php": {
+    "summary": "Migrasi membuat tabel vouchers. Bidang terkait meliputi code, discount_amount, quota, used, per_user_limit, is_active. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_12_000003_create_orders_table.php": {
+    "summary": "Migrasi membuat tabel orders. Bidang terkait meliputi user_id, status, subtotal, discount, shipping_fee, total, idempotency_key, payload_hash, shipping_address, voucher_id. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_12_000004_create_order_items_table.php": {
+    "summary": "Migrasi membuat tabel order_items. Bidang terkait meliputi order_id, product_id, product_title, unit_price, quantity, subtotal. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_12_000005_create_addresses_table.php": {
+    "summary": "Migrasi membuat tabel addresses. Bidang terkait meliputi user_id, label, recipient_name, phone, line1, line2, city, province, postal_code, is_default. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_12_000006_create_reviews_table.php": {
+    "summary": "Migrasi membuat tabel reviews. Bidang terkait meliputi user_id, order_id, product_id, rating, body. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_12_000007_create_favorites_table.php": {
+    "summary": "Migrasi membuat tabel favorites. Bidang terkait meliputi user_id, product_id. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_17_000001_add_totp_security_to_admins_table.php": {
+    "summary": "Migrasi membuat tabel admin_totp_recovery_codes. Bidang terkait meliputi totp_secret, totp_required_at, totp_last_used_at, admin_id, code_hash. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_18_000001_create_auth_events_table.php": {
+    "summary": "Migrasi membuat tabel auth_events. Bidang terkait meliputi occurred_at, actor_type, actor_id, event, outcome, ip, context. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_19_000001_add_guest_checkout_to_orders_table.php": {
+    "summary": "Migrasi mendukung checkout tamu pada orders: user_id menjadi nullable, menambah data kontak pelanggan, hash cakupan tamu dan token pelacakan dengan indeks unik. Rollback ditolak selama masih ada pesanan tamu."
+  },
+  "database/migrations/2026_10_19_000002_create_carts_tables.php": {
+    "summary": "Migrasi membuat tabel carts, cart_items. Bidang terkait meliputi user_id, token_hash, expires_at, consumed_at, cart_id, product_id, quantity. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_19_000003_protect_orders_from_user_delete.php": {
+    "summary": "Migrasi mempertahankan orders saat pengguna dihapus dengan mengubah relasi user_id menjadi nullable dan null-on-delete; rollback mengembalikan aturan relasi sebelumnya."
+  },
+  "database/migrations/2026_10_19_000004_add_performance_and_foreign_indexes.php": {
+    "summary": "Migrasi menambahkan indeks performa dan foreign key yang belum memiliki indeks awal sesuai pemetaan tabel, serta menghapus indeks miliknya pada rollback."
+  },
+  "database/migrations/2026_10_19_000004_add_tax_and_shipping_breakdown_to_orders_table.php": {
+    "summary": "Migrasi mengubah tabel orders. Bidang terkait meliputi tax. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_20_000001_add_request_id_to_auth_events_table.php": {
+    "summary": "Migrasi mengubah tabel auth_events. Bidang terkait meliputi request_id. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_20_000001_create_order_status_history_table.php": {
+    "summary": "Migrasi membuat tabel order_status_history. Bidang terkait meliputi order_id, from_status, to_status, admin_id, created_at. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_20_000002_add_role_to_admins_table.php": {
+    "summary": "Migrasi mengubah tabel admins. Bidang terkait meliputi role. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_20_000002_create_inventory_reservations_table.php": {
+    "summary": "Migrasi membuat tabel inventory_reservations. Bidang terkait meliputi order_id, product_id, quantity, status, expires_at. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_20_000002_create_shipments_table.php": {
+    "summary": "Migrasi membuat tabel shipments, shipment_tracking_events. Bidang terkait meliputi order_id, courier, tracking_number, status, shipped_at, delivered_at, shipment_id, location, description, recorded_at, created_at. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_20_000003_create_payments_table.php": {
+    "summary": "Migrasi membuat tabel payments. Bidang terkait meliputi order_id, provider, provider_transaction_id, provider_order_id, event_status, amount, outcome, payload. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_20_000003_create_returns_tables.php": {
+    "summary": "Migrasi membuat tabel returns, return_items. Bidang terkait meliputi order_id, user_id, return_number, status, reason, notes, requested_refund_amount, admin_notes, reviewed_by, reviewed_at, return_id, order_item_id, product_id, quantity. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_20_000004_create_payment_dead_letters_table.php": {
+    "summary": "Migrasi membuat tabel payment_dead_letters. Bidang terkait meliputi order_id, provider, reason, transaction_id, attempts, last_attempted_at, resolved_at. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_20_000004_create_refunds_table.php": {
+    "summary": "Migrasi membuat tabel refunds. Bidang terkait meliputi order_id, return_id, user_id, refund_number, amount, status, reason, provider, provider_refund_id, rejection_reason, submitted_at, reviewed_at, dispatched_at, settled_at. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_20_000005_create_order_notifications_table.php": {
+    "summary": "Migrasi membuat tabel order_notifications. Bidang terkait meliputi order_id, status, channel, created_at. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_20_000005_protect_returns_and_refunds_from_user_delete.php": {
+    "summary": "Migrasi mempertahankan returns, refunds saat pengguna dihapus dengan mengubah relasi user_id menjadi nullable dan null-on-delete; rollback mengembalikan aturan relasi sebelumnya."
+  },
+  "database/migrations/2026_10_20_000006_add_optional_totp_to_users_table.php": {
+    "summary": "Migrasi membuat tabel user_totp_recovery_codes. Bidang terkait meliputi totp_secret, totp_enabled_at, totp_last_used_at, user_id, code_hash. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_20_000010_add_cart_reminder_to_users_table.php": {
+    "summary": "Migrasi mengubah tabel users. Bidang terkait meliputi cart_reminder_opt_in, cart_reminded_at. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_20_000020_create_social_accounts_table.php": {
+    "summary": "Migrasi membuat tabel social_accounts. Bidang terkait meliputi user_id, provider, provider_id, has_password. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_20_000030_drop_legacy_getcat_procedure.php": {
+    "summary": "Migrasi menghapus prosedur legacy getcat pada MySQL dan menyediakan pembuatan ulang saat rollback."
+  },
+  "database/migrations/2026_10_21_000010_add_locale_to_users_table.php": {
+    "summary": "Migrasi mengubah tabel users. Bidang terkait meliputi locale. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_21_000020_add_locale_to_orders_table.php": {
+    "summary": "Migrasi mengubah tabel orders. Bidang terkait meliputi locale. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_21_000030_add_dispatched_at_to_order_notifications_table.php": {
+    "summary": "Migrasi mengubah tabel order_notifications. Bidang terkait meliputi dispatched_at. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/migrations/2026_10_21_000040_add_lease_to_order_notifications_table.php": {
+    "summary": "Migrasi mengubah tabel order_notifications. Bidang terkait meliputi lease_token, lease_expires_at. Metode down menyediakan pembalikan perubahan skema."
+  },
+  "database/seeders/AdminSeeder.php": {
+    "summary": "AdminSeeder menyiapkan akun admin dan subscriber newsletter warisan di luar production; kata sandi admin berasal dari lingkungan atau dibuat acak pada local/testing tanpa dicetak."
+  },
+  "database/seeders/AmadisDemoSeeder.php": {
+    "summary": "AmadisDemoSeeder mengisi kategori dan produk demo dalam lingkungan AMADIS yang dijaga, meliputi atribut katalog, stok, material dan detail kriya."
+  },
+  "database/seeders/CategorySeeder.php": {
+    "summary": "CategorySeeder mengisi categories awal katalog melalui model Category."
+  },
+  "database/seeders/DatabaseSeeder.php": {
+    "summary": "DatabaseSeeder menolak production, menjalankan seeder kategori, produk dan admin, lalu membuat akun pengguna demo dengan kata sandi dari lingkungan atau acak pada local/testing."
+  },
+  "database/seeders/ProductSeeder.php": {
+    "summary": "ProductSeeder mengisi atau memperbarui produk katalog berdasarkan slug dengan kategori, harga, stok, gambar, material, asal dan informasi perawatan serta kriya."
+  },
+  "lang/en/account_ui.php": {
+    "summary": "Kamus bahasa Inggris untuk profil akun, privasi, akun sosial dan pengaturan TOTP, digunakan melalui namespace terjemahan account_ui."
+  },
+  "lang/en/admin_ui.php": {
+    "summary": "Kamus bahasa Inggris untuk konsol admin, tabel, laporan, audit autentikasi dan formulir keamanan, digunakan melalui namespace terjemahan admin_ui."
+  },
+  "lang/en/auth_ui.php": {
+    "summary": "Kamus bahasa Inggris untuk login, registrasi, reset kata sandi dan tantangan TOTP pelanggan, digunakan melalui namespace terjemahan auth_ui."
+  },
+  "lang/en/customer_messages.php": {
+    "summary": "Kamus bahasa Inggris untuk validasi domain dan pesan hasil atau kesalahan endpoint pelanggan dan admin, digunakan melalui namespace terjemahan customer_messages."
+  },
+  "lang/en/errors_ui.php": {
+    "summary": "Kamus bahasa Inggris untuk judul dan pesan halaman kesalahan HTTP, digunakan melalui namespace terjemahan errors_ui."
+  },
+  "lang/en/mail_ui.php": {
+    "summary": "Kamus bahasa Inggris untuk subjek dan isi email transaksional serta notifikasi akun, digunakan melalui namespace terjemahan mail_ui."
+  },
+  "lang/en/shop_ui.php": {
+    "summary": "Kamus bahasa Inggris untuk storefront, halaman produk, keranjang, checkout dan pesan JavaScript belanja, digunakan melalui namespace terjemahan shop_ui."
+  },
+  "lang/en/validation.php": {
+    "summary": "Kamus bahasa Inggris untuk pesan aturan validasi Laravel dan label atribut formulir, digunakan melalui namespace terjemahan validation."
+  },
+  "lang/en/zafira.php": {
+    "summary": "Kamus bahasa Inggris untuk label filter, pencarian, pagination dan aksi katalog, digunakan melalui namespace terjemahan zafira."
+  },
+  "lang/fr/account_ui.php": {
+    "summary": "Kamus bahasa Prancis untuk profil akun, privasi, akun sosial dan pengaturan TOTP, digunakan melalui namespace terjemahan account_ui."
+  },
+  "lang/fr/admin_ui.php": {
+    "summary": "Kamus bahasa Prancis untuk konsol admin, tabel, laporan, audit autentikasi dan formulir keamanan, digunakan melalui namespace terjemahan admin_ui."
+  },
+  "lang/fr/auth_ui.php": {
+    "summary": "Kamus bahasa Prancis untuk login, registrasi, reset kata sandi dan tantangan TOTP pelanggan, digunakan melalui namespace terjemahan auth_ui."
+  },
+  "lang/fr/customer_messages.php": {
+    "summary": "Kamus bahasa Prancis untuk validasi domain dan pesan hasil atau kesalahan endpoint pelanggan dan admin, digunakan melalui namespace terjemahan customer_messages."
+  },
+  "lang/fr/errors_ui.php": {
+    "summary": "Kamus bahasa Prancis untuk judul dan pesan halaman kesalahan HTTP, digunakan melalui namespace terjemahan errors_ui."
+  },
+  "lang/fr/mail_ui.php": {
+    "summary": "Kamus bahasa Prancis untuk subjek dan isi email transaksional serta notifikasi akun, digunakan melalui namespace terjemahan mail_ui."
+  },
+  "lang/fr/shop_ui.php": {
+    "summary": "Kamus bahasa Prancis untuk storefront, halaman produk, keranjang, checkout dan pesan JavaScript belanja, digunakan melalui namespace terjemahan shop_ui."
+  },
+  "lang/fr/validation.php": {
+    "summary": "Kamus bahasa Prancis untuk pesan aturan validasi Laravel dan label atribut formulir, digunakan melalui namespace terjemahan validation."
+  },
+  "lang/fr/zafira.php": {
+    "summary": "Kamus bahasa Prancis untuk label filter, pencarian, pagination dan aksi katalog, digunakan melalui namespace terjemahan zafira."
+  },
+  "lang/fr.json": {
+    "summary": "Kamus JSON bahasa Prancis untuk teks notifikasi dan autentikasi bawaan yang diterjemahkan berdasarkan kalimat sumber."
+  },
+  "lang/id/account_ui.php": {
+    "summary": "Kamus bahasa Indonesia untuk profil akun, privasi, akun sosial dan pengaturan TOTP, digunakan melalui namespace terjemahan account_ui."
+  },
+  "lang/id/admin_ui.php": {
+    "summary": "Kamus bahasa Indonesia untuk konsol admin, tabel, laporan, audit autentikasi dan formulir keamanan, digunakan melalui namespace terjemahan admin_ui."
+  },
+  "lang/id/auth_ui.php": {
+    "summary": "Kamus bahasa Indonesia untuk login, registrasi, reset kata sandi dan tantangan TOTP pelanggan, digunakan melalui namespace terjemahan auth_ui."
+  },
+  "lang/id/customer_messages.php": {
+    "summary": "Kamus bahasa Indonesia untuk validasi domain dan pesan hasil atau kesalahan endpoint pelanggan dan admin, digunakan melalui namespace terjemahan customer_messages."
+  },
+  "lang/id/errors_ui.php": {
+    "summary": "Kamus bahasa Indonesia untuk judul dan pesan halaman kesalahan HTTP, digunakan melalui namespace terjemahan errors_ui."
+  },
+  "lang/id/mail_ui.php": {
+    "summary": "Kamus bahasa Indonesia untuk subjek dan isi email transaksional serta notifikasi akun, digunakan melalui namespace terjemahan mail_ui."
+  },
+  "lang/id/shop_ui.php": {
+    "summary": "Kamus bahasa Indonesia untuk storefront, halaman produk, keranjang, checkout dan pesan JavaScript belanja, digunakan melalui namespace terjemahan shop_ui."
+  },
+  "lang/id/validation.php": {
+    "summary": "Kamus bahasa Indonesia untuk pesan aturan validasi Laravel dan label atribut formulir, digunakan melalui namespace terjemahan validation."
+  },
+  "lang/id/zafira.php": {
+    "summary": "Kamus bahasa Indonesia untuk label filter, pencarian, pagination dan aksi katalog, digunakan melalui namespace terjemahan zafira."
+  },
+  "lang/id.json": {
+    "summary": "Kamus JSON bahasa Indonesia untuk teks notifikasi dan autentikasi bawaan yang diterjemahkan berdasarkan kalimat sumber."
+  },
+  "lang/it/account_ui.php": {
+    "summary": "Kamus bahasa Italia untuk profil akun, privasi, akun sosial dan pengaturan TOTP, digunakan melalui namespace terjemahan account_ui."
+  },
+  "lang/it/admin_ui.php": {
+    "summary": "Kamus bahasa Italia untuk konsol admin, tabel, laporan, audit autentikasi dan formulir keamanan, digunakan melalui namespace terjemahan admin_ui."
+  },
+  "lang/it/auth_ui.php": {
+    "summary": "Kamus bahasa Italia untuk login, registrasi, reset kata sandi dan tantangan TOTP pelanggan, digunakan melalui namespace terjemahan auth_ui."
+  },
+  "lang/it/customer_messages.php": {
+    "summary": "Kamus bahasa Italia untuk validasi domain dan pesan hasil atau kesalahan endpoint pelanggan dan admin, digunakan melalui namespace terjemahan customer_messages."
+  },
+  "lang/it/errors_ui.php": {
+    "summary": "Kamus bahasa Italia untuk judul dan pesan halaman kesalahan HTTP, digunakan melalui namespace terjemahan errors_ui."
+  },
+  "lang/it/mail_ui.php": {
+    "summary": "Kamus bahasa Italia untuk subjek dan isi email transaksional serta notifikasi akun, digunakan melalui namespace terjemahan mail_ui."
+  },
+  "lang/it/shop_ui.php": {
+    "summary": "Kamus bahasa Italia untuk storefront, halaman produk, keranjang, checkout dan pesan JavaScript belanja, digunakan melalui namespace terjemahan shop_ui."
+  },
+  "lang/it/validation.php": {
+    "summary": "Kamus bahasa Italia untuk pesan aturan validasi Laravel dan label atribut formulir, digunakan melalui namespace terjemahan validation."
+  },
+  "lang/it/zafira.php": {
+    "summary": "Kamus bahasa Italia untuk label filter, pencarian, pagination dan aksi katalog, digunakan melalui namespace terjemahan zafira."
+  },
+  "lang/it.json": {
+    "summary": "Kamus JSON bahasa Italia untuk teks notifikasi dan autentikasi bawaan yang diterjemahkan berdasarkan kalimat sumber."
+  },
+  "lang/zh/account_ui.php": {
+    "summary": "Kamus bahasa Mandarin untuk profil akun, privasi, akun sosial dan pengaturan TOTP, digunakan melalui namespace terjemahan account_ui."
+  },
+  "lang/zh/admin_ui.php": {
+    "summary": "Kamus bahasa Mandarin untuk konsol admin, tabel, laporan, audit autentikasi dan formulir keamanan, digunakan melalui namespace terjemahan admin_ui."
+  },
+  "lang/zh/auth_ui.php": {
+    "summary": "Kamus bahasa Mandarin untuk login, registrasi, reset kata sandi dan tantangan TOTP pelanggan, digunakan melalui namespace terjemahan auth_ui."
+  },
+  "lang/zh/customer_messages.php": {
+    "summary": "Kamus bahasa Mandarin untuk validasi domain dan pesan hasil atau kesalahan endpoint pelanggan dan admin, digunakan melalui namespace terjemahan customer_messages."
+  },
+  "lang/zh/errors_ui.php": {
+    "summary": "Kamus bahasa Mandarin untuk judul dan pesan halaman kesalahan HTTP, digunakan melalui namespace terjemahan errors_ui."
+  },
+  "lang/zh/mail_ui.php": {
+    "summary": "Kamus bahasa Mandarin untuk subjek dan isi email transaksional serta notifikasi akun, digunakan melalui namespace terjemahan mail_ui."
+  },
+  "lang/zh/shop_ui.php": {
+    "summary": "Kamus bahasa Mandarin untuk storefront, halaman produk, keranjang, checkout dan pesan JavaScript belanja, digunakan melalui namespace terjemahan shop_ui."
+  },
+  "lang/zh/validation.php": {
+    "summary": "Kamus bahasa Mandarin untuk pesan aturan validasi Laravel dan label atribut formulir, digunakan melalui namespace terjemahan validation."
+  },
+  "lang/zh/zafira.php": {
+    "summary": "Kamus bahasa Mandarin untuk label filter, pencarian, pagination dan aksi katalog, digunakan melalui namespace terjemahan zafira."
+  },
+  "lang/zh.json": {
+    "summary": "Kamus JSON bahasa Mandarin untuk teks notifikasi dan autentikasi bawaan yang diterjemahkan berdasarkan kalimat sumber."
+  },
+  "public/.htaccess": {
+    "summary": "Aturan Apache mengarahkan permintaan aplikasi ke index.php, meneruskan header otorisasi dan menormalkan URL tanpa mengganggu berkas atau direktori nyata."
+  },
+  "public/app.css": {
+    "summary": "Stylesheet publik antarmuka flagship dan prototype ZAFIRA, mencakup token visual, katalog, studio produk, drawer, concierge, panel atelier, tema gelap dan penyesuaian responsif."
+  },
+  "public/app.js": {
+    "summary": "Skrip prototype ZAFIRA mengelola data awal katalog dan atelier, katalog interaktif, studio monogram, keranjang, concierge, profil, kanban, audit dan umpan balik suara di sisi klien."
+  },
+  "public/index.php": {
+    "summary": "Titik masuk HTTP Laravel memuat autoloader, memeriksa mode pemeliharaan lalu meneruskan permintaan ke bootstrap aplikasi."
+  },
+  "public/js/zafira-core.js": {
+    "summary": "Inti frontend ZAFIRA menyediakan kamus antarmuka multibahasa, label produk dan badge, preferensi tema dan bahasa tersimpan, sinkronisasi pilihan bahasa ke server serta pemutakhiran elemen dinamis."
+  },
+  "public/manifest.webmanifest": {
+    "summary": "Manifest PWA ZAFIRA menentukan nama, deskripsi, ikon, URL awal, warna dan mode tampilan aplikasi terpasang."
+  },
+  "public/robots.txt": {
+    "summary": "Aturan crawler menetapkan bagian situs yang boleh atau tidak boleh dirayapi dan lokasi sitemap."
+  },
+  "public/sw.js": {
+    "summary": "Service worker menyimpan aset inti dan aset build Vite sesama origin ke cache, menghapus cache versi lama, dan memakai network-first untuk navigasi HTML agar halaman terautentikasi tidak disajikan dari cache."
+  },
+  "resources/css/admin.css": {
+    "summary": "Stylesheet khusus konsol admin mengatur navigasi, statistik, tabel, filter, status, pagination dan keadaan sibuk, dengan fokus keyboard dan tata letak responsif."
+  },
+  "resources/css/app.css": {
+    "summary": "Sumber CSS Tailwind dan storefront ZAFIRA mendefinisikan token merek, tipografi, katalog, drawer, dialog, autentikasi, halaman produk, tema gelap serta perilaku responsif dan reduced motion."
+  },
+  "resources/fonts/NotoSansSC-Regular.provenance.json": {
+    "summary": "Metadata asal-usul font Noto Sans SC mencatat sumber, proses instansiasi font dan lisensi untuk aset font lokal pendukung teks Mandarin."
+  },
+  "resources/fonts/OFL.txt": {
+    "summary": "Teks SIL Open Font License menjelaskan hak penggunaan, modifikasi, distribusi dan batas penamaan font yang disertakan."
+  },
+  "resources/js/admin-table.js": {
+    "summary": "Enhancement tabel admin menyediakan filter dan pagination parsial, pengurutan, kepadatan tersimpan, seleksi dan aksi massal, pengiriman status pesanan, pemulihan fokus serta perlindungan formulir yang belum tersimpan."
+  },
+  "resources/js/app.js": {
+    "summary": "Skrip storefront mengelola pencarian dan filter katalog, favorit, keranjang server, quick view, drawer dan fokus keyboard, permintaan concierge serta umpan balik terjemahan dengan penanganan timeout dan kegagalan jaringan."
+  },
+  "resources/js/bootstrap.js": {
+    "summary": "Bootstrap JavaScript mempertahankan impor bootstrap sebagai no-op setelah Axios dihapus; window.axios tetap bernilai yang sudah ada atau null, sementara aplikasi memakai fetch."
+  },
+  "resources/js/search-match.js": {
+    "summary": "Modul search-match menormalkan teks dan mengekspor pencarian yang mengutamakan substring sebelum fallback toleran satu edit atau transposisi karakter."
+  },
+  "resources/views/account/cart-reminder-unsubscribed.blade.php": {
+    "summary": "View Blade menampilkan konfirmasi dan hasil penghentian pengingat keranjang melalui formulir POST bertanda tangan."
+  },
+  "resources/views/account/show.blade.php": {
+    "summary": "View Blade menampilkan profil pelanggan, bahasa, status verifikasi email, akun sosial tertaut, pengingat keranjang, TOTP, ekspor atau penghapusan data dan riwayat concierge."
+  },
+  "resources/views/account/totp-enrol.blade.php": {
+    "summary": "View Blade menampilkan pendaftaran TOTP pelanggan dengan QR setup dan formulir konfirmasi kode."
+  },
+  "resources/views/account/totp-recovery.blade.php": {
+    "summary": "View Blade menampilkan kode pemulihan TOTP pelanggan setelah pendaftaran."
+  },
+  "resources/views/admin/auth-events.blade.php": {
+    "summary": "View Blade menampilkan log autentikasi admin dengan filter, tabel dan pagination kejadian audit."
+  },
+  "resources/views/admin/components/table-controls.blade.php": {
+    "summary": "View Blade menampilkan kontrol tabel bersama untuk state filter, pengurutan, kepadatan, seleksi dan pagination."
+  },
+  "resources/views/admin/dashboard.blade.php": {
+    "summary": "View Blade menampilkan panel admin untuk kategori, produk, pesanan, laporan, concierge, pengguna, audit profil dan subscriber, dengan kontrol yang mengikuti kemampuan admin."
+  },
+  "resources/views/admin/layouts/app.blade.php": {
+    "summary": "View Blade menampilkan kerangka konsol admin dengan navigasi, identitas halaman, logout serta aset khusus admin."
+  },
+  "resources/views/admin/login.blade.php": {
+    "summary": "View Blade menampilkan formulir login guard admin dengan label dan pesan kesalahan terjemahan."
+  },
+  "resources/views/admin/totp-enrol-recovery.blade.php": {
+    "summary": "View Blade menampilkan kode pemulihan sekali tampil setelah enrolment TOTP admin."
+  },
+  "resources/views/admin/totp-enrol.blade.php": {
+    "summary": "View Blade menampilkan setup TOTP admin dengan QR dan formulir konfirmasi serta logout."
+  },
+  "resources/views/admin/totp.blade.php": {
+    "summary": "View Blade menampilkan tantangan kode TOTP admin atau kode pemulihan, disertai jalur logout."
+  },
+  "resources/views/auth/_social.blade.php": {
+    "summary": "View Blade menampilkan tombol login Google atau Apple yang hanya tampil ketika penyedia diaktifkan."
+  },
+  "resources/views/auth/login.blade.php": {
+    "summary": "View Blade menampilkan formulir login pelanggan, opsi ingat saya, reset kata sandi dan login sosial."
+  },
+  "resources/views/auth/password-email.blade.php": {
+    "summary": "View Blade menampilkan formulir permintaan tautan reset kata sandi pelanggan."
+  },
+  "resources/views/auth/password-reset.blade.php": {
+    "summary": "View Blade menampilkan formulir kata sandi baru dan konfirmasinya untuk proses reset."
+  },
+  "resources/views/auth/register.blade.php": {
+    "summary": "View Blade menampilkan formulir pendaftaran pelanggan dan alternatif login sosial."
+  },
+  "resources/views/auth/totp.blade.php": {
+    "summary": "View Blade menampilkan tantangan TOTP atau kode pemulihan sebelum login pelanggan selesai."
+  },
+  "resources/views/catalog/index.blade.php": {
+    "summary": "View Blade menampilkan katalog produk dengan filter pencarian, kategori, warna, material, harga, ketersediaan, pengurutan, pagination serta dialog detail dan aksi keranjang."
+  },
+  "resources/views/catalog/labels.php": {
+    "summary": "Peta kompatibilitas untuk audit salinan historis memuat kamus zafira bagi lima locale dari lang/; terjemahan runtime tetap memakai berkas lang/."
+  },
+  "resources/views/components/brand-mark.blade.php": {
+    "summary": "View Blade menampilkan markah SVG identitas ZAFIRA yang dapat digunakan ulang."
+  },
+  "resources/views/errors/403.blade.php": {
+    "summary": "View halaman kesalahan HTTP 403 memakai errors.layout serta judul dan pesan dari errors_ui."
+  },
+  "resources/views/errors/404.blade.php": {
+    "summary": "View halaman kesalahan HTTP 404 memakai errors.layout serta judul dan pesan dari errors_ui."
+  },
+  "resources/views/errors/419.blade.php": {
+    "summary": "View halaman kesalahan HTTP 419 memakai errors.layout serta judul dan pesan dari errors_ui."
+  },
+  "resources/views/errors/429.blade.php": {
+    "summary": "View halaman kesalahan HTTP 429 memakai errors.layout serta judul dan pesan dari errors_ui."
+  },
+  "resources/views/errors/500.blade.php": {
+    "summary": "View halaman kesalahan HTTP 500 memakai errors.layout serta judul dan pesan dari errors_ui."
+  },
+  "resources/views/errors/503.blade.php": {
+    "summary": "View halaman kesalahan HTTP 503 memakai errors.layout serta judul dan pesan dari errors_ui."
+  },
+  "resources/views/errors/layout.blade.php": {
+    "summary": "View Blade menampilkan kerangka halaman kesalahan dengan kode, pesan ramah dan navigasi pemulihan."
+  },
+  "resources/views/mail/cart-reminder.blade.php": {
+    "summary": "View Blade menampilkan email pengingat keranjang dengan daftar item, tautan belanja dan berhenti berlangganan."
+  },
+  "resources/views/mail/concierge-requested.blade.php": {
+    "summary": "View Blade menampilkan email konfirmasi rincian permintaan concierge dan jadwal yang dipilih."
+  },
+  "resources/views/mail/newsletter-welcome.blade.php": {
+    "summary": "Template Blade email sambutan newsletter menampilkan judul, ucapan terima kasih, keterangan edisi, ajakan berkunjung dan salam dari kamus mail_ui, tanpa tautan aktif."
+  },
+  "resources/views/mail/order-status-changed.blade.php": {
+    "summary": "View Blade menampilkan email pembaruan status order dengan nomor referensi dan pesan status."
+  },
+  "resources/views/partials/product-footer.blade.php": {
+    "summary": "View Blade menampilkan footer storefront, keranjang, pencarian, quick view dan formulir concierge untuk halaman produk."
+  },
+  "resources/views/partials/product-header.blade.php": {
+    "summary": "View Blade menampilkan navigasi storefront, menu akun, pencarian, favorit dan tas belanja dengan variasi perangkat mobile."
+  },
+  "resources/views/partials/purchase-cart.blade.php": {
+    "summary": "View Blade menampilkan drawer tas belanja bersama dengan daftar item, keadaan kosong dan ringkasan total."
+  },
+  "resources/views/products/show.blade.php": {
+    "summary": "View Blade menampilkan detail produk, informasi material dan kriya, panduan ukuran, produk terkait serta aksi quick view dan pembelian."
+  },
+  "resources/views/shop/index.blade.php": {
+    "summary": "View Blade menampilkan ruang belanja untuk keranjang, alamat, checkout pengguna atau tamu, pelacakan pesanan, retur, refund, ulasan dan favorit melalui endpoint JSON."
+  },
+  "resources/views/shop/request.blade.php": {
+    "summary": "View Blade menampilkan helper permintaan fetch untuk ruang belanja yang menyertakan CSRF, memproses kesalahan HTTP dan menampilkan pesan sesuai bahasa."
+  },
+  "resources/views/sitemap.blade.php": {
+    "summary": "View Blade menampilkan keluaran XML sitemap dari daftar URL storefront."
+  },
+  "resources/views/welcome.blade.php": {
+    "summary": "View Blade menampilkan beranda editorial ZAFIRA dengan koleksi, katalog interaktif, cerita Maison, layanan, newsletter, concierge serta drawer dan dialog pelanggan."
+  },
+  "routes/console.php": {
+    "summary": "Mendaftarkan perintah pembersihan keranjang dan dead letter pembayaran, replay pembayaran, pelepasan reservasi serta backup dan verifikasinya; menjadwalkan pengingat, retry notifikasi dan pemeliharaan berkala."
+  },
+  "routes/web.php": {
+    "summary": "Mendaftarkan route storefront, katalog, produk, concierge, newsletter, keranjang, checkout dan pelacakan tamu, akun pelanggan serta konsol admin; memasang rate limiter, autentikasi, TOTP, Gate dan feature flag sesuai endpoint."
+  }
+}

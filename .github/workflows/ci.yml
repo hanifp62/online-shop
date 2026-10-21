@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  php:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo_sqlite, gd, bcmath
+          coverage: none
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: composer install --no-interaction --prefer-dist --no-progress
+      - run: npm ci
+      - name: Audit dependency Composer
+        run: composer audit --locked --no-interaction
+      - name: Audit dependency npm
+        run: npm audit --audit-level=high
+      - name: Pindai rahasia ter-hardcode
+        run: |
+          # -l: hanya nama file, nilai yang cocok tidak pernah masuk log CI.
+          # Dikecualikan hanya fixture sentinel yang memang berisi pola palsu.
+          # rc 0 = ada kecocokan, rc 1 = bersih, rc >1 = git grep gagal (jangan dianggap bersih).
+          set +e
+          git grep -lIE '(sk_live|SB-Mid-server-[A-Za-z0-9_-]{10,}|Mid-server-[A-Za-z0-9_-]{10,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY|ghp_[A-Za-z0-9]{30,}|ngpk_[A-Za-z0-9]{10,}|base64:[A-Za-z0-9+/]{43}=)' -- . ':!.github/workflows/ci.yml' ':!tests/Feature/SecurityScanIntegrityTest.php' ':!tests/python/test_amdis_launch_sanitization.py' ':!phpunit.xml'
+          rc=$?
+          set -e
+          if [ "$rc" -eq 0 ]; then
+            echo "Pola rahasia ditemukan pada file di atas (nilai tidak dicetak)"; exit 1
+          elif [ "$rc" -ne 1 ]; then
+            echo "git grep gagal dengan exit code $rc; pemindaian rahasia tidak dapat dipercaya"; exit "$rc"
+          fi
+      - name: Pindai log PII
+        run: |
+          if grep -RInE 'Log::(info|warning|error|debug)\(.*(email|password|phone|address|token)' app; then
+            echo "Pola PII potensial pada log aplikasi"; exit 1
+          fi
+      - run: npm run build
+      - name: Lint (Pint)
+        run: vendor/bin/pint --test
+      - name: Validasi migrasi (fresh, SQLite sementara)
+        run: |
+          cp .env.example .env
+          php artisan key:generate --no-interaction
+          touch database/ci.sqlite
+          DB_CONNECTION=sqlite DB_DATABASE=database/ci.sqlite php artisan migrate --force
+      - name: Gerbang anti-drift skema (tidak ada migrasi tertunda)
+        run: |
+          if DB_CONNECTION=sqlite DB_DATABASE=database/ci.sqlite php artisan migrate:status | grep -q Pending; then
+            echo "Ada migrasi belum diterapkan"; exit 1
+          fi
+      - name: Uji Aksesibilitas & Skema
+        run: php artisan test tests/Feature/StorefrontA11yMarkupTest.php tests/Feature/AdminA11yLandmarkTest.php tests/Feature/AdminAuthFormA11yTest.php tests/Feature/AdminTableA11yMarkupTest.php tests/Feature/DatabaseSchemaIntegrityTest.php tests/Feature/IndexMigrationTest.php
+      - name: Kunci nama brand
+        run: php artisan test tests/Feature/BrandNameConsistencyTest.php
+      - name: Gerbang gaya bahasa
+        run: php artisan test tests/Feature/VoiceAndToneConsistencyTest.php
+      - name: Test PHP
+        run: php artisan test
+      - name: Test JS
+        run: node --test

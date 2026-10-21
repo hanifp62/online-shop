@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -53,7 +54,7 @@ class CartMigrationRollbackTest extends TestCase
         if (DB::getDriverName() !== 'sqlite') {
             $this->markTestSkipped('Dropping the FK is only isolated on transactional-DDL SQLite.');
         }
-        Schema::table('cart_items', fn (\Illuminate\Database\Schema\Blueprint $table) => $table->dropForeign(['cart_id']));
+        Schema::table('cart_items', fn (Blueprint $table) => $table->dropForeign(['cart_id']));
         $cartId = 999;
         DB::table('cart_items')->insert(['cart_id' => $cartId, 'product_id' => $product->product_id, 'quantity' => 3]);
         $this->assertDatabaseCount('carts', 0);

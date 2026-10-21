@@ -18,7 +18,7 @@ class CheckoutSummaryTest extends TestCase
             ->assertSee('Ringkasan pesanan', false)
             ->assertSee('Memuat ringkasan pesanan…', false)
             ->assertSee('aria-live', false)
-            ->assertSee('Diskon voucher dihitung server', false)
+            ->assertSee('Potongan voucher dan total akhir dipastikan saat pesanan dibuat.', false)
             ->assertSee('<fieldset class="stack"><legend>Langkah 1/2 · Kontak</legend>', false)
             ->assertSee('<fieldset class="stack"><legend>Langkah 2/2 · Alamat pengiriman</legend>', false);
 
@@ -45,7 +45,7 @@ class CheckoutSummaryTest extends TestCase
             ->assertSee('Ringkasan pesanan', false)
             ->assertSee('Memuat ringkasan pesanan…', false)
             ->assertSee('aria-live', false)
-            ->assertSee('Diskon voucher dihitung server', false)
+            ->assertSee('Potongan voucher dan total akhir dipastikan saat pesanan dibuat.', false)
             ->assertSee('id="checkout-form"', false)
             ->assertDontSee('id="guest-checkout-form"', false);
 

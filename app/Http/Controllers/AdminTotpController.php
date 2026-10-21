@@ -51,7 +51,7 @@ class AdminTotpController extends Controller
         if (RateLimiter::tooManyAttempts($key, self::MAX_ATTEMPTS)) {
             $seconds = RateLimiter::availableIn($key);
 
-            return back()->withErrors([$field => "Terlalu banyak percobaan. Coba lagi dalam {$seconds} detik."]);
+            return back()->withErrors([$field => trans('admin_ui.flash.rate_limited', ['seconds' => $seconds])]);
         }
 
         $result = $check($admin->id);
@@ -63,8 +63,8 @@ class AdminTotpController extends Controller
                 $this->events->recordLockout('admin', $admin->id, $request->ip(), 'totp');
             }
             $message = in_array($result['reason'] ?? null, ['broken_secret', 'operational_error'], true)
-                ? 'Verifikasi dua langkah sedang tidak tersedia. Hubungi pengelola sistem.'
-                : 'Kode tidak cocok atau sudah dipakai.';
+                ? trans('admin_ui.flash.totp_unavailable')
+                : trans('admin_ui.flash.totp_invalid');
 
             return back()->withErrors([$field => $message]);
         }
@@ -83,6 +83,6 @@ class AdminTotpController extends Controller
         $this->events->recordSessionRotated('admin', $admin->id, $request->ip(), $field === 'recovery_code' ? 'recovery' : 'totp');
         $this->events->recordLoginSuccess($admin->id, $request->ip(), 'admin', $field === 'recovery_code' ? 'recovery' : 'totp');
 
-        return redirect()->route('admin.dashboard')->with('success', 'Selamat datang kembali, Admin.');
+        return redirect()->route('admin.dashboard')->with('success', trans('admin_ui.flash.welcome'));
     }
 }

@@ -132,18 +132,18 @@ class CatalogSearchRecoveryTest extends TestCase
         for ($i = 0; $i < 501; $i++) {
             $this->piece('Silk '.$i);
         }
-        $labels = require resource_path('views/catalog/labels.php');
         foreach (['id', 'en', 'zh', 'fr', 'it'] as $locale) {
+            $labels = trans('zafira', [], $locale);
             $this->get('/koleksi?q=silky&locale='.$locale)->assertOk()
                 ->assertViewHas('searchRecovery', 'narrow')
-                ->assertSee($labels[$locale]['search_narrow']);
+                ->assertSee($labels['search_narrow']);
         }
     }
 
     public function test_guidance_and_clear_search_preserve_locale_and_filters(): void
     {
-        $labels = require resource_path('views/catalog/labels.php');
         foreach (['id', 'en', 'zh', 'fr', 'it'] as $locale) {
+            $labels = trans('zafira', [], $locale);
             $response = $this->get('/koleksi?q=missing&locale='.$locale.'&color=Gold&urut=harga&page=2');
             $response->assertStatus(302);
             $location = parse_url($response->headers->get('Location'));
@@ -155,10 +155,10 @@ class CatalogSearchRecoveryTest extends TestCase
             $this->assertSame($expectedRedirect, $redirectQuery);
             $followed = $this->get($response->headers->get('Location'));
             $followed->assertOk()
-                ->assertSee($labels[$locale]['search_empty_hint'])
-                ->assertSee($labels[$locale]['clear_search']);
+                ->assertSee($labels['search_empty_hint'])
+                ->assertSee($labels['clear_search']);
 
-            preg_match('/<a[^>]+href="([^"]+)"[^>]*>\s*'.preg_quote($labels[$locale]['clear_search'], '/').'\s*<\/a>/u', $followed->getContent(), $matches);
+            preg_match('/<a[^>]+href="([^"]+)"[^>]*>\s*'.preg_quote($labels['clear_search'], '/').'\s*<\/a>/u', $followed->getContent(), $matches);
             $this->assertNotEmpty($matches);
             $urlParts = parse_url(html_entity_decode($matches[1]));
             $this->assertSame('/koleksi', $urlParts['path']);

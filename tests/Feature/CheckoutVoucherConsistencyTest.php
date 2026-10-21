@@ -118,4 +118,35 @@ class CheckoutVoucherConsistencyTest extends TestCase
         // Replay hash was built from the pre-calculated tax; it must match the committed snapshot.
         $this->postJson('/checkout', $payload)->assertOk()->assertJsonPath('order.id', $order['id']);
     }
+
+    public function test_quote_previews_voucher_totals_identical_to_order_without_claiming(): void
+    {
+        config(['checkout.shipping_fee' => 25000, 'checkout.tax_rate_bps' => 1000]);
+        $voucher = Voucher::create(['code' => 'SUTRA', 'discount_amount' => 30000, 'quota' => 5]);
+        $user = User::factory()->create();
+        $address = $this->address($user);
+        $product = $this->product();
+        $this->actingAs($user)->postJson('/cart/items', ['product_id' => $product->product_id, 'quantity' => 1])->assertOk();
+
+        $quote = $this->postJson('/checkout/quote', ['voucher_code' => ' sutra '])->assertOk()
+            ->assertJsonPath('voucher_code', 'SUTRA')->json();
+        $this->assertSame(0, $voucher->fresh()->used, 'quote must not claim quota');
+        $this->assertSame(3, (int) $product->fresh()->stock);
+
+        $order = $this->postJson('/checkout', ['address_id' => $address->id, 'idempotency_key' => 'quoted-key-1', 'voucher_code' => 'SUTRA'])
+            ->assertCreated()->json('order');
+        foreach (['subtotal', 'discount', 'tax', 'shipping_fee', 'total'] as $field) {
+            $this->assertSame($order[$field], $quote[$field], "quote $field must equal order");
+        }
+    }
+
+    public function test_quote_rejects_invalid_voucher_and_requires_login(): void
+    {
+        $this->postJson('/checkout/quote', ['voucher_code' => 'X'])->assertUnauthorized();
+
+        $this->actingAs(User::factory()->create())
+            ->postJson('/checkout/quote', ['voucher_code' => 'TIDAKADA'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['voucher_code' => 'Voucher tidak valid.']);
+    }
 }

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -31,7 +32,7 @@ class CartNullableIdTest extends TestCase
         $category = Category::firstOrCreate(['cat_title' => 'Merge']);
         $product = Product::create(['product_cat' => $category->cat_id, 'product_brand' => 'ZAFIRA', 'product_title' => 'Sutra', 'product_slug' => 'merge-cart', 'product_price' => '125000.00']);
         DB::table('products')->where('product_id', $product->product_id)->update(['stock' => 5]);
-        $user = \App\Models\User::factory()->create(['email' => 'merge@example.test']);
+        $user = User::factory()->create(['email' => 'merge@example.test']);
 
         $this->postJson('/cart/items', ['product_id' => $product->product_id, 'quantity' => 2])->assertOk();
         $this->post('/login', ['email' => 'merge@example.test', 'password' => 'password'])->assertRedirect('/');

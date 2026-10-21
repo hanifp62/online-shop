@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\UserInfoBackup;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
@@ -176,22 +177,22 @@ class AdminTablesPaginationTest extends TestCase
         NewsletterSubscriber::create(['email' => 'subscriber@example.test']);
         $this->actingAs($admin, 'admin');
 
-        \Illuminate\Support\Facades\DB::enableQueryLog();
+        DB::enableQueryLog();
         $this->get(route('admin.dashboard', ['opage' => 1]))->assertOk();
-        $firstCounts = count(array_filter(\Illuminate\Support\Facades\DB::getQueryLog(), fn ($query) => preg_match('/count\\(/i', $query['query'])));
-        \Illuminate\Support\Facades\DB::flushQueryLog();
+        $firstCounts = count(array_filter(DB::getQueryLog(), fn ($query) => preg_match('/count\\(/i', $query['query'])));
+        DB::flushQueryLog();
         $this->get(route('admin.dashboard', ['opage' => 1000]))->assertOk();
-        $lastCounts = count(array_filter(\Illuminate\Support\Facades\DB::getQueryLog(), fn ($query) => preg_match('/count\\(/i', $query['query'])));
+        $lastCounts = count(array_filter(DB::getQueryLog(), fn ($query) => preg_match('/count\\(/i', $query['query'])));
 
         // Filter ostatus membedakan count paginasi (where status = ?) dari count kartu statistik (tanpa where).
-        \Illuminate\Support\Facades\DB::flushQueryLog();
+        DB::flushQueryLog();
         $this->get(route('admin.dashboard', ['opage' => 1000, 'ostatus' => 'pending']))->assertOk();
         $paginationOrderCounts = count(array_filter(
-            \Illuminate\Support\Facades\DB::getQueryLog(),
+            DB::getQueryLog(),
             fn ($query) => preg_match('/count\\(/i', $query['query'])
                 && preg_match('/from ["`]orders["`] where ["`]status["`] = \\?/i', $query['query'])
         ));
-        \Illuminate\Support\Facades\DB::disableQueryLog();
+        DB::disableQueryLog();
 
         $this->assertSame($firstCounts, $lastCounts);
         $this->assertSame(1, $paginationOrderCounts, 'Orders pagination count runs exactly once for opage=1000.');

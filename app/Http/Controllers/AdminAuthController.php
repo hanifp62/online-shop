@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
+use App\Services\AuthEventRecorder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use App\Services\AuthEventRecorder;
 
 class AdminAuthController extends Controller
 {
@@ -38,14 +39,14 @@ class AdminAuthController extends Controller
             $this->events->recordLoginSuccess($admin->id, $request->ip(), 'admin', 'login');
 
             return redirect()->route('admin.dashboard')
-                ->with('success', 'Selamat datang kembali, Admin.');
+                ->with('success', __('admin_ui.flash.welcome'));
         }
 
-        $failedAdmin = \App\Models\Admin::where('email', $validated['email'])->first();
+        $failedAdmin = Admin::where('email', $validated['email'])->first();
         $this->events->recordLoginFailure($failedAdmin?->id, $request->ip(), 'invalid_credentials', 'admin');
 
         return back()
-            ->withErrors(['email' => 'Email atau password admin salah.'])
+            ->withErrors(['email' => __('admin_ui.flash.invalid_login')])
             ->onlyInput('email');
     }
 
@@ -68,6 +69,6 @@ class AdminAuthController extends Controller
         }
 
         return redirect()->route('admin.login')
-            ->with('success', 'Anda berhasil keluar dari panel admin.');
+            ->with('success', __('admin_ui.flash.logged_out'));
     }
 }

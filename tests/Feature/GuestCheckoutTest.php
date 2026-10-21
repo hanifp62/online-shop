@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
@@ -93,7 +94,7 @@ class GuestCheckoutTest extends TestCase
         $this->postJson('/checkout', $this->payload())->assertOk()
             ->assertJsonPath('tracking_token', null)
             ->assertJsonPath('tracking_recovery', 'unavailable')
-            ->assertJsonPath('message', 'Token pelacakan tidak dapat dipulihkan. Hubungi concierge dengan nomor pesanan #1.');
+            ->assertJsonPath('message', 'Kode pelacakan tidak dapat dipulihkan. Hubungi concierge dengan nomor pesanan #1.');
         $this->assertSame($hash, Order::firstOrFail()->tracking_token_hash);
         $this->assertDatabaseCount('orders', 1);
         $this->travelBack();
@@ -117,9 +118,9 @@ class GuestCheckoutTest extends TestCase
     {
         $migration = require database_path('migrations/2026_10_19_000001_add_guest_checkout_to_orders_table.php');
         $migration->down();
-        $this->assertFalse(\Illuminate\Support\Facades\Schema::hasColumn('orders', 'guest_scope_hash'));
+        $this->assertFalse(Schema::hasColumn('orders', 'guest_scope_hash'));
         $migration->up();
-        $this->assertTrue(\Illuminate\Support\Facades\Schema::hasColumn('orders', 'guest_scope_hash'));
+        $this->assertTrue(Schema::hasColumn('orders', 'guest_scope_hash'));
     }
 
     public static function invalidInput(): array

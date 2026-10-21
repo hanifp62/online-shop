@@ -18,6 +18,44 @@ Bukti lokal di `/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencod
 
 **Batas:** coverage PHP ≥80%, screen reader, lintas-browser, dan CLS belum diukur. Angka browser tidak membuktikan semua pemeriksaan manual atau kepatuhan WCAG penuh. **Final sync belum dijalankan**, karena plan masih memiliki task. Status done tidak menutup batas bukti tersebut.
 
+### R-53 — Klaim jujur tanpa dark pattern (2026-10-21)
+
+| Gerbang | Hasil |
+|---|---|
+| Tes R-53 (`CommercialClaimIntegrityTest`, `StorefrontShopLocaleTest`) | 11 passed, 5538 assertions, `EXIT=0` |
+| `node --test tests/*.test.mjs` | 305/305, `EXIT=0` |
+| `npm run build` / `git diff --check` | `EXIT=0` / `EXIT=0` |
+| `php artisan test` (penuh, run final) | **950 passed, 4 skipped, 26006 assertions**, `EXIT=0` |
+| `vendor/bin/pint --dirty --test` | `EXIT=0` |
+| Task `a48904ae-66c7-4571-9dd5-4aaeb1ec5544` | Lihat `COUNCIL_DECISIONS.md` #052 |
+
+Satu run perantara (`r53-final-php.log`) gagal 3 tes di berkas outbox/migrasi (`2026_10_21_000030/40_*`, `OrderNotificationDispatcher`) yang diubah lane lain pukul 13:45–13:46 saat run berlangsung, plus Pint gagal pada berkas yang sama; lane R-53 tidak menyentuhnya. Run final setelah berkas stabil hijau penuh. **Batas:** review `code-reviewer` independen tidak tersedia di harness ini (tanpa tool subagent); belum ada verifikasi browser; terjemahan belum ditinjau penutur asli; retur masih API-only; ongkir fallback 0 karena `config/checkout.php` tidak ada. Log: `r53-final-*.log` dan `r53-final2-php.log` di direktori temporer OpenCode.
+
+### R-55 — Token warna dan tipografi brand terkunci (2026-10-21)
+
+| Gerbang | Hasil |
+|---|---|
+| TDD RED | `node --test tests/brand-tokens.test.mjs`, 17 literal brand nyata, `EXIT=1` |
+| TDD GREEN | `node --test tests/brand-tokens.test.mjs`, 2/2, `EXIT=0` |
+| `php artisan test` | **956 passed, 4 skipped, 27027 assertions**, `EXIT=0` |
+| `node --test tests/*.test.mjs` | **307/307**, `EXIT=0` |
+| `npm run build` / `vendor/bin/pint --dirty --test` / `git diff --check` | `EXIT=0` untuk ketiganya |
+| Task `375aeae0-252f-4373-be81-7e932a77318c` | Bukti rinci `BRAND_TOKEN_LOCK.md`; status CLI menunggu closure |
+
+Guard memindai CSS, JS, dan Blade di `resources/`; literal warna yang cocok dengan token dan font asing menggagalkan suite Node yang telah dijalankan CI. Palet dan nama brand tetap. Generator bawaan skill tidak disentuh. Review independen tidak tersedia (tidak ada tool subagent). Batas: prototype `public/` tidak dipindai, warna near-match, RGB/HSL, `font:` shorthand, opacity RGBA, serta rendering browser/piksel tidak diverifikasi. Log aktual berada di direktori temporer OpenCode.
+
+### R-54 — Teks UI membimbing dan terlokalisasi (2026-10-21)
+
+| Gerbang | Hasil |
+|---|---|
+| `php artisan test --filter=GuidingMicrocopyTest` | 2 passed, 1000 assertions, `EXIT=0` |
+| `php artisan test` (penuh) | **956 passed, 4 skipped, 27027 assertions**, `EXIT=0` |
+| `node --test tests/*.test.mjs` | 305/305, `EXIT=0` |
+| `npm run build` / `pint --dirty --test` / `git diff --check` | `EXIT=0` / `EXIT=0` / `EXIT=0` |
+| Task `12220d08-1e3a-45d9-b741-ce478a3f448a` | Lihat `COUNCIL_DECISIONS.md` #053 |
+
+**Batas:** review `code-reviewer` independen tidak tersedia (tanpa tool subagent); tanpa uji screen reader/browser; terjemahan belum ditinjau penutur asli.
+
 Dokumen pelacak tugas aktif, alokasi peran, antrean subpekerjaan, serta catatan keputusan tim pendukung dan sekretariat sesuai `AGENT_OPERATING_MODEL.md` (bagian 3, 8, dan 9).
 
 ---
@@ -670,7 +708,36 @@ Handoff Path        : /private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/o
 - **Approver:** TIDAK DITETAPKAN.
 - **Decision:** BLOCKED — persetujuan independen pencatatan belum tersedia; tidak ada persetujuan implementasi.
 
+### Entri Catatan Operasional — 21 Oktober 2026: Verifikasi Irisan Locale Cross-Channel & R-39
+- **Konteks:** Task `58d3cb6c` (bahasa konsisten lintas saluran, R-51/R-52) dan pencatatan status R-39 (Safe Release).
+- **R-39:** Diuji lokal melalui feature flag, cohort, rollback runbook, dan migration guard; deploy produksi belum dilakukan (TIDAK TERBUKTI DI PRODUKSI).
+- **Task 58d3cb6c:**
+  - Tambah regression test `CrossChannelLocaleTest::test_order_without_recipient_email_claims_no_notification_slot` untuk memastikan `CheckoutService::notifyCustomer` tidak mengklaim slot saat email kosong.
+  - Review concierge locale: `app()->getLocale()` sengaja dipertahankan sesuai prioritas query > session > user di `SetLocale`.
+  - Full automated checks: PHP 939 pass/4 skip, Node 304 pass (`node --test tests/*.test.mjs`), build Vite EXIT 0, Pint clean, diff clean.
+  - Insiden APP_KEY: tetap menjadi production blocker, tidak dirotasi sembarangan.
+- **Decision:** READY FOR TASK CLOSURE oleh integrator CLI.
+
 Nama pada `Task Ref / ID` adalah deskripsi lane dari dispatch, bukan ID task resmi baru. `TIDAK DITETAPKAN` berarti informasi tidak diberikan kepada pencatat, bukan bukti bahwa penugasan tidak ada. Target tulis source tidak diasumsikan dari path handoff.
 
 Tidak diperiksa: isi artefak handoff, runtime, tes, dan status sesi langsung. Risiko: snapshot dispatch bukan bukti acceptance produk.
+
+---
+
+### Entri Catatan Operasional — 21 Oktober 2026: Verifikasi Irisan Locale & Insiden Kunci
+
+- **Konteks:** Penyelesaian irisan lokalisasi 5 bahasa (`id`, `en`, `fr`, `it`, `zh`) untuk task NgodingPakeAI `6632663a-34b3-4fda-a868-25d56ae7eafa`.
+- **Status verifikasi kode:**
+  - Full automated suite: 924 tes PHP lulus, 4 dilewati, 23.912 assertions. 304 tes Node lulus. `npm run build`, `vendor/bin/pint --test`, `git diff --check` bersih (semua exit 0).
+  - Review storefront (ses_ea327e4e9ffeyJZLIyfW99XVal): WARN (2 temuan MEDIUM terkait kartu produk dan kutipan hadiah; keduanya diperbaiki dan lulus review lanjutan ses_ea31b8f90ffeFewso2yEkogb03 status APPROVE).
+  - Browser smoke terisolasi (port 8019, SQLite sementara): desktop/mobile language switcher (HTTP 204), persistensi locale, keranjang Mandarin (HTTP 200), viewport 390×844 tanpa horizontal overflow. Verifikasi ulang skrip `smoke2/continue.mjs` oleh subagent dan agent utama berstatus EXIT=0.
+- **Insiden keamanan:**
+  - Pada penyiapan awal browser smoke, perintah pembacaan `.env` lokal menampilkan `APP_KEY` pada keluaran tool. Nilai kunci tidak diulang atau dicatat di dokumen mana pun.
+  - Asesmen subagent `security-reviewer` (ses_ea3261011ffefyP69cxQGGym1T): `APP_KEY` mengenkripsi secret TOTP admin & customer (`encrypted` cast), webhook body terlempar, token sesi, dan URL bertanda tangan. Rotasi mendadak tanpa `APP_PREVIOUS_KEYS` akan merusak data terenkripsi yang ada.
+  - Status produksi: **BELUM LAYAK / TIDAK SIAP PRODUKSI**. Operator harus memverifikasi apakah kunci yang terpapar sama dengan kunci produksi dan apakah keluaran tool disimpan/dapat diakses pihak lain sebelum dilakukan rotasi terencana.
+- **Batas sisa:**
+  - Invoice dan PDF Mandarin belum diuji lewat browser (hanya lewat tes otomatis PHPUnit Swift PDFKit).
+  - Alur checkout dan alur pemilihan ukuran pakaian belum diuji lewat browser smoke.
+  - Terjemahan bahasa asing (`en`, `fr`, `it`, `zh`) belum ditinjau oleh penutur asli; nama produk dan kategori tetap mengikuti data katalog benih. Mata uang tetap `Rp`.
+  - Task NgodingPakeAI belum ditandai selesai; inventaris teks hardcoded final sedang diaudit.
 

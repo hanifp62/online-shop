@@ -12,7 +12,7 @@ class PdfDocumentService
     private const MAX_LINE_LENGTH = 90;
 
     /** @param list<string> $lines */
-    public function render(string $title, array $lines): string
+    public function render(string $title, array $lines, string $pagination = 'Halaman {PAGE_NUM} dari {PAGE_COUNT}'): string
     {
         $cacheDir = storage_path('app/private/pdf');
         if (! is_dir($cacheDir) && ! mkdir($cacheDir, 0700, true) && ! is_dir($cacheDir)) {
@@ -110,7 +110,7 @@ class PdfDocumentService
             $dompdf->loadHtml($html, 'UTF-8');
             $dompdf->setPaper('A4');
             $dompdf->render();
-            $dompdf->getCanvas()->page_text(56, 794, 'Halaman {PAGE_NUM} dari {PAGE_COUNT}', $reportFont, 8);
+            $dompdf->getCanvas()->page_text(56, 794, $pagination, $reportFont, 8);
 
             return $dompdf->output();
         } finally {

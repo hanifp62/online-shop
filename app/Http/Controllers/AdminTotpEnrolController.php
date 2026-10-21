@@ -8,11 +8,11 @@ use App\Services\TotpService;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Http\Response;
 use PragmaRX\Google2FA\Exceptions\Contracts\Google2FA as Google2FAException;
 use PragmaRX\Google2FA\Google2FA;
 
@@ -64,13 +64,13 @@ class AdminTotpEnrolController extends Controller
         if (RateLimiter::tooManyAttempts($key, self::MAX_ATTEMPTS)) {
             $seconds = RateLimiter::availableIn($key);
 
-            return back()->withErrors(['code' => "Terlalu banyak percobaan. Coba lagi dalam {$seconds} detik."]);
+            return back()->withErrors(['code' => trans('admin_ui.flash.rate_limited', ['seconds' => $seconds])]);
         }
 
         $pending = $request->session()->get(self::PENDING_SECRET);
         if (! is_string($pending) || $pending === '') {
             return redirect()->route('admin.totp.enrol')
-                ->withErrors(['code' => 'Sesi pendaftaran kedaluwarsa. Mulai ulang pendaftaran.']);
+                ->withErrors(['code' => trans('admin_ui.flash.enrol_expired')]);
         }
 
         try {
@@ -91,7 +91,7 @@ class AdminTotpEnrolController extends Controller
             }
             $request->session()->forget([self::PENDING_SECRET, self::PENDING_URI]);
 
-            return back()->withErrors(['code' => 'Pendaftaran dua langkah sedang tidak tersedia. Hubungi pengelola sistem.']);
+            return back()->withErrors(['code' => trans('admin_ui.flash.enrol_unavailable')]);
         } catch (\Throwable $e) {
             $this->events->recordTotpFailure($admin->id, $request->ip(), 'operational_error');
             try {
@@ -104,7 +104,7 @@ class AdminTotpEnrolController extends Controller
             }
             $request->session()->forget([self::PENDING_SECRET, self::PENDING_URI]);
 
-            return back()->withErrors(['code' => 'Pendaftaran dua langkah sedang tidak tersedia. Hubungi pengelola sistem.']);
+            return back()->withErrors(['code' => trans('admin_ui.flash.enrol_unavailable')]);
         }
 
         if ($timestamp === false) {
@@ -114,7 +114,7 @@ class AdminTotpEnrolController extends Controller
                 $this->events->recordLockout('admin', $admin->id, $request->ip(), 'enrol');
             }
 
-            return back()->withErrors(['code' => 'Kode tidak cocok. Periksa jam perangkat Anda.']);
+            return back()->withErrors(['code' => trans('admin_ui.flash.enrol_invalid')]);
         }
 
         $codes = $this->totp->generateRecoveryCodes();
@@ -130,7 +130,7 @@ class AdminTotpEnrolController extends Controller
                 // Logger down must not escalate into an unhandled, trace-logging error.
             }
 
-            return back()->withErrors(['code' => 'Pendaftaran dua langkah sedang tidak tersedia. Coba lagi nanti.']);
+            return back()->withErrors(['code' => trans('admin_ui.flash.enrol_retry')]);
         }
 
         if (! $won) {

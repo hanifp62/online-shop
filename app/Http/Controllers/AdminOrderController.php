@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\RecipientLocale;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Services\CheckoutService;
 use App\Services\PdfDocumentService;
 use Illuminate\Http\JsonResponse;
@@ -47,7 +49,7 @@ class AdminOrderController extends Controller
 
     public function show(int $id): JsonResponse
     {
-        $order = Order::with(['items', 'user:id,name'])->findOrFail($id);
+        $order = Order::with(['items', 'statusHistory', 'payments', 'user:id,name'])->findOrFail($id);
 
         return response()->json(['order' => $this->orderJson($order, true)]);
     }
@@ -62,7 +64,7 @@ class AdminOrderController extends Controller
         $order = $this->checkout->transition($order, $validated['status']);
 
         if (! $request->expectsJson()) {
-            return back()->with('success', "Status pesanan #{$order->id} menjadi {$order->status}.");
+            return back()->with('success', trans('admin_ui.flash.order_status', ['id' => $order->id, 'status' => trans('admin_ui.dashboard.'.$order->status)]));
         }
 
         return response()->json(['order' => $this->orderJson($order)]);
@@ -94,13 +96,79 @@ class AdminOrderController extends Controller
                 'quantity' => $item->quantity,
                 'subtotal' => $item->subtotal,
             ])->values()->all();
+            $data['shipment'] = $order->shipmentSummary();
+            $data['status_history'] = $order->statusHistory->map(fn ($entry) => [
+                'from_status' => $entry->from_status,
+                'to_status' => $entry->to_status,
+                'admin_id' => $entry->admin_id,
+                'created_at' => $entry->created_at?->toISOString(),
+            ])->values()->all();
+            $data['payment'] = [
+                'settled' => $order->hasSettledPayment(),
+                'anomaly' => $order->hasPaymentAnomaly(),
+                'ledger' => $order->payments->map(fn ($p) => [
+                    'id' => $p->id,
+                    'provider' => $p->provider,
+                    'provider_transaction_id' => $p->provider_transaction_id,
+                    'event_status' => $p->event_status,
+                    'outcome' => $p->outcome,
+                    'amount' => $p->amount,
+                    'payment_type' => data_get($p->payload, 'payment_type'),
+                    'created_at' => $p->created_at?->toISOString(),
+                ])->values()->all(),
+            ];
         }
 
         return $data;
     }
 
     /** Laporan PDF berdasarkan created_at UTC; nilai pesanan bukan bukti pembayaran. */
-    public function report(Request $request, PdfDocumentService $pdf): Response
+    /** Ringkasan penjualan periode ini vs periode sebelumnya dengan panjang yang sama. */
+    public function salesSummary(Request $request): JsonResponse
+    {
+        [$from, $to] = $this->reportRange($request);
+        $length = $from->diffInSeconds($to) + 1;
+        $previousTo = $from->copy()->subSecond();
+        $previousFrom = $previousTo->copy()->subSeconds($length - 1);
+
+        $current = $this->salesMetrics($from, $to);
+        $previous = $this->salesMetrics($previousFrom, $previousTo);
+        $delta = fn (string $key) => $previous[$key] == 0 ? null : round(($current[$key] - $previous[$key]) / $previous[$key] * 100, 1);
+
+        return response()->json([
+            'period' => ['from' => $from->toISOString(), 'to' => $to->toISOString()],
+            'previous_period' => ['from' => $previousFrom->toISOString(), 'to' => $previousTo->toISOString()],
+            'current' => $current,
+            'previous' => $previous,
+            'change_percent' => [
+                'orders' => $delta('orders'),
+                'paid_value' => $delta('paid_value'),
+                'payment_success_rate' => $current['payment_success_rate'] === null || $previous['payment_success_rate'] === null
+                    ? null : round($current['payment_success_rate'] - $previous['payment_success_rate'], 1),
+            ],
+        ]);
+    }
+
+    /** Nilai dari ledger `paid` (sumber kebenaran, #001), bukan kolom status. */
+    private function salesMetrics(Carbon $from, Carbon $to): array
+    {
+        $orders = Order::whereBetween('created_at', [$from, $to]);
+        $count = (clone $orders)->count();
+        $paidOrders = (clone $orders)->whereHas('payments', fn ($q) => $q->where('outcome', 'paid'))->count();
+        $paidValue = (int) Payment::where('outcome', 'paid')
+            ->whereIn('order_id', (clone $orders)->select('id'))
+            ->sum('amount');
+
+        return [
+            'orders' => $count,
+            'paid_orders' => $paidOrders,
+            'paid_value' => $paidValue,
+            'payment_success_rate' => $count === 0 ? null : round($paidOrders / $count * 100, 1),
+        ];
+    }
+
+    /** @return array{0: Carbon, 1: Carbon} */
+    private function reportRange(Request $request): array
     {
         $validated = $request->validate([
             'period' => ['required', Rule::in(['today', '7d', '30d', 'custom'])],
@@ -120,8 +188,15 @@ class AdminOrderController extends Controller
         };
 
         if ($from->diffInDays($to) >= 366) {
-            throw ValidationException::withMessages(['to' => 'Rentang laporan maksimal 366 hari.']);
+            throw ValidationException::withMessages(['to' => trans('admin_ui.flash.report_range')]);
         }
+
+        return [$from, $to];
+    }
+
+    public function report(Request $request, PdfDocumentService $pdf): Response
+    {
+        [$from, $to] = $this->reportRange($request);
 
         // Ambil satu baris lebih dari batas untuk mendeteksi kelebihan tanpa query count terpisah.
         $orders = Order::with('user:id,name')->whereBetween('created_at', [$from, $to])
@@ -130,7 +205,7 @@ class AdminOrderController extends Controller
 
         if ($orders->count() > self::REPORT_MAX_ORDERS) {
             return response(
-                'Laporan melebihi '.self::REPORT_MAX_ORDERS.' pesanan. Persempit rentang tanggal lalu unduh ulang.',
+                trans('admin_ui.report.exceeded_limit', ['max' => self::REPORT_MAX_ORDERS]),
                 422,
                 ['Content-Type' => 'text/plain; charset=UTF-8', 'Cache-Control' => 'private, no-store']
             );
@@ -138,27 +213,32 @@ class AdminOrderController extends Controller
 
         $active = $orders->where('status', '!=', 'cancelled');
         $lines = [
-            'Periode (UTC): '.$from->format('d-m-Y H:i').' hingga '.$to->format('d-m-Y H:i').' UTC',
-            'Pesanan dibuat: '.$orders->count().' (dibatalkan: '.($orders->count() - $active->count()).')',
-            'Nilai pesanan non-batal: Rp '.number_format((int) $active->sum('total'), 0, ',', '.'),
-            'Catatan: nilai pesanan tercatat, bukan pendapatan terbayar/terverifikasi.',
+            trans('admin_ui.report.period', ['from' => $from->format('d-m-Y H:i'), 'to' => $to->format('d-m-Y H:i')]),
+            trans('admin_ui.report.orders_created', ['count' => $orders->count(), 'cancelled' => $orders->count() - $active->count()]),
+            trans('admin_ui.report.non_cancelled_value', ['value' => number_format((int) $active->sum('total'), 0, ',', '.')]),
+            trans('admin_ui.report.note'),
             '',
         ];
 
         foreach (array_keys(Order::STATUS_FLOW) as $status) {
-            $lines[] = 'Status '.strtoupper($status).': '.$orders->where('status', $status)->count();
+            $lines[] = trans('admin_ui.report.status_line', ['status' => trans('admin_ui.dashboard.'.$status), 'count' => $orders->where('status', $status)->count()]);
         }
 
         $lines[] = '';
 
         foreach ($orders as $order) {
-            $customer = trim((string) ($order->customer_name ?? $order->user?->name ?? '')) ?: '-';
-            $lines[] = sprintf('#%d | %s | %s | Pelanggan: %s | Rp %s', $order->id, $order->created_at->format('d-m-Y H:i'), strtoupper($order->status), $customer, number_format($order->total, 0, ',', '.'));
+            $lines[] = trans('admin_ui.report.row', [
+                'id' => $order->id,
+                'date' => $order->created_at->format('d-m-Y H:i'),
+                'status' => trans('admin_ui.dashboard.'.$order->status),
+                'customer' => trim((string) ($order->customer_name ?? $order->user?->name ?? '')) ?: '-',
+                'total' => number_format($order->total, 0, ',', '.'),
+            ]);
         }
 
         $filename = 'zafira-laporan-'.$from->format('Ymd').'-'.$to->format('Ymd').'.pdf';
 
-        return response($pdf->render('ZAFIRA - LAPORAN PESANAN', $lines), 200, [
+        return response($pdf->render(trans('admin_ui.report.title'), $lines, trans('admin_ui.report.pagination')), 200, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'attachment; filename="'.$filename.'"',
             'Cache-Control' => 'private, no-store',
@@ -172,25 +252,40 @@ class AdminOrderController extends Controller
     public function invoice(int $id): Response
     {
         $order = Order::with(['items', 'user'])->findOrFail($id);
+        // Slip ditujukan ke klien: bahasa penerima, bukan bahasa operator; locale operator dipulihkan setelahnya.
+        $recipientLocale = RecipientLocale::resolve($order->locale ?? $order->user?->locale);
+        $operatorLocale = app()->getLocale();
+        app()->setLocale($recipientLocale);
+        try {
+            return $this->renderInvoice($order);
+        } finally {
+            app()->setLocale($operatorLocale);
+        }
+    }
+
+    private function renderInvoice(Order $order): Response
+    {
         $addr = $order->shipping_address ?? [];
         $customerName = $order->customer_name ?? $order->user?->name ?? '-';
         $customerEmail = $order->customer_email ?? $order->user?->email ?? '-';
 
-        $html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Slip Pesanan #'.$order->id.'</title>'
+        $locale = app()->getLocale();
+        $status = trans('admin_ui.dashboard.'.$order->status);
+        $html = '<!DOCTYPE html><html lang="'.e($locale).'"><head><meta charset="utf-8"><title>'.e(trans('admin_ui.invoice.title', ['id' => $order->id])).'</title>'
             .'<style>body{font-family:serif;max-width:700px;margin:20px auto;color:#1c1b1a}h1{letter-spacing:2px;font-size:20px}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{border-bottom:1px solid #ddd;padding:8px;text-align:left}th:last-child,td:last-child{text-align:right}</style></head>'
-            .'<body><h1>ZAFIRA &mdash; SLIP PESANAN #'.$order->id.'</h1>'
-            .'<p>Tanggal: '.$order->created_at->format('d M Y H:i').'<br>Klien: '.e($customerName).' ('.e($customerEmail).')<br>'
-            .'Status: '.strtoupper($order->status).'<br>Tujuan: '.e($addr['line1'] ?? '-').', '.e($addr['city'] ?? '-').' '.e($addr['postal_code'] ?? '').'</p>'
-            .'<table><thead><tr><th>Produk</th><th>Jml</th><th>Harga</th><th>Subtotal</th></tr></thead><tbody>';
+            .'<body><h1>'.e(trans('admin_ui.invoice.heading', ['id' => $order->id])).'</h1>'
+            .'<p>'.e(trans('admin_ui.invoice.date')).': '.$order->created_at->format('Y-m-d H:i').'<br>'.e(trans('admin_ui.invoice.client')).': '.e($customerName).' ('.e($customerEmail).')<br>'
+            .e(trans('admin_ui.invoice.status')).': '.e($status).'<br>'.e(trans('admin_ui.invoice.destination')).': '.e($addr['line1'] ?? '-').', '.e($addr['city'] ?? '-').' '.e($addr['postal_code'] ?? '').'</p>'
+            .'<table><thead><tr><th>'.e(trans('admin_ui.invoice.product')).'</th><th>'.e(trans('admin_ui.invoice.quantity')).'</th><th>'.e(trans('admin_ui.invoice.price')).'</th><th>'.e(trans('admin_ui.invoice.subtotal')).'</th></tr></thead><tbody>';
 
         foreach ($order->items as $item) {
             $html .= '<tr><td>'.e($item->product_title).'</td><td>'.$item->quantity.'</td><td>Rp '.number_format($item->unit_price, 0, ',', '.').'</td><td>Rp '.number_format($item->subtotal, 0, ',', '.').'</td></tr>';
         }
 
         $html .= '</tbody></table><p style="text-align:right;font-weight:bold;margin-top:20px">'
-            .'Subtotal: Rp '.number_format($order->subtotal, 0, ',', '.').'<br>'
-            .'Diskon: Rp '.number_format($order->discount, 0, ',', '.').'<br>'
-            .'Total: Rp '.number_format($order->total, 0, ',', '.').'</p></body></html>';
+            .e(trans('admin_ui.invoice.subtotal')).': Rp '.number_format($order->subtotal, 0, ',', '.').'<br>'
+            .e(trans('admin_ui.invoice.discount')).': Rp '.number_format($order->discount, 0, ',', '.').'<br>'
+            .e(trans('admin_ui.invoice.total')).': Rp '.number_format($order->total, 0, ',', '.').'</p></body></html>';
 
         return response($html, 200, ['Content-Type' => 'text/html; charset=UTF-8']);
     }

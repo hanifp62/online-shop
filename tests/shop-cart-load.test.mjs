@@ -18,7 +18,7 @@ function source(loggedIn) {
 function el(tag = 'div') {
     const listeners = {};
     return {
-        tag, children: [], textContent: '', disabled: false, value: '', style: {}, attrs: {}, options: [],
+        tag, children: [], textContent: '', disabled: false, value: '', style: {}, attrs: {}, options: [], classList: {toggle() {}},
         append(...nodes) { this.children.push(...nodes); },
         replaceChildren(...nodes) { this.children = [...nodes]; },
         setAttribute(k, v) { this.attrs[k] = v; }, removeAttribute(k) { delete this.attrs[k]; },
@@ -53,6 +53,7 @@ function shop({ loggedIn, responses }) {
         querySelector: (s) => (s === 'main' ? main : el()),
         querySelectorAll: () => [],
     };
+    $('checkout-form').voucher_code = el('input');
     const checkoutAddress = $('checkout-address');
     checkoutAddress.value = '3';
     const context = {
@@ -109,6 +110,16 @@ for (const loggedIn of [true, false]) {
         assert.equal(h.$(button).disabled, true);
     });
 
+    test(`${who}: rapid double submit sends exactly one checkout POST`, async () => {
+        const order = { order: { id: 11, total: 200, status: 'pending', items: [] }, tracking_token: 'trk-2' };
+        const h = shop({ loggedIn, responses: [...boot, { items: [item], subtotal: 200 }, order] });
+        await flush();
+        submit(h, form);
+        submit(h, form);
+        await flush();
+        assert.equal(h.calls.filter(isCheckout).length, 1, 'second click ignored while first is in flight');
+    });
+
     test(`${who}: a lost checkout response can be replayed with the same key even when the cart reads empty`, async () => {
         const order = { order: { id: 9, total: 200, status: 'pending', items: [] }, tracking_token: 'trk-1' };
         const h = shop({
@@ -129,6 +140,7 @@ for (const loggedIn of [true, false]) {
         assert.equal(attempts.length, 2, 'retry replays despite the now-empty cart');
         assert.equal(attempts[1].body.idempotency_key, attempts[0].body.idempotency_key, 'same idempotency key');
         assert.match(h.$('feedback').text, /Pesanan #9/);
+        assert.equal(h.$('feedback').attrs.role, 'status');
         if (!loggedIn) assert.match(h.$('guest-order-confirmation').text, /trk-1/, 'guest tracking token still surfaced');
     });
 
@@ -141,6 +153,7 @@ for (const loggedIn of [true, false]) {
         await flush();
         submit(h, form);
         await flush();
+        assert.equal(h.$('feedback').attrs.role, 'alert', 'error switches feedback to alert role');
         submit(h, form);
         await flush();
         assert.equal(h.calls.filter(isCheckout).length, 1, 'no replay after a definitive rejection');
@@ -166,6 +179,17 @@ test('initial load failure shows retry state instead of an empty-looking bag', a
     assert.equal(h.$('checkout-button').disabled, true);
 });
 
+test('account order statuses use customer-facing labels and unknown statuses fall back to a safe label', async () => {
+    const orders = ['pending', 'paid', 'processing', 'shipped', 'completed', 'cancelled', 'future_status'].map((status, id) => ({ id: id + 1, status, total: 100, items: [] }));
+    const h = shop({ loggedIn: true, responses: [{ items: [] }, { addresses: [] }, { data: orders, current_page: 1, last_page: 1, total: orders.length }, { favorites: [] }] });
+    await flush();
+    const text = h.$('order-list').text;
+    for (const label of ['menunggu pembayaran', 'dibayar', 'diproses', 'dikirim', 'selesai', 'dibatalkan', 'Status belum tersedia']) {
+        assert.ok(text.includes(label), `missing ${label}`);
+    }
+    assert.doesNotMatch(text, /\bpending\b|\bpaid\b|\bprocessing\b|\bshipped\b|\bcompleted\b|\bcancelled\b/);
+});
+
 for (const loggedIn of [true, false]) {
     const who = loggedIn ? 'account' : 'guest';
     const boot = loggedIn
@@ -178,7 +202,7 @@ for (const loggedIn of [true, false]) {
         assert.match(h.$('checkout-summary').text, /Tas Kulit/);
         assert.match(h.$('checkout-summary').text, /Subtotal: Rp200/);
         assert.doesNotMatch(h.$('checkout-summary').text, /\bPerkiraan total:|Ongkir:/);
-        assert.match(h.$('checkout-summary').text, /pending \/ belum dibayar/);
+        assert.match(h.$('checkout-summary').text, /menunggu pembayaran/);
     });
 
     test(`${who}: summary shows server breakdown when quote fields present`, async () => {

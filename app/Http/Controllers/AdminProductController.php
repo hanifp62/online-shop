@@ -52,7 +52,7 @@ class AdminProductController extends Controller
         $product = Product::create($validated);
         AdminCategoryController::flushStorefrontCache();
 
-        return back()->with('success', "Produk {$product->product_title} berhasil ditambahkan.");
+        return back()->with('success', __('admin_ui.flash.product_added', ['title' => $product->product_title]));
     }
 
     public function update(Request $request, Product $product): RedirectResponse
@@ -85,13 +85,13 @@ class AdminProductController extends Controller
 
             return back()->with(
                 'success',
-                "Produk {$product->product_title} dipindah ke {$category?->cat_title} — filter user ikut berubah."
+                __('admin_ui.flash.product_moved', ['title' => $product->product_title, 'category' => $category?->cat_title])
             );
         }
 
         return back()->with(
             'success',
-            "Produk {$product->product_title} berhasil diperbarui."
+            __('admin_ui.flash.product_updated', ['title' => $product->product_title])
         );
     }
 
@@ -102,6 +102,6 @@ class AdminProductController extends Controller
         $product->delete();
         AdminCategoryController::flushStorefrontCache([$stale]);
 
-        return back()->with('success', "Produk {$title} berhasil dihapus.");
+        return back()->with('success', __('admin_ui.flash.product_deleted', ['title' => $title]));
     }
 }

@@ -48,6 +48,18 @@ class StorefrontTest extends TestCase
             ->assertSee('Rp18.750.000');
     }
 
+    public function test_product_detail_page_exposes_canonical_share_target(): void
+    {
+        $product = Product::where('product_slug', 'sac-seraphine')->firstOrFail();
+        $url = route('products.show', $product->product_slug);
+
+        $this->get($url)
+            ->assertOk()
+            ->assertSee('data-share-product', false)
+            ->assertSee('data-share-url="'.e($url).'"', false)
+            ->assertSee('<meta property="og:url" content="'.e($url).'">', false);
+    }
+
     public function test_sitemap_is_accessible(): void
     {
         $this->get('/sitemap.xml')

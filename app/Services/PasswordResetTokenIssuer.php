@@ -23,6 +23,7 @@ class PasswordResetTokenIssuer
             } catch (\Throwable) {
             }
         }
+
         return $token;
     }
 }

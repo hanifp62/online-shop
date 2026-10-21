@@ -471,6 +471,31 @@ test("FR-R44-003: density is reapplied per key after the table regions are swapp
     );
 });
 
+test("FR-R44-status: cancellation requires confirmation", async () => {
+    const { handlers, requests, window } = env(undefined, { ignoreAbort: true });
+    window.confirm = (message) => {
+        assert.match(message, /tidak dapat diurungkan/);
+        return false;
+    };
+    const select = { value: "cancelled" };
+    const orderForm = {
+        action: "http://x/admin/orders/42",
+        querySelectorAll: () => [select],
+        resetCalled: false,
+        reset() { this.resetCalled = true; },
+        closest(sel) {
+            if (sel === "form[data-admin-table-form]") return null;
+            if (sel === "form[data-order-status-form]") return this;
+            if (sel === "[data-admin-table]") return { getAttribute: () => "pesanan" };
+            return null;
+        },
+    };
+    const event = {target: {closest: (sel) => orderForm.closest(sel)}, preventDefault() {}};
+    await handlers.submit(event, () => ({get: () => "cancelled"}));
+    assert.equal(requests.length, 0);
+    assert.equal(orderForm.resetCalled, true);
+});
+
 test("FR-R44-status: status-form submit intercepts, POSTs with JSON headers, and reloads table region", async () => {
     const { handlers, requests } = env(undefined, { ignoreAbort: true });
     const orderForm = {

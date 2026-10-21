@@ -66,9 +66,9 @@
 | R-50 | G7 — consistent identity and language | INFERRED | Add verbatim R-50→G7 statement to the saved PRD. | 4 |
 | R-51 | G7 — consistent identity and language | INFERRED | Add verbatim R-51→G7 statement to the saved PRD. | 4 |
 | R-52 | G7 — consistent identity and language | INFERRED | Add verbatim R-52→G7 statement to the saved PRD. | 4 |
-| R-53 | G7 — consistent identity and language | INFERRED | Add verbatim R-53→G7 statement to the saved PRD. | 4 |
-| R-54 | G7 — consistent identity and language | INFERRED | Add verbatim R-54→G7 statement to the saved PRD. | 4 |
-| R-55 | G7 — consistent identity and language | INFERRED | Add verbatim R-55→G7 statement to the saved PRD. | 4 |
+| R-53 | G7 — consistent identity and language | INFERRED | Add verbatim R-53→G7 statement to the saved PRD. Implementasi lokal: `COUNCIL_DECISIONS.md` #052, tes `CommercialClaimIntegrityTest`. | 4 |
+| R-54 | G7 — consistent identity and language | INFERRED | Add verbatim R-54→G7 statement to the saved PRD. Implementasi lokal: `COUNCIL_DECISIONS.md` #053, tes `GuidingMicrocopyTest`. | 4 |
+| R-55 | G7 — consistent identity and language | INFERRED | Add verbatim R-55→G7 statement to the saved PRD. Implementasi lokal: `COUNCIL_DECISIONS.md` #054, guard `tests/brand-tokens.test.mjs`, doc `BRAND_TOKEN_LOCK.md`. | 4 |
 | R-56 | G5 — identity and access protection | INFERRED | Add verbatim R-56→G5 statement to the saved PRD. | 3 |
 | R-57 | G5 — identity and access protection | INFERRED | Add verbatim R-57→G5 statement to the saved PRD. | 3 |
 | R-58 | G5 — identity and access protection | INFERRED | Add verbatim R-58→G5 statement to the saved PRD. | 3 |

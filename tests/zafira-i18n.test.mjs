@@ -11,7 +11,7 @@ const welcome = readFileSync(new URL('../resources/views/welcome.blade.php', imp
 const usedKeys = [...new Set([...welcome.matchAll(/data-i18n(?:-placeholder|-title)?="([^"]+)"/g)].map(([, key]) => key))];
 
 test('exported dictionaries cover storefront translation attributes', () => {
-    assert.deepEqual(Object.keys(dictionaries), ['id', 'en', 'fr', 'it']);
+    assert.deepEqual(Object.keys(dictionaries), ['zh', 'id', 'en', 'fr', 'it']);
     for (const [language, dictionary] of Object.entries(dictionaries)) {
         const missing = usedKeys.filter(key => typeof dictionary[key] !== 'string' || !dictionary[key].trim());
         assert.deepEqual(missing, [], `${language}: missing storefront translations`);

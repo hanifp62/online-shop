@@ -1,4 +1,4 @@
-# ZAFIRA AMADIS — Isi Presentasi
+# ZAFIRA — Isi Presentasi
 
 Tanggal dibuat: 2026-10-12; diperbarui 2026-10-13. Semua status mengikuti `docs/demo/ZAFIRA_ACCEPTANCE_MATRIX.csv`.
 

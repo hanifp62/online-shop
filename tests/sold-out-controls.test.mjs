@@ -6,7 +6,7 @@ import { execFileSync } from 'node:child_process';
 
 const catalog = readFileSync('resources/views/catalog/index.blade.php', 'utf8');
 const pdp = readFileSync('resources/views/products/show.blade.php', 'utf8');
-const labels = JSON.parse(execFileSync('php', ['-r', 'echo json_encode(require "resources/views/catalog/labels.php");'], { encoding: 'utf8' }));
+const labels = JSON.parse(execFileSync('php', ['-r', 'echo json_encode(array_combine($l = ["id", "en", "zh", "fr", "it"], array_map(fn ($x) => require "lang/$x/zafira.php", $l)));'], { encoding: 'utf8' }));
 
 test('FR-SOLDOUT-01: translated unavailable label exists for every catalog locale', () => {
     for (const [locale, row] of Object.entries(labels)) assert.ok(row.sold_out?.length, `${locale}: sold_out`);
@@ -26,7 +26,7 @@ test('FR-SOLDOUT-01: catalog card and quick view prevent adding stock-zero produ
 });
 
 test('FR-SOLDOUT-01: PDP disables purchase when live product stock is zero', () => {
-    assert.match(pdp, /data-product-add[\s\S]*?\$product->stock\s*<=\s*0[\s\S]*?disabled[\s\S]*?Stok habis/);
+    assert.match(pdp, /data-product-add[\s\S]*?\$product->stock\s*<=\s*0[\s\S]*?disabled[\s\S]*?('Stok habis'|shop_ui\.pdp\.sold_out)/);
 });
 
 const home = readFileSync('resources/views/welcome.blade.php', 'utf8');
@@ -40,9 +40,13 @@ test('FR-SOLDOUT-01: homepage and related cards expose stock and disable sold-ou
     assert.match(home, /data-card-add @if \(\$product\['stock'\] <= 0\) disabled @endif/);
     assert.match(pdp, /data-stock="\{\{\s*max\(0,\s*\(int\)\s*\$item->stock\)\s*\}\}"/);
     assert.match(pdp, /data-card-add @if \(\$item->stock <= 0\) disabled @endif/);
-    // In-stock path keeps the original label.
-    assert.match(home, /\$product\['stock'\] <= 0 \? 'Stok habis' : 'Tambah'/);
-    assert.match(pdp, /\$item->stock <= 0 \? 'Stok habis' : 'Tambah'/);
+    // In-stock path keeps the original label via catalogue keys.
+    assert.match(home, /\$product\['stock'\] <= 0 \? __\('shop_ui\.pdp\.sold_out'\) : __\('shop_ui\.pdp\.card_add'\)/);
+    assert.match(pdp, /\$item->stock <= 0 \? __\('shop_ui\.pdp\.sold_out'\) : __\('shop_ui\.pdp\.card_add'\)/);
+    const shopUi = JSON.parse(execFileSync('php', ['-r', 'echo json_encode(array_combine($l = ["id", "en", "zh", "fr", "it"], array_map(fn ($x) => (require "lang/$x/shop_ui.php")["pdp"], $l)));'], { encoding: 'utf8' }));
+    assert.equal(shopUi.id.sold_out, 'Stok habis');
+    assert.equal(shopUi.id.card_add, 'Tambah');
+    for (const [locale, row] of Object.entries(shopUi)) assert.ok(row.sold_out?.length && row.card_add?.length, locale);
 });
 
 test('FR-SOLDOUT-01: shared quick view and card handler refuse sold-out products', () => {

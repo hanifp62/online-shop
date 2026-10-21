@@ -15,6 +15,14 @@ export function initAdminTables({
 } = {}) {
     // No fetch = keep native GET navigation untouched.
     if (typeof fetcher !== "function") return { load: async () => {} };
+    let tableCopy = {};
+    try {
+        tableCopy = JSON.parse(doc.querySelector?.('#zafira-admin-table-copy')?.textContent || '{}');
+    } catch {
+        // Keep Indonesian fallbacks if the copy blob is unavailable or malformed.
+    }
+    const getAdminTableCopy = (key, fallback) =>
+        typeof tableCopy?.[key] === 'string' ? tableCopy[key] : fallback;
     let controller = null;
     let statusSubmitting = false;
     const tableKeys = () =>
@@ -70,7 +78,7 @@ export function initAdminTables({
         const count = doc.querySelector(
             `[data-table-selection-count="${key}"]`,
         );
-        if (count) count.textContent = `${picked} dipilih`;
+        if (count) count.textContent = getAdminTableCopy('selected', ':count dipilih').replace(':count', String(picked));
         const copy = doc.querySelector(`[data-table-copy-selection="${key}"]`);
         if (copy) copy.disabled = picked === 0;
     };
@@ -155,7 +163,7 @@ export function initAdminTables({
             dirty.length &&
             !dirty.every(agreed) &&
             !win.confirm(
-                "Ada perubahan yang belum disimpan di tabel admin. Lanjutkan dan buang perubahan?",
+                getAdminTableCopy("unsaved_confirm", "Ada perubahan yang belum disimpan di tabel admin. Lanjutkan dan buang perubahan?"),
             )
         )
             return null;
@@ -168,6 +176,11 @@ export function initAdminTables({
     // only the table regions; without JS the form stays a native POST.
     const submitOrderStatus = async (form, key, body) => {
         if (statusSubmitting || form.getAttribute?.("data-submitting") === "true") return;
+        const targetStatus = (typeof body?.get === "function" ? body.get("status") : body?.status) || "";
+        if (targetStatus === "cancelled" && !win.confirm(getAdminTableCopy("cancel_confirm", "Batalkan pesanan ini secara permanen? Tindakan ini tidak dapat diurungkan."))) {
+            form.reset?.();
+            return;
+        }
         statusSubmitting = true;
         form.setAttribute?.("data-submitting", "true");
         const section = doc.querySelector(`[data-admin-table="${key}"]`);
@@ -178,7 +191,7 @@ export function initAdminTables({
         controller?.abort();
         controller = null;
         section?.setAttribute("aria-busy", "true");
-        announce("Menyimpan status pesanan…");
+        announce(getAdminTableCopy("saving", "Menyimpan status pesanan…"));
         try {
             const response = await fetcher(form.action, {
                 method: "POST",
@@ -199,13 +212,13 @@ export function initAdminTables({
                 const msg =
                     data?.errors?.status?.[0] ??
                     data?.message ??
-                    "Gagal memperbarui status pesanan.";
+                    getAdminTableCopy("save_failed", "Gagal memperbarui status pesanan.");
                 announce(msg);
                 if (section) showError(section, "http", msg);
                 return;
             }
             await load(key, renderedHref, { focus: "if-inside" });
-            announce("Status pesanan berhasil diperbarui.");
+            announce(getAdminTableCopy("saved", "Status pesanan berhasil diperbarui."));
             // The submitted select is no longer a draft; do not ask to discard it.
             form.reset?.();
         } catch {
@@ -229,10 +242,10 @@ export function initAdminTables({
         box.textContent =
             customMessage ||
             (kind === "login"
-                ? "Sesi admin tidak aktif. Masuk kembali untuk melanjutkan."
+                ? getAdminTableCopy("session_inactive", "Sesi admin tidak aktif. Masuk kembali untuk melanjutkan.")
                 : kind === "http"
-                  ? "Tabel belum dapat diperbarui. Coba lagi."
-                  : "Data tabel gagal dimuat. Periksa koneksi lalu coba lagi.");
+                  ? getAdminTableCopy("http_error", "Tabel belum dapat diperbarui. Coba lagi.")
+                  : getAdminTableCopy("network_error", "Data tabel gagal dimuat. Periksa koneksi lalu coba lagi."));
         if (kind === "login" && doc.createElement && box.appendChild) {
             const configured = box.getAttribute?.("data-login-url");
             let login = "/admin/login";
@@ -250,7 +263,7 @@ export function initAdminTables({
             }
             const link = doc.createElement("a");
             link.href = login;
-            link.textContent = "Masuk kembali";
+            link.textContent = getAdminTableCopy("login_again", "Masuk kembali");
             box.appendChild(link);
         }
         box.hidden = false;
@@ -298,7 +311,7 @@ export function initAdminTables({
                 .querySelector(`[data-admin-table="${k}"]`)
                 ?.setAttribute("aria-busy", "true"),
         );
-        announce("Memuat data tabel…");
+        announce(getAdminTableCopy("loading", "Memuat data tabel…"));
         const staleError = current.querySelector("[data-table-error]");
         if (staleError) {
             staleError.hidden = true;
@@ -452,12 +465,12 @@ export function initAdminTables({
             const failed = () => {
                 if (count)
                     count.textContent =
-                        "Tidak dapat menyalin. Pilih ulang lalu coba lagi.";
+                        getAdminTableCopy("copy_failed", "Tidak dapat menyalin. Pilih ulang lalu coba lagi.");
             };
             if (!win.navigator?.clipboard?.writeText) failed();
             else
                 win.navigator.clipboard.writeText(ids).then(() => {
-                    if (count) count.textContent = "No. pesanan tersalin.";
+                    if (count) count.textContent = getAdminTableCopy("copied", "No. pesanan tersalin.");
                 }, failed);
             return;
         }

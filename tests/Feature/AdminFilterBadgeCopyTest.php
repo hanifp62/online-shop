@@ -86,7 +86,9 @@ class AdminFilterBadgeCopyTest extends TestCase
         $response = $this->get(route('admin.dashboard', [$key => $value]));
 
         $response->assertOk()
-            ->assertSee('data-active-filter="'.$key.': '.e($value).'">'.$label.': '.(match ($key) { 'ostatus' => 'Menunggu', 'status' => 'Baru', default => e($value) }).'</span>', false)
+            ->assertSee('data-active-filter="'.$key.': '.e($value).'">'.$label.': '.(match ($key) {
+                'ostatus' => 'Menunggu', 'status' => 'Baru', default => e($value)
+            }).'</span>', false)
             ->assertDontSeeText($key.': '.$value);
 
         if (str_contains($value, '<')) {

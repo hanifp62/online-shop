@@ -91,7 +91,8 @@ class StorefrontCacheSerializationTest extends TestCase
 
         $cold = $this->get('/produk/sac-lumiere')->assertOk()->getContent();
         $this->assertStringContainsString('Étole Saphir', $cold);
-        $this->assertStringNotContainsString('Stok habis', $cold);
+        // The app-copy JSON blob carries the label for client-side use; only visible markup matters.
+        $this->assertStringNotContainsString('Stok habis', preg_replace('#<script type="application/json" id="zafira-app-copy">.*?</script>#s', '', $cold));
         $relatedKey = $this->cacheKey("storefront:related:{$category->cat_id}:{$first->product_id}:v3");
         $this->assertNotNull($relatedKey);
         $cached = Cache::get($relatedKey);

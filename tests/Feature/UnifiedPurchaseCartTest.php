@@ -34,7 +34,7 @@ class UnifiedPurchaseCartTest extends TestCase
         $product = $this->product();
         $this->get('/')->assertOk()
             ->assertSee('data-product-id="'.$product->product_id.'"', false)
-            ->assertSee('Pembelian standar', false)
+            ->assertSee('Pembelian katalog', false)
             ->assertSee('data-cart-items', false);
         $this->get('/produk/sac-seraphine')->assertOk()
             ->assertSee('data-product-id="'.$product->product_id.'"', false)
@@ -54,7 +54,7 @@ class UnifiedPurchaseCartTest extends TestCase
         $this->getJson('/cart')->assertOk()->assertJsonPath('subtotal', 250000);
         $this->postJson('/cart/items', ['product_id' => $product->product_id, 'quantity' => 1])
             ->assertOk()->assertJsonPath('items.0.quantity', 1);
-        $this->get('/belanja')->assertOk()->assertSee('Tas pembelian standar', false);
+        $this->get('/belanja')->assertOk()->assertSee('Tas Belanja', false);
     }
 
     public function test_personalization_is_rejected_at_server_purchase_boundary(): void

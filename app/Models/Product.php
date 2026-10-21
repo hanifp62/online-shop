@@ -43,6 +43,17 @@ class Product extends Model
         );
     }
 
+    public function imageAlt(): string
+    {
+        foreach ([$this->product_alt, $this->product_title] as $label) {
+            if (trim((string) $label) !== '') {
+                return $label;
+            }
+        }
+
+        return trans('customer_messages.storefront.product_image');
+    }
+
     public function imageWidth(int $width): string
     {
         if (! $this->product_image) {
@@ -50,6 +61,16 @@ class Product extends Model
         }
 
         return preg_replace('/w=\d+/', 'w='.$width, $this->product_image);
+    }
+
+    /** srcset hanya untuk CDN yang menerima parameter lebar `w=`; selain itu browser memakai `src`. */
+    public function imageSrcset(array $widths = [400, 800, 1200]): string
+    {
+        if (! $this->product_image || ! preg_match('/[?&]w=\d+/', $this->product_image)) {
+            return '';
+        }
+
+        return collect($widths)->map(fn (int $w) => $this->imageWidth($w).' '.$w.'w')->implode(', ');
     }
 
     public function swatchHex(): string

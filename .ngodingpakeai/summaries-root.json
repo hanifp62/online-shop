@@ -1,0 +1,122 @@
+{
+  ".claude/agents/impeccable-asset-producer.md": {
+    "summary": "Definisi subagent Claude `impeccable-asset-producer` yang memproduksi aset raster bersih dan dapat dipakai ulang dari mock Impeccable yang sudah disetujui. Memuat aturan inti, alur decision comps, dan kontrak serah terima ke reviewer agar arah desain tidak dirancang ulang."
+  },
+  ".claude/agents/impeccable-documenter.md": {
+    "summary": "Definisi subagent `impeccable-documenter` yang menulis DESIGN.md beserta sidecar-nya dari build Impeccable yang sudah selesai. Sistem desain diturunkan dari artefak yang benar-benar dikirim, bukan dari niat desain, dengan kontrak input dan output yang eksplisit."
+  },
+  ".claude/agents/impeccable-finish-reviewer.md": {
+    "summary": "Definisi subagent `impeccable-finish-reviewer` yang menilai build akhir terhadap kontrak arah desain, comp yang disetujui, dan standar mutu world terpilih. Mengembalikan daftar perbaikan material terurut beserta disposisi lolos atau tidak."
+  },
+  ".claude/agents/impeccable-manual-edit-applier.md": {
+    "summary": "Definisi subagent `impeccable-manual-edit-applier` yang menerapkan batch copy-edit manual Impeccable ke kode sumber dan mengembalikan hasil Apply kanonis. Mengatur atomisitas entri agar satu batch tidak diterapkan separuh."
+  },
+  ".claude/settings.local.json": {
+    "summary": "Konfigurasi hook lokal Claude Code untuk detektor desain Impeccable: pemeriksaan tier langsung setelah Edit atau Write pada berkas UI, dan pemeriksaan aturan penuh pada event Stop. Hook memanggil skrip pembungkus di direktori skill bila berkasnya ada."
+  },
+  ".codex/hooks.json": {
+    "summary": "Konfigurasi hook Codex yang memicu skrip Impeccable pada PostToolUse untuk Edit, Write, serta apply_patch, dan pada event Stop. Menyediakan varian perintah Windows dan batas waktu pendek agar hook tidak memblokir sesi."
+  },
+  ".codex/skills/ngodingpakeai/SKILL.md": {
+    "summary": "Salinan skill NgodingPakeAI untuk harness Codex: prasyarat token dan workspace, alur sinkronisasi metadata lalu ringkasan, format summaries.json, aturan keras keamanan, serta daftar perintah CLI. Juga menjelaskan loop pengerjaan task satu per satu melalui `task next`."
+  },
+  ".editorconfig": {
+    "summary": "Aturan EditorConfig lintas editor untuk proyek ini: gaya indentasi, akhir baris, penyisipan newline akhir, dan pemangkasan spasi berlebih, dengan pengecualian per tipe berkas agar format konsisten antar kontributor."
+  },
+  ".gitattributes": {
+    "summary": "Atribut Git repositori yang menormalkan akhir baris dan menandai tipe berkas tertentu, sehingga diff dan checkout tetap konsisten di macOS, Linux, dan Windows."
+  },
+  ".github/pull_request_template.md": {
+    "summary": "Template pull request berbahasa Indonesia dengan bagian Ringkasan, gerbang gaya bahasa untuk teks baru atau yang diubah, dan daftar Verifikasi. Memaksa penulis PR mencantumkan bukti pengujian sebelum review."
+  },
+  ".github/workflows/ci.yml": {
+    "summary": "Workflow CI GitHub Actions untuk push ke `main` dan setiap pull request, dengan izin baca saja dan concurrency per ref. Job `php` menyiapkan PHP 8.4 plus ekstensi mbstring, pdo_sqlite, gd, bcmath, menyiapkan Node dari `.nvmrc`, memasang dependensi Composer dan npm, lalu menjalankan audit dependensi serta gerbang mutu lainnya."
+  },
+  ".gitignore": {
+    "summary": "Daftar pengecualian Git untuk artefak build, direktori vendor dan node_modules, berkas lingkungan, serta keluaran lokal, agar rahasia dan berkas hasil generate tidak masuk ke riwayat repositori."
+  },
+  ".ngodingpakeaiignore": {
+    "summary": "Daftar pengecualian khusus pemindai NgodingPakeAI yang menyingkirkan direktori skill agent, dokumen eksekusi, storage, dan cache bootstrap dari daftar berkas pending, sehingga indeks hanya memuat kode dan dokumen produk yang relevan."
+  },
+  ".nvmrc": {
+    "summary": "Pin versi Node.js untuk proyek ini, dipakai oleh pengembang lokal maupun langkah `actions/setup-node` di CI agar versi runtime JavaScript seragam."
+  },
+  "AGENTS.md": {
+    "summary": "Aturan rekayasa dan pedoman operasional permanen proyek ZAFIRA: prinsip berbasis bukti, larangan kebocoran rahasia dan perintah database destruktif, ketertelusuran requirement berkode FR/NFR/US, model kerja multi-agent, serta protokol dewan audit HCI dari tujuh tokoh interaksi manusia-komputer. Juga memuat blok skill NgodingPakeAI yang mengikat repositori ini ke satu workspace tetap."
+  },
+  "CHANGELOG.md": {
+    "summary": "Catatan perubahan ZAFIRA yang dikelompokkan per tingkat dampak: keamanan kritis, database dan produk, checkout serta pengalaman pengguna, SEO, dan notifikasi email. Menjadi rujukan singkat atas pekerjaan maintenance yang sudah dirilis."
+  },
+  "DESIGN.md": {
+    "summary": "Sistem desain semantik ZAFIRA (La Maison de Lumière) untuk konsumsi agent dan Google Stitch: tema visual dan atmosfer, palet warna beserta peran tiap warna, arsitektur tipografi, dan gaya komponen. Menjadi sumber arah visual bagi implementasi storefront maupun konsol admin."
+  },
+  "README.md": {
+    "summary": "Dokumen pengantar repositori ZAFIRA: tumpukan teknologi, langkah setup lokal, perintah verifikasi, struktur proyek, dan kebersihan repositori. Titik masuk pertama bagi kontributor baru sebelum membaca dokumen di `docs/`."
+  },
+  "RESULT.md": {
+    "summary": "Laporan hasil maintenance dan optimisasi ZAFIRA yang disusun per fase, dimulai dari fase CRITICAL berisi pengerasan keamanan, integrasi database produk nyata menggantikan data hardcode, dan perbaikan alur checkout. Dipakai sebagai rangkuman bukti pekerjaan yang telah dituntaskan."
+  },
+  "RESUME.md": {
+    "summary": "Ringkasan status proyek ZAFIRA bertanggal 7 September 2026 berisi daftar pekerjaan yang sudah dikerjakan dan rekomendasi lanjutan. Berfungsi sebagai catatan serah terima singkat antar sesi kerja."
+  },
+  "artisan": {
+    "summary": "Titik masuk CLI Laravel. Berkas ini memuat autoloader Composer, membangun aplikasi dari `bootstrap/app.php`, lalu menjalankan perintah konsol seperti `migrate`, `test`, dan perintah kustom proyek."
+  },
+  "composer.json": {
+    "summary": "Manifes dependensi PHP proyek: paket runtime Laravel, paket pengembangan seperti PHPUnit dan Pint, batas versi PHP, pemetaan autoload namespace aplikasi dan tes, serta skrip Composer untuk setup dan pengujian."
+  },
+  "composer.lock": {
+    "summary": "Berkas lock Composer yang memaku versi tepat seluruh dependensi PHP beserta turunannya. Dipakai CI dan pengembang agar instalasi `composer install` menghasilkan pohon dependensi yang identik."
+  },
+  "package-lock.json": {
+    "summary": "Berkas lock npm yang memaku versi tepat dependensi frontend seperti Vite dan Tailwind beserta turunannya, sehingga `npm ci` di CI dan lokal menghasilkan pohon modul yang sama."
+  },
+  "package.json": {
+    "summary": "Manifes npm privat proyek dengan syarat Node 22 ke atas, tipe modul ESM, skrip `build` serta `dev` berbasis Vite, dan devDependencies utama berupa plugin Tailwind untuk Vite, axios, concurrently, laravel-vite-plugin, tailwindcss, dan vite."
+  },
+  "phpunit.xml": {
+    "summary": "Konfigurasi PHPUnit yang mendefinisikan testsuite `Unit` dari `tests/Unit` dan `Feature` dari `tests/Feature`, membatasi sumber cakupan ke direktori `app`, serta menyetel variabel lingkungan pengujian termasuk `APP_ENV` bernilai testing."
+  },
+  "prototype/app.css": {
+    "summary": "Lembar gaya prototipe ZAFIRA berukuran besar yang mendefinisikan token warna, tipografi editorial, tata letak galeri, komponen studio produk, serta varian tema terang dan gelap. Menjadi acuan visual prototipe interaktif yang berjalan di luar pipeline Vite aplikasi utama."
+  },
+  "prototype/app.js": {
+    "summary": "Mesin interaksi prototipe ZAFIRA versi 3.3 yang memuat repositori kategori dan produk awal, logika galeri serta studio produk, ritme editorial, dan concierge waktu nyata. Berjalan sebagai skrip mandiri di halaman prototipe tanpa backend Laravel."
+  },
+  "prototype/index.html": {
+    "summary": "Halaman prototipe tunggal ZAFIRA dengan judul `ZAFIRA: La Maison de Lumière - Haute Couture Flagship`, hero bertanda `data-i18n`, grid galeri, dan area akun. Dipakai untuk mengevaluasi interaksi ideal storefront sebelum dituangkan ke view Blade."
+  },
+  "prototype/zafira-core.js": {
+    "summary": "Inti prototipe ZAFIRA yang menyediakan mesin multibahasa untuk ID, EN, FR, dan IT serta mesin tema terang, gelap, dan mengikuti sistem. Memuat kamus terjemahan dan sinkronisasi preferensi sesi yang persisten di peramban."
+  },
+  "r44-final/reports/js-final-test-run.txt": {
+    "summary": "Arsip keluaran mentah satu putaran pengujian Node untuk requirement FR-R44-001 tentang pembatalan state form kotor pada input, textarea, checkbox, radio, dan select. Juga merekam satu kegagalan assertion di mana pesan `Tabel belum dapat diperbarui. Coba lagi.` tidak cocok dengan pola `gagal`."
+  },
+  "scratch/capture_catalog.py": {
+    "summary": "Skrip Playwright sekali pakai yang membuka prototipe di `http://127.0.0.1:8000/prototype/`, memaksa tema gelap lewat atribut `data-theme`, lalu menggulir ke `.gallery-grid` untuk mengambil tangkapan katalog."
+  },
+  "scratch/check_prices.py": {
+    "summary": "Skrip Playwright sekali pakai yang membuka prototipe, menyetel tema gelap, dan menyimpan tangkapan layar harga katalog ke direktori dokumen prototipe untuk pemeriksaan kontras harga secara visual."
+  },
+  "scratch/verify_all_dark_prices.py": {
+    "summary": "Skrip verifikasi Playwright yang menyetel tema gelap melalui `window.Zafira.setTheme` dengan fallback atribut `data-theme`, lalu memeriksa elemen harga seperti metrik diptych di beberapa bagian prototipe."
+  },
+  "scratch/verify_all_pages_eval.py": {
+    "summary": "Skrip evaluasi Playwright yang menelusuri beberapa halaman dari akar aplikasi, memeriksa tidak adanya overflow horizontal dengan membandingkan `scrollWidth` terhadap `innerWidth`, dan menyimpan tangkapan layar desktop ke direktori keluaran."
+  },
+  "scratch/verify_v39_anti_slop_combined.py": {
+    "summary": "Skrip Playwright asinkron untuk evaluasi anti-slop versi 39 yang membuka halaman utama, membaca judul dokumen dan teks body, lalu memeriksa gabungan kriteria mutu teks serta tata letak dalam satu putaran."
+  },
+  "skill-observations/cross-cutting-principles.md": {
+    "summary": "Berkas prinsip lintas skill milik alur task-observer yang menampung daftar prinsip aktif. Dibaca sebagai daftar periksa wajib saat sebuah skill dibuat atau disusun ulang."
+  },
+  "skill-observations/log.md": {
+    "summary": "Log observasi skill bertanggal 19 Oktober 2026 untuk alur browser QA, memuat observasi tentang membekukan input build sebelum QA peramban dan memeriksa ulang state form kotor sebelum mengganti konten asinkron."
+  },
+  "skills-lock.json": {
+    "summary": "Berkas lock daftar skill agent yang terpasang pada repositori ini beserta versi atau revisi tiap skill, sehingga perilaku agent dapat direproduksi antar sesi dan antar mesin."
+  },
+  "vite.config.js": {
+    "summary": "Konfigurasi Vite yang memakai plugin `laravel-vite-plugin` dengan entry `resources/css/app.css`, `resources/css/admin.css`, serta `resources/js/app.js`, mengaktifkan refresh, memasang plugin Tailwind, dan mengabaikan perubahan di `storage/framework/views` pada watcher dev server."
+  }
+}

@@ -1,4 +1,4 @@
-# Laporan pengujian nyata ZAFIRA AMADIS
+# Laporan pengujian nyata ZAFIRA
 
 Tanggal dibuat: 2026-10-12. **Pembaruan 13 Oktober 2026:** AM-01/02/06/10 dijalankan pada fixture SQLite terisolasi (`docs/execution/evidence/2026-10-13/acceptance-am-isolated/REPORT.md`, semua rc 0); tabel di bawah adalah snapshot 12 Oktober dan baris terkait kini superseded oleh bukti tersebut. NFR-003 isolated, DB operasional, dan audit HCI/WCAG tetap NOT RUN/BLOCKED. Nama dokumen menunjukkan tujuan laporan, bukan klaim telah diuji dunia nyata.
 

@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\Admin;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class SeederProductionGuardTest extends TestCase
@@ -75,10 +77,10 @@ class SeederProductionGuardTest extends TestCase
 
         $this->seed(AdminSeeder::class);
 
-        $admin = \App\Models\Admin::firstOrFail();
-        $this->assertFalse(\Illuminate\Support\Facades\Hash::check('password', $admin->password));
-        $this->assertFalse(\Illuminate\Support\Facades\Hash::check('12345678', $admin->password));
-        $this->assertFalse(\Illuminate\Support\Facades\Hash::check('admin', $admin->password));
+        $admin = Admin::firstOrFail();
+        $this->assertFalse(Hash::check('password', $admin->password));
+        $this->assertFalse(Hash::check('12345678', $admin->password));
+        $this->assertFalse(Hash::check('admin', $admin->password));
     }
 
     public function test_admin_login_page_does_not_contain_seeded_admin_hint(): void

@@ -484,7 +484,7 @@
 
     <header class="catalog-header">
         <a class="catalog-brand" href="{{ url('/') }}">ZAFIRA</a>
-        <a class="catalog-btn" href="{{ route('shop.index') }}">Belanja &amp; tas</a>
+        <a class="catalog-btn" href="{{ route('shop.index') }}">{{ __('shop_ui.catalog.bag') }}</a>
         <nav class="catalog-locales" aria-label="{{ $t['language'] }}">
             @foreach (['id' => 'ID', 'en' => 'EN', 'zh' => 'ZH', 'fr' => 'FR', 'it' => 'IT'] as $code => $name)
                 <a href="{{ $catalogUrl([...$filters, 'locale' => $code]) }}"
@@ -606,7 +606,7 @@
             </div>
         @endif
 
-        <p id="catalog-shop-status" class="catalog-meta-bar" role="status" aria-live="polite">Tas ini memesan kreasi sesuai spesifikasi katalog; jumlah baru menggantikan jumlah lama. Ukuran, warna pilihan, dan monogram belum bisa dipesan di sini. Untuk personalisasi, ajukan permintaan concierge dari <a href="{{ url('/') }}">beranda</a> dan jangan lanjutkan checkout. Lihat <a href="{{ route('shop.index') }}">Belanja</a>. <strong id="catalog-feedback"></strong></p>
+        <p id="catalog-shop-status" class="catalog-meta-bar" role="status" aria-live="polite">{{ __('shop_ui.catalog.notice') }} <a href="{{ url('/') }}">{{ __('shop_ui.catalog.home') }}</a> {{ __('shop_ui.catalog.notice_end') }} <a href="{{ route('shop.index') }}">{{ __('shop_ui.catalog.shop') }}</a>. <strong id="catalog-feedback"></strong></p>
         @if (!empty($isFuzzy))
             <p class="catalog-meta-bar" role="status" aria-live="polite">
                 {{ $t['fuzzy_notice'] }}
@@ -639,7 +639,7 @@
                     <article class="catalog-card">
                         <div class="catalog-card-media">
                             @if ($product->product_image)
-                                <img src="{{ $product->imageWidth(600) }}" alt="{{ $product->product_alt ?: $product->product_title }}" loading="lazy" width="400" height="500">
+                                <img src="{{ $product->imageWidth(600) }}" @if ($product->imageSrcset([400, 600, 800])) srcset="{{ $product->imageSrcset([400, 600, 800]) }}" sizes="(max-width: 700px) 50vw, 25vw" @endif decoding="async" alt="{{ $product->imageAlt() }}" loading="lazy" width="400" height="500">
                             @endif
                         </div>
                         <div class="catalog-card-body">
@@ -667,7 +667,7 @@
                                         data-category="{{ $product->category?->cat_title }}"
                                         data-price="Rp{{ number_format((float) $product->product_price, 0, ',', '.') }}"
                                         data-image="{{ $product->imageWidth(800) }}"
-                                        data-alt="{{ $product->product_alt ?: $product->product_title }}"
+                                        data-alt="{{ $product->imageAlt() }}"
                                         data-description="{{ $product->product_description }}"
                                         data-material="{{ $product->product_material }}"
                                         data-color="{{ $product->product_color }}"
@@ -685,7 +685,7 @@
                             </div>
                             <p id="replace-hint-{{ $product->product_id }}" class="catalog-card-attrs" style="margin:6px 0 0;">{{ $t['replace_hint'] }}</p>
                             @auth
-                                <button type="button" class="catalog-btn catalog-btn-secondary" style="margin-top:8px;" data-favorite="{{ $product->product_id }}">Simpan ke favorit</button>
+                                <button type="button" class="catalog-btn catalog-btn-secondary" style="margin-top:8px;" data-favorite="{{ $product->product_id }}">{{ __('shop_ui.catalog.favorite') }}</button>
                             @endauth
                         </div>
                     </article>
@@ -744,6 +744,7 @@
         <p>© {{ date('Y') }} ZAFIRA Maison. {{ $t['lead'] }}</p>
     </footer>
 
+    <script type="application/json" id="catalog-purchase-copy">@json(__('shop_ui.catalog.js'))</script>
     <script>
         (function() {
             var dialog = document.getElementById('catalog-quick-dialog');
@@ -812,6 +813,9 @@
 
             var feedback = document.getElementById('catalog-feedback');
             var csrf = document.querySelector('meta[name="csrf-token"]').content;
+            // Copy comes from lang/*/shop_ui.php via #catalog-purchase-copy; fallbacks are the id text.
+            var catalogCopy = JSON.parse((document.getElementById('catalog-purchase-copy') || {}).textContent || '{}');
+            function catalogText(key, fallback) { return catalogCopy[key] || fallback; }
             function send(url, body) {
                 return fetch(url, {
                     method: 'POST', credentials: 'same-origin',
@@ -820,14 +824,14 @@
                 }).then(function(res) {
                     return res.json().catch(function() { return {}; }).then(function(data) {
                         if (res.ok) return data;
-                        var msg = res.status === 401 ? 'Silakan masuk terlebih dahulu.'
-                            : (data.message || Object.values(data.errors || {}).flat().join(' ') || 'Permintaan gagal. Coba lagi.');
+                        var msg = res.status === 401 ? catalogText('login', 'Silakan masuk terlebih dahulu.')
+                            : (data.message || Object.values(data.errors || {}).flat().join(' ') || catalogText('failed', 'Permintaan gagal. Coba lagi.'));
                         throw new Error(msg);
                     });
-                }, function() { throw new Error('Jaringan terputus. Coba lagi.'); });
+                }, function() { throw new Error(catalogText('network', 'Jaringan terputus. Coba lagi.')); });
             }
             function report(promise, ok, name) {
-                feedback.textContent = 'Memproses…';
+                feedback.textContent = catalogText('processing', 'Memproses…');
                 promise.then(function() { feedback.textContent = ok + (name ? ': ' + name : ''); })
                     .catch(function(e) { feedback.textContent = e.message; });
             }
@@ -837,13 +841,13 @@
                     var fields = new FormData(form);
                     var qty = Math.min(99, Math.max(1, parseInt(fields.get('quantity'), 10) || 1));
                     report(send(form.action, {product_id: Number(fields.get('product_id')), quantity: qty}),
-                        'Tas belanja diperbarui. Jumlah ' + qty + ' menggantikan jumlah sebelumnya');
+                        catalogText('updated', 'Tas belanja diperbarui. Jumlah :qty menggantikan jumlah sebelumnya').replace(':qty', qty));
                     if (dialog.open) closeDialog();
                 });
             });
             document.querySelectorAll('[data-favorite]').forEach(function(btn) {
                 btn.addEventListener('click', function() {
-                    report(send('{{ url('/favorites') }}', {product_id: Number(btn.getAttribute('data-favorite'))}), 'Tersimpan di favorit');
+                    report(send('{{ url('/favorites') }}', {product_id: Number(btn.getAttribute('data-favorite'))}), catalogText('saved', 'Tersimpan di favorit'));
                 });
             });
 

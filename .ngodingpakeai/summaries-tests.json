@@ -1,0 +1,644 @@
+{
+  "scripts/amadis/acceptance_isolated.cjs": {
+    "summary": "Skrip Node untuk akseptansi AM-01/02/06/10 pada fixture terisolasi baru; pemetaannya diberi label usulan, bukan rubrik resmi AMADIS. Dijalankan lewat pembungkus acceptance_isolated.sh dan menghasilkan bukti ke direktori evidence."
+  },
+  "scripts/amadis/acceptance_isolated.sh": {
+    "summary": "Skrip shell pembungkus akseptansi AM-01/02/06/10 pada fixture terisolasi baru dengan argumen EVIDENCE_DIR dan PORT opsional. Memanggil launcher terisolasi dan skrip akseptansi Node, dengan catatan bahwa pemetaan hanya usulan."
+  },
+  "scripts/amadis/artisan.php": {
+    "summary": "Adaptor artisan terjaga untuk demo AMADIS yang hanya mengizinkan daftar argumen perintah tertentu lewat fungsi amadisAllowedArgv. Menolak perintah di luar allowlist sebelum aplikasi Laravel diinisialisasi."
+  },
+  "scripts/amadis/browser-lifecycle.cjs": {
+    "summary": "Modul Node pengelola siklus hidup browser terisolasi untuk bukti demo AMADIS: start, stop proses milik sendiri (grup proses), cleanup berurutan, login, snapshot, screenshot dan penentuan hasil akhir. Perintah aplikasi hanya dijalankan melalui launch.sh, dan PASS ditahan bila cleanup gagal."
+  },
+  "scripts/amadis/browser-lifecycle.test.cjs": {
+    "summary": "Uji unit untuk helper cleanup browser-lifecycle.cjs dengan child/proses palsu tanpa server, browser atau kredensial. Menegaskan EPERM tidak dianggap berhenti, ESRCH berarti grup sudah hilang, grup yang mengabaikan SIGTERM gagal, cleanup menjalankan semua langkah walau ada yang gagal, langkah macet dibatasi waktu, dan finalResult menahan PASS saat cleanup error."
+  },
+  "scripts/amadis/connect_proxy.php": {
+    "summary": "Proxy HTTPS CONNECT minimal berbasis satu proses stream_select yang hanya mengizinkan hostname persis pada TCP/443, dipakai agar unduhan Composer paralel tidak antre. Menolak host privat, port lain, metode non-CONNECT, header tidak lengkap atau terlalu besar."
+  },
+  "scripts/amadis/docker_stage.py": {
+    "summary": "Preflight Docker offline untuk tahap Composer terpandu AMADIS yang independen: menyalin sumber tanpa symlink/hardlink, membangun perintah container tanpa publikasi port, proxy allowlist, memeriksa topologi isolasi, probe egress langsung dan digest. Juga menerapkan perubahan lock ke repo dengan rollback, memvalidasi hook dan membersihkan, dengan antarmuka command line main."
+  },
+  "scripts/amadis/export_evidence.py": {
+    "summary": "CLI untuk mengekspor satu triplet capture bukti beserta manifest, tidak pernah seluruh pohon direktori. Menolak symlink, hardlink, tujuan di luar basis yang disetujui atau tidak kosong, dan membersihkan ulang rahasia sebelum menulis dengan rollback saat gagal."
+  },
+  "scripts/amadis/guard.php": {
+    "summary": "Penjaga tanpa dependensi framework/database yang berjalan sebelum bootstrap Laravel lewat fungsi amadisGuard. Memverifikasi root terisolasi AMADIS dan gagal tertutup bila lingkungan tidak sesuai."
+  },
+  "scripts/amadis/launch.py": {
+    "summary": "Runner demo AMADIS terisolasi yang tidak pernah mem-bootstrap aplikasi produksi langsung: menyiapkan root, provisioning kredensial privat, seed, snapshot, serve, capture dan audit composer. Mencakup sanitasi/redaksi rahasia pada metadata perintah, kunci per-root, verifikasi fixture, manajemen dependensi PDF bertransaksi dan manifest bukti."
+  },
+  "scripts/amadis/launch.sh": {
+    "summary": "Pembungkus shell tipis yang menjalankan launch.py dengan python3 sambil meneruskan semua argumen, dengan mode ketat set -euo pipefail."
+  },
+  "scripts/amadis/pdf-ui-download.cjs": {
+    "summary": "Skrip Node bukti unduhan browser terisolasi untuk laporan PDF pesanan admin; memakai pola siklus hidup browser yang sama (start, stop, cleanup, login, hasil akhir). Perintah aplikasi hanya dijalankan melalui launch.sh."
+  },
+  "scripts/amadis/pdf-ui-fixture.php": {
+    "summary": "Fixture untuk bukti UI PDF, dijalankan lewat artisan tinker di launcher terisolasi. Menolak berjalan kecuali root sqlite terisolasi baru yang sudah diprovisi tanpa pesanan, lalu membuat pesanan dengan nama beraksara campuran (CJK dan Latin beraksen)."
+  },
+  "scripts/amadis/prepare-pdf-font.py": {
+    "summary": "Membangun instance statis Noto Sans SC Regular (wght 400) dari font variabel yang dipasangkan hash untuk embedding PDF, dengan perintah build, verify dan check. Memeriksa cakupan glyph, nama font dan kecocokan cmap terhadap sumber."
+  },
+  "scripts/amadis/server.php": {
+    "summary": "Router server PHP bawaan untuk demo AMADIS yang memanggil guard, pindah ke direktori public, lalu meneruskan ke server.php milik framework Laravel."
+  },
+  "scripts/benchmarks/baseline_report.txt": {
+    "summary": "Laporan baseline ZAFIRA terkini berisi metrik struktural (jumlah rute, migrasi, view, file test, ukuran aset build) dan kualitas (hasil phpunit dan node test tanpa kegagalan). Dihasilkan oleh capture_baseline.sh sebagai pembanding sebelum/sesudah perbaikan."
+  },
+  "scripts/benchmarks/capture_additional.py": {
+    "summary": "Skrip Playwright async yang membuka storefront lokal, mengatur tema dan bahasa lewat API Zafira, lalu menangkap screenshot tambahan ke direktori artefak. Alat bantu manual evaluasi visual, bukan bagian suite uji."
+  },
+  "scripts/benchmarks/capture_baseline.sh": {
+    "summary": "Skrip bash untuk mengukur indikator baseline ZAFIRA (struktur proyek, hasil test) dan menyimpan snapshot bertanggal di docs/05-quality/baselines serta salinan terkini di baseline_report.txt. Dijalankan dengan bash scripts/benchmarks/capture_baseline.sh."
+  },
+  "scripts/benchmarks/compare_baseline.py": {
+    "summary": "Membandingkan dua snapshot baseline ZAFIRA (default tertua versus terbaru) dengan mengurai metrik angka dan melaporkan selisihnya. Antarmuka command line dengan fungsi main."
+  },
+  "scripts/benchmarks/test_theme_lang.py": {
+    "summary": "Skrip Playwright async yang menguji tema gelap dan pergantian bahasa pada storefront Laravel lokal dan mencetak hasil navigasi serta menyimpan screenshot. Alat verifikasi manual, bukan test pytest."
+  },
+  "scripts/ci/protect-main.sh": {
+    "summary": "Skrip untuk menjadikan job CI php sebagai syarat wajib merge ke branch main lewat GitHub CLI; perlu hak admin repo dan dijalankan setelah CI lulus sekali. Mendukung DRY_RUN=1 untuk melihat payload tanpa menerapkan."
+  },
+  "scripts/manual/acceptance.py": {
+    "summary": "Smoke HTTP lokal terbatas dan alur transaksi pelanggan/admin pada fixture terisolasi untuk akseptansi manual. Klien menolak redirect lintas-origin, memverifikasi identitas, mengelola CSRF dan membaca kredensial dari berkas privat tanpa mencetaknya."
+  },
+  "scripts/manual/fixture.php": {
+    "summary": "Fixture Artisan untuk akseptansi manual, hanya boleh dijalankan lewat fixture.sh sehingga preflight berjalan lebih dulu. Menyiapkan data demo (pengguna, produk, pesanan) pada root terisolasi."
+  },
+  "scripts/manual/fixture.sh": {
+    "summary": "Pembungkus shell yang menjalankan preflight sebelum proses Artisan native yang memuat fixture.php, sehingga fixture tidak pernah jalan tanpa pemeriksaan lingkungan."
+  },
+  "scripts/manual/preflight.py": {
+    "summary": "Pemeriksaan gagal-tertutup sebelum setiap pemanggilan Artisan native pada alur manual: memvalidasi port manual, variabel lingkungan, root terisolasi dan checkout, tanpa pernah meng-unset nilai warisan."
+  },
+  "scripts/manual/setup.sh": {
+    "summary": "Menyiapkan checkout terisolasi baru untuk uji manual di bawah direktori temp yang disetujui; mewajibkan MANUAL_ROOT bernama zafira-manual-* yang belum ada, menjalankan preflight dan port bawaan 8017."
+  },
+  "scripts/manual/start-server.sh": {
+    "summary": "Menjalankan server php artisan serve pada 127.0.0.1 dengan port manual setelah preflight, hanya bila dijalankan dari root checkout terisolasi MANUAL_ROOT."
+  },
+  "tests/Concurrency/checkout-sqlite.php": {
+    "summary": "Bukti integrasi konkurensi checkout pada SQLite terisolasi tanpa server, database operasional atau .env aplikasi. Mengerahkan beberapa proses untuk memverifikasi checkout tidak menjual stok melebihi persediaan."
+  },
+  "tests/Feature/AccountMailLocaleSliceTest.php": {
+    "summary": "Suite PHPUnit AccountMailLocaleSliceTest (tests/Feature). Kasus uji yang ditegaskan: catalogs have recursive parity and nonempty copy; account views render each locale with escaped user content; all mail views render localized copy and preserve proper nouns; indonesian copy is preserved identically for account and mail."
+  },
+  "tests/Feature/AccountPrivacyTest.php": {
+    "summary": "Suite PHPUnit AccountPrivacyTest (tests/Feature). Kasus uji yang ditegaskan: guest cannot access export or delete; user can export their own personal data as json; account deletion is blocked if orders are active; account deletion is blocked if return or refund is pending; account deletion requires correct password; account deletion anonymizes financial data and deletes pii; social only user without password deletes using confirmation phrase."
+  },
+  "tests/Feature/AddressOwnershipRegressionTest.php": {
+    "summary": "Suite PHPUnit AddressOwnershipRegressionTest (tests/Feature). Kasus uji yang ditegaskan: user cannot update or delete another users address."
+  },
+  "tests/Feature/AdminA11yLandmarkTest.php": {
+    "summary": "Suite PHPUnit AdminA11yLandmarkTest (tests/Feature). Kasus uji yang ditegaskan: admin html pages have lang main heading alt and named controls."
+  },
+  "tests/Feature/AdminAuthFormA11yTest.php": {
+    "summary": "Suite PHPUnit AdminAuthFormA11yTest (tests/Feature). Kasus uji yang ditegaskan: login fields reference their errors and omit invalid state without errors; login password stays clean when only email fails; totp fields reference their errors and omit invalid state without errors."
+  },
+  "tests/Feature/AdminCacheHeadersTest.php": {
+    "summary": "Suite PHPUnit AdminCacheHeadersTest (tests/Feature). Kasus uji yang ditegaskan: every authenticated admin route disables caching; unauthenticated admin redirect is private; admin dashboard response is not cached; admin orders response is not cached."
+  },
+  "tests/Feature/AdminFilterBadgeCopyTest.php": {
+    "summary": "Suite PHPUnit AdminFilterBadgeCopyTest (tests/Feature). Kasus uji yang ditegaskan: r44 filter badge uses human copy and preserves escaped attribute; other empty tables show current default or filtered copy; empty categories explain whether search is active; r44 empty products explain whether search is active; order and concierge status badges render real badge nodes across status matrix; guest order renders customer name fallback in orders panel."
+  },
+  "tests/Feature/AdminListContextTest.php": {
+    "summary": "Suite PHPUnit AdminListContextTest (tests/Feature). Kasus uji yang ditegaskan: auth events show result count with and without filters; dashboard concierge filters show chips count and reset; dashboard user filter shows chip count and escapes value; user search treats wildcards as literals; order search treats wildcards as literals; concierge search treats wildcards as literals; category search treats wildcards as literals; product search treats wildcards as literals; backup search treats wildcards as literals; subscriber search treats wildcards as literals; concierge sorts by allowlisted column and marks aria sort; sort input outside allowlist is rejected; concierge paginates and keeps filters sort and other table state; users sort by allowlisted name in both directions; users sort name matches displayed profile name; users sort and paginate with independent page name; tables expose progressive enhancement hooks; dashboard without filters has no chips and shows panel counts."
+  },
+  "tests/Feature/AdminLocaleTest.php": {
+    "summary": "Suite PHPUnit AdminLocaleTest (tests/Feature). Kasus uji yang ditegaskan: login uses locale and catalog; console pages use locale and catalog; two factor views use catalog without translating codes; invalid login flash is localized; catalogs have recursive key parity and non empty values."
+  },
+  "tests/Feature/AdminManagementTest.php": {
+    "summary": "Suite PHPUnit AdminManagementTest (tests/Feature). Kasus uji yang ditegaskan: admin can create new product; admin can delete product; admin can delete subscriber; concierge checkout with order items stores and displays in admin; user profile update creates audit backup."
+  },
+  "tests/Feature/AdminNavigationTest.php": {
+    "summary": "Suite PHPUnit AdminNavigationTest (tests/Feature). Kasus uji yang ditegaskan: auth events table is keyboard scrollable and semantic; admin console has visible focus and reduced motion; admin console uses its own visual system separate from storefront; dashboard uses shared navigation shell with active marker and skip link; auth events uses shared navigation shell with active marker and breadcrumb; auth events filters and pagination preserve query and active context; verified totp admin can access both navigation shell pages; empty filtered events keep active context and reset link; auth events without filters omit active context and reset; auth events can be filtered by request id; auth events active filter values are escaped in view; unverified totp admin cannot access navigation shell pages."
+  },
+  "tests/Feature/AdminOrderJsonTest.php": {
+    "summary": "Suite PHPUnit AdminOrderJsonTest (tests/Feature). Kasus uji yang ditegaskan: index returns summary without contact or nested user data; show includes fulfilment address and items but no excess user or contact fields; status update json returns only order summary; index rejects unknown status and excessive page; index accepts each defined status filter; index clamps page size and out of range page; manual pending and paid transitions remain rejected and html redirect works."
+  },
+  "tests/Feature/AdminOrderReportTest.php": {
+    "summary": "Suite PHPUnit AdminOrderReportTest (tests/Feature). Kasus uji yang ditegaskan: pdf service embeds unicode font and sanitizes html and unicode; report pdf pagination and title are localized in real pdf; pdf service expands custom pagination across pages; pdf service embeds latin fallback alongside cjk; guest invoice escapes snapshot and report includes guest name; report requires admin authentication; report is a parseable pdf with period totals; report boundary rows and cancelled orders excluded from value; custom period validates dates and range; empty period still renders valid pdf without revenue claim; pdf service paginates and escapes special characters; today bounds follow utc even when now is expressed in another zone; report rejects more than 500 orders with clear 422; pdf service wraps long lines before pagination and marks non ascii; report uses each orders related customer name and preserves unicode; report falls back when customer name is blank or missing; report wraps long customer names without losing amounts; report does not query customer relation per order; admin cannot mark pending order paid without payment proof; dashboard lists orders and report controls."
+  },
+  "tests/Feature/AdminOrderStatusSelectTest.php": {
+    "summary": "Suite PHPUnit AdminOrderStatusSelectTest (tests/Feature). Kasus uji yang ditegaskan: pending order status select requires an explicit transition."
+  },
+  "tests/Feature/AdminProductStockUiTest.php": {
+    "summary": "Suite PHPUnit AdminProductStockUiTest (tests/Feature). Kasus uji yang ditegaskan: admin can create product with stock and is active; admin can update product stock and visibility; product list exposes inline stock field per product; empty catalog shows encouraging state with open create form; empty search result offers reset instead of create."
+  },
+  "tests/Feature/AdminResidualLocaleTest.php": {
+    "summary": "Suite PHPUnit AdminResidualLocaleTest (tests/Feature). Kasus uji yang ditegaskan: admin catalogues have recursive key parity; admin catalogues have placeholder parity; report range validation is localized; admin views render localized residual copy; auth events populated outcome cells are localized; invoice is localized with html lang and translated labels; report translated title lines and status and customer labels; report exceeded orders error is localized; order update status flash uses localized status label."
+  },
+  "tests/Feature/AdminRoleAuthorizationTest.php": {
+    "summary": "Suite PHPUnit AdminRoleAuthorizationTest (tests/Feature). Kasus uji yang ditegaskan: staff can access operational dashboard but not sensitive admin routes; admin can access audit log and unknown role is denied; provision command rejects unknown role and creates staff; customer cannot access admin dashboard."
+  },
+  "tests/Feature/AdminSalesSummaryTest.php": {
+    "summary": "Suite PHPUnit AdminSalesSummaryTest (tests/Feature). Kasus uji yang ditegaskan: summary compares paid ledger value and success rate to previous period; summary requires valid bounded period."
+  },
+  "tests/Feature/AdminSearchWildcardTest.php": {
+    "summary": "Suite PHPUnit AdminSearchWildcardTest (tests/Feature). Kasus uji yang ditegaskan: numeric order search matches exact id without like predicate; non numeric order search uses text columns without id like predicate; overlong digit order search does not overflow or touch id; wildcard percent and underscore do not match all records; literal percent underscore and backslash are matched correctly."
+  },
+  "tests/Feature/AdminTableA11yMarkupTest.php": {
+    "summary": "Suite PHPUnit AdminTableA11yMarkupTest (tests/Feature). Kasus uji yang ditegaskan: all seven table wrappers have region tabindex and unique scroll aria label; pagination current page indicator has aria current page."
+  },
+  "tests/Feature/AdminTableCopyTest.php": {
+    "summary": "Suite PHPUnit AdminTableCopyTest (tests/Feature). Kasus uji yang ditegaskan: status labels cover filters badges transitions and active filters; jargon and sort labels use plain language; order empty state distinguishes status search and unfiltered results."
+  },
+  "tests/Feature/AdminTableCoverageTest.php": {
+    "summary": "Suite PHPUnit AdminTableCoverageTest (tests/Feature). Kasus uji yang ditegaskan: search treats wildcard and escape characters literally; category and user search return matching records; concierge and user sort ascending and descending; concierge status filter and default sort tie break; user default sort is created at desc with id tie break; page sizes and out of range pages are clamped."
+  },
+  "tests/Feature/AdminTableCssTouchTargetTest.php": {
+    "summary": "Suite PHPUnit AdminTableCssTouchTargetTest (tests/Feature). Kasus uji yang ditegaskan: admin table controls have touch targets and mobile safe font sizes; mobile font assertions reject in memory css regressions; contracts tolerate comments and declaration reorder."
+  },
+  "tests/Feature/AdminTableDraftPersistenceTest.php": {
+    "summary": "Suite PHPUnit AdminTableDraftPersistenceTest (tests/Feature). Kasus uji yang ditegaskan: create and report forms survive peer table replacement."
+  },
+  "tests/Feature/AdminTableQueryValidationTest.php": {
+    "summary": "Suite PHPUnit AdminTableQueryValidationTest (tests/Feature). Kasus uji yang ditegaskan: invalid direction returns validation error; non allowlisted sort is rejected; out of range order page is rejected; malformed order page is ignored and not repeated; overlong concierge query is rejected; unknown status filters are rejected; zero query filters concierge rows."
+  },
+  "tests/Feature/AdminTableStatePreservationTest.php": {
+    "summary": "Suite PHPUnit AdminTableStatePreservationTest (tests/Feature). Kasus uji yang ditegaskan: form preserves exactly other tables state."
+  },
+  "tests/Feature/AdminTablesPaginationTest.php": {
+    "summary": "Suite PHPUnit AdminTablesPaginationTest (tests/Feature). Kasus uji yang ditegaskan: each table paginates rows and preserves other table context; out of range page clamps to last page; empty table stays on page one with genuine empty state; out of range page reuses count query; deleting last subscriber page returns to valid page."
+  },
+  "tests/Feature/AdminTablesTest.php": {
+    "summary": "Suite PHPUnit AdminTablesTest (tests/Feature). Kasus uji yang ditegaskan: table contract sort search and pagination; admin tables expose bulk selection density and visual order status; only orders table exposes bulk selection markup; r44 accessible controls and distinct sort headers; r44 all tables expose density captions column scope and contrast safe badges; r44 empty orders span all columns; search string zero is not treated as empty; ostatus filters orders with mixed statuses; r44 malformed page is ignored without killing dashboard or repeating in links; r44 rejects unbounded page numbers; malformed page parameters default to page one without echoing bad input; stat cards report totals not the filtered page slice; ascending sort orders the rows not only the header; all forms preserve other tables and category choices are not paginated."
+  },
+  "tests/Feature/AdminTotpReplayTest.php": {
+    "summary": "Suite PHPUnit AdminTotpReplayTest (tests/Feature). Kasus uji yang ditegaskan: same code replayed after logout and relogin is rejected."
+  },
+  "tests/Feature/AdminTotpTest.php": {
+    "summary": "Suite PHPUnit AdminTotpTest (tests/Feature). Kasus uji yang ditegaskan: test app key supports encrypted eloquent cast; totp schema exists on memory database; legacy admin can enter console; legacy admin enters via real login without code page; totp admin without second factor gets no console; web guard session gives no console access; unverified admin can still log out; full flow rotates session id twice and grants console; first verification on never verified admin succeeds; wrong code is rejected; same code cannot be used twice; two full verifications with newer codes both succeed; code three steps ahead is rejected and marker unchanged; raw db marker equals vendor timestamp integer; lockout message states remaining seconds as number; compare and swap second call with same old returns zero; concurrent winner between read and swap makes loser replayed; stale model in memory cannot replay; recovery code works once then rejected; recovery code consumed concurrently is rejected; recovery code allows console entry anti lockout; secret is ciphertext and recovery codes are hashed in db; password reset and totp recovery tokens are not interchangeable; corrupt secret raises operational alarm not wrong code; flag without secret redirects to enrol and alarms; verifying on device b throws device a back to challenge; password change voids totp state session and remember token; admin password change does not kill web customer session; legacy password change keeps session and rotates remember token; admin login ignores remember and form has no checkbox; verify rate limit is per admin and ip; cli provisions one admin and prints secrets once; no secret password or code in logs; two independent processes consuming same recovery code; legacy admin sees enrolment banner on dashboard; enrolled admin does not see enrolment banner on dashboard."
+  },
+  "tests/Feature/AmadisCatalogTest.php": {
+    "summary": "Suite PHPUnit AmadisCatalogTest (tests/Feature). Konteks: Requires parent to register: Route::get('/koleksi', [CatalogController::class, 'index'])->name('catalog.index'); Kasus uji yang ditegaskan: lists eight per page in id order with product links; search and attribute filters persist in pagination; like wildcards are literal; out of range page redirects to last page keeping query; locale is validated and labels localized; output is escaped and cart form uses convention."
+  },
+  "tests/Feature/AmadisOrderTest.php": {
+    "summary": "Suite PHPUnit AmadisOrderTest (tests/Feature). Kasus uji yang ditegaskan: checkout reprices and snapshots then replays without double stock; late duplicate lookup replays before stock or voucher validation; late duplicate with changed payload is rejected before mutation; changed payload cannot reuse key; empty cart replay rejects changed address or voucher; transient sqlite lock is retried once and creates single order; exhausted sqlite lock returns 503 without partial state and key stays usable; non transient query error is not retried; invalid session cart cannot place or replay order; stock failure rolls back order and voucher; voucher global and per user quotas; owner boundaries and cancel restores stock once; only admin can transition and completed owner can review once; favorites are owner scoped and idempotent; cart validation and guest checkout."
+  },
+  "tests/Feature/AmadisShopTest.php": {
+    "summary": "Suite PHPUnit AmadisShopTest (tests/Feature). Konteks: Butuh route: /belanja (shop.index) merender kontainer belanja nyata. Kasus uji yang ditegaskan: form values are captured before controls are disabled; catalog displays localized stock count; logged in shop page shows checkout form and catalog shows favorite; shop page renders for guest and discloses pending checkout; shop page discloses old browser cart is separate; catalog links to shop and discloses cart limits; cart add from catalog is server scoped."
+  },
+  "tests/Feature/AuthAndErrorLocaleTest.php": {
+    "summary": "Suite PHPUnit AuthAndErrorLocaleTest (tests/Feature). Kasus uji yang ditegaskan: auth pages render catalog copy and html lang for each locale; english auth copy is translated and indonesian copy is preserved; social partial uses placeholder with provider proper noun; reset and totp views render localized copy; error pages render catalog copy and html lang for each locale; 419 view is localized; auth and error catalogs have nested key parity and no empty values."
+  },
+  "tests/Feature/AuthEventFlowsTest.php": {
+    "summary": "Suite PHPUnit AuthEventFlowsTest (tests/Feature). Kasus uji yang ditegaskan: complete totp login failure lockout and password rotation; enrol recovery and reset have distinct rows and no secrets; secret scanner detects raw database and real log then clean; login account and ip lockout deduplicate per real limiter key; review denies customer and unverified admin and paginates operator; recorder database exception is safe and login still completes; prune keeps recent and rejects invalid days; vendor exceptions never log message trace or codes; failed enrol records totp failure without login failure; corrupt enrol secret records failure without leaking ciphertext; login survives both audit database and logger failure; lockout response survives cache and logger failure; reset token survives recorder failure without leaking exception message; unhandled totp exception trace never contains code or secret; unhandled recovery exception trace never contains code; unhandled enrol exception trace never contains secret or codes; unhandled enrol verification exception trace never contains secret or code; session marker write failure does not record completion; http session put exception is reported without leaking secrets; http session handler write failure after controller does not persist session."
+  },
+  "tests/Feature/AuthEventsTest.php": {
+    "summary": "Suite PHPUnit AuthEventsTest (tests/Feature). Kasus uji yang ditegaskan: password login records one success with actor ip and time; failed password is separate from totp and has safe reason; recorder sanitizes keys and values; recorder rejects raw user agent even when it contains credentials."
+  },
+  "tests/Feature/AuthTest.php": {
+    "summary": "Suite PHPUnit AuthTest (tests/Feature). Kasus uji yang ditegaskan: register page is accessible; login page is accessible; new user can register; weak password is rejected; user can login and logout; account page offers csrf logout."
+  },
+  "tests/Feature/AuthorizationInventoryTest.php": {
+    "summary": "Suite PHPUnit AuthorizationInventoryTest (tests/Feature). Kasus uji yang ditegaskan: every admin route requires totp and a defined gate; customer money routes keep their guards; refund approval is not reachable from customer routes; public money write routes keep rate limits."
+  },
+  "tests/Feature/BackendPermissionAuditTest.php": {
+    "summary": "Suite PHPUnit BackendPermissionAuditTest (tests/Feature). Kasus uji yang ditegaskan: every admin endpoint rejects guests and customer sessions; customer cannot change email password or other users concierge history; public concierge cannot set owner or status; array email input is rejected without a server error; login password must be a string; dashboard only offers allowed concierge transitions; concierge cannot skip directly from new to completed; full valid concierge lifecycle remains allowed; confirmed concierge cannot move backward but can be cancelled; newsletter endpoint is rate limited; completed concierge request cannot be reopened; product json ld escapes html tags but stays valid json; admin dashboard does not inject stored names into inline javascript."
+  },
+  "tests/Feature/BrandHeritageTest.php": {
+    "summary": "Suite PHPUnit BrandHeritageTest (tests/Feature). Kasus uji yang ditegaskan: storefront shows three heritages; storefront lists nusantara and capsule categories; product detail shows provenance; product detail shows craft for heritage piece; product json ld includes material; home carries quick view quality data; admin can store product quality fields; legacy products without quality still render."
+  },
+  "tests/Feature/BrandNameConsistencyTest.php": {
+    "summary": "Suite PHPUnit BrandNameConsistencyTest (tests/Feature). Kasus uji yang ditegaskan: customer facing source tree contains no amadis references; demo documents use single brand name; demo product description uses zafira."
+  },
+  "tests/Feature/CartDeltaTest.php": {
+    "summary": "Suite PHPUnit CartDeltaTest (tests/Feature). Konteks: FR-201: +/- tas bersifat relatif terhadap state server (anti lost-update lintas tab); SET eksplisit tetap ada. Kasus uji yang ditegaskan: delta is relative to server state not client view; positive delta creates line and ignores client price; decrement to zero removes line and missing line is a noop; delta above limit or stock is rejected and cart unchanged; inactive product cannot be incremented but can be decremented; delta validation and personalization boundary; unknown or non numeric product is not found; delta applies to authenticated account cart; destroy reports quantity removed under lock for undo; cart success responses are not cached; cart validation and missing product responses are not cached; cart rate limit response is not cached; delta requires csrf like other cart mutations."
+  },
+  "tests/Feature/CartIdempotencyTest.php": {
+    "summary": "Suite PHPUnit CartIdempotencyTest (tests/Feature). Kasus uji yang ditegaskan: repeated set replaces quantity preserves other items and uses database price; repeated delete and clear leave cart empty without affecting other items; invalid quantity or unavailable stock does not mutate existing cart; cart methods share one sixty request per ip budget; customer logout clears cart without logging out admin; every cart route shares checkout session lock duration."
+  },
+  "tests/Feature/CartMigrationRollbackTest.php": {
+    "summary": "Suite PHPUnit CartMigrationRollbackTest (tests/Feature). Kasus uji yang ditegaskan: r11 rollback refusal preserves cart tables and rows; r11 rollback refuses when cart row exists without items; r11 rollback refuses and preserves orphaned cart items; r11 empty rollback drops both tables."
+  },
+  "tests/Feature/CartNullableIdTest.php": {
+    "summary": "Suite PHPUnit CartNullableIdTest (tests/Feature). Kasus uji yang ditegaskan: fresh guest reads do not create a cart and first write uses a real parent; guest cart merges through real login; fresh guest delete clear and empty checkout do not create cart."
+  },
+  "tests/Feature/CartReminderTest.php": {
+    "summary": "Suite PHPUnit CartReminderTest (tests/Feature). Kasus uji yang ditegaskan: opted in user with stale cart gets one reminder only; no reminder without opt in or verified email or outside window; cart with only inactive products is skipped; rate limit is one per week even after cart changes; profile toggle and signed unsubscribe; queued reminder is dropped if user opted out before delivery; reminder mail renders items and unsubscribe link."
+  },
+  "tests/Feature/CatalogAdvancedFiltersTest.php": {
+    "summary": "Suite PHPUnit CatalogAdvancedFiltersTest (tests/Feature). Kasus uji yang ditegaskan: repeated slug categories price stock sort and exact total; collision is not selectable and malformed input is ignored; chips remove one category and reset keeps only locale; page two keeps global total repeated categories and checked controls; each chip removes only its filter and drops page; availability sort is stable across pages with filters and chip; catalog filter form disables browser autocomplete for history navigation; zero results keep active filters and reset path."
+  },
+  "tests/Feature/CatalogFilterDisclosureTest.php": {
+    "summary": "Suite PHPUnit CatalogFilterDisclosureTest (tests/Feature). Kasus uji yang ditegaskan: active count reset locale and pagination query are preserved; status avoids server jargon and explains personalization path."
+  },
+  "tests/Feature/CatalogFilterRequestTest.php": {
+    "summary": "Suite PHPUnit CatalogFilterRequestTest (tests/Feature). Kasus uji yang ditegaskan: availability sort is accepted and unknown sort is dropped."
+  },
+  "tests/Feature/CatalogFuzzySearchTest.php": {
+    "summary": "Suite PHPUnit CatalogFuzzySearchTest (tests/Feature). Kasus uji yang ditegaskan: typos in name material and color find products and keep original query; unicode edits and transposition do not admit two unrelated edits; multi word and three character queries do not trigger fuzzy matching; literal multi word search finds exact match; literal results take precedence over fuzzy matches; fuzzy results preserve filters sorting pagination and visibility; no match offers search recovery without dropping other filters or locale; empty search recovery is localized after page overflow redirect; short wildcard and invalid queries do not trigger unrelated fuzzy results."
+  },
+  "tests/Feature/CatalogQueryFiltersTest.php": {
+    "summary": "Suite PHPUnit CatalogQueryFiltersTest (tests/Feature). Kasus uji yang ditegaskan: repeated categories and combined minor unit filters use paginator total; invalid query shapes are ignored without errors; inclusive decimal boundaries and inverted range; negative stock is never exposed in catalog markup; negative stock is never exposed in fuzzy or availability results; ambiguous category slugs are not used; availability sort puts in stock first then product id; price and newest sort are stable and hide inactive products."
+  },
+  "tests/Feature/CatalogSearchRecoveryTest.php": {
+    "summary": "Suite PHPUnit CatalogSearchRecoveryTest (tests/Feature). Kasus uji yang ditegaskan: single unicode edits and transposition recover whole words; decomposed query recovers nfc title; short decomposed query does not become eligible after normalization; literal results take priority over similar titles; fuzzy preserves filters sort and eight item pagination; 500 candidates are complete but 501 never return partial matches; multiword typo does not fuzzy match but literal multiword is case insensitive; three characters never fuzzy but four characters do; decomposed title is recovered by nfc query; narrow guidance is localized; guidance and clear search preserve locale and filters."
+  },
+  "tests/Feature/CheckoutCsrfTest.php": {
+    "summary": "Suite PHPUnit CheckoutCsrfTest (tests/Feature). Kasus uji yang ditegaskan: checkout rejects forged requests without side effects; checkout accepts valid csrf header; checkout accepts form urlencoded body token."
+  },
+  "tests/Feature/CheckoutIdempotencyAntiDoubleChargeTest.php": {
+    "summary": "Suite PHPUnit CheckoutIdempotencyAntiDoubleChargeTest (tests/Feature). Kasus uji yang ditegaskan: same idempotency key replays order without double stock deduction; reusing key with different payload is rejected with conflict 409; empty cart without idempotency replay is validation error."
+  },
+  "tests/Feature/CheckoutLockOrderTest.php": {
+    "summary": "Suite PHPUnit CheckoutLockOrderTest (tests/Feature). Kasus uji yang ditegaskan: stock rows are decremented in ascending product id order regardless of cart order."
+  },
+  "tests/Feature/CheckoutSummaryTest.php": {
+    "summary": "Suite PHPUnit CheckoutSummaryTest (tests/Feature). Kasus uji yang ditegaskan: guest shop page keeps summary before two compact form groups; authenticated shop page renders checkout summary."
+  },
+  "tests/Feature/CheckoutVoucherConsistencyTest.php": {
+    "summary": "Suite PHPUnit CheckoutVoucherConsistencyTest (tests/Feature). Kasus uji yang ditegaskan: invalid voucher rejected in pre calculation before commit; valid voucher pre calculation matches committed totals; quote previews voucher totals identical to order without claiming; quote rejects invalid voucher and requires login."
+  },
+  "tests/Feature/CommercialClaimIntegrityTest.php": {
+    "summary": "Suite PHPUnit CommercialClaimIntegrityTest (tests/Feature). Kasus uji yang ditegaskan: commercial copy does not promise unpublished benefits; storefront links to visible return policy."
+  },
+  "tests/Feature/ConciergeMailEscapingTest.php": {
+    "summary": "Suite PHPUnit ConciergeMailEscapingTest (tests/Feature). Kasus uji yang ditegaskan: concierge confirmation mail escapes customer supplied fields."
+  },
+  "tests/Feature/CrossChannelLocaleTest.php": {
+    "summary": "Suite PHPUnit CrossChannelLocaleTest (tests/Feature). Kasus uji yang ditegaskan: newsletter uses authenticated recipient without session choice; concierge uses explicit request locale; null notification locale never borrows sender locale; framework notifications render in recipient locale and restore worker; guest order mail and invoice use saved locale not operator; order without recipient email claims no notification slot."
+  },
+  "tests/Feature/CspReportOnlyTest.php": {
+    "summary": "Suite PHPUnit CspReportOnlyTest (tests/Feature). Kasus uji yang ditegaskan: report only header absent by default; config reads process env flag; report only header present when enabled; enforcing csp header is never sent; policy is strict and matches current assets."
+  },
+  "tests/Feature/CustomerMessagesLocaleTest.php": {
+    "summary": "Suite PHPUnit CustomerMessagesLocaleTest (tests/Feature). Kasus uji yang ditegaskan: customer message catalogs have recursive parity and nonempty values; http json message follows request locale and keeps indonesian default; reachable customer backend has no literal response messages; shipment tracking descriptions use order owner locale; catalog messages translate with runtime placeholders; password changed notification follows recipient locale and keeps indonesian default; password changed catalog has parity in all locales."
+  },
+  "tests/Feature/CustomerTotpTest.php": {
+    "summary": "Suite PHPUnit CustomerTotpTest (tests/Feature). Kasus uji yang ditegaskan: password login with totp waits for second factor; recovery code is consumed once; totp can be enabled and disabled; account without totp logs in in one step; challenge requires pending login; recovery codes are shown only once."
+  },
+  "tests/Feature/DatabaseBackupTest.php": {
+    "summary": "Suite PHPUnit DatabaseBackupTest (tests/Feature). Kasus uji yang ditegaskan: backup creates compressed file with checksum; verify restores backup and matches row counts; verify rejects tampered backup; verify fails when source drifts after backup; prune keeps only the newest backups; backup command verifies and applies retention; backup is scheduled daily."
+  },
+  "tests/Feature/DatabaseSchemaIntegrityTest.php": {
+    "summary": "Suite PHPUnit DatabaseSchemaIntegrityTest (tests/Feature). Kasus uji yang ditegaskan: all migration files are applied in test database; application does not call legacy getcat procedure; every model maps to an existing table with its columns."
+  },
+  "tests/Feature/DeliveredMailLocaleTest.php": {
+    "summary": "Suite PHPUnit DeliveredMailLocaleTest (tests/Feature). Kasus uji yang ditegaskan: guest mail queues session locale and rejects unsupported locale; concierge guest queues session locale; cart job sends in user locale even when worker uses indonesian; order notification queues serializable recipient locale; every status and locale has translated subject and body; other subjects follow mailable locale."
+  },
+  "tests/Feature/EmailVerificationTest.php": {
+    "summary": "Suite PHPUnit EmailVerificationTest (tests/Feature). Kasus uji yang ditegaskan: registration sends signed verification link; valid signed link verifies email; tampered or foreign link is rejected; unverified user is guided before linking social account; login failure message guides without revealing account existence; guest must log in before verifying; resend only for unverified users; verification persists across devices and stays isolated per account."
+  },
+  "tests/Feature/EnvironmentUniformityTest.php": {
+    "summary": "Suite PHPUnit EnvironmentUniformityTest (tests/Feature). Kasus uji yang ditegaskan: node version is pinned in nvmrc and package; php version is pinned in composer; branch protection script is syntactically valid."
+  },
+  "tests/Feature/ExampleTest.php": {
+    "summary": "Uji fitur contoh bawaan Laravel yang memastikan aplikasi mengembalikan respons sukses untuk halaman utama."
+  },
+  "tests/Feature/FeatureFlagsTest.php": {
+    "summary": "Suite PHPUnit FeatureFlagsTest (tests/Feature). Kasus uji yang ditegaskan: boundaries kill switch and invalid configuration; cohorts are stable and nested; middleware switches without route rebuild; real report route uses flag and existing authorization."
+  },
+  "tests/Feature/GuestCheckoutTest.php": {
+    "summary": "Suite PHPUnit GuestCheckoutTest (tests/Feature). Kasus uji yang ditegaskan: guest snapshot server price and empty cart replay; tracking token is encrypted in session and recovered on retry; guest checkout route serializes same session requests; replay token expires without rotating persisted hash; guest migration down refuses without changing guest data; guest migration down and up without guest rows; invalid guest input never mutates stock; changed contact address or cart conflicts and voucher rejected on replay; independent scopes can use same key but cannot recover other token; empty inactive and short stock carts fail atomically; account endpoints cannot read or cancel guest order."
+  },
+  "tests/Feature/GuestTrackingTest.php": {
+    "summary": "Suite PHPUnit GuestTrackingTest (tests/Feature). Kasus uji yang ditegaskan: valid token returns minimal private no store projection; invalid expired and id only requests are uniform no store; token is body only rate limited and get query never looks up; token replay is only available in issuing session."
+  },
+  "tests/Feature/GuidingMicrocopyTest.php": {
+    "summary": "Suite PHPUnit GuidingMicrocopyTest (tests/Feature). Kasus uji yang ditegaskan: product images without description keep a meaningful name; blank alt and title use localized product label across storefront; explicit alt and title remain unchanged; only runtime placeholder images render with blank alt; recovery messages include the next action in every locale."
+  },
+  "tests/Feature/HealthCheckTest.php": {
+    "summary": "Suite PHPUnit HealthCheckTest (tests/Feature). Kasus uji yang ditegaskan: healthy system returns ok for every check; failing dependency returns 503 without leaking credentials; storage failure is reported as fail; endpoint is public and needs no session."
+  },
+  "tests/Feature/HumaneErrorPagesTest.php": {
+    "summary": "Suite PHPUnit HumaneErrorPagesTest (tests/Feature). Kasus uji yang ditegaskan: 404 page is indonesian with exit links and no internals; every status page renders through shared layout; shop request helper maps statuses to humane messages; error page shows the same id as the response header; unsafe incoming id is replaced and never echoed into the page; unhandled exception renders 500 with id and without internals."
+  },
+  "tests/Feature/IncidentCorrelationTest.php": {
+    "summary": "Suite PHPUnit IncidentCorrelationTest (tests/Feature). Kasus uji yang ditegaskan: every response gets a request id header; client supplied request id is echoed when safe; unsafe header is replaced with fresh uuid; auth event correlates with request id; auth events are append only; auth events cannot be deleted per row; prune still removes old rows; health endpoint also has request id."
+  },
+  "tests/Feature/IndexMigrationTest.php": {
+    "summary": "Suite PHPUnit IndexMigrationTest (tests/Feature). Kasus uji yang ditegaskan: up creates all expected indexes; indexes exist after migration and down drops them cleanly; up is idempotent."
+  },
+  "tests/Feature/InventoryReservationTest.php": {
+    "summary": "Suite PHPUnit InventoryReservationTest (tests/Feature). Kasus uji yang ditegaskan: checkout reserves stock with expiry; expired reservation releases stock and cancels pending order; release leaves processed orders intact and commits reservation; manual cancel releases reservation without double restock."
+  },
+  "tests/Feature/LegacyPatchTest.php": {
+    "summary": "Suite PHPUnit LegacyPatchTest (tests/Feature). Kasus uji yang ditegaskan: register with legacy profile fields creates backup; admin seeder preserves dump data; admin seeder creates random password when env absent; category get by id matches getcat procedure; user can view and update profile; checkout form prefills logged in profile; admin can login and view dashboard; admin can update concierge status; admin can change password; account page shows concierge history; account history excludes guest and other user rows with matching email; concierge links to logged in user; account history prefers user id link; admin can manage categories; admin cannot delete category in use; home renders dynamic category pills; category mutation flushes storefront cache; sitemap only lists public urls; admin dashboard filters concierge; checkout email is normalized to lowercase; user logout keeps admin session; admin dashboard shows user compatible panels; admin can move product category visible to user; admin can search users."
+  },
+  "tests/Feature/LocaleKernelRegressionTest.php": {
+    "summary": "Suite PHPUnit LocaleKernelRegressionTest (tests/Feature). Kasus uji yang ditegaskan: unmatched url resolves query and existing session locale; unmatched url reads encrypted session cookie and preserves json errors; real csrf rejection resolves locale without accepting post."
+  },
+  "tests/Feature/LocalePersistenceTest.php": {
+    "summary": "Suite PHPUnit LocalePersistenceTest (tests/Feature). Kasus uji yang ditegaskan: query persists and invalid values reset to indonesian; profile is used without session and session then query take priority; anonymous browsing does not pin default over profile after login; locale post saves profile and export includes it; profile update validates locale; locale post requires csrf; locale post is throttled."
+  },
+  "tests/Feature/LoginAccountLimitTest.php": {
+    "summary": "Suite PHPUnit LoginAccountLimitTest (tests/Feature). Kasus uji yang ditegaskan: customer account is limited across different ips with retry seconds; admin account is limited across different ips with retry seconds."
+  },
+  "tests/Feature/MobilePerformanceBudgetTest.php": {
+    "summary": "Suite PHPUnit MobilePerformanceBudgetTest (tests/Feature). Kasus uji yang ditegaskan: every local asset has webp variants within budget; home serves responsive hero and lazy images with dimensions; auth pages use responsive visual; product srcset only for width aware cdn."
+  },
+  "tests/Feature/MysqlCheckoutRetryTest.php": {
+    "summary": "Suite PHPUnit MysqlCheckoutRetryTest (tests/Feature). Kasus uji yang ditegaskan: deadlock retry succeeds replays and cancel restores stock only once; deadlock exhaustion returns 503 without partial writes and key is reusable; lock wait timeout is not classified as deadlock."
+  },
+  "tests/Feature/OrderNotificationOutboxTest.php": {
+    "summary": "Suite PHPUnit OrderNotificationOutboxTest (tests/Feature). Kasus uji yang ditegaskan: queue failure at real commit leaves retryable notification; rolled back claim is not queued or retried; pending row without email is skipped; overlapping dispatch does not push twice; missing emails do not starve valid rows and can be restored; queue failure releases lease for next retry; expired lease is recovered and stale owner cannot overwrite; late sender cannot complete or release successor lease; claim fault is reported and batch continues; read fault after claim releases lease and does not escape; release fault is reported separately and retry recovers; expired lease during slow push can duplicate at least once; successful dispatch is not retried."
+  },
+  "tests/Feature/OrderNotificationTest.php": {
+    "summary": "Suite PHPUnit OrderNotificationTest (tests/Feature). Kasus uji yang ditegaskan: paid and shipped and completed transitions each queue exactly one mail; processing transition does not notify; replaying the same status is idempotent."
+  },
+  "tests/Feature/OrderOwnershipRegressionTest.php": {
+    "summary": "Suite PHPUnit OrderOwnershipRegressionTest (tests/Feature). Kasus uji yang ditegaskan: user cannot read or cancel another users order."
+  },
+  "tests/Feature/OrderReturnRequestTest.php": {
+    "summary": "Suite PHPUnit OrderReturnRequestTest (tests/Feature). Kasus uji yang ditegaskan: eligibility rejects order that is not completed; eligibility lists returnable items reasons and deadline; request records return with summary and reference number; quantity cannot exceed remaining and other reason requires notes; return window expires and other users cannot see or submit."
+  },
+  "tests/Feature/OrderStatusHistoryTest.php": {
+    "summary": "Suite PHPUnit OrderStatusHistoryTest (tests/Feature). Kasus uji yang ditegaskan: new order records initial pending history; transition appends history with actor and order flow; full lifecycle records every transition in order; illegal transition is rejected without history or status change; customer order detail exposes timeline without operator identity; status history is append only and immutable; status history cannot be deleted via model."
+  },
+  "tests/Feature/OrderSurvivesUserDeleteTest.php": {
+    "summary": "Suite PHPUnit OrderSurvivesUserDeleteTest (tests/Feature). Kasus uji yang ditegaskan: order and items survive user delete."
+  },
+  "tests/Feature/OrderTaxShippingSnapshotTest.php": {
+    "summary": "Suite PHPUnit OrderTaxShippingSnapshotTest (tests/Feature). Kasus uji yang ditegaskan: defaults keep zero shipping and tax; shipping and tax snapshot persisted and client totals ignored; replay returns original snapshot even after rates change; replay with changed address is rejected; tax rounds half up to whole rupiah; tax applies after voucher and shipping is not discounted; guest checkout snapshots shipping and tax."
+  },
+  "tests/Feature/PasswordResetFlowTest.php": {
+    "summary": "Suite PHPUnit PasswordResetFlowTest (tests/Feature). Kasus uji yang ditegaskan: request page renders and login links to it; unknown email gets same response as known email; valid token resets password and marks has password; token is single use; wrong and expired tokens are rejected; reset sends confirmation notification; request is rate limited per email; broker throttle blocks immediate second token."
+  },
+  "tests/Feature/PaymentLedgerSourceOfTruthTest.php": {
+    "summary": "Suite PHPUnit PaymentLedgerSourceOfTruthTest (tests/Feature). Kasus uji yang ditegaskan: settled only when ledger has paid entry matching total; paid status without ledger is flagged as anomaly; downstream statuses also require ledger but unpaid statuses do not; ledger entries are immutable; admin order detail exposes ledger without raw payload; admin order detail tolerates null payload without warning; admin order detail flags paid order without ledger."
+  },
+  "tests/Feature/PaymentWebhookTest.php": {
+    "summary": "Suite PHPUnit PaymentWebhookTest (tests/Feature). Kasus uji yang ditegaskan: invalid signature is rejected; settlement marks order paid; duplicate notification is idempotent; status api overrides notification body; capture requires fraud accept; status api mismatched transaction is rejected; status api non idr currency is rejected; amount mismatch does not mark paid; fractional gross amount does not match; integer gross amount matches; status api failure returns 503; cancelled order records not payable; unknown order is recorded; missing fields return 422; missing server key returns 503; admin still cannot set paid manually; numeric json gross amount keeps raw decimals for signature; status api failure is dead lettered and replayed later; connection errors are retried before failing; circuit opens after consecutive failures and skips upstream; invalid signature is never dead lettered; replay stops at attempt cap; oversized body is rejected before signature work; overlong transaction id is rejected; order with pending dead letter is not cancelled by reservation release; resolved dead letters are pruned after retention; raw body is stored encrypted at rest."
+  },
+  "tests/Feature/PersistentCartTest.php": {
+    "summary": "Suite PHPUnit PersistentCartTest (tests/Feature). Kasus uji yang ditegaskan: account cart is shared across sessions and not erased on logout; legacy session merges by max once and is removed; cart schema enforces unique owner and product; login merges guest cart by max and consumes guest cart; checkout replay does not clear items added after order; prune command deletes only expired or consumed guest carts; guest token is hashed and expired cart is not loaded."
+  },
+  "tests/Feature/RefundStateMachineTest.php": {
+    "summary": "Suite PHPUnit RefundStateMachineTest (tests/Feature). Kasus uji yang ditegaskan: customer can request refund for approved return; admin can approve or reject refund; rejection requires reason; dispatched and settled are blocked until provider verification exists; refund cannot exceed settled payment total."
+  },
+  "tests/Feature/RemainingLocaleBlockersTest.php": {
+    "summary": "Suite PHPUnit RemainingLocaleBlockersTest (tests/Feature). Kasus uji yang ditegaskan: authenticated endpoints serialize labels in each requested locale; each locale serializes return refund and shipment labels without changing codes; five catalogs have same new keys and no fallback; eligibility keeps reason codes and localizes labels for ineligible orders; admin denial and invalid verification link follow request locale."
+  },
+  "tests/Feature/RequestForgeryTest.php": {
+    "summary": "Suite PHPUnit RequestForgeryTest (tests/Feature). Kasus uji yang ditegaskan: web middleware checks request forgery."
+  },
+  "tests/Feature/RescueBackendAuditTest.php": {
+    "summary": "Suite PHPUnit RescueBackendAuditTest (tests/Feature). Kasus uji yang ditegaskan: admin login ignores customer intended route; guest is redirected to customer login for customer routes; guest is redirected to admin login for admin routes; authenticated customer is redirected to admin login on admin routes; customer guest routes redirect authenticated customer away; admin guest routes redirect authenticated admin away; account update sanitizes mass assignment and prevents idor; account update validates duplicate name for other users; web write routes reject requests without csrf token; customer logout requires post and invalidates session; admin logout requires post and preserves customer if both active; customer logout preserves admin session if both active; login rate limiting triggers after ten attempts; register rate limiting triggers after five attempts; concierge rate limiting triggers after three attempts; concierge validation handles xss safely in notes and names; concierge order items rejects nonexistent product slug; concierge order items enforces max quantity and monogram format; admin destructive category delete prevents orphan products; sitemap returns valid xml with proper headers and no private routes; security headers are present on web responses."
+  },
+  "tests/Feature/ResidualLiteralLocaleTest.php": {
+    "summary": "Suite PHPUnit ResidualLiteralLocaleTest (tests/Feature). Kasus uji yang ditegaskan: storefront residual copy is translated for every locale; homepage copy is server rendered in every locale; welcome product card buttons render stock state in every locale; gift quote and client room link are server rendered in every locale; all storefront catalogs have identical keys; storefront mounts localized app copy and search panel; welcome offers every locale in header mobile and select controls; admin dashboard mounts localized table copy."
+  },
+  "tests/Feature/ReviewOwnershipRegressionTest.php": {
+    "summary": "Suite PHPUnit ReviewOwnershipRegressionTest (tests/Feature). Kasus uji yang ditegaskan: user cannot submit review for another users completed order."
+  },
+  "tests/Feature/ReviewPublicApiTest.php": {
+    "summary": "Suite PHPUnit ReviewPublicApiTest (tests/Feature). Kasus uji yang ditegaskan: public reviews preserve content and pagination without purchase identifiers."
+  },
+  "tests/Feature/ScheduledTasksAndEnvParityTest.php": {
+    "summary": "Suite PHPUnit ScheduledTasksAndEnvParityTest (tests/Feature). Kasus uji yang ditegaskan: example documents every literal config environment key; scheduled commands exist and keep their operational contract."
+  },
+  "tests/Feature/SecurityScanIntegrityTest.php": {
+    "summary": "Suite PHPUnit SecurityScanIntegrityTest (tests/Feature). Kasus uji yang ditegaskan: tracked files do not contain hardcoded secrets; app logs do not leak raw pii."
+  },
+  "tests/Feature/SeederProductionGuardTest.php": {
+    "summary": "Suite PHPUnit SeederProductionGuardTest (tests/Feature). Kasus uji yang ditegaskan: admin seeder refuses to run in production; admin seeder direct run refuses in production; database seeder refuses to run in production; database seeder direct run refuses in production; admin seeder still runs in testing; admin seeder does not use hardcoded plaintext password in testing; admin login page does not contain seeded admin hint."
+  },
+  "tests/Feature/SessionHardeningTest.php": {
+    "summary": "Suite PHPUnit SessionHardeningTest (tests/Feature). Kasus uji yang ditegaskan: customer and admin password sessions rotate and old ids cannot authenticate; login account limit spans ips and normalizes email; login ip limit spans accounts; production defaults hide debug and secure session cookie; production error response hides exception details; malformed email requests do not share a global account bucket and response cookie flags are set."
+  },
+  "tests/Feature/ShipmentTrackingTest.php": {
+    "summary": "Suite PHPUnit ShipmentTrackingTest (tests/Feature). Kasus uji yang ditegaskan: new order has explained resi belum tersedia state; shipped transition creates manifest and allows sequential events; events are chronological and completion marks delivered; customer order detail exposes shipment summary."
+  },
+  "tests/Feature/ShopListCountTest.php": {
+    "summary": "Suite PHPUnit ShopListCountTest (tests/Feature). Konteks: Markup/source checks only; runtime counting is verified by the browser runner. Kasus uji yang ditegaskan: shop lists render polite count regions and update totals; count labels come from each locale catalog."
+  },
+  "tests/Feature/SocialLoginTest.php": {
+    "summary": "Suite PHPUnit SocialLoginTest (tests/Feature). Kasus uji yang ditegaskan: storefront social buttons are accessible and admin login has none; disabled provider is hidden and redirect fails closed; redirect sends user to google with state; new verified identity creates account and logs in; linked identity logs in existing user without duplicate; existing password account is not auto linked; unverified email is rejected; social created user has no password flag; logged in user links google from account page; linking identity owned by another user is rejected; logged in callback without link intent does not switch account; unlink removes link but guards last link without password; invalid state is rejected gracefully."
+  },
+  "tests/Feature/StorefrontA11yMarkupTest.php": {
+    "summary": "Suite PHPUnit StorefrontA11yMarkupTest (tests/Feature). Kasus uji yang ditegaskan: public pages declare language title and a single main landmark; every image on public pages has an alt attribute; every interactive control on public pages has an accessible name; every form field on public pages is programmatically labelled; login validation errors are linked to their field; authenticated account pages keep the same landmark contract; api endpoints return json not empty html."
+  },
+  "tests/Feature/StorefrontAvailabilityTest.php": {
+    "summary": "Suite PHPUnit StorefrontAvailabilityTest (tests/Feature). Kasus uji yang ditegaskan: negative stock is reported out of stock; active zero stock is out of stock; active positive stock is in stock; inactive positive stock has no public offer; stock snapshot is fresh after cache was warmed; checkout then cancel refresh warmed pdp availability; admin activation and deactivation refresh pdp and home."
+  },
+  "tests/Feature/StorefrontCacheSerializationTest.php": {
+    "summary": "Suite PHPUnit StorefrontCacheSerializationTest (tests/Feature). Kasus uji yang ditegaskan: cold then warm request render identically and second skips catalog queries; related products are cached but pdp stock and product are fresh; payload of disallowed class is not unserialized into an object."
+  },
+  "tests/Feature/StorefrontCacheTest.php": {
+    "summary": "Suite PHPUnit StorefrontCacheTest (tests/Feature). Kasus uji yang ditegaskan: category update invalidates catalog without resetting newsletter limit; product rename and delete invalidate old detail keys."
+  },
+  "tests/Feature/StorefrontCopyUsabilityTestIntegrityTest.php": {
+    "summary": "Suite PHPUnit StorefrontCopyUsabilityTestIntegrityTest (tests/Feature). Kasus uji yang ditegaskan: usability test kit exists and discloses unrun sessions."
+  },
+  "tests/Feature/StorefrontInactiveProductTest.php": {
+    "summary": "Suite PHPUnit StorefrontInactiveProductTest (tests/Feature). Kasus uji yang ditegaskan: inactive product is hidden from home detail related and concierge; admin deactivation invalidates cached storefront responses; admin can set bounded stock and active flag."
+  },
+  "tests/Feature/StorefrontLocaleSeedTest.php": {
+    "summary": "Suite PHPUnit StorefrontLocaleSeedTest (tests/Feature). Kasus uji yang ditegaskan: homepage seeds js with server locale and post url; homepage renders visible polite locale status region; zh homepage renders chinese copy and body language; catalog language choice propagates to homepage; profile locale wins after anonymous browsing and post login; password toggle labels are translated data attributes."
+  },
+  "tests/Feature/StorefrontShopLocaleTest.php": {
+    "summary": "Suite PHPUnit StorefrontShopLocaleTest (tests/Feature). Kasus uji yang ditegaskan: request errors are delivered from the active catalog; shop status labels are delivered from the active catalog; shop page uses each locales own catalog; product page renders every label from each catalog; product page source has no indonesian literals; purchase cart renders every label from each catalog; catalog purchase copy renders in each locale; shop dynamic messages use catalog lookup; request catalogs have identical keys and preserve indonesian copy."
+  },
+  "tests/Feature/StorefrontTest.php": {
+    "summary": "Suite PHPUnit StorefrontTest (tests/Feature). Kasus uji yang ditegaskan: storefront displays zafira brand; product detail page is accessible; product detail page exposes canonical share target; sitemap is accessible; product detail page 404 for unknown slug; concierge request can be created; checkout request without schedule is valid; newsletter subscription is idempotent with uniform response; concierge order items use server side name and price; concierge accepts empty hidden order items; authenticated concierge with alternate contact email stays in account history; concierge rejects invalid order items."
+  },
+  "tests/Feature/StorefrontTextEvaluationIntegrityTest.php": {
+    "summary": "Suite PHPUnit StorefrontTextEvaluationIntegrityTest (tests/Feature). Kasus uji yang ditegaskan: evaluation document exists and covers all identified items; evaluated files actually exist in project."
+  },
+  "tests/Feature/StorefrontTextInventoryIntegrityTest.php": {
+    "summary": "Suite PHPUnit StorefrontTextInventoryIntegrityTest (tests/Feature). Kasus uji yang ditegaskan: all blade views are listed in inventory document."
+  },
+  "tests/Feature/Task3RemediationTest.php": {
+    "summary": "Suite PHPUnit Task3RemediationTest (tests/Feature). Kasus uji yang ditegaskan: checkout persists valid size and monogram and rejects invalid monogram; storefront hides prototype navigation in production but keeps assets; customer navigation never routes to demo or admin and keeps shortcuts; role pages keep native navigation without demo docks; product and account pages do not claim fake certificates or profile data."
+  },
+  "tests/Feature/TrackingCsrfTest.php": {
+    "summary": "Suite PHPUnit TrackingCsrfTest (tests/Feature). Kasus uji yang ditegaskan: track rejects forged requests without leaking order data; track accepts valid csrf header; track accepts form urlencoded body token; valid csrf with invalid tracking token is not found."
+  },
+  "tests/Feature/TranslationCatalogParityTest.php": {
+    "summary": "Suite PHPUnit TranslationCatalogParityTest (tests/Feature). Kasus uji yang ditegaskan: catalog has same keys as indonesian."
+  },
+  "tests/Feature/TrustProxyTest.php": {
+    "summary": "Suite PHPUnit TrustProxyTest (tests/Feature). Kasus uji yang ditegaskan: header forwarded palsu diabaikan tanpa proxy tepercaya; host forge tidak memercayai header tanpa konfigurasi proxy; forwarded proto dihormati bila proxy tepercaya."
+  },
+  "tests/Feature/UnifiedPurchaseCartTest.php": {
+    "summary": "Suite PHPUnit UnifiedPurchaseCartTest (tests/Feature). Konteks: FR-201: pembelian standar memakai tas server; permintaan ukuran/monogram tetap melalui concierge. Kasus uji yang ditegaskan: home and product expose numeric purchase id and separate personalization; server cart sets quantity and survives login with authoritative price; personalization is rejected at server purchase boundary."
+  },
+  "tests/Feature/ValidationLocaleTest.php": {
+    "summary": "Suite PHPUnit ValidationLocaleTest (tests/Feature). Kasus uji yang ditegaskan: validation catalogs have matching rules and placeholders; validation messages follow request locale with translated attributes; profile messages follow request locale; profile deletion success follows request locale; admin enrol errors follow request locale; organization json ld follows request locale."
+  },
+  "tests/Feature/VoiceAndToneConsistencyTest.php": {
+    "summary": "Suite PHPUnit VoiceAndToneConsistencyTest (tests/Feature). Kasus uji yang ditegaskan: text surfaces do not contain banned phrases; voice and tone matrix document exists."
+  },
+  "tests/Support/guard-probe.php": {
+    "summary": "Probe uji minimal tanpa kernel, .env, atau PDO yang menyusun array koneksi fixture hanya dari environment proses. Dipakai TestDatabaseGuardTest untuk membuktikan guard database menentukan target sebelum ada koneksi."
+  },
+  "tests/Support/pdf-text.swift": {
+    "summary": "Ekstraktor teks PDF khusus test memakai PDFKit macOS (framework sistem, tanpa dependensi tambahan). Mencetak teks per halaman dipisah form feed agar test laporan PDF dapat memeriksa paginasi."
+  },
+  "tests/TestCase.php": {
+    "summary": "Kelas dasar abstrak TestCase untuk seluruh suite PHPUnit Laravel. Memvalidasi koneksi database uji (validateTestDatabase) agar test hanya berjalan pada SQLite memori/berkas atau skema MySQL uji yang aman, dan menolak target database operasional sebelum migrasi atau refresh."
+  },
+  "tests/Unit/ComposerHooksTest.php": {
+    "summary": "Suite PHPUnit ComposerHooksTest (tests/Unit). Kasus uji yang ditegaskan: composer scripts route through guarded adapter; cache override without amadis markers fails closed before framework callback; guard accepts the launcher root and fails closed on a moved cache."
+  },
+  "tests/Unit/ExampleTest.php": {
+    "summary": "Uji unit contoh bawaan Laravel yang hanya menegaskan nilai true; berfungsi sebagai smoke test runner PHPUnit."
+  },
+  "tests/Unit/TestDatabaseGuardTest.php": {
+    "summary": "Suite PHPUnit TestDatabaseGuardTest (tests/Unit). Kasus uji yang ditegaskan: guard resolves target before any connection."
+  },
+  "tests/admin-table-drafts.test.mjs": {
+    "summary": "Suite node:test admin-table-drafts (tests). Konteks: Browser behaviour: a single select without any `selected` attribute still shows its Kasus uji yang ditegaskan: FR-R44-001: cancel dirty /in companion POST form; FR-R44-001: filter submit also guards dirty POST controls; FR-R44-001: accepting dirty-form warning permits normal fetch and push; FR-R44-001: cancelled popstate restores last rendered URL and query state; FR-R44-001: rejecting Back aborts pending fetch without losing POST draft or rendered URL; FR-R44-001: unchanged POST controls never prompt; FR-R44-001:; FR-R44-001: a draft in a form outside the table regions survives the swap and never prompts; a11y: click navigation does not steal focus when the user moved outside the tables meanwhile."
+  },
+  "tests/admin-table-errors.test.mjs": {
+    "summary": "Suite node:test admin-table-errors (tests). Kasus uji yang ditegaskan: HCI-03: redirect offers trusted login link (); HCI-03: HTTP gets retry copy without raw details; HCI-03: fetch failure keeps network copy; HCI-03: successful retry clears login link; HCI-03: abort and stale failure remain silent."
+  },
+  "tests/admin-table-gaps.test.mjs": {
+    "summary": "Suite node:test admin-table-gaps (tests). Kasus uji yang ditegaskan: NFR-R44-headers: partial requests accept HTML and identify XMLHttpRequest; FR-R44-selection: deselect-all clears boxes and disables action; FR-R44-selection: swap clears selection in replacement markup; FR-R44-selection: orders selection never modifies another table; a11y-R44-announcement: successful swap reads response page summary; FR-R44-density: defaults compact and restores comfortable after swap; UX-R44-click: modified clicks on [data-table-link] are ignored; UX-R44-error: exact error text on failure and retry hides previous banner immediately; UX-R44-dirty: dirty control in GET filter form never triggers window.confirm; UX-R44-api: direct load with fails closed, clears announcement, reveals error banner."
+  },
+  "tests/admin-table-navigation.test.mjs": {
+    "summary": "Suite node:test admin-table-navigation (tests). Kasus uji yang ditegaskan: FR-R47-001: pagination link fetches and swaps only the table region, then pushes URL and focuses heading; FR-R47-001: form submit builds GET URL from form fields without reloading; NFR: newer request aborts the older one so a stale response never replaces fresh results; NFR: network/HTTP failure shows an alert, clears busy state and keeps the old table; NFR: response without the table region is treated as failure; NFR: redirects outside admin page are rejected before parsing response HTML; NFR: links outside current admin path are left to the browser; FR-R47-001: modified clicks and cross-origin links are left to the browser; FR-R47-001: back/forward reloads the table for the restored URL without pushing history; FR-R47-001: concierge link swaps concierge and refreshes user region so both carry the same URL state; NFR: a cross-origin form action is left to the browser instead of being fetched and swapped; NFR: both swapped regions announce busy and none stays busy after the swap; NFR: without fetch support the handlers never bind so plain GET navigation survives; FR-R47-001: hash-only history moves (in-page anchors) do not refetch tables; NFR: back during an in-flight request supersedes it so the stale push never lands; NFR: response missing the companion region swaps nothing and pushes no URL; NFR: successful popstate preserves history state for later failure recovery; NFR: failed popstate HTTP response restores the last rendered URL and state; NFR: failed popstate missing-region response restores the last rendered URL and state; NFR: popstate network rejection restores initial rendered URL and null state; NFR: failed popstate restores a non-null state present at page load; NFR: cancelled popstate replaces the current entry with the rendered URL and state."
+  },
+  "tests/admin-table-race.test.mjs": {
+    "summary": "Suite node:test admin-table-race (tests). Kasus uji yang ditegaskan: FR-R44-001 HCI-02: reject a draft typed during fetch without replacing any table region; FR-R44-001: unchanged accepted POST draft prompts only once; FR-R44-001 HCI-02: changed accepted draft is re-confirmed and rejected swap clears loading announcement."
+  },
+  "tests/admin-table-session-regressions.test.mjs": {
+    "summary": "Suite node:test admin-table-session-regressions (tests). Kasus uji yang ditegaskan: FR-R44-001: Back restores latest hash-only traversal URL and state; FR-R44-003: denied storage writes retain per-table density after swap (read denied: )."
+  },
+  "tests/admin-table-sort-change.test.mjs": {
+    "summary": "Suite node:test admin-table-sort-change (tests). Konteks: Self-contained fake DOM: one \"pesanan\" table with select-all, row boxes and a toolbar. Kasus uji yang ditegaskan: change on select-all updates the toolbar without fetching; change on a row checkbox updates the toolbar without fetching; submitting a GET filter form with sort/dir fetches the query and swaps the table."
+  },
+  "tests/admin-table.test.mjs": {
+    "summary": "Suite node:test admin-table (tests). Konteks: Minimal elements for the R-44 selection/density enhancements. Kasus uji yang ditegaskan: FR-R44-002: bulk selection reveals toolbar, select-all checks visible rows, partial state is indeterminate; FR-R44-003: density defaults compact, persists choice and survives localStorage failure; FR-R44-002: copy with two boxes checked writes formatted IDs to clipboard and announces success via live region; FR-R44-002: writeText rejection produces accessible failure message without throwing; FR-R44-002: missing navigator.clipboard produces accessible failure/fallback message without throwing; a11y: persistent live region announces loading, then the new page summary after swap; a11y: popstate targeting table A keeps focus in table B at swap time; a11y: popstate leaves focus outside all tables untouched; FR-R44-003: density toggles are independent per table key; FR-R44-003: stored density is restored per key on enhance, other keys fall back; FR-R44-003: density is reapplied per key after the table regions are swapped; FR-R44-status: cancellation requires confirmation; FR-R44-status: status-form submit intercepts, POSTs with JSON headers, and reloads table region."
+  },
+  "tests/amadis-layout.test.mjs": {
+    "summary": "Suite node:test amadis-layout (tests). Kasus uji yang ditegaskan: F2: fixed prototype dock has viewport-safe scroll margins and remains available; F8: announcement copy wraps at desktop and mobile without clipping or ellipsis."
+  },
+  "tests/amadis_guard_negative_test.py": {
+    "summary": "Suite unittest Python AmadisGuardNegativeTest berisi uji negatif guard launcher AMADIS tanpa bootstrap Laravel atau database nyata. Menegaskan seed menolak argumen tambahan dan kelas lain sebelum root dimutasi, mode run sembarang ditolak, root tidak valid ditolak, hash fixture yang dirusak terdeteksi, byte fixture terverifikasi bertahan saat sumber diganti, dan rahasia literal teredaksi."
+  },
+  "tests/brand-tokens.test.mjs": {
+    "summary": "Suite node:test brand-tokens (tests). Konteks: Email clients do not reliably support CSS variables; exceptions are file-specific. Kasus uji yang ditegaskan: R-55: brand literals and off-brand fonts stay out of application surfaces; guard detects Blade/JS colors and mixed font stacks without matching HTML entities; quoted var() fallbacks are parsed, not bypassed (review R-55 HIGH); root font tokens are validated at the definition (review R-55 MEDIUM); var() without fallback must reference a defined font token (review R-55 MEDIUM); var() whitespace and Blade attribute quoting do not cause false results (review R-55 LOW)."
+  },
+  "tests/cart-concurrency.test.mjs": {
+    "summary": "Suite node:test cart-concurrency (tests). Konteks: Same-tab mutations serialize. +/-, add and undo send relative deltas so the server Kasus uji yang ditegaskan: quantity plus sends a relative delta, so another tab\\; add to cart sends +1 delta; rapid adds during a slow request are serialized with fresh quantities, not dropped; rapid quantity clicks apply each step and stop once the line is gone; no-op intent after fresh GET renders latest snapshot and badge; a failed request does not block later actions; undo still restores removed quantity; remove queued behind a successful plus undoes to the updated quantity, added to fresh state; status announces resulting item count and subtotal after a change; zero-quantity removal does not offer an undo action; failed undo does not claim absence when another tab restored the item; failed fresh GET aborts the mutation and keeps the queue alive; opening the drawer refreshes the cart; returning to the tab refreshes the cart; hiding does not; rerender restores focus to the same row action; deleting a row falls back to a safe focus target instead of document.body; undo belongs to the open dialog and participates in its keyboard trap; late delete response cannot offer undo after drawer closes and reopens; late delete response while drawer stays closed cannot offer undo; focused undo survives timeout; activation clears action and restores safe focus; unfocused timeout and close/reopen discard stale undo and restore toast home; later non-action toast clears focused undo without losing focus; ordinary toast still works on a storefront without a cart drawer."
+  },
+  "tests/cart-escape.test.mjs": {
+    "summary": "Suite node:test cart-escape (tests). Konteks: Pins storefront cart drawer escaping: product titles reach innerHTML only via escapeHtml. Kasus uji yang ditegaskan: escapeHtml encodes & < > \\; renderCart escapes hostile product_title in text and aria-label attributes; renderCart escapes hostile translation text in availability message; every interpolation in the renderCart template passes through escapeHtml."
+  },
+  "tests/cart-request-hardening.test.mjs": {
+    "summary": "Suite node:test cart-request-hardening (tests). Kasus uji yang ditegaskan: cartRequest returns successful JSON for direct request; cartRequest maps malformed JSON to a friendly message; cartRequest maps HTTP 419 and 5xx without exposing server text; cartRequest maps network failure and timeout to friendly messages; cartRequest safely parses fresh GET before checking response status."
+  },
+  "tests/catalog-replacement.test.mjs": {
+    "summary": "Suite node:test catalog-replacement (tests). Kasus uji yang ditegaskan: FR-CLOSURE-01: each locale distinguishes SET from additive cart intent; FR-CLOSURE-01: replacement copy sits beside both controls and live feedback retains cart access."
+  },
+  "tests/checkout-bootstrap-recovery.test.mjs": {
+    "summary": "Suite node:test checkout-bootstrap-recovery (tests). Konteks: Runs the inline script of resources/views/shop/index.blade.php against a fake DOM. Kasus uji yang ditegaskan: account: a failed first cart GET still loads addresses so checkout works after retry; account: a failed first cart GET still loads orders and favorites; account: a healthy first load keeps cart, addresses, and checkout together (control)."
+  },
+  "tests/checkout-summary.test.mjs": {
+    "summary": "Suite node:test checkout-summary (tests). Konteks: FR-034-07: both checkout paths keep an honest, persistent estimate. Kasus uji yang ditegaskan: estimate includes quantities and literal hostile/Unicode product names; empty cart clears estimate; failed cart read clears summary and estimate; mobile focus clears measured summary height, including reverse keyboard navigation; visible mobile field and desktop focus do not force scrolling; gold button hover and keyboard focus preserve AA text contrast; shared aside stays visible before both forms, sticky on desktop and above mobile forms without nested scrolling."
+  },
+  "tests/commercial-claims.test.mjs": {
+    "summary": "Suite node:test commercial-claims (tests). Kasus uji yang ditegaskan: client dictionary does not re-inject unbacked commercial claims."
+  },
+  "tests/helpers/admin-table.mjs": {
+    "summary": "Helper uji Node berisi fake DOM minimal untuk admin-table.js: satu section tabel per key dengan replaceWith yang menukar entri registri (makeSection). Dipakai bersama oleh suite admin-table*.test.mjs."
+  },
+  "tests/hit-hero-run12.test.mjs": {
+    "summary": "Suite node:test hit-hero-run12 (tests). Kasus uji yang ditegaskan: stacked 1024 hero image does not contribute intrinsic height; prototype view-mode hit area expands vertically only; storefront search hit area does not expand into brand; theme controls retain nonoverlapping 24px targets with spacing exception."
+  },
+  "tests/image-alt-fallback.test.mjs": {
+    "summary": "Suite node:test image-alt-fallback (tests). Kasus uji yang ditegaskan: R54: catalog card image and data-alt use shared imageAlt() fallback; R54: PDP main and related images use shared imageAlt() fallback; R54: quickview resolves alt from card data-alt, not product name; R54: fallback label resolves in every locale (not a raw key)."
+  },
+  "tests/phase4-a11y.test.mjs": {
+    "summary": "Suite node:test phase4-a11y (tests). Kasus uji yang ditegaskan: hero image never determines grid row height at any breakpoint; both surfaces expand controls without painting hit area; cart quantity and remove controls meet the 44px project target; cart rows match two-child markup and keep remove at the row end; toast undo action meets the 44px project target via CSS; confirmed text failures use darker, locally scoped colors."
+  },
+  "tests/prototype-currency.test.mjs": {
+    "summary": "Suite node:test prototype-currency (tests). Konteks: Evaluate the actual formatting function in isolation without booting a browser or reading user storage. Kasus uji yang ditegaskan: harga prototype selalu dalam IDR tanpa kurs simulasi; pemilihan bahasa tidak mengubah mata uang dan UI hanya menawarkan IDR."
+  },
+  "tests/prototype-dock.test.mjs": {
+    "summary": "Suite node:test prototype-dock (tests). Kasus uji yang ditegaskan: mobile hero text pane reserves space above the fixed dock; mobile hero media fills first screen so hero copy starts below the dock band."
+  },
+  "tests/prototype-drawer.test.mjs": {
+    "summary": "Suite node:test prototype-drawer (tests). Kasus uji yang ditegaskan: all click-driven navigation links are native keyboard links or buttons; mobile drawer opener uses translated accessible name in all languages; drawer open and close share a focus lifecycle and keyboard trap; footer action links keep inherited colour after gaining href; cart, filter, search and dock controls meet internal 44px target."
+  },
+  "tests/prototype-header-1025.test.mjs": {
+    "summary": "Suite node:test prototype-header-1025 (tests). Konteks: Run13: /prototype/ header overflowed 20-127px at 1025-1300px (all langs) because compact Kasus uji yang ditegaskan: prototype header keeps compact sizing at 1025-1400px (no horizontal overflow)."
+  },
+  "tests/prototype-mobile-lang.test.mjs": {
+    "summary": "Suite node:test prototype-mobile-lang (tests). Kasus uji yang ditegaskan: mobile nav drawer offers every language via the delegated data-set-lang handler; mobile drawer strings carry data-i18n in all four dictionaries; mobile language buttons meet 44px touch target; switching language translates drawer text and accessible labels."
+  },
+  "tests/prototype-security.test.mjs": {
+    "summary": "Suite node:test prototype-security (tests). Kasus uji yang ditegaskan: keeps stored id and status out of HTML and inline JavaScript; numeric order controls retain numeric IDs for strict-equality callers; toast escapes message and action label while retaining SVG and undo callback; authenticity certificate escapes stored order fields; work order escapes stored order fields; cart drawer escapes product, size and monogram; audit trail and inventory escape stored text; editorial catalog encodes stored products and rejects active image schemes; studio encodes stored fields, measurements and image URLs; image URL allowlist keeps relative and http(s) sources only; empty cart escapes translated message; product card escapes stored product text."
+  },
+  "tests/python/test_amadis_boundary_root.py": {
+    "summary": "Suite unittest Python BoundaryRootTests (tests/python). Kasus uji yang ditegaskan: boundary callers generate guard compatible root and short stage suffix."
+  },
+  "tests/python/test_amadis_composer_audit.py": {
+    "summary": "Suite unittest Python ComposerAuditTests (tests/python). Konteks: Guarded composer-audit capability of scripts/amadis/launch.py, checked without Composer. Kasus uji yang ditegaskan: runs only fixed argv in isolated env; raw audit returncode is propagated; refuses any other arguments before bootstrap; refuses root outside approved base; refuses identity mismatch; refuses repo identity mismatch; refuses wrong cwd; refuses when manifests change; raw run still blocks composer."
+  },
+  "tests/python/test_amadis_connect_proxy.py": {
+    "summary": "Suite unittest Python ConnectProxyTests (tests/python). Kasus uji yang ditegaskan: every connect is logged; suffix and malformed targets are refused; non connect method is refused; disallowed host returns 403; disallowed port returns 403; private host returns 403; incomplete and oversized headers are rejected; stalled client does not block other clients; many concurrent refusals all complete; non loopback bind requires opt in; public address filter rejects local and reserved ranges."
+  },
+  "tests/python/test_amadis_docker_stage.py": {
+    "summary": "Suite unittest Python DockerStageTests (tests/python). Kasus uji yang ditegaskan: copy uses latest bytes and excludes operational state; full source and executable modes; preflight keeps durable evidence for every outcome; gate categorizes missing docker and redacts output; copy rejects symlinks and hardlinks; command mounts only independent stage and is offline; proxy allowlist is exact and port bound; preflight uses approved composer digest; install gate requires every recorded predicate; networked command stays hardened and never publishes ports; missing or crashed probe results fail; stage env satisfies guard and hook requirements; topology rejects shared or missing isolation; unexpected changes flags writes outside apply set; lock operations are parsed exactly; apply copies only closure and rolls back on failed verify; apply includes generated autoload maps; failed verify removes newly created apply files; partial copy failure rolls back to initial digest; direct egress uses literal ips and passes only on network failure; apply refuses when repo drifted; install stage refuses incomplete preflight without running; hooks require verbose script lines and root artifacts; stage install cli runs install preflight; stage runtime cli runs without install; install crash cannot pass report; cleanup removes same named containers before networks; install remains fail closed."
+  },
+  "tests/python/test_amadis_export.py": {
+    "summary": "Suite unittest Python ExportTests (tests/python). Kasus uji yang ditegaskan: cli export copies exactly the capture triplet and manifest; exported bundle hides sentinel keeps marker and matches manifest hashes; planted forbidden files are never exported; path tricks and bad stems are refused; missing capture triplet member is refused; symlinked capture file is not followed; identity mismatch is refused; non empty or world readable destination is refused; destination outside approved base is refused; destination inside root is refused; export leaves source evidence unchanged; wrong cwd is refused; hardlinked capture file is refused; raw secret in capture file is resanitized on export; oversized capture file is refused; write failure on later file rolls back all created files; rollback preserves entry replaced by another inode; cleanup error does not stop remaining cleanup or mask original; capture file at exact size cap is accepted; repeated export into same destination is refused."
+  },
+  "tests/python/test_amadis_lock.py": {
+    "summary": "Suite unittest Python AmadisLockTests (tests/python). Konteks: Real per-root lock tests for scripts/amadis/launch.py. Kasus uji yang ditegaskan: contender rejected while holder runs then root reusable; lock survives killed parent via captured child."
+  },
+  "tests/python/test_amadis_pdf_dependency.py": {
+    "summary": "Suite unittest Python AmadisPdfDependencyTests (tests/python). Kasus uji yang ditegaskan: cli validates args before bootstrap; hooks are exact; rejects plugin not allowlisted; minifier expands and unsets; candidate accepts exact closure; candidate rejects drift; release rejects unapproved requirement; install requires candidate generation; candidate hook context fails before composer; transaction rolls back manifests and vendor; transaction rolls back verification mismatch; transaction rolls back partial manifest swap; transaction rejects changed repo before mutation; archives require five unambiguous nonempty sha256; candidate generate validate bind."
+  },
+  "tests/python/test_amadis_pdf_font.py": {
+    "summary": "Suite unittest Python PdfFontProvenanceTests (tests/python). Kasus uji yang ditegaskan: source vf is pinned and kept; licence is shipped and pinned; output hash matches record; record declares pinned wght 400; record has no missing coverage; no variable tables and glyf outlines; weight and names are regular; cmap is same as variable source; required coverage; regular is not the default thin master; check rejects variable font."
+  },
+  "tests/python/test_amadis_persistent_profile.py": {
+    "summary": "Suite unittest Python PersistentProfileTests (tests/python). Konteks: Persistent demo profile of scripts/amadis/launch.py, checked without PHP. Kasus uji yang ditegaskan: serve profile is persistent local and loopback; demo key is stable across restarts; test profile stays in memory; seed defaults to demo seeder; reserved ports and bad workers refused; php array password redacted in command metadata."
+  },
+  "tests/python/test_amadis_provision.py": {
+    "summary": "Suite unittest Python ProvisionTests (tests/python) untuk perintah provision launcher AMADIS: kredensial privat, tanpa kebocoran, menolak root yang sudah dipakai, tanpa PHP. Kasus uji yang ditegaskan: writes private credentials and prints only ids; malformed child output is discarded; refuses root with orders or no schema and writes nothing; provision refuses arguments."
+  },
+  "tests/python/test_amadis_snapshot.py": {
+    "summary": "Suite unittest Python SnapshotTests (tests/python). Konteks: Read-only lifecycle snapshot capability of scripts/amadis/launch.py, checked without PHP. Kasus uji yang ditegaskan: snapshot runs only fixed entry point; snapshot refuses arguments; php snapshot is query only and column allowlisted."
+  },
+  "tests/python/test_amdis_launch_sanitization.py": {
+    "summary": "Suite unittest Python SanitizationTests (tests/python). Kasus uji yang ditegaskan: sentinel json and nested json values; bearer and multiline cookie headers; separate environment and cli assignments; synthetic leak shapes are redacted; prefixed headers redact every cookie pair; prefixed folded continuation is redacted; header redaction stops at next header; quoted auth scheme values are redacted; php dump bracket keys are redacted; additional secret names are redacted; non secret words with secret prefix remain; multiline pem body is redacted; command metadata sanitizes credential options; diagnostic shape and unrelated values remain; manifest excludes database dumps and links; prepare rejects symlinked writable directories; open file rejects symlinked config cache; prepare rejects nested storage symlink and hardlink; evidence write does not follow planted symlink; capture writes sanitized metadata inside root; prepare rejects hardlinked database; command metadata sanitizes inline and separate arguments; command metadata sanitizes dotted keys and short password; mocked capture private write and allowlisted export."
+  },
+  "tests/residual-literals.test.mjs": {
+    "summary": "Suite node:test residual-literals (tests). Kasus uji yang ditegaskan: PDP residual labels use the shop_ui catalog; Residual JS literals: app.js and admin-table.js read translated copy blobs with fallback."
+  },
+  "tests/search-match.test.mjs": {
+    "summary": "Suite node:test search-match (tests). Kasus uji yang ditegaskan: searchMatches gives substring priority over typo matches; searchMatches fallback works for single-word typo with edit distance 1; searchMatches fallback works for adjacent transposition; searchMatches does not trigger typo fallback for word length < 4 or multi-word queries; searchMatches respects limit parameter."
+  },
+  "tests/shop-cart-load.test.mjs": {
+    "summary": "Suite node:test shop-cart-load (tests). Konteks: Runs the inline script of resources/views/shop/index.blade.php against a fake DOM. Kasus uji yang ditegaskan: failed reload clears stale rows, shows retry, keeps checkout disabled, no checkout POST; checkout re-reads the cart and aborts when it is now empty; rapid double submit sends exactly one checkout POST; a lost checkout response can be replayed with the same key even when the cart reads empty; a rejected checkout drops the pending replay and aborts on an empty cart; checkout proceeds after a fresh non-empty cart read; initial load failure shows retry state instead of an empty-looking bag; account order statuses use customer-facing labels and unknown statuses fall back to a safe label; shared checkout summary shows product, subtotal, and pending status; summary shows server breakdown when quote fields present; checkout summary updates after cart reload; checkout summary shows empty state; failed reload shows unavailable shared summary."
+  },
+  "tests/sold-out-controls.test.mjs": {
+    "summary": "Suite node:test sold-out-controls (tests). Kasus uji yang ditegaskan: FR-SOLDOUT-01: translated unavailable label exists for every catalog locale; FR-SOLDOUT-01: catalog card and quick view prevent adding stock-zero products; FR-SOLDOUT-01: PDP disables purchase when live product stock is zero; FR-SOLDOUT-01: homepage and related cards expose stock and disable sold-out add; FR-SOLDOUT-01: shared quick view and card handler refuse sold-out products; FR-SOLDOUT-01: shared quick view resets sold-out state when opening an in-stock card; FR-SOLDOUT-01: home/related payload selects stock under v3 cache keys with matching invalidation."
+  },
+  "tests/storefront-copy.test.mjs": {
+    "summary": "Suite node:test storefront-copy (tests). Kasus uji yang ditegaskan: client-room label survives language selection; personalization toast uses the catalog-purchase term."
+  },
+  "tests/storefront-locale.test.mjs": {
+    "summary": "Suite node:test storefront-locale (tests). Kasus uji yang ditegaskan: server locale wins over old storage without initial POST, including zh compatibility; real selector POST uses CSRF and updates persisted state and stale query only after success; requests serialize, obsolete responses cannot overwrite newer choice; HTTP and transport failures keep confirmed locale and show accessible error; blocked storage is safe; failed newer choice falls back to latest successful server write; zh marks storefront body Chinese while preserving Chinese preference; welcome language switchers expose zh and switching en -> zh -> fr round-trips; invalid locale does not POST."
+  },
+  "tests/sw.test.mjs": {
+    "summary": "Suite node:test sw (tests). Kasus uji yang ditegaskan: navigations use network, never cached personalized HTML, including offline; install excludes HTML; activation removes only obsolete ZAFIRA caches; built assets remain cache-first."
+  },
+  "tests/sweep10-repairs.test.mjs": {
+    "summary": "Suite node:test sweep10-repairs (tests). Kasus uji yang ditegaskan: D2: each dictionary uses compact translated search prompts; D3: desktop provenance gets explicit first-paint dock clearance; D4: footer legal text clears AA after alpha compositing; D5: Maison motto is localized, not repeated English; D6: theme choices and language select accessible names use existing i18n; D7: medium desktop actions reserve header space without clipping."
+  },
+  "tests/task3.test.mjs": {
+    "summary": "Suite node:test task3 (tests). Konteks: Deterministic fake of the session cart API: POST /cart/items SETs quantity, DELETE removes, GET reads. Kasus uji yang ditegaskan: prototype product links resolve storefront slugs; legacy cart keys stay untouched, are never auto-posted, and never merge into the server cart; server cart renders by product_id, quantity edits send relative deltas, and a fresh harness restores from server state; catalog search and category intersect through one hidden-based filter; profile shares overlay and scroll lifecycle with cart and concierge; standard card add POSTs a +1 delta for the server product_id and survives a fresh harness; apparel card add still goes to the PDP and never writes to the server cart; runtime translations cannot restore removed claims in any language; runtime dictionaries omit unsupported claims; public has five locales with id key parity, prototype keeps four; searchMatches gives substring priority over typo matches; searchMatches fallback works for single-word typo with edit distance 1 or adjacent transposition; app live search uses shared search-match typo fallback and guided empty state resets without losing filters; deep link ?cari= runs the real restore path: catalog is filtered and the drawer is not left stale; catalog edits and guided clear sync cari while preserving category, favorites and unrelated URL params; deep-link renders drawer through existing search without any URL writes; drawer announces count, fuzzy and empty feedback separately from interactive results; drawer search shares the matcher: typo fallback, escaped output, no results hint."
+  },
+  "tests/task4-focus.test.mjs": {
+    "summary": "Suite node:test task4-focus (tests). Kasus uji yang ditegaskan: opening retries focus until target accepts it; delayed focus never replaces focus already moved inside dialog; focus retries are bounded when target cannot accept focus; focusable selectors exclude SVG use href; all overlays start inert and hidden; every overlay focuses inside, Escape lifecycle closes all and returns to external trigger; closing unopened shortcuts never steals returned focus; handoff from quick view preserves outside opener when all dialogs close."
+  },
+  "tests/task4.test.mjs": {
+    "summary": "Suite node:test task4 (tests). Kasus uji yang ditegaskan: storefront overlays include focus trap, opener return, and Escape close behavior; search and catalog filters have accessible names and exposed state; PDP size guide is an accessible dialog and native alerts are absent; keyboard help participates in accessible dialog flow."
+  },
+  "tests/zafira-i18n.test.mjs": {
+    "summary": "Suite node:test zafira-i18n (tests). Kasus uji yang ditegaskan: exported dictionaries cover storefront translation attributes."
+  },
+  "tests/zafira-theme.test.mjs": {
+    "summary": "Suite node:test zafira-theme (tests). Kasus uji yang ditegaskan: bootstrap uses canonical keys, migrates only valid legacy values, system default; theme settings persist and OS changes affect system setting only; prototype cart renderer uses existing language API and guarded storage fallback."
+  }
+}

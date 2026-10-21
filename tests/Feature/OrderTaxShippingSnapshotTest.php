@@ -8,8 +8,10 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Voucher;
+use App\Services\CheckoutService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\TestCase;
 
 class OrderTaxShippingSnapshotTest extends TestCase
@@ -150,7 +152,7 @@ class OrderTaxShippingSnapshotTest extends TestCase
         $cart = [$product->product_id => 1];
         $scope = str_repeat('b', 64);
 
-        [$order] = app(\App\Services\CheckoutService::class)->checkoutGuest(
+        [$order] = app(CheckoutService::class)->checkoutGuest(
             $contact, $address, $cart, 'guest-snapshot', $scope, 'token-guest'
         );
 
@@ -160,7 +162,7 @@ class OrderTaxShippingSnapshotTest extends TestCase
 
         // Replay dengan tarif baru tetap mengembalikan snapshot awal
         config(['checkout.shipping_fee' => 90000, 'checkout.tax_rate_bps' => 5000]);
-        [$replay] = app(\App\Services\CheckoutService::class)->checkoutGuest(
+        [$replay] = app(CheckoutService::class)->checkoutGuest(
             $contact, $address, $cart, 'guest-snapshot', $scope, 'token-guest'
         );
         $this->assertSame(15000, $replay->shipping_fee);
@@ -169,8 +171,8 @@ class OrderTaxShippingSnapshotTest extends TestCase
 
         // Replay dengan alamat diubah ditolak (409)
         $diffAddress = ['line1' => 'Jalan Lain'] + $address;
-        $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
-        app(\App\Services\CheckoutService::class)->checkoutGuest(
+        $this->expectException(HttpException::class);
+        app(CheckoutService::class)->checkoutGuest(
             $contact, $diffAddress, $cart, 'guest-snapshot', $scope, 'token-guest'
         );
     }

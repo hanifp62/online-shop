@@ -1,0 +1,15 @@
+ZAFIRA Baseline Report
+Generated: 2026-10-20T04:55:23Z
+Commit: 7fff6fe (uncommitted files: 139)
+
+# Structural
+routes: 89
+migrations: 44
+php_files: 83
+views: 35
+test_files: 98
+build_assets_bytes: 135574
+
+# Quality
+phpunit: 798 tests, 6374 assertions, failures=0, errors=0, skipped=4, time=46.8s
+node: ℹ tests 290 ℹ pass 290 ℹ fail 0 

@@ -20,7 +20,7 @@ class ConciergeRequested extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Konfirmasi Rendez-vous · ZAFIRA Concierge',
+            subject: __('mail_ui.concierge.subject', [], $this->locale),
         );
     }
 

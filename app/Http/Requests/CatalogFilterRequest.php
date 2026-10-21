@@ -5,20 +5,30 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Validator as ValidatorFacade;
+use Illuminate\Validation\Rule;
 
 class CatalogFilterRequest extends FormRequest
 {
-    public function authorize(): bool { return true; }
+    public function authorize(): bool
+    {
+        return true;
+    }
 
     protected function prepareForValidation(): void
     {
         $raw = (string) $this->server('QUERY_STRING', $this->getRequestUri());
-        if (($pos = strpos($raw, '?')) !== false) $raw = substr($raw, $pos + 1);
+        if (($pos = strpos($raw, '?')) !== false) {
+            $raw = substr($raw, $pos + 1);
+        }
         $slugs = [];
         foreach (explode('&', $raw) as $pair) {
-            if ($pair === '') continue;
+            if ($pair === '') {
+                continue;
+            }
             [$key, $val] = array_pad(explode('=', $pair, 2), 2, '');
-            if (rawurldecode($key) === 'kategori') $slugs[] = trim(rawurldecode(str_replace('+', ' ', $val)));
+            if (rawurldecode($key) === 'kategori') {
+                $slugs[] = trim(rawurldecode(str_replace('+', ' ', $val)));
+            }
         }
         $input = $this->query();
         $input['kategori'] = array_values(array_unique(array_filter($slugs, fn ($v) => is_string($v) && $v !== '' && mb_strlen($v) <= 100 && preg_match('/^[a-z0-9-]+$/', $v) === 1)));
@@ -38,7 +48,7 @@ class CatalogFilterRequest extends FormRequest
             'harga_max' => ['nullable', 'string', 'regex:/^\d{1,10}$/', 'lte:9999999999'],
             'tersedia' => ['nullable', 'string', 'in:1'],
             'urut' => ['nullable', 'string', 'in:harga,terbaru,tersedia'],
-            'locale' => ['nullable', 'string', 'in:id,en,zh,fr,it'],
+            'locale' => ['nullable', 'string', Rule::in(config('app.supported_locales'))],
             'page' => ['nullable', 'string', 'regex:/^[1-9]\d{0,8}$/'],
         ];
     }
@@ -49,16 +59,27 @@ class CatalogFilterRequest extends FormRequest
     {
         $clean = [];
         foreach ($this->rules() as $key => $rule) {
-            if (str_contains($key, '.*')) continue;
+            if (str_contains($key, '.*')) {
+                continue;
+            }
             $subRules = [$key => $rule];
-            if ($key === 'kategori') $subRules['kategori.*'] = $this->rules()['kategori.*'];
+            if ($key === 'kategori') {
+                $subRules['kategori.*'] = $this->rules()['kategori.*'];
+            }
             $v = ValidatorFacade::make([$key => $this->input($key)], $subRules);
-            if ($v->fails()) continue;
+            if ($v->fails()) {
+                continue;
+            }
             $val = $this->input($key);
-            if (is_string($val)) $val = trim($val);
-            if ($val !== null && $val !== '' && $val !== []) $clean[$key] = $val;
+            if (is_string($val)) {
+                $val = trim($val);
+            }
+            if ($val !== null && $val !== '' && $val !== []) {
+                $clean[$key] = $val;
+            }
         }
-        $clean['locale'] = $clean['locale'] ?? 'id';
+        $clean['locale'] = $clean['locale'] ?? app()->getLocale();
+
         return $clean;
     }
 }

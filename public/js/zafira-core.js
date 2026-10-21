@@ -1,6 +1,6 @@
 /**
  * ZAFIRA — La Maison de Lumière
- * Core Multilanguage (ID, EN, FR, IT) & Theme Engine (Light, Dark, System)
+ * Core Multilanguage (ID, EN, FR, IT, ZH) & Theme Engine (Light, Dark, System)
  * High-End Quiet Luxury Architecture & Persistent Session Synchronization
  */
 (function () {
@@ -8,10 +8,218 @@
 
     // --- 1. COMPREHENSIVE LITERARY COUTURE TRANSLATION DICTIONARY ---
     const I18N = {
+        zh: {
+            announcement: "探索 ZAFIRA 系列",
+            rendezvous_btn: "私人预约",
+            nav_collection: "系列",
+            nav_arrivals: "新品",
+            nav_heritage: "传承",
+            nav_atelier: "Atelier Z",
+            nav_packaging: "L'Art d'Offrir",
+            nav_services: "服务",
+            nav_digital_atelier: "数字工坊",
+            search_placeholder: "搜索…",
+            search_aria: "搜索",
+            wishlist_aria: "收藏",
+            cart_aria: "购物袋",
+            dock_storefront: "精品店",
+            dock_studio: "作品工作室",
+            dock_account: "贵宾账户",
+            dock_atelier: "工坊",
+            hero_eyebrow: "La Collection Première · 2026",
+            hero_title: "诞生于光，<br>塑造于优雅",
+            hero_subtitle: "巴黎的优雅与意大利的匠艺相遇，每件作品都映照您的气质。",
+            hero_cta_explore: "探索系列",
+            hero_cta_studio: "工艺与匠心工作室",
+            hero_scroll: "探索",
+            marquee_1: "L’Esprit Parisien",
+            marquee_2: "La Mano Italiana",
+            marquee_3: "群岛之魂",
+            marquee_4: "源自雅加达",
+            editorial_eyebrow: "Le Journal · 胶囊系列",
+            editorial_title: "宋吉锦与丝绸，<br>Deux Rives.",
+            editorial_desc: "巨港与里昂在披肩与礼服中相遇——木织机、金线与天然染料。",
+            editorial_cta: "认识工匠",
+            category_eyebrow: "L’Univers ZAFIRA",
+            category_title: "发现您的世界",
+            category_desc: "每个系列都是传统与现代之间的对话。",
+            products_eyebrow: "Les Nouveautés",
+            products_title: "令人心动的作品",
+            products_count_suffix: "件作品",
+            filter_all: "全部",
+            filter_women: "女装",
+            filter_men: "男装",
+            filter_bags: "手袋",
+            filter_shoes: "鞋履",
+            filter_jewelry: "珠宝",
+            filter_heritage: "群岛传承",
+            filter_capsule: "胶囊系列",
+            card_quick_view: "快速查看",
+            card_add: "添加",
+            card_studio_link: "Studio Z",
+            cat_all: "全部系列",
+            cat_nusantara: "群岛传承",
+            cat_capsule: "高级定制胶囊系列",
+            cat_women: "女装",
+            cat_men: "男士大衣",
+            cat_bags: "晚宴手袋",
+            cat_shoes: "皮鞋",
+            cat_scarves: "丝巾",
+            maison_eyebrow: "L’Histoire de la Maison",
+            maison_title: "如蓝宝石一般，<br>真正的美<br>源于淬炼。",
+            maison_body: "ZAFIRA 相信，奢华无需喧哗。它存在于精准的针脚、材质的触感，以及离开房间后依然留存的自信。",
+            maison_link: "Maison 的故事",
+            heritage_eyebrow: "Trois Héritages · 三重传承",
+            heritage_title: "三片土地，一座 Maison",
+            heritage_subtitle: "巴黎赋予轮廓，意大利赋予匠艺，印度尼西亚赋予灵魂与材质。",
+            heritage_1_title: "L’Esprit Parisien",
+            heritage_1_desc: "轮廓、垂坠与从容的勇气——设计于巴黎，适合每一处风景。",
+            heritage_1_proof: "里昂与比耶拉面料 · 斜裁工艺",
+            heritage_2_title: "La Mano Italiana",
+            heritage_2_desc: "圣克罗切皮革、马鞍缝线与布雷克缝制鞋履——可换底的匠心。",
+            heritage_2_proof: "托斯卡纳与马尔凯皮革 · 手工修饰",
+            heritage_3_title: "群岛之魂",
+            heritage_3_desc: "梭罗手绘蜡染、巨港宋吉锦、弗洛勒斯织物与克巴约兰刺绣——鲜活的传承，而非装饰。",
+            heritage_3_proof: "天然染料 · 木织机 · 公平计件报酬",
+            atelier_eyebrow: "Atelier Z · 个性化定制",
+            atelier_title: "让它成为<br>独属于您的作品。",
+            atelier_desc: "灵感来自欧洲时装屋的定制服务，Atelier Z 为精选皮具提供字母刺绣。费用请咨询礼宾。",
+            atelier_step_1: "选择最多三个大写字母",
+            atelier_step_2: "选择金色、银色或蓝宝石色箔",
+            atelier_step_3: "ZAFIRA 工匠手工刺绣",
+            atelier_input_label: "您的姓名缩写",
+            atelier_foil_label: "箔色",
+            atelier_cta: "定制您的作品",
+            packaging_eyebrow: "L'Art d'Offrir ZAFIRA",
+            packaging_title: "经典礼盒与金色蜡封",
+            packaging_desc: "每件作品均装入手工制作的深蓝宝石色硬盒，系上里昂斜纹丝带，并附有盖着 Maison ZAFIRA 胭脂金色蜡封的书法卡。",
+            packaging_ribbon_label: "丝带选择：",
+            packaging_ribbon_gold: "金色丝带",
+            packaging_ribbon_sapphire: "蓝宝石色丝带",
+            packaging_complimentary: "图示包装仅供参考；选项与费用请咨询礼宾。",
+            services_eyebrow: "Les Services ZAFIRA",
+            services_title: "不止一件作品，<br>更是一段体验。",
+            service_1_title: "私人造型",
+            service_1_desc: "联系礼宾顾问。",
+            service_1_link: "安排预约",
+            service_2_title: "公开透明",
+            service_2_desc: "每件作品均注明材质、成分、产地与制作者。",
+            service_2_link: "查看商品详情",
+            service_3_title: "护理指南",
+            service_3_desc: "可用的护理说明见商品页面；如有疑问请联系礼宾。",
+            service_3_link: "联系礼宾顾问",
+            service_4_title: "工艺卡",
+            service_4_desc: "商品信息。",
+            service_4_link: "查看详情",
+            newsletter_eyebrow: "La Lettre ZAFIRA",
+            newsletter_title: "走进 Maison 的世界。",
+            newsletter_desc: "接收工坊故事、私人邀请，率先探索最新系列。",
+            newsletter_placeholder: "您的电子邮箱…",
+            newsletter_privacy: "订阅即表示您同意 ZAFIRA 隐私政策。",
+            footer_motto: "巴黎的精神，意大利的匠艺，印度尼西亚的心。",
+            footer_col_collection: "系列",
+            footer_women: "女士",
+            footer_men: "男士",
+            footer_bags: "手袋",
+            footer_accessories: "配饰",
+            footer_col_maison: "La Maison",
+            footer_story: "我们的故事",
+            footer_atelier_z: "Atelier Z",
+            footer_services: "服务",
+            footer_rendezvous: "Rendez-vous",
+            footer_account_portal: "贵宾客户门户",
+            footer_savoir_title: "Savoir-Faire",
+            savoir_1: "克巴约兰手工刺绣",
+            savoir_2: "梭罗蜡染工艺",
+            savoir_3: "弗洛勒斯毛梅雷伊卡特织物",
+            savoir_4: "法国里昂欧根纱",
+            newsletter_submit: "订阅",
+            footer_col_support: "帮助",
+            footer_contact: "联系我们",
+            footer_shipping: "配送与退货",
+            footer_care: "产品保养",
+            footer_sizing: "尺寸指南",
+            footer_legal_rights: "© 2026 ZAFIRA MAISON. 保留所有权利。",
+            footer_privacy: "隐私",
+            footer_terms: "条款",
+            shortcuts_trigger: "快捷键（?）",
+            footer_lang_label: "地区与语言",
+            footer_theme_label: "外观设置",
+            studio_back_btn: "返回浏览",
+            studio_cart_btn: "购物袋",
+            studio_tab_silhouette: "轮廓",
+            studio_tab_material: "材质",
+            studio_tab_savoir_faire: "Savoir-Faire",
+            studio_tab_care: "保养",
+            studio_label_composition: "成分：",
+            studio_label_provenance: "产地：",
+            studio_label_craft: "手工技艺：",
+            studio_label_care: "服装保养：",
+            studio_size_label: "工坊尺寸选择",
+            studio_size_guide: "尺寸指南",
+            studio_monogram_title: "金色字母刺绣定制",
+            studio_packaging_desc: "蓝宝石色硬盒、里昂丝带与红色蜡封。",
+            studio_add_bag_btn: "加入购物袋",
+            studio_book_fitting_btn: "预约工坊私人试衣",
+            account_subtitle: "ZAFIRA 客户空间",
+            account_greeting_prefix: "您好，",
+            account_back_btn: "返回浏览",
+            account_profile_title: "贵宾客户资料",
+            account_name_label: "姓名",
+            account_email_label: "注册邮箱",
+            account_phone_label: "WhatsApp 号码",
+            account_address_label: "配送地址",
+            account_orders_title: "预约与高级定制订单记录",
+            account_orders_desc: "礼宾请求状态。",
+            cart_header_title: "您的购物袋",
+            cart_empty_title: "您的购物袋为空",
+            cart_empty_desc: "我们的系列静候您的探索。",
+            cart_empty_cta: "探索系列",
+            cart_service_note: "配送安排与包装信息以礼宾确认为准",
+            cart_total_label: "作品总额",
+            cart_checkout_btn: "继续预约与下单",
+            cart_shipping_calc: "配送费将在下一步计算。",
+            shortcuts_title: "ZAFIRA 键盘快捷键",
+            shortcuts_desc: "使用快捷键，高效浏览数字沙龙的各个空间。",
+            shortcuts_close: "关闭指南",
+            cart_remove: "移除",
+            cart_size: "尺寸：",
+            cart_monogram: "字母刺绣：",
+            account_service_label: "服务：",
+            account_schedule_label: "时间：",
+            account_value_label: "金额：",
+            toast_cart_added_title: "作品“{title}”（{size}）已加入购物袋。",
+            toast_cart_removed: "“{title}”已从购物袋移除。",
+            toast_cart_undo_btn: "撤销",
+            toast_cart_restored: "作品“{title}”已放回购物袋。",
+            toast_wax_sealed: "包装预览已更新。",
+            toast_rendezvous_registered: "模拟：预约请求仅记录在本地，未保存至服务器。",
+            toast_ribbon_updated: "包装丝带已更换为：{ribbon}。",
+            nav_profile: "资料",
+            profile_drawer_eyebrow: "贵宾客户空间 · Maison ZAFIRA",
+            profile_drawer_title: "资料与沙龙偏好",
+            profile_action_fitting: "预约私人试衣",
+            profile_action_orders: "高级定制订单记录",
+            profile_recent_order_title: "进行中的工艺订单",
+            profile_monogram_pref: "字母刺绣缩写",
+            profile_settings_title: "沙龙偏好与设置",
+            profile_theme_label: "外观模式",
+            profile_theme_desc: "选择展厅的视觉氛围",
+            profile_lang_label: "地区与语言",
+            profile_lang_desc: "语言与国际货币设置",
+            profile_sound_label: "工坊音效",
+            profile_sound_desc: "交互时播放柔和的提示音",
+            profile_full_portal: "打开客户空间 →",
+            profile_msi_link: "工坊",
+            theme_light: "浅色模式",
+            theme_dark: "深色模式",
+            theme_system: "跟随系统",
+            lang_selector: "语言",
+        },
         id: {
             // Utilities & Navigation
             announcement:
-                "Complimentary signature gift wrapping & pengiriman berpendingin ke seluruh Nusantara",
+                "Jelajahi koleksi ZAFIRA",
             rendezvous_btn: "Rendez-vous privat",
             nav_collection: "Koleksi",
             nav_arrivals: "Terbaru",
@@ -105,10 +313,10 @@
             atelier_eyebrow: "Atelier Z · Personnalisation",
             atelier_title: "Jadikan ia milik Anda,<br>sepenuhnya.",
             atelier_desc:
-                "Terinspirasi layanan bespoke rumah mode Eropa, Atelier Z menghadirkan monogram pribadi pada kreasi kulit pilihan—dikerjakan tanpa biaya tambahan.",
+                "Terinspirasi layanan bespoke rumah mode Eropa, Atelier Z menghadirkan monogram pribadi pada kreasi kulit pilihan. Tanyakan biaya kepada concierge.",
             atelier_step_1: "Pilih hingga tiga inisial huruf kapital",
             atelier_step_2: "Tentukan nuansa foil emas, perak, atau safir",
-            atelier_step_3: "Bordir tangan complimentary oleh artisan ZAFIRA",
+            atelier_step_3: "Bordir tangan oleh artisan ZAFIRA",
             atelier_input_label: "Inisial Anda",
             atelier_foil_label: "Warna Foil",
             atelier_cta: "Personalisasi Kreasi Anda",
@@ -119,10 +327,10 @@
             packaging_desc:
                 "Setiap kreasi dihantarkan dalam kotak kaku safir pekat yang dibuat dengan tangan, diikat pita sutra twill Lyon, dan dilindungi kartu kaligrafi bertanda stempel segel lilin carmine-emas Maison ZAFIRA.",
             packaging_ribbon_label: "Pilihan Pita Sutra:",
-            packaging_ribbon_gold: "Pita Emas (Ori)",
-            packaging_ribbon_sapphire: "Pita Safir (Saphir)",
+            packaging_ribbon_gold: "Pita Emas",
+            packaging_ribbon_sapphire: "Pita Safir",
             packaging_complimentary:
-                "Layanan kemasan kado adibusana ini diberikan secara cuma-cuma (complimentary).",
+                "Tampilan kemasan adalah ilustrasi; tanyakan pilihan dan biaya kepada concierge.",
 
             // Services & Telemetry
             services_eyebrow: "Les Services ZAFIRA",
@@ -134,9 +342,9 @@
             service_2_desc:
                 "Setiap kreasi mencantumkan material, komposisi, asal, dan siapa yang mengerjakannya.",
             service_2_link: "Lihat di halaman produk",
-            service_3_title: "Care for Life",
+            service_3_title: "Panduan Perawatan",
             service_3_desc:
-                "Perawatan artisan untuk menjaga bentuk, warna, dan kisah kreasi ZAFIRA Anda sepanjang masa.",
+                "Petunjuk perawatan tercantum di halaman produk; concierge membantu bila Anda ragu.",
             service_3_link: "Hubungi concierge",
             service_4_title: "Kartu Kriya",
             service_4_desc: "Informasi produk.",
@@ -221,7 +429,7 @@
             cart_empty_desc: "Koleksi kami menunggu untuk Anda temukan.",
             cart_empty_cta: "Jelajahi koleksi",
             cart_service_note:
-                "Pengiriman kurir berpendingin & terlindungi ke seluruh Nusantara",
+                "Pengiriman dan kemasan dikonfirmasi bersama concierge",
             cart_total_label: "Total Nilai Kreasi",
             cart_checkout_btn: "Lanjutkan ke Rendez-vous & Pemesanan",
             cart_shipping_calc:
@@ -265,7 +473,7 @@
                 "Penyelarasan bahasa dan mata uang internasional",
             profile_sound_label: "Akustik Kriya Atelier",
             profile_sound_desc: "Umpan balik audio lembut saat berinteraksi",
-            profile_full_portal: "Buka Portal Akun Lengkap →",
+            profile_full_portal: "Buka Ruang Klien →",
             profile_msi_link: "Atelier",
 
             // Themes
@@ -278,7 +486,7 @@
         en: {
             // Utilities & Navigation
             announcement:
-                "Complimentary signature gift wrapping & white-glove insured delivery across the archipelago & worldwide",
+                "Explore the ZAFIRA collection",
             rendezvous_btn: "Private Rendez-vous",
             nav_collection: "Collections",
             nav_arrivals: "New Arrivals",
@@ -373,10 +581,10 @@
             atelier_eyebrow: "Atelier Z · Personalization",
             atelier_title: "Make it intimately,<br>uniquely yours.",
             atelier_desc:
-                "Inspired by European bespoke salons, Atelier Z offers complimentary gold-leaf monogramming on selected leather and couture pieces.",
+                "Inspired by European bespoke salons, Atelier Z offers gold-leaf monogramming on selected leather and couture pieces. Ask the concierge about costs.",
             atelier_step_1: "Choose up to three uppercase initials",
             atelier_step_2: "Select gold, silver, or sapphire hot-stamp foil",
-            atelier_step_3: "Complimentary hand-embroidery by ZAFIRA artisans",
+            atelier_step_3: "Hand-embroidery by ZAFIRA artisans",
             atelier_input_label: "Your Initials",
             atelier_foil_label: "Foil Tone",
             atelier_cta: "Personalize Your Piece",
@@ -387,10 +595,10 @@
             packaging_desc:
                 "Each piece is cradled inside a handcrafted sapphire rigid box, tied with Lyon silk twill ribbon, and sealed with a carmine-gold Maison wax seal.",
             packaging_ribbon_label: "Silk Ribbon Selection:",
-            packaging_ribbon_gold: "Golden Ribbon (Or)",
-            packaging_ribbon_sapphire: "Sapphire Ribbon (Saphir)",
+            packaging_ribbon_gold: "Golden Ribbon",
+            packaging_ribbon_sapphire: "Sapphire Ribbon",
             packaging_complimentary:
-                "This couture gift packaging service is provided complimentary with every order.",
+                "Packaging shown is illustrative; ask the concierge about options and costs.",
 
             // Services & Telemetry
             services_eyebrow: "Les Services ZAFIRA",
@@ -402,9 +610,9 @@
             service_2_desc:
                 "Every creation details its materials, origin, and maker.",
             service_2_link: "Discover product provenance",
-            service_3_title: "Care for Life",
+            service_3_title: "Care guidance",
             service_3_desc:
-                "Artisanal care to preserve shape, texture, and heritage of your ZAFIRA creations for generations.",
+                "Check the product page for available care instructions; contact the concierge with questions.",
             service_3_link: "Contact concierge",
             service_4_title: "Craft Card",
             service_4_desc: "Product information.",
@@ -489,7 +697,7 @@
             cart_empty_desc: "Our creations await your discovery.",
             cart_empty_cta: "Explore Collections",
             cart_service_note:
-                "Insured courier shipping & white-glove packaging worldwide",
+                "Delivery and packaging are confirmed with the concierge",
             cart_total_label: "Total Valuation",
             cart_checkout_btn: "Proceed to Rendez-vous & Checkout",
             cart_shipping_calc: "Shipping fees calculated at subsequent step.",
@@ -531,7 +739,7 @@
             profile_lang_desc: "Synchronize international language & currency",
             profile_sound_label: "Atelier Acoustic Soundscape",
             profile_sound_desc: "Subtle tactile audio feedback on interactions",
-            profile_full_portal: "Open Full VIP Account Portal →",
+            profile_full_portal: "Open Client Room →",
             profile_msi_link: "Atelier",
 
             // Themes
@@ -544,7 +752,7 @@
         fr: {
             // Utilities & Navigation
             announcement:
-                "Emballage signature offert & expédition assurée sur tout l'archipel et à l'international",
+                "Découvrez la collection ZAFIRA",
             rendezvous_btn: "Rendez-vous Privé",
             nav_collection: "Collections",
             nav_arrivals: "Nouveautés",
@@ -628,7 +836,7 @@
                 "Soies lyonnaises & laines de Biella · coupe en plein biais",
             heritage_2_title: "La Mano Italiana",
             heritage_2_desc:
-                "Cuirs nobles de Santa Croce, coutures sellier, souliers cousus Blake ressemelables à vie.",
+                "Cuirs nobles de Santa Croce, coutures sellier, souliers cousus Blake ressemelables.",
             heritage_2_proof:
                 "Cuirs de Toscane et des Marches · finitions faites main",
             heritage_3_title: "L’Âme de l'Archipel",
@@ -641,12 +849,12 @@
             atelier_eyebrow: "Atelier Z · Personnalisation",
             atelier_title: "Faites-en une œuvre<br>absolument vôtre.",
             atelier_desc:
-                "Inspiré des salons sur-mesure de la haute couture, l'Atelier Z appose vos initiales dorées sur vos pièces de maroquinerie d'exception, sans aucun supplément.",
+                "Inspiré des salons sur-mesure de la haute couture, l'Atelier Z appose vos initiales dorées sur vos pièces de maroquinerie d'exception. Coût sur demande auprès du concierge.",
             atelier_step_1: "Choisissez jusqu'à trois initiales en majuscules",
             atelier_step_2:
                 "Sélectionnez une dorure or chaud, argent ou saphir",
             atelier_step_3:
-                "Broderie artisanale offerte par les maîtres d'art ZAFIRA",
+                "Broderie artisanale par les maîtres d'art ZAFIRA",
             atelier_input_label: "Vos Initiales",
             atelier_foil_label: "Teinte de Dorure",
             atelier_cta: "Personnaliser Votre Création",
@@ -657,10 +865,10 @@
             packaging_desc:
                 "Chaque création est enveloppée dans un coffret rigide bleu saphir façonné à la main, ceint d'un ruban en sergé de soie de Lyon et scellé de cire carmin et or Maison ZAFIRA.",
             packaging_ribbon_label: "Ruban de Soie :",
-            packaging_ribbon_gold: "Ruban d'Or (Or)",
-            packaging_ribbon_sapphire: "Ruban Saphir (Saphir)",
+            packaging_ribbon_gold: "Ruban d'Or",
+            packaging_ribbon_sapphire: "Ruban Saphir",
             packaging_complimentary:
-                "Cet écrin de haute facture vous est gracieusement offert pour toute commande.",
+                "L’emballage présenté est illustratif ; demandez options et coûts au concierge.",
 
             // Services & Telemetry
             services_eyebrow: "Les Services ZAFIRA",
@@ -673,9 +881,9 @@
             service_2_desc:
                 "Chaque pièce présente ses matières, son origine et son artisan.",
             service_2_link: "Consulter la traçabilité",
-            service_3_title: "Soin Perpétuel",
+            service_3_title: "Conseils d’entretien",
             service_3_desc:
-                "Entretien haute couture pour préserver la splendeur et la structure de vos pièces à travers les âges.",
+                "Consultez la fiche produit pour les consignes disponibles ; le concierge répond à vos questions.",
             service_3_link: "Contacter la conciergerie",
             service_4_title: "Carte de savoir-faire",
             service_4_desc: "Informations produit.",
@@ -760,7 +968,7 @@
             cart_empty_desc: "Nos créations n'attendent que votre regard.",
             cart_empty_cta: "Explorer les Collections",
             cart_service_note:
-                "Expédition haute sécurité & écrin d'artisanat dans le monde entier",
+                "Livraison et emballage confirmés avec le concierge",
             cart_total_label: "Valeur Totale",
             cart_checkout_btn: "Finaliser le Rendez-Vous & la Commande",
             cart_shipping_calc:
@@ -803,7 +1011,7 @@
             profile_lang_desc: "Synchroniser langue et devise internationale",
             profile_sound_label: "Ambiance Acoustique de l'Atelier",
             profile_sound_desc: "Retour sonore délicat lors des interactions",
-            profile_full_portal: "Accéder à l'Espace Client Complet →",
+            profile_full_portal: "Ouvrir l'Espace Client →",
             profile_msi_link: "Atelier",
 
             // Themes
@@ -816,7 +1024,7 @@
         it: {
             // Utilities & Navigation
             announcement:
-                "Confezione regalo d'autore in omaggio & spedizione protetta in tutto l'arcipelago e nel mondo",
+                "Scoprite la collezione ZAFIRA",
             rendezvous_btn: "Appuntamento Privato",
             nav_collection: "Collezioni",
             nav_arrivals: "Novità",
@@ -900,7 +1108,7 @@
                 "Sete di Lione & lane di Biella · taglio in sbieco puro",
             heritage_2_title: "La Mano Italiana",
             heritage_2_desc:
-                "Pelli conciate a Santa Croce, cuciture a mano punto sellaio, scarpe cucite a Blake risuolabili a vita.",
+                "Pelli conciate a Santa Croce, cuciture a mano punto sellaio, scarpe cucite a Blake risuolabili.",
             heritage_2_proof:
                 "Pelli toscane e marchigiane · rifiniture sartoriali",
             heritage_3_title: "Anima dell'Arcipelago",
@@ -913,11 +1121,11 @@
             atelier_eyebrow: "Atelier Z · Personalizzazione",
             atelier_title: "Rendetela un'opera<br>unicamente vostra.",
             atelier_desc:
-                "Ispirato ai salotti d'alta moda europei, l'Atelier Z imprime il vostro monogramma d'oro su creazioni selezionate, offerto in omaggio.",
+                "Ispirato ai salotti d'alta moda europei, l'Atelier Z imprime il vostro monogramma d'oro su creazioni selezionate. Costi su richiesta al concierge.",
             atelier_step_1: "Scegliete fino a tre lettere maiuscole",
             atelier_step_2:
                 "Selezionate la doratura a caldo oro, argento o zaffiro",
-            atelier_step_3: "Ricamo artigianale offerto dai maestri ZAFIRA",
+            atelier_step_3: "Ricamo artigianale dei maestri ZAFIRA",
             atelier_input_label: "Le Vostre Iniziali",
             atelier_foil_label: "Tonalità della Lamina",
             atelier_cta: "Personalizza la Tua Creazione",
@@ -928,10 +1136,10 @@
             packaging_desc:
                 "Ogni creazione è adagiata in una scatola rigida blu zaffiro realizzata a mano, cinta da nastro di seta di Lione e sigillata con ceralacca cremisi e oro Maison ZAFIRA.",
             packaging_ribbon_label: "Nastro di Seta :",
-            packaging_ribbon_gold: "Nastro d'Oro (Or)",
-            packaging_ribbon_sapphire: "Nastro Zaffiro (Saphir)",
+            packaging_ribbon_gold: "Nastro d'Oro",
+            packaging_ribbon_sapphire: "Nastro Zaffiro",
             packaging_complimentary:
-                "Questo esclusivo servizio di confezionamento è offerto in omaggio per ogni ordine.",
+                "La confezione mostrata è illustrativa; chiedete opzioni e costi al concierge.",
 
             // Services & Telemetry
             services_eyebrow: "Les Services ZAFIRA",
@@ -943,9 +1151,9 @@
             service_2_desc:
                 "Ogni creazione presenta materiali, provenienza e artigiano.",
             service_2_link: "Scopri la tracciabilità",
-            service_3_title: "Cura Senza Tempo",
+            service_3_title: "Consigli di cura",
             service_3_desc:
-                "Manutenzione sartoriale per preservare forma, colore e storia delle vostre creazioni negli anni.",
+                "Consultate la pagina prodotto per le istruzioni disponibili; il concierge risponde alle domande.",
             service_3_link: "Contatta il concierge",
             service_4_title: "Scheda artigianale",
             service_4_desc: "Informazioni prodotto.",
@@ -1030,7 +1238,7 @@
             cart_empty_desc: "Le nostre creazioni attendono il vostro tocco.",
             cart_empty_cta: "Esplora le Collezioni",
             cart_service_note:
-                "Spedizione con corriere blindato e confezione sartoriale nel mondo",
+                "Spedizione e confezione confermate con il concierge",
             cart_total_label: "Valutazione Totale",
             cart_checkout_btn: "Procedi all'Appuntamento & Ordine",
             cart_shipping_calc:
@@ -1074,7 +1282,7 @@
             profile_sound_label: "Acustica Artigianale dell'Atelier",
             profile_sound_desc:
                 "Feedback sonoro delicato durante le interazioni",
-            profile_full_portal: "Apri Portale Clienti Completo →",
+            profile_full_portal: "Apri Area Clienti →",
             profile_msi_link: "Atelier",
 
             // Themes
@@ -1630,11 +1838,63 @@
     }
 
     function getLanguage() {
-        return (
-            languageSetting ||
-            (languageSetting =
-                readPref(LANG_KEY, "zafira-lang", isValidLanguage) || "id")
-        );
+        const server = document.documentElement.getAttribute?.("data-server-locale");
+        return (languageSetting ||= (isValidLanguage(server) || server === "zh")
+            ? server
+            : readPref(LANG_KEY, "zafira-lang", isValidLanguage) || "id");
+    }
+
+    let pendingLanguage;
+    let savingLanguage = false;
+    // Last locale the server accepted; a later failure must fall back here, not to the page-load locale.
+    let confirmedLanguage;
+
+    async function selectLanguage(lang) {
+        if (!isValidLanguage(lang) && lang !== "zh") return;
+        const endpoint = document.documentElement.getAttribute?.("data-locale-url");
+        if (!endpoint) return applyLanguage(lang);
+        pendingLanguage = lang;
+        if (savingLanguage) return;
+        savingLanguage = true;
+        const status = document.getElementById("locale-status");
+        const messages = {
+            id: ["Menyimpan bahasa…", "Bahasa belum tersimpan. Silakan coba lagi."],
+            en: ["Saving language…", "Language could not be saved. Please try again."],
+            fr: ["Enregistrement de la langue…", "Impossible d’enregistrer la langue. Réessayez."],
+            it: ["Salvataggio della lingua…", "Impossibile salvare la lingua. Riprova."],
+            zh: ["正在保存语言…", "无法保存语言，请重试。"],
+        };
+        // Serialize writes: aborting fetch does not cancel a server-side session/profile write.
+        while (pendingLanguage) {
+            const chosen = pendingLanguage;
+            pendingLanguage = null;
+            if (status) status.textContent = messages[getLanguage()][0];
+            try {
+                const token = document.querySelector('meta[name="csrf-token"]')?.content;
+                if (!token) throw new Error("Missing CSRF token");
+                const response = await fetch(endpoint, {
+                    method: "POST",
+                    credentials: "same-origin",
+                    headers: { "Content-Type": "application/json", Accept: "application/json", "X-CSRF-TOKEN": token },
+                    body: JSON.stringify({ locale: chosen }),
+                });
+                if (!response.ok) throw new Error("Locale save failed");
+                confirmedLanguage = chosen;
+                const url = new URL(window.location.href);
+                url.searchParams.delete("locale");
+                window.history.replaceState(null, "", url);
+                if (!pendingLanguage) {
+                    applyLanguage(chosen);
+                    if (status) status.textContent = "";
+                }
+            } catch (error) {
+                if (!pendingLanguage) {
+                    applyLanguage(confirmedLanguage || getLanguage());
+                    if (status) status.textContent = messages[getLanguage()][1];
+                }
+            }
+        }
+        savingLanguage = false;
     }
 
     function applyLanguage(lang) {
@@ -1645,6 +1905,10 @@
         document.documentElement.setAttribute("data-lang", lang);
 
         const dict = I18N[lang];
+        // Explicit lang="fr" islands (brand phrases) retain their language.
+        if (document.body?.classList?.contains("storefront")) {
+            document.body.setAttribute("lang", lang);
+        }
 
         // 1. Text translations [data-i18n]
         document.querySelectorAll("[data-i18n]").forEach((el) => {
@@ -1770,8 +2034,7 @@
             const langBtn = e.target.closest("[data-set-lang]");
             if (langBtn) {
                 e.preventDefault();
-                const lang = langBtn.getAttribute("data-set-lang");
-                applyLanguage(lang);
+                selectLanguage(langBtn.getAttribute("data-set-lang"));
                 return;
             }
         });
@@ -1779,7 +2042,7 @@
         // 4. Delegate select change handlers for language and theme
         document.addEventListener("change", (e) => {
             if (e.target.matches(".zafira-lang-select")) {
-                applyLanguage(e.target.value);
+                selectLanguage(e.target.value);
             }
             if (e.target.matches(".zafira-theme-select")) {
                 applyTheme(e.target.value);
@@ -1842,7 +2105,7 @@
     window.Zafira.t = t;
     window.Zafira.formatPrice = formatPrice;
     window.Zafira.getBadgeLocalized = getBadgeLocalized;
-    window.Zafira.setLanguage = applyLanguage;
+    window.Zafira.setLanguage = selectLanguage;
     window.Zafira.getLanguage = getLanguage;
     window.Zafira.setTheme = applyTheme;
     window.Zafira.getTheme = getTheme;
@@ -1859,7 +2122,7 @@
         const sequence = ["id", "en", "fr", "it"];
         const next =
             sequence[(sequence.indexOf(current) + 1) % sequence.length];
-        applyLanguage(next);
+        selectLanguage(next);
     };
     window.toggleZafiraThemeQuick = window.Zafira.toggleThemeQuick;
     window.cycleZafiraLangQuick = window.Zafira.cycleLangQuick;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,6 +10,7 @@
     <meta property="og:description" content="{{ $product->product_description }}">
     <meta property="og:image" content="{{ $product->imageWidth(1200) }}">
     <meta property="og:type" content="product">
+    <meta property="og:url" content="{{ route('products.show', $product->product_slug) }}">
     <meta name="twitter:card" content="summary_large_image">
     <title>{{ $product->product_title }} — ZAFIRA</title>
     <link rel="canonical" href="{{ route('products.show', $product->product_slug) }}">
@@ -21,24 +22,25 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link rel="preconnect" href="https://images.unsplash.com">
     <link href="https://fonts.bunny.net/css?family=bodoni-moda:400,400i,500,500i,600&family=manrope:300,400,500,600&display=swap" rel="stylesheet">
+    <script type="application/json" id="zafira-app-copy">@json(__('shop_ui.app_js'))</script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         [data-product-add]:disabled { cursor: not-allowed; }
     </style>
 </head>
 <body class="storefront product-page">
-    <a class="skip-link" href="#main-content">Lewati ke konten utama</a>
+    <a class="skip-link" href="#main-content">{{ __('shop_ui.pdp.skip') }}</a>
     @include('partials.product-header')
 
     <main id="main-content">
         <section class="product-detail section-shell">
             <a class="text-link back-link" href="{{ route('home') }}" style="display:inline-flex; align-items:center; gap:6px;">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                <span>Kembali ke koleksi</span>
+                <span>{{ __('shop_ui.pdp.back') }}</span>
             </a>
             <div class="product-detail-grid">
                 <div class="product-detail-media">
-                    <img src="{{ $product->imageWidth(1600) }}" alt="{{ $product->product_alt }}" fetchpriority="high" width="1200" height="1500">
+                    <img src="{{ $product->imageWidth(1600) }}" @if ($product->imageSrcset([800, 1200, 1600])) srcset="{{ $product->imageSrcset([800, 1200, 1600]) }}" sizes="(max-width: 900px) 100vw, 55vw" @endif decoding="async" alt="{{ $product->imageAlt() }}" fetchpriority="high" width="1200" height="1500">
                 </div>
                 <div class="product-detail-info">
                     <span class="eyebrow">{{ $product->category?->cat_title }}</span>
@@ -49,45 +51,45 @@
                     <p class="product-detail-price" translate="no">Rp{{ number_format($product->product_price, 0, ',', '.') }}</p>
                     <p class="product-detail-description">{{ $product->product_description }}</p>
                     <div class="product-detail-color">
-                        <span>Warna</span>
+                        <span>{{ __('shop_ui.pdp.color') }}</span>
                         <strong>{{ $product->product_color }}</strong>
                     </div>
                     @if ($product->product_material || $product->product_origin)
-                        <dl class="product-provenance" aria-label="Kualitas dan asal kreasi">
+                        <dl class="product-provenance" aria-label="{{ __('shop_ui.pdp.provenance_aria') }}">
                             @if ($product->product_material)
-                                <div><dt>Material</dt><dd>{{ $product->product_material }}</dd></div>
+                                <div><dt>{{ __('shop_ui.pdp.material') }}</dt><dd>{{ $product->product_material }}</dd></div>
                             @endif
                             @if ($product->product_composition)
-                                <div><dt>Komposisi</dt><dd>{{ $product->product_composition }}</dd></div>
+                                <div><dt>{{ __('shop_ui.pdp.composition') }}</dt><dd>{{ $product->product_composition }}</dd></div>
                             @endif
                             @if ($product->product_origin)
-                                <div><dt>Asal</dt><dd>{{ $product->product_origin }}</dd></div>
+                                <div><dt>{{ __('shop_ui.pdp.origin') }}</dt><dd>{{ $product->product_origin }}</dd></div>
                             @endif
                         </dl>
                     @endif
                     @if ($product->product_craft || $product->product_care)
                         <details class="product-craft" @if ($product->product_craft) open @endif>
-                            <summary>Keahlian &amp; perawatan</summary>
+                            <summary>{{ __('shop_ui.pdp.craft_summary') }}</summary>
                             @if ($product->product_craft)
-                                <p><strong>Keahlian.</strong> {{ $product->product_craft }}</p>
+                                <p><strong>{{ __('shop_ui.pdp.craft') }}</strong> {{ $product->product_craft }}</p>
                             @endif
                             @if ($product->product_care)
-                                <p><strong>Perawatan.</strong> {{ $product->product_care }}</p>
+                                <p><strong>{{ __('shop_ui.pdp.care') }}</strong> {{ $product->product_care }}</p>
                             @endif
                         </details>
                     @endif
                     @if (preg_match('/busana|dress|robe|kebaya|chemise|manteau|kemeja|gaun|mantel/i', $product->category?->cat_title.' '.$product->product_title))
                     <div style="margin: 16px 0 14px;">
-                        <label for="pdp-size" class="eyebrow" style="font-size:10px;">Ukuran (permintaan concierge)</label>
+                        <label for="pdp-size" class="eyebrow" style="font-size:10px;">{{ __('shop_ui.pdp.size_label') }}</label>
                         <select id="pdp-size" style="display:block; padding:8px; border:1px solid var(--line); background:var(--white); color:var(--ink);">
-                            <option value="">Pilih ukuran</option>
+                            <option value="">{{ __('shop_ui.pdp.size_pick') }}</option>
                             <option value="FR 36">FR 36</option><option value="FR 38">FR 38</option>
                             <option value="FR 40">FR 40</option><option value="FR 42">FR 42</option>
                         </select>
-                        <button type="button" class="text-link" data-open-size-guide>Panduan ukuran</button>
+                        <button type="button" class="text-link" data-open-size-guide>{{ __('shop_ui.pdp.size_guide_open') }}</button>
                         <section class="drawer size-guide-drawer" data-size-guide role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="size-guide-title" tabindex="-1">
-                            <div class="drawer-header"><div><span class="eyebrow">Guide des Tailles</span><h2 id="size-guide-title">Panduan Ukuran</h2></div><button class="icon-button" type="button" data-close-size-guide aria-label="Tutup panduan ukuran"><svg aria-hidden="true"><use href="#icon-close"/></svg></button></div>
-                            <p>Ukuran FR adalah referensi pilihan awal. Konsultasikan kecocokan ukuran dengan concierge sebelum pemesanan.</p>
+                            <div class="drawer-header"><div><span class="eyebrow">{{ __('shop_ui.pdp.size_guide_eyebrow') }}</span><h2 id="size-guide-title">{{ __('shop_ui.pdp.size_guide_title') }}</h2></div><button class="icon-button" type="button" data-close-size-guide aria-label="{{ __('shop_ui.pdp.size_guide_close') }}"><svg aria-hidden="true"><use href="#icon-close"/></svg></button></div>
+                            <p>{{ __('shop_ui.pdp.size_guide_note') }}</p>
                         </section>
                     </div>
                     @endif
@@ -97,24 +99,24 @@
                         <div id="pdp-monogram-badge" style="width:42px; height:42px; border-radius:50%; border:2px solid var(--gold); background:#fff; color:var(--ink); display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-size:16px; font-weight:600; box-shadow:0 2px 8px rgba(182,154,100,0.2);">Z</div>
                         <div style="flex:1;">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
-                                <label for="pdp-monogram-input" style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink); margin:0;">Monogram (permintaan concierge)</label>
+                                <label for="pdp-monogram-input" style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink); margin:0;">{{ __('shop_ui.pdp.monogram_label') }}</label>
                                 <span id="pdp-monogram-counter" aria-live="polite" style="font-size:10px; font-weight:700; color:var(--muted);">0 / 3</span>
                             </div>
-                            <input type="text" id="pdp-monogram-input" maxlength="3" value="" placeholder="A-Z" aria-describedby="pdp-monogram-help" aria-label="Inisial monogram, maksimal tiga huruf" style="width:100%; padding:5px 10px; font-size:12px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; border:1px solid var(--line); border-radius:3px; background:#fff;">
-                            <small id="pdp-monogram-help" style="font-size:9.5px; color:var(--muted); display:block; margin-top:2px;">Masukkan hingga tiga huruf A–Z.</small>
+                            <input type="text" id="pdp-monogram-input" maxlength="3" value="" placeholder="A-Z" aria-describedby="pdp-monogram-help" aria-label="{{ __('shop_ui.pdp.monogram_aria') }}" style="width:100%; padding:5px 10px; font-size:12px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; border:1px solid var(--line); border-radius:3px; background:#fff;">
+                            <small id="pdp-monogram-help" style="font-size:9.5px; color:var(--muted); display:block; margin-top:2px;">{{ __('shop_ui.pdp.monogram_help') }}</small>
                         </div>
                     </div>
 
 
                     <div class="product-detail-assurance">
-                        <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:4px;"><polyline points="20 6 9 17 4 12"></polyline></svg>Pengiriman complimentary seluruh Indonesia</span>
-                        <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:4px;"><polyline points="20 6 9 17 4 12"></polyline></svg>Signature wrapping</span>
-                        <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:4px;"><polyline points="20 6 9 17 4 12"></polyline></svg>Care for Life</span>
+                        <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:4px;"><polyline points="20 6 9 17 4 12"></polyline></svg>{{ __('shop_ui.pdp.assurance_shipping') }}</span>
+                        <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:4px;"><polyline points="20 6 9 17 4 12"></polyline></svg>{{ __('shop_ui.pdp.signature_wrapping') }}</span>
+                        <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:4px;"><polyline points="20 6 9 17 4 12"></polyline></svg>{{ __('shop_ui.pdp.care_for_life') }}</span>
                     </div>
-                    <p class="muted" data-personalization-note>Ukuran dan monogram hanya melalui concierge; keduanya tidak masuk tas pembelian standar.</p>
+                    <p class="muted" data-personalization-note>{{ __('shop_ui.pdp.personalization') }}</p>
                     @php($soldOut = (int) $product->stock <= 0)
                     @if ($soldOut)
-                        <p class="muted" id="pdp-sold-out-note">Stok habis. Hubungi advisor untuk informasi ketersediaan.</p>
+                        <p class="muted" id="pdp-sold-out-note">{{ __('shop_ui.pdp.sold_out_note') }}</p>
                     @endif
                     <div class="product-detail-actions">
                         <button class="button button-sapphire" type="button" data-product-add
@@ -128,9 +130,10 @@
                             data-image="{{ $product->imageWidth(800) }}"
                             data-description="{{ $product->product_description }}"
                             data-color="{{ $product->product_color }}">
-                            {{ $soldOut ? 'Stok habis' : 'Tambahkan ke tas' }} <svg aria-hidden="true"><use href="#icon-bag"/></svg>
+                            {{ $soldOut ? __('shop_ui.pdp.sold_out') : __('shop_ui.pdp.add') }} <svg aria-hidden="true"><use href="#icon-bag"/></svg>
                         </button>
-                        <button class="text-link" type="button" data-open-concierge data-pdp-inquiry>Konsultasikan dengan advisor <svg aria-hidden="true"><use href="#icon-arrow"/></svg></button>
+                        <button class="text-link" type="button" data-open-concierge data-pdp-inquiry>{{ __('shop_ui.pdp.consult') }} <svg aria-hidden="true"><use href="#icon-arrow"/></svg></button>
+                        <button class="text-link" type="button" data-share-product data-share-title="{{ $product->product_title }} — ZAFIRA" data-share-url="{{ route('products.show', $product->product_slug) }}">{{ __('shop_ui.pdp.share') }}</button>
                     </div>
                 </div>
             </div>
@@ -139,7 +142,7 @@
         @if ($related->isNotEmpty())
         <section class="related-section section-shell">
             <div class="products-heading">
-                <div><span class="eyebrow">À Découvrir</span><h2>Lengkapkan kisah Anda</h2></div>
+                <div><span class="eyebrow">{{ __('shop_ui.pdp.discover') }}</span><h2>{{ __('shop_ui.pdp.related_title') }}</h2></div>
             </div>
             <div class="product-grid" data-product-grid>
                 @foreach ($related as $index => $item)
@@ -147,6 +150,7 @@
                         data-product-id="{{ $item->product_id }}"
                         data-id="{{ $item->product_slug }}"
                         data-name="{{ $item->product_title }}"
+                        data-alt="{{ $item->imageAlt() }}"
                         data-category="{{ $item->category?->cat_title }}"
                         data-price="{{ $item->product_price }}"
                         data-price-label="Rp{{ number_format($item->product_price, 0, ',', '.') }}"
@@ -158,21 +162,21 @@
                         data-origin="{{ $item->product_origin }}">
                         <div class="product-media">
                             <a href="{{ route('products.show', $item->product_slug) }}">
-                                <img src="{{ $item->imageWidth(800) }}" alt="{{ $item->product_alt }}" loading="lazy" width="800" height="1000">
+                                <img src="{{ $item->imageWidth(800) }}" @if ($item->imageSrcset([400, 800])) srcset="{{ $item->imageSrcset([400, 800]) }}" sizes="(max-width: 700px) 50vw, 25vw" @endif decoding="async" alt="{{ $item->imageAlt() }}" loading="lazy" width="800" height="1000">
                             </a>
                             @if ($item->product_badge)<span class="product-badge">{{ $item->product_badge }}</span>@endif
-                            <button class="wishlist-button" type="button" data-toggle-wishlist aria-label="Tambahkan {{ $item->product_title }} ke favorit" aria-pressed="false">
+                            <button class="wishlist-button" type="button" data-toggle-wishlist aria-label="{{ __('shop_ui.pdp.card_wishlist_aria', ['title' => $item->product_title]) }}" aria-pressed="false">
                                 <svg aria-hidden="true"><use href="#icon-heart"/></svg>
                             </button>
-                            <button class="quick-view-button" type="button" data-quick-view>Lihat cepat</button>
+                            <button class="quick-view-button" type="button" data-quick-view>{{ __('shop_ui.pdp.quick_view') }}</button>
                         </div>
                         <div class="product-info">
                             <span>{{ $item->category?->cat_title }}</span>
                             <h3><button type="button" data-quick-view>{{ $item->product_title }}</button></h3>
                             <p translate="no">Rp{{ number_format($item->product_price, 0, ',', '.') }}</p>
-                            @if ($item->stock <= 0)<p>Stok habis</p>@endif
+                            @if ($item->stock <= 0)<p>{{ __('shop_ui.pdp.sold_out') }}</p>@endif
                             <div class="product-color"><i style="--swatch: {{ $item->swatchHex() }}"></i>{{ $item->product_color }}</div>
-                            <button class="product-add" type="button" data-card-add @if ($item->stock <= 0) disabled @endif aria-label="{{ $item->stock <= 0 ? $item->product_title.' — stok habis' : 'Tambahkan '.$item->product_title.' ke tas' }}"><svg aria-hidden="true"><use href="#icon-bag"/></svg><span>{{ $item->stock <= 0 ? 'Stok habis' : 'Tambah' }}</span></button>
+                            <button class="product-add" type="button" data-card-add @if ($item->stock <= 0) disabled @endif aria-label="{{ $item->stock <= 0 ? __('shop_ui.pdp.card_sold_out_aria', ['title' => $item->product_title]) : __('shop_ui.pdp.card_add_aria', ['title' => $item->product_title]) }}"><svg aria-hidden="true"><use href="#icon-bag"/></svg><span>{{ $item->stock <= 0 ? __('shop_ui.pdp.sold_out') : __('shop_ui.pdp.card_add') }}</span></button>
                         </div>
                     </article>
                 @endforeach

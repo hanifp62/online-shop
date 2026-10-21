@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Http\Controllers\AdminTotpController;
 use App\Http\Controllers\AdminTotpEnrolController;
+use App\Http\Middleware\EnsureAdminTotp;
 use App\Models\Admin;
 use App\Models\AuthEvent;
 use App\Models\User;
@@ -10,12 +12,24 @@ use App\Services\AuthEventRecorder;
 use App\Services\PasswordResetTokenIssuer;
 use App\Services\TotpService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
+use Illuminate\Session\ArraySessionHandler;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Session\SessionManager;
+use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\RateLimiter;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException;
+use PragmaRX\Google2FA\Exceptions\InvalidCharactersException;
+use PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException;
 use PragmaRX\Google2FA\Google2FA;
 use Tests\TestCase;
 
@@ -53,6 +67,7 @@ class AuthEventFlowsTest extends TestCase
         if ($totp) {
             $admin->forceFill(['totp_secret' => $secret, 'totp_required_at' => now()])->save();
         }
+
         return [$admin->fresh(), $secret];
     }
 
@@ -64,6 +79,7 @@ class AuthEventFlowsTest extends TestCase
         Auth::shouldUse('web');
         $this->defaultCookies = $sid ? [config('session.cookie') => $sid] : [];
         $response = $this->call($method, $uri, $data, $this->prepareCookiesForRequest(), [], ['REMOTE_ADDR' => $ip]);
+
         return [$response, $this->app['session']->driver()->getId()];
     }
 
@@ -71,6 +87,7 @@ class AuthEventFlowsTest extends TestCase
     {
         [$response, $sid] = $this->http('POST', '/admin/login', ['email' => $admin->email, 'password' => self::PW]);
         $response->assertRedirect($admin->requiresTotp() ? '/admin/totp' : '/admin');
+
         return $sid;
     }
 
@@ -78,6 +95,7 @@ class AuthEventFlowsTest extends TestCase
     private function leaked(array $secrets): array
     {
         $payload = json_encode(DB::table('auth_events')->get()).file_get_contents($this->logPath);
+
         return array_values(array_filter($secrets, fn ($secret) => str_contains($payload, $secret)));
     }
 
@@ -211,7 +229,9 @@ class AuthEventFlowsTest extends TestCase
     {
         [$admin] = $this->admin(false);
         $secret = 'binding-private-token-684296';
-        AuthEvent::creating(function () use ($secret): void { throw new \RuntimeException($secret); });
+        AuthEvent::creating(function () use ($secret): void {
+            throw new \RuntimeException($secret);
+        });
         try {
             $sid = $this->login($admin);
             $this->http('GET', '/admin', [], $sid)[0]->assertOk();
@@ -230,7 +250,8 @@ class AuthEventFlowsTest extends TestCase
     public function test_prune_keeps_recent_and_rejects_invalid_days(): void
     {
         $old = app(AuthEventRecorder::class)->recordLoginSuccess(1, null);
-        $old->update(['occurred_at' => now()->subDays(31)]);
+        // Fixture backdating lewat query builder: model AuthEvent append-only menolak update.
+        DB::table('auth_events')->where('id', $old->id)->update(['occurred_at' => now()->subDays(31)]);
         $new = app(AuthEventRecorder::class)->recordLoginSuccess(1, null);
         foreach (['0', '-1', '1.5', 'abc', '1e2', '999999999999999999999'] as $days) {
             $this->artisan('auth-events:prune', ['--days' => $days])->assertFailed();
@@ -241,7 +262,7 @@ class AuthEventFlowsTest extends TestCase
         $this->assertDatabaseHas('auth_events', ['id' => $new->id]);
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('exceptionClasses')]
+    #[DataProvider('exceptionClasses')]
     public function test_vendor_exceptions_never_log_message_trace_or_codes(string $exception): void
     {
         [$admin, $secret] = $this->admin();
@@ -294,10 +315,11 @@ class AuthEventFlowsTest extends TestCase
     }
 
     public function test_login_survives_both_audit_database_and_logger_failure(): void
-            
     {
         [$admin] = $this->admin(false);
-        AuthEvent::creating(function (): void { throw new \RuntimeException('audit unavailable'); });
+        AuthEvent::creating(function (): void {
+            throw new \RuntimeException('audit unavailable');
+        });
         Log::shouldReceive('critical')->andThrow(new \RuntimeException('logger unavailable'));
         try {
             $sid = $this->login($admin);
@@ -309,8 +331,8 @@ class AuthEventFlowsTest extends TestCase
 
     public function test_lockout_response_survives_cache_and_logger_failure(): void
     {
-        $request = \Illuminate\Http\Request::create('/admin/login', 'POST', ['email' => 'lockout@example.test']);
-        $limits = \Illuminate\Support\Facades\RateLimiter::limiter('login')($request);
+        $request = Request::create('/admin/login', 'POST', ['email' => 'lockout@example.test']);
+        $limits = RateLimiter::limiter('login')($request);
         Cache::shouldReceive('add')->once()->andThrow(new \RuntimeException('cache unavailable'));
         Log::shouldReceive('warning')->once()->andThrow(new \RuntimeException('logger unavailable'));
 
@@ -350,7 +372,7 @@ class AuthEventFlowsTest extends TestCase
         $this->assertStringContainsString('Admin TOTP operation failed', file_get_contents($this->logPath));
         $this->assertStringNotContainsString('unexpected vendor failure', file_get_contents($this->logPath));
         $this->assertSame(0, AuthEvent::where('event', 'LOGIN_SUCCESS')->count());
-        $this->assertNull(session(\App\Http\Middleware\EnsureAdminTotp::SESSION_KEY));
+        $this->assertNull(session(EnsureAdminTotp::SESSION_KEY));
         $this->assertNull($admin->fresh()->totp_last_used_at);
         $this->assertClean([$secret, $code, self::PW]);
     }
@@ -361,7 +383,7 @@ class AuthEventFlowsTest extends TestCase
         $codes = app(TotpService::class)->generateRecoveryCodes();
         app(TotpService::class)->replaceRecoveryCodes($admin, $codes);
         $sid = $this->login($admin);
-        \Illuminate\Support\Facades\Hash::shouldReceive('check')->andReturnUsing(function (): never {
+        Hash::shouldReceive('check')->andReturnUsing(function (): never {
             throw new \RuntimeException('unexpected hash failure');
         });
 
@@ -370,7 +392,7 @@ class AuthEventFlowsTest extends TestCase
         $this->assertStringContainsString('Admin TOTP recovery operation failed', file_get_contents($this->logPath));
         $this->assertStringNotContainsString('unexpected hash failure', file_get_contents($this->logPath));
         $this->assertSame(0, AuthEvent::where('event', 'LOGIN_SUCCESS')->count());
-        $this->assertNull(session(\App\Http\Middleware\EnsureAdminTotp::SESSION_KEY));
+        $this->assertNull(session(EnsureAdminTotp::SESSION_KEY));
         $this->assertSame(count($codes), $admin->fresh()->totpRecoveryCodes()->count());
         $this->assertNull($admin->fresh()->totp_last_used_at);
         $this->assertClean([$codes[0], TotpService::normalizeRecoveryCode($codes[0]), self::PW]);
@@ -400,7 +422,7 @@ class AuthEventFlowsTest extends TestCase
         $this->assertStringNotContainsString('unexpected enrol database failure', $logs);
         $this->assertSame($loginSuccesses, AuthEvent::where('event', 'LOGIN_SUCCESS')->count());
         $this->assertSame(0, AuthEvent::where('event', 'ENROL_CONFIRMED')->count());
-        $this->assertNull(session(\App\Http\Middleware\EnsureAdminTotp::SESSION_KEY));
+        $this->assertNull(session(EnsureAdminTotp::SESSION_KEY));
         $this->assertNull($admin->fresh()->totp_secret);
         $this->assertNull($admin->fresh()->totp_required_at);
         $this->assertNull($admin->fresh()->totp_last_used_at);
@@ -432,7 +454,7 @@ class AuthEventFlowsTest extends TestCase
         $this->assertClean([$secret, $code, self::PW]);
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('sessionFailureFlows')]
+    #[DataProvider('sessionFailureFlows')]
     public function test_session_marker_write_failure_does_not_record_completion(string $flow): void
     {
         [$admin, $secret] = $this->admin($flow !== 'enrol');
@@ -440,11 +462,11 @@ class AuthEventFlowsTest extends TestCase
         if ($flow === 'recovery') {
             app(TotpService::class)->replaceRecoveryCodes($admin, $codes);
         }
-        $session = new class('audit_failure', new \Illuminate\Session\ArraySessionHandler(120)) extends \Illuminate\Session\Store
+        $session = new class('audit_failure', new ArraySessionHandler(120)) extends Store
         {
             public function put($key, $value = null)
             {
-                if ($key === \App\Http\Middleware\EnsureAdminTotp::SESSION_KEY) {
+                if ($key === EnsureAdminTotp::SESSION_KEY) {
                     throw new \RuntimeException('session marker unavailable');
                 }
                 parent::put($key, $value);
@@ -456,7 +478,7 @@ class AuthEventFlowsTest extends TestCase
         }
         $field = $flow === 'recovery' ? 'recovery_code' : 'code';
         $value = $flow === 'recovery' ? $codes[0] : (new Google2FA)->getCurrentOtp($secret);
-        $request = \Illuminate\Http\Request::create('/admin/totp', 'POST', [$field => $value]);
+        $request = Request::create('/admin/totp', 'POST', [$field => $value]);
         $request->setLaravelSession($session);
         $request->setUserResolver(fn () => $admin);
         $before = AuthEvent::count();
@@ -465,7 +487,7 @@ class AuthEventFlowsTest extends TestCase
             if ($flow === 'enrol') {
                 app(AdminTotpEnrolController::class)->store($request);
             } else {
-                $controller = app(\App\Http\Controllers\AdminTotpController::class);
+                $controller = app(AdminTotpController::class);
                 $flow === 'recovery' ? $controller->recovery($request) : $controller->verify($request);
             }
             $this->fail('The injected session marker failure must be reached.');
@@ -473,7 +495,7 @@ class AuthEventFlowsTest extends TestCase
             $this->assertSame('session marker unavailable', $exception->getMessage());
         }
 
-        $this->assertNull($session->get(\App\Http\Middleware\EnsureAdminTotp::SESSION_KEY));
+        $this->assertNull($session->get(EnsureAdminTotp::SESSION_KEY));
         $this->assertSame(0, AuthEvent::whereIn('event', ['LOGIN_SUCCESS', 'ENROL_CONFIRMED', 'SESSION_ROTATED'])->count());
         // Recovery consumption precedes session completion and is still audited.
         $this->assertSame($before + ($flow === 'recovery' ? 1 : 0), AuthEvent::count());
@@ -487,7 +509,7 @@ class AuthEventFlowsTest extends TestCase
         $this->assertClean([$secret, $value, self::PW]);
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('sessionFailureFlows')]
+    #[DataProvider('sessionFailureFlows')]
     public function test_http_session_put_exception_is_reported_without_leaking_secrets(string $flow): void
     {
         [$admin, $secret] = $this->admin($flow !== 'enrol');
@@ -502,7 +524,7 @@ class AuthEventFlowsTest extends TestCase
         }
 
         $handler = $this->app['session']->driver()->getHandler();
-        $manager = new class($this->app, $handler) extends \Illuminate\Session\SessionManager
+        $manager = new class($this->app, $handler) extends SessionManager
         {
             public function __construct($app, private \SessionHandlerInterface $originalHandler)
             {
@@ -511,16 +533,11 @@ class AuthEventFlowsTest extends TestCase
 
             protected function createArrayDriver()
             {
-                return new class(
-                    $this->config->get('session.cookie'),
-                    $this->originalHandler,
-                    null,
-                    $this->config->get('session.serialization', 'php')
-                ) extends \Illuminate\Session\Store
+                return new class($this->config->get('session.cookie'), $this->originalHandler, null, $this->config->get('session.serialization', 'php')) extends Store
                 {
                     public function put($key, #[\SensitiveParameter] $value = null)
                     {
-                        if ($key === \App\Http\Middleware\EnsureAdminTotp::SESSION_KEY) {
+                        if ($key === EnsureAdminTotp::SESSION_KEY) {
                             throw new \RuntimeException('http session marker put failed');
                         }
                         parent::put($key, $value);
@@ -529,11 +546,11 @@ class AuthEventFlowsTest extends TestCase
             }
         };
         $this->app->instance('session', $manager);
-        $this->app->instance(\Illuminate\Session\SessionManager::class, $manager);
+        $this->app->instance(SessionManager::class, $manager);
         $this->app->forgetInstance('session.store');
-        $this->app->forgetInstance(\Illuminate\Session\Middleware\StartSession::class);
-        \Illuminate\Support\Facades\Facade::clearResolvedInstance('session');
-        \Illuminate\Support\Facades\Facade::clearResolvedInstance('session.store');
+        $this->app->forgetInstance(StartSession::class);
+        Facade::clearResolvedInstance('session');
+        Facade::clearResolvedInstance('session.store');
         Auth::forgetGuards();
         Auth::shouldUse('web');
 
@@ -555,7 +572,7 @@ class AuthEventFlowsTest extends TestCase
         $this->assertClean([$secret, $value, self::PW, $sid, $rotatedSid]);
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('sessionFailureFlows')]
+    #[DataProvider('sessionFailureFlows')]
     public function test_http_session_handler_write_failure_after_controller_does_not_persist_session(string $flow): void
     {
         [$admin, $secret] = $this->admin($flow !== 'enrol');
@@ -580,15 +597,30 @@ class AuthEventFlowsTest extends TestCase
 
             public function __construct(private \SessionHandlerInterface $inner) {}
 
-            public function open(string $path, string $name): bool { return $this->inner->open($path, $name); }
+            public function open(string $path, string $name): bool
+            {
+                return $this->inner->open($path, $name);
+            }
 
-            public function close(): bool { return $this->inner->close(); }
+            public function close(): bool
+            {
+                return $this->inner->close();
+            }
 
-            public function read(#[\SensitiveParameter] string $id): string|false { return $this->inner->read($id); }
+            public function read(#[\SensitiveParameter] string $id): string|false
+            {
+                return $this->inner->read($id);
+            }
 
-            public function destroy(#[\SensitiveParameter] string $id): bool { return $this->inner->destroy($id); }
+            public function destroy(#[\SensitiveParameter] string $id): bool
+            {
+                return $this->inner->destroy($id);
+            }
 
-            public function gc(int $lifetime): int|false { return $this->inner->gc($lifetime); }
+            public function gc(int $lifetime): int|false
+            {
+                return $this->inner->gc($lifetime);
+            }
 
             public function write(#[\SensitiveParameter] string $id, #[\SensitiveParameter] string $data): bool
             {
@@ -639,9 +671,9 @@ class AuthEventFlowsTest extends TestCase
     public static function exceptionClasses(): array
     {
         return [
-            [\PragmaRX\Google2FA\Exceptions\InvalidCharactersException::class],
-            [\PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException::class],
-            [\PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException::class],
+            [InvalidCharactersException::class],
+            [SecretKeyTooShortException::class],
+            [IncompatibleWithGoogleAuthenticatorException::class],
         ];
     }
 }

@@ -8,6 +8,12 @@ Selamat datang di indeks dokumentasi teknis dan produk untuk proyek e-commerce *
 
 **Upgrade lokal 15 Oktober 2026:** [Laporan Laravel 13](execution/LARAVEL_13_UPGRADE_2026-10-15.md), [lingkungan manual](execution/MANUAL_TEST_ENV_2026-10-15.md), dan [kontrol stok habis](execution/SOLD_OUT_UI_2026-10-15.md). Verifikasi akhir: MySQL 204 tes (201 lulus, 3 skipped), Node 92/92, build dan platform lulus. **Lulus lokal; bukan persetujuan produksi**.
 
+**Implementasi R-53 (21 Oktober 2026):** klaim komersial jujur, tanpa dark pattern, dan tautan `#returns-policy` terhubung ke kode; lihat [COUNCIL_DECISIONS.md](04-implementation/COUNCIL_DECISIONS.md) #052 dan [FEATURE_DELIVERY_TRACKER.md](04-implementation/FEATURE_DELIVERY_TRACKER.md) §53.
+
+**Implementasi R-55 (21 Oktober 2026):** token warna/tipografi dan gerbang Node tanpa perubahan palet; lihat [BRAND_TOKEN_LOCK.md](04-implementation/BRAND_TOKEN_LOCK.md) dan keputusan #054.
+
+**Implementasi R-54 (21 Oktober 2026):** alt gambar produk dengan fallback nama, pesan pemulihan membimbing di 5 locale; lihat [GUIDING_MICROCOPY_AUDIT.md](04-implementation/GUIDING_MICROCOPY_AUDIT.md) dan [COUNCIL_DECISIONS.md](04-implementation/COUNCIL_DECISIONS.md) #053.
+
 ---
 
 ## Indeks Struktur Dokumentasi
@@ -48,8 +54,18 @@ docs/
 │   ├── AGENT_OPERATING_MODEL.md              # Struktur tim subagent, aturan kerja, gate, dan metrik
 │   ├── ENGINEERING_EXCELLENCE_PROTOCOL.md    # Nilai kerja, lensa dewan audit, ricek/crosscheck, standar riset
 │   ├── ACCEPTANCE_CRITERIA.md                # Rincian kriteria penerimaan per fitur
+│   ├── SAFE_RELEASE_R39.md                   # R-39: flag, cohort, rollback & migrasi terkendali
 │   ├── R44_BROWSER_QA_PLAN.md                # Rencana QA browser tabel admin R-44
 │   ├── R44_SESSION_LEDGER.md                 # Ledger sesi dan rekonsiliasi bukti R-44
+│   ├── STOREFRONT_TEXT_INVENTORY.md          # Inventaris teks permukaan toko (fitur 38.1)
+│   ├── STOREFRONT_TEXT_EVALUATION.md         # Penilaian teks toko: HCI, marketing, brand (fitur 38.2)
+│   ├── STOREFRONT_TEXT_REWRITE_LOG.md        # Daftar teks sebelum → sesudah beserta alasan (fitur 38.3)
+│   ├── LOCALE_AND_TRANSLATION.md             # Locale, penyimpanan, katalog, dan batas Phase 4 (fitur 41.1)
+│   ├── LOCALE_CROSS_CHANNEL.md               # R-51/R-52: bahasa penerima, bukti pengujian, dan batas invois
+│   ├── STOREFRONT_COPY_USABILITY_TEST.md     # Kit uji kejelasan teks dengan pengguna; sesi belum dijalankan (fitur 38.4)
+│   ├── BRAND_TOKEN_LOCK.md                 # R-55: token brand, guard Node, bukti & batas
+│   ├── GUIDING_MICROCOPY_AUDIT.md            # R-54: alt gambar, pesan galat membimbing, bukti & batas
+│   ├── SCHEDULED_TASKS_AND_ENV_PARITY.md     # Tugas terjadwal, cron, queue, dan paritas konfigurasi lingkungan
 │   └── TEAM_SUPPORT_LEDGER.md                # Ledger dukungan tim dan sekretariat
 ├── 05-quality/
 │   ├── TEST_PLAN.md                          # Rencana pengujian otomatis, manual, & browser

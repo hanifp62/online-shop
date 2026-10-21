@@ -51,7 +51,7 @@ class AmadisShopTest extends TestCase
     {
         $this->product();
         $this->actingAs(User::factory()->create());
-        $this->get('/belanja')->assertOk()->assertSee('id="checkout-summary"', false)->assertSee('id="checkout-form"', false)->assertSee('Buat pesanan pending');
+        $this->get('/belanja')->assertOk()->assertSee('id="checkout-summary"', false)->assertSee('id="checkout-form"', false)->assertSee('Konfirmasi pesanan');
         $this->get('/koleksi')->assertOk()->assertSee('data-favorite=', false);
     }
 
@@ -61,8 +61,11 @@ class AmadisShopTest extends TestCase
             ->assertSee('id="checkout-summary"', false)
             ->assertDontSee('id="guest-summary"', false)
             ->assertSee('Langkah 1/2', false)
-            ->assertSee('pending / belum dibayar', false)
-            ->assertSee('Tidak ada pembayaran online', false)
+            ->assertSee('menunggu pembayaran', false)
+            ->assertSee('Pembayaran online belum tersedia', false)
+            ->assertSee('Tidak ada konfirmasi pembayaran otomatis', false)
+            ->assertDontSee('atelier akan menghubungi Anda', false)
+            ->assertSee('Kode pelacakan pesanan', false)
             ->assertSee('csrf-token', false)
             ->assertDontSee('id="checkout-form"', false)
             ->assertSee('id="guest-checkout-form"', false)

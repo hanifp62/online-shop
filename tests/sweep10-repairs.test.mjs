@@ -8,7 +8,7 @@ const dictionaries = ['prototype/zafira-core.js', 'public/js/zafira-core.js'];
 test('D2: each dictionary uses compact translated search prompts', () => {
   for (const path of dictionaries) {
     const values = [...read(path).matchAll(/search_placeholder: "([^"]+)"/g)].map(m => m[1]);
-    assert.deepEqual(values, ['Cari…', 'Search…', 'Chercher…', 'Cerca']);
+    assert.deepEqual(values, path.startsWith('public/') ? ['搜索…', 'Cari…', 'Search…', 'Chercher…', 'Cerca'] : ['Cari…', 'Search…', 'Chercher…', 'Cerca']);
     assert.ok(!values.includes('Soie…'), 'FR placeholder must be a search verb, not "Silk"');
   }
   // 1024 keeps its 100px input (wider overflows the header); compact strings must fit that.
@@ -27,11 +27,19 @@ test('D4: footer legal text clears AA after alpha compositing', () => {
 test('D5: Maison motto is localized, not repeated English', () => {
   for (const path of dictionaries) {
     const values = [...read(path).matchAll(/footer_motto:\s*["']([\s\S]*?)["']\s*,/g)].map(m => m[1]);
-    assert.equal(values.length, 4);
-    assert.equal(new Set(values).size, 4);
-    assert.match(values[0], /Paris/);
-    assert.match(values[2], /Paris/);
-    assert.match(values[3], /Parigi/);
+    const expectedCount = path.startsWith('public/') ? 5 : 4;
+    assert.equal(values.length, expectedCount);
+    assert.equal(new Set(values).size, expectedCount);
+    if (path.startsWith('public/')) {
+      assert.match(values[0], /巴黎/);
+      assert.match(values[1], /Paris/);
+      assert.match(values[3], /Paris/);
+      assert.match(values[4], /Parigi/);
+    } else {
+      assert.match(values[0], /Paris/);
+      assert.match(values[2], /Paris/);
+      assert.match(values[3], /Parigi/);
+    }
   }
 });
 test('D6: theme choices and language select accessible names use existing i18n', () => {

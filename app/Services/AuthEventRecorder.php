@@ -60,6 +60,7 @@ class AuthEventRecorder
                 'event' => $event,
                 'outcome' => $outcome,
                 'ip' => $ip !== null ? substr($ip, 0, 45) : null,
+                'request_id' => $this->resolveRequestId(),
                 'context' => (object) $safeContext,
             ]);
         } catch (\Throwable $e) {
@@ -135,5 +136,13 @@ class AuthEventRecorder
     public function recordPasswordResetTokenIssued(?int $actorId, ?string $ip): ?AuthEvent
     {
         return $this->record(AuthEventName::PASSWORD_RESET_TOKEN_ISSUED, 'success', 'web', $actorId, $ip, ['guard' => 'web', 'scope' => 'password_reset']);
+    }
+
+    /** Hanya ID yang sudah disanitasi CorrelationIdMiddleware; header mentah tidak pernah dipercaya. */
+    private function resolveRequestId(): ?string
+    {
+        $id = request()?->attributes->get('request_id');
+
+        return is_string($id) && $id !== '' ? $id : null;
     }
 }

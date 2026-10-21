@@ -59,7 +59,7 @@ class CatalogService
             }
         }
         $locale = $filters['locale'];
-        $t = (require resource_path('views/catalog/labels.php'))[$locale];
+        $t = trans('zafira', [], $locale);
 
         return [
             'products' => $products, 'categories' => $categories, 'categoryOptions' => $categoryOptions,
@@ -147,7 +147,9 @@ class CatalogService
                     'category' => $categories->firstWhere('cat_id', $item)->cat_title,
                     'harga_min', 'harga_max' => $t[$key].': '.$this->decimal($item).' IDR',
                     'tersedia' => $t['available'],
-                    'urut' => $t[match ($item) { 'harga' => 'price_sort', 'tersedia' => 'available', default => 'newest' }],
+                    'urut' => $t[match ($item) {
+                        'harga' => 'price_sort', 'tersedia' => 'available', default => 'newest'
+                    }],
                     default => $t[$key === 'q' ? 'search' : $key].': '.$item,
                 };
                 $chips[] = ['label' => $label, 'url' => $this->url($remaining)];

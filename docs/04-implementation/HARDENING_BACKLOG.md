@@ -245,6 +245,31 @@ Sumber: laporan integrator; hasil pengujian dan efektivitas perbaikan **TIDAK TE
 - **Risiko migrasi:** tinggi untuk privasi dan retensi; backup terhapus tidak dapat dipulihkan oleh perubahan FK.
 - **Persetujuan:** **WAJIB eksplisit pengguna** untuk mengubah delete cascade. Dependensi: keputusan retensi HB-001; klasifikasi data snapshot tersendiri tetap diperlukan.
 
+### HB-017 — Notifikasi status pesanan dapat hilang bila dispatch antrean gagal saat commit
+
+- **Klasifikasi / severity:** TERBUKTI KODE & IMPLEMENTASI SELESAI (2026-10-21) / Tinggi.
+- **Requirement:** FR-008 notifikasi status; kontrak pengiriman *at-least-once*.
+- **Bukti & Akar Masalah:** `app/Services/CheckoutService.php` `notifyCustomer()` sebelumnya mengklaim slot `order_notifications` lalu memanggil `Mail::to()->queue()`. Karena `OrderStatusChanged` memakai `afterCommit()`, dispatch nyata baru terjadi saat transaksi commit. Kegagalan push antrean pada fase commit menyebabkan pesanan tetap commit tetapi notifikasi hilang selamanya karena klaim unik sudah terisi tanpa tanda kirim.
+- **Solusi Diimplementasikan (Lazy Outbox + Lease Atomik):**
+  - Migrasi aditif `database/migrations/2026_10_21_000030_add_dispatched_at_to_order_notifications_table.php` menambah nullable `dispatched_at`. Baris historis di-backfill ke `created_at` hanya untuk mencegah pengiriman ulang massal; status pengiriman historis **TIDAK TERBUKTI**. Lakukan rekonsiliasi audit manual sebelum tindakan pemulihan historis.
+  - Migrasi aditif `database/migrations/2026_10_21_000040_add_lease_to_order_notifications_table.php` menambah `lease_token` dan `lease_expires_at` nullable untuk klaim bersyarat atomik dan pemulihan setelah lease kedaluwarsa.
+  - `OrderNotificationDispatcher` mengklaim hanya bila pending dan lease kosong/kedaluwarsa menggunakan satu conditional UPDATE; queue push terjadi di luar transaksi DB. Claim/read/lookup/push gagal dilaporkan (`report`) tanpa melempar keluar callback pasca-commit atau menghentikan batch. Lease dilepas hanya jika klaim berhasil, dan penyelesaian/pelepasan dibatasi token pemilik. Kegagalan pelepasan dilaporkan terpisah; lease 10 menit menjadi jalur pemulihan.
+  - `CheckoutService::notifyCustomer()` mempertahankan klaim unik dan `DB::afterCommit`; rollback tidak memicu dispatch.
+  - `orders:retry-notifications` mengambil maksimal 100 baris pending yang lebih tua dari 5 menit, belum memiliki lease aktif, memiliki order/email/status/channel yang dapat dikirim. Baris tanpa email tidak dihitung ke batch; jika email/order tersedia kemudian, baris dapat diproses pada cron berikutnya. Scheduler tetap setiap 5 menit dengan `withoutOverlapping()`.
+- **Bukti Verifikasi (TDD RED -> GREEN):**
+  - RED sebelum implementasi: tes overlap menghasilkan 2 push, dan 100 baris tanpa email menghalangi baris valid ke-101 (0 push).
+  - GREEN terfokus: `OrderNotificationOutboxTest`, `OrderNotificationTest`, `CrossChannelLocaleTest`, `ScheduledTasksAndEnvParityTest`. Tes mencakup overlap, antrean gagal/lease dilepas, lease aktif/kedaluwarsa, token pemilik lama tidak mengubah lease penerus, 100 orphan tidak starvation, email yang dipulihkan jadi eligible, rollback, locale `fr`, dan dedupe setelah sukses.
+  - Tindak lanjut review MEDIUM: baseline 3 tes fault gagal karena exception keluar dispatcher. Fault injector diperbaiki dari listener pasca-query ke `Connection::beforeExecuting` agar benar-benar mencegah query. Setelah containment, 24 tes terfokus lulus (129 assertions, EXIT=0). Tes mencakup claim gagal tetapi batch berlanjut, read gagal melepas lease, release gagal dilaporkan terpisah dan pulih lewat expiry.
+  - Regresi slow-push memajukan waktu 11 menit saat sender pertama aktif, lalu benar-benar menjalankan dispatcher penerus: kedua pemanggilan queue terjadi (2 push). Ini bukti kemungkinan duplikasi, bukan jaminan exactly-once. Skill: `tdd-workflow`; review independen lanjutan masih diperlukan.
+- **Desain & Batasan Sisa (Residual Risks):**
+  - Semantik *at-least-once*, bukan exactly-once. Jika queue push sukses tetapi proses gagal sebelum update `dispatched_at`, lease berakhir setelah 10 menit dan retry dapat mengirim duplikat. Push yang berlangsung lebih lama dari lease juga dapat overlap; durasi lease perlu disesuaikan dengan batas waktu push terukur.
+  - Retry menggunakan grace window 5 menit, batch maksimal 100, scheduler setiap 5 menit.
+  - Baris tanpa email tetap pending; bila email ditambahkan kemudian, baris menjadi eligible otomatis.
+  - Kegagalan queue diuji melalui database queue SQLite tanpa tabel jobs, bukan outage Redis/MySQL/Postgres atau worker live.
+  - Migrasi diuji pada SQLite saja; migrasi `down()` dan operasi DDL engine produksi belum diverifikasi.
+  - Tidak ada pengiriman ulang massal otomatis untuk baris lama; riwayat email terkirim perlu rekonsiliasi manual karena backfill bukan bukti pengiriman.
+
+
 ## Antrean prioritas Rendah
 
 ### HB-014 — Perlakukan wildcard pencarian admin sebagai karakter literal

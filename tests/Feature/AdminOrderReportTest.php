@@ -95,6 +95,34 @@ class AdminOrderReportTest extends TestCase
         $this->assertStringContainsString('NotoSansSC-Regular.ttf', resource_path('fonts/NotoSansSC-Regular.ttf'));
     }
 
+    public function test_report_pdf_pagination_and_title_are_localized_in_real_pdf(): void
+    {
+        $this->order(now()->toDateTimeString(), 125000);
+        $this->actingAs($this->admin(), 'admin');
+
+        foreach (['id', 'en', 'fr', 'it', 'zh'] as $locale) {
+            $response = $this
+                ->get('/admin/reports/orders.pdf?period=today&locale='.$locale)->assertOk();
+            $text = implode("\n", $this->pdfText($response->getContent()));
+
+            $this->assertStringContainsString(trans('admin_ui.report.title', [], $locale), $text);
+            $expectedPage = str_replace(['{PAGE_NUM}', '{PAGE_COUNT}'], '1', trans('admin_ui.report.pagination', [], $locale));
+            $this->assertStringContainsString($expectedPage, $text, $locale);
+            if ($locale !== 'id') {
+                $this->assertStringNotContainsString('Halaman 1 dari 1', $text, $locale);
+            }
+        }
+    }
+
+    public function test_pdf_service_expands_custom_pagination_across_pages(): void
+    {
+        $lines = array_map(fn ($i) => 'Row '.$i, range(1, 120));
+        $text = implode("\n", $this->pdfText(app(PdfDocumentService::class)->render('Report', $lines, 'Page {PAGE_NUM} of {PAGE_COUNT}')));
+
+        $this->assertMatchesRegularExpression('/Page 2 of ([2-9]|\d{2,})/', $text);
+        $this->assertStringNotContainsString('Halaman', $text);
+    }
+
     public function test_pdf_service_embeds_latin_fallback_alongside_cjk(): void
     {
         $pdf = app(PdfDocumentService::class)->render('Ĳ Ł 王小明', ['ĳ ł 日本語']);
@@ -165,7 +193,7 @@ class AdminOrderReportTest extends TestCase
 
         $this->assertStringContainsString('Pesanan dibuat: 2 (dibatalkan: 1)', $text);
         $this->assertStringContainsString('Nilai pesanan non-batal: Rp 100.000', $text);
-        $this->assertStringContainsString('Status CANCELLED: 1', $text);
+        $this->assertStringContainsString('Status Dibatalkan: 1', $text);
         Carbon::setTestNow();
     }
 

@@ -209,9 +209,11 @@ class AdminDashboardController extends Controller
 
         $concierge->update($validated);
 
-        $owner = $concierge->user_id ? " milik user #{$concierge->user_id}" : " ({$concierge->email})";
+        $owner = $concierge->user_id
+            ? __('admin_ui.flash.request_owner_user', ['id' => $concierge->user_id])
+            : __('admin_ui.flash.request_owner_email', ['email' => $concierge->email]);
 
-        return back()->with('success', "Status permintaan #{$concierge->id}{$owner} menjadi {$validated['status']} — terlihat di riwayat /akun.");
+        return back()->with('success', __('admin_ui.flash.request_status', ['id' => $concierge->id, 'owner' => $owner, 'status' => $validated['status']]));
     }
 
     public function updatePassword(Request $request): RedirectResponse
@@ -244,10 +246,10 @@ class AdminDashboardController extends Controller
             app(AuthEventRecorder::class)->recordSessionRotated('admin', $admin->id, $request->ip(), 'password_update');
 
             return redirect()->route('admin.login')
-                ->with('success', 'Password diganti. Masuk lagi; kode cadangan lama sudah dicabut.');
+                ->with('success', __('admin_ui.flash.password_rotated'));
         }
 
-        return back()->with('success', 'Password admin berhasil diganti.');
+        return back()->with('success', __('admin_ui.flash.password_updated'));
     }
 
     public function destroySubscriber(NewsletterSubscriber $subscriber): RedirectResponse
@@ -255,6 +257,6 @@ class AdminDashboardController extends Controller
         $email = $subscriber->email;
         $subscriber->delete();
 
-        return back()->with('success', "Subscriber {$email} berhasil dihapus.");
+        return back()->with('success', __('admin_ui.flash.subscriber_deleted', ['email' => $email]));
     }
 }

@@ -1,12 +1,12 @@
 @component('mail::message')
-# Bonjour, et bienvenue.
+# {{ __('mail_ui.newsletter.heading') }}
 
-Terima kasih telah bergabung dengan **La Lettre ZAFIRA**.
+{{ __('mail_ui.newsletter.thanks') }} **La Lettre ZAFIRA**.
 
-Setiap edisi kami menampilkan koleksi terbaru, pengalaman La Maison, serta penawaran istimewa yang dirancang khusus untuk Anda.
+{{ __('mail_ui.newsletter.editions') }}
 
-Kami menantikan kedatangan Anda di La Maison.
+{{ __('mail_ui.newsletter.visit') }}
 
-Dengan hormat,
+{{ __('mail_ui.common.regards') }}
 **ZAFIRA — La Maison de Lumière**
 @endcomponent

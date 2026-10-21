@@ -19,7 +19,7 @@ function source(loggedIn) {
 function el(tag = 'div') {
     const listeners = {};
     return {
-        tag, children: [], textContent: '', disabled: false, value: '', style: {}, attrs: {}, options: [],
+        tag, children: [], textContent: '', disabled: false, value: '', style: {}, attrs: {}, options: [], classList: {toggle() {}},
         append(...nodes) { this.children.push(...nodes); },
         replaceChildren(...nodes) { this.children = [...nodes]; this.options = []; this.value = ''; },
         setAttribute(k, v) { this.attrs[k] = v; }, removeAttribute(k) { delete this.attrs[k]; },

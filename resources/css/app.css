@@ -98,6 +98,7 @@ svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width:
 .hero { position: relative; min-height: 760px; height: 100svh; color: white; background: var(--sapphire-deep); overflow: hidden; }
 .hero-media, .hero-overlay { position: absolute; inset: 0; }
 .hero-media { overflow: hidden; }
+.hero-media picture, .hero-media img { display: block; width: 100%; height: 100%; }
 .hero-media img { height: 100%; object-fit: cover; object-position: 54% 30%; animation: heroReveal 1.8s cubic-bezier(.22,.61,.36,1) both; }
 .hero-overlay { background: rgba(8, 16, 29, 0.45); }
 .hero-content { position: absolute; z-index: 2; left: 8vw; bottom: 13%; max-width: 750px; }
@@ -221,7 +222,7 @@ em { font-weight: 400; font-style: italic; }
 
 .editorial-banner { position: relative; min-height: 760px; color: white; background: var(--ink); overflow: hidden; }
 .editorial-banner::after { content: ''; position: absolute; inset: 0; background: rgba(15, 28, 51, 0.45); }
-.editorial-banner > img { position: absolute; inset: 0; height: 100%; object-fit: cover; object-position: center 35%; }
+.editorial-banner picture, .editorial-banner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
 .editorial-content { position: absolute; z-index: 2; left: 8vw; top: 50%; transform: translateY(-50%); }
 .editorial-content h2 { margin-bottom: 20px; font-size: clamp(64px, 7vw, 105px); letter-spacing: -.035em; }
 .editorial-lede { max-width: 460px; margin: 0 0 30px; color: rgba(255,255,255,.82); font-family: var(--serif); font-size: 17px; line-height: 1.6; }
@@ -525,7 +526,7 @@ button.service-card:hover, .service-card:hover { color: white; background: var(-
     .monogram-controls { grid-template-columns: auto 1fr; }
     .control-label { margin-top: 8px; }
     .editorial-banner { min-height: 580px; }
-    .editorial-banner > img { object-position: 67% center; }
+    .editorial-banner picture, .editorial-banner img { object-position: 67% center; }
     .editorial-content { left: 25px; }
     html[data-theme="dark"] .editorial-content { top: 36%; }
     .editorial-content h2 { font-size: 58px; }
@@ -634,7 +635,7 @@ button.service-card:hover, .service-card:hover { color: white; background: var(-
     color: #fff;
 }
 .lang-btn.active {
-    color: var(--gold, #b69a64);
+    color: var(--gold);
     font-weight: 700;
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -671,7 +672,7 @@ button.service-card:hover, .service-card:hover { color: white; background: var(-
 }
 .theme-btn.active {
     color: #fff;
-    background: var(--gold, #b69a64);
+    background: var(--gold);
 }
 
 /* ==========================================================================
@@ -981,3 +982,5 @@ html[data-theme="dark"] #live-catalog-search-input::placeholder { color: var(--m
 @media (max-width: 900px) {
     .admin-table :is(select, input:not([type="checkbox"]):not([type="hidden"]), textarea), .status-form :is(select, input:not([type="checkbox"]):not([type="hidden"])) { font-size: 16px; }
 }
+
+.social-auth { display: grid; gap: 10px; margin-top: 20px; }

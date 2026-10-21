@@ -8,6 +8,19 @@ const select = (selector, scope = document) => scope.querySelector(selector);
 const selectAll = (selector, scope = document) => [
     ...scope.querySelectorAll(selector),
 ];
+
+let appCopy = {};
+try {
+    const blob =
+        typeof document !== "undefined"
+            ? document.getElementById("zafira-app-copy")
+            : null;
+    if (blob?.textContent) appCopy = JSON.parse(blob.textContent);
+} catch {
+    // Keep exact Indonesian fallbacks when blob is not present or malformed.
+}
+const getAppCopy = (key, fallback) =>
+    typeof appCopy?.[key] === "string" ? appCopy[key] : fallback;
 const prefersReducedMotion = () =>
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
 const smoothScrollTo = (element) => {
@@ -141,7 +154,7 @@ if (storefront) {
             legacy.forEach((item) => {
                 if (!item || typeof item !== "object" || !list) return;
                 const line = document.createElement("li");
-                line.textContent = `${item.name || item.id || "Kreasi"} × ${item.quantity || 1}${item.size ? ` · Ukuran: ${item.size}` : ""}${item.monogram ? ` · Monogram: ${item.monogram}` : ""}`;
+                line.textContent = `${item.name || item.id || getAppCopy("legacy_item", "Kreasi")} × ${item.quantity || 1}${item.size ? ` · ${getAppCopy("size_label", "Ukuran")}: ${item.size}` : ""}${item.monogram ? ` · ${getAppCopy("monogram_label", "Monogram")}: ${item.monogram}` : ""}`;
                 list.appendChild(line);
             });
         } catch {
@@ -168,6 +181,7 @@ if (storefront) {
             stock: Number(card.dataset.stock),
             priceLabel: card.dataset.priceLabel,
             image: card.dataset.image,
+            alt: card.dataset.alt,
             description: card.dataset.description,
             color: card.dataset.color,
             material: card.dataset.material || "",
@@ -392,11 +406,21 @@ if (storefront) {
         if (wishlistSet.has(product.id)) {
             wishlistSet.delete(product.id);
             wishlist = wishlist.filter((id) => id !== product.id);
-            showToast(`${product.name} dihapus dari favorit.`);
+            showToast(
+                getAppCopy(
+                    "wish_removed",
+                    ":name dihapus dari favorit.",
+                ).replace(":name", product.name),
+            );
         } else {
             wishlistSet.add(product.id);
             wishlist.push(product.id);
-            showToast(`${product.name} disimpan dalam favorit.`);
+            showToast(
+                getAppCopy(
+                    "wish_saved",
+                    ":name disimpan dalam favorit.",
+                ).replace(":name", product.name),
+            );
         }
         storage.set("zafira-wishlist", wishlist);
         syncWishlistButtons();
@@ -415,14 +439,17 @@ if (storefront) {
             lines.replaceChildren();
             inquiryItems.forEach((item) => {
                 const line = document.createElement("li");
-                line.textContent = `${item.name}${item.size ? ` · Ukuran: ${item.size}` : ""}${item.monogram ? ` · Monogram: ${item.monogram}` : ""}`;
+                line.textContent = `${item.name}${item.size ? ` · ${getAppCopy("size_label", "Ukuran")}: ${item.size}` : ""}${item.monogram ? ` · ${getAppCopy("monogram_label", "Monogram")}: ${item.monogram}` : ""}`;
                 lines.appendChild(line);
             });
         }
         const title = select("[data-checkout-total]", modal);
         if (title)
             title.textContent = inquiryItems.length
-                ? "Permintaan personalisasi — harga dikonfirmasi advisor"
+                ? getAppCopy(
+                      "inquiry_total",
+                      "Permintaan personalisasi — harga dikonfirmasi advisor",
+                  )
                 : "";
     }
 
@@ -439,35 +466,49 @@ if (storefront) {
         const notes = select('.concierge-modal [name="notes"]');
         if (notes) {
             notes.value =
-                `Permintaan personalisasi ${product.name}` +
+                getAppCopy(
+                    "inquiry_notes",
+                    "Permintaan personalisasi :name",
+                ).replace(":name", product.name) +
                 (personalization.size
-                    ? ` · Ukuran: ${personalization.size}`
+                    ? ` · ${getAppCopy("size_label", "Ukuran")}: ${personalization.size}`
                     : "") +
                 (personalization.monogram
-                    ? ` · Monogram: ${personalization.monogram}`
+                    ? ` · ${getAppCopy("monogram_label", "Monogram")}: ${personalization.monogram}`
                     : "");
         }
         const service = select('.concierge-modal [name="service"]');
         if (service) service.value = "atelier";
         openElement(conciergeModal, trigger);
         showToast(
-            "Ukuran dan monogram dikirim sebagai permintaan concierge, bukan pembelian standar.",
+            getAppCopy(
+                "inquiry_toast",
+                "Ukuran dan monogram dikirim sebagai permintaan concierge, bukan pembelian katalog.",
+            ),
         );
     }
 
     function cartRequest(url, method = "GET", body = null) {
+        const copy =
+            typeof getAppCopy === "function"
+                ? getAppCopy
+                : (_key, fallback) => fallback;
         const request = cartRequests
             .catch(() => null)
             .then(async () => {
                 const status = select("[data-cart-status]");
-                if (status) status.textContent = "Memproses…";
+                if (status)
+                    status.textContent = copy("processing", "Memproses…");
                 try {
                     const fetchWithTimeout = async (requestUrl, options) => {
                         // No AbortController (old runtime): send without a timeout rather than fail.
                         if (typeof AbortController !== "function")
                             return fetch(requestUrl, options);
                         const controller = new AbortController();
-                        const timeout = setTimeout(() => controller.abort(), 10000);
+                        const timeout = setTimeout(
+                            () => controller.abort(),
+                            10000,
+                        );
                         try {
                             return await fetch(requestUrl, {
                                 ...options,
@@ -481,15 +522,29 @@ if (storefront) {
                         try {
                             return await response.json();
                         } catch {
-                            throw new Error("Respons server tidak valid. Coba lagi.");
+                            throw new Error(
+                                copy(
+                                    "err_invalid",
+                                    "Respons server tidak valid. Coba lagi.",
+                                ),
+                            );
                         }
                     };
                     const responseError = (response, data) => {
                         if (response.status === 419)
-                            return "Sesi kedaluwarsa. Muat ulang halaman lalu coba lagi.";
+                            return copy(
+                                "err_session",
+                                "Sesi kedaluwarsa. Muat ulang halaman lalu coba lagi.",
+                            );
                         if (response.status >= 500)
-                            return "Layanan sedang bermasalah. Coba lagi sebentar lagi.";
-                        return data.message || "Tas belum dapat diperbarui.";
+                            return copy(
+                                "err_service",
+                                "Layanan sedang bermasalah. Coba lagi sebentar lagi.",
+                            );
+                        return (
+                            data.message ||
+                            copy("err_bag", "Tas belum dapat diperbarui.")
+                        );
                     };
                     if (typeof url === "function") {
                         const freshResponse = await fetchWithTimeout("/cart", {
@@ -497,7 +552,9 @@ if (storefront) {
                         });
                         const freshData = await parseResponse(freshResponse);
                         if (!freshResponse.ok)
-                            throw new Error(responseError(freshResponse, freshData));
+                            throw new Error(
+                                responseError(freshResponse, freshData),
+                            );
                         cart = freshData.items || [];
                         cartSubtotal = freshData.subtotal || 0;
                         renderCart();
@@ -505,7 +562,10 @@ if (storefront) {
                         const intent = await url();
                         if (!intent) {
                             if (status)
-                                status.textContent = "Tas belanja diperbarui.";
+                                status.textContent = copy(
+                                    "bag_updated",
+                                    "Tas belanja diperbarui.",
+                                );
                             return null;
                         }
                         [url, method, body = null] = intent;
@@ -534,23 +594,43 @@ if (storefront) {
                             0,
                         );
                         status.textContent = cart.length
-                            ? `Tas belanja diperbarui: ${count} barang, subtotal ${rupiah(cartSubtotal)}.`
-                            : "Tas belanja kosong.";
+                            ? copy(
+                                  "bag_summary",
+                                  "Tas belanja diperbarui: :count barang, subtotal :subtotal.",
+                              )
+                                  .replace(":count", String(count))
+                                  .replace(":subtotal", rupiah(cartSubtotal))
+                            : copy("bag_empty", "Tas belanja kosong.");
                     }
                     return data;
                 } catch (error) {
                     const knownMessages = new Set([
-                        "Respons server tidak valid. Coba lagi.",
-                        "Sesi kedaluwarsa. Muat ulang halaman lalu coba lagi.",
-                        "Layanan sedang bermasalah. Coba lagi sebentar lagi.",
-                        "Tas belum dapat diperbarui.",
+                        copy(
+                            "err_invalid",
+                            "Respons server tidak valid. Coba lagi.",
+                        ),
+                        copy(
+                            "err_session",
+                            "Sesi kedaluwarsa. Muat ulang halaman lalu coba lagi.",
+                        ),
+                        copy(
+                            "err_service",
+                            "Layanan sedang bermasalah. Coba lagi sebentar lagi.",
+                        ),
+                        copy("err_bag", "Tas belum dapat diperbarui."),
                     ]);
                     const message =
                         error?.name === "AbortError"
-                            ? "Permintaan terlalu lama. Coba lagi."
+                            ? copy(
+                                  "err_timeout",
+                                  "Permintaan terlalu lama. Coba lagi.",
+                              )
                             : knownMessages.has(error?.message)
                               ? error.message
-                              : "Jaringan bermasalah. Periksa koneksi lalu coba lagi.";
+                              : copy(
+                                    "err_network",
+                                    "Jaringan bermasalah. Periksa koneksi lalu coba lagi.",
+                                );
                     if (status) status.textContent = message;
                     showToast(message);
                     return null;
@@ -569,11 +649,21 @@ if (storefront) {
 
     const addToCart = (product) =>
         cartRequest(() => cartDelta(product.productId, 1)).then((data) => {
-            if (data) showToast(`${product.name} ditambahkan ke tas Anda.`);
+            if (data)
+                showToast(
+                    getAppCopy(
+                        "added_toast",
+                        ":name ditambahkan ke tas Anda.",
+                    ).replace(":name", product.name),
+                );
             return data;
         });
 
     function renderCart() {
+        const copy =
+            typeof getAppCopy === "function"
+                ? getAppCopy
+                : (_key, fallback) => fallback;
         const container = select("[data-cart-items]");
         const empty = select("[data-cart-empty]");
         const footer = select("[data-cart-footer]");
@@ -598,14 +688,14 @@ if (storefront) {
                 <div class="cart-item-info">
                     <h3>${escapeHtml(item.product_title)}</h3>
                     <p translate="no">${escapeHtml(rupiah(item.unit_price))}</p>
-                    ${item.available ? "" : "<p>Stok tidak tersedia. Hapus kreasi ini sebelum checkout.</p>"}
-                    <div class="quantity-control" aria-label="Jumlah ${escapeHtml(item.product_title)}">
-                        <button type="button" data-quantity="minus" aria-label="Kurangi jumlah"><svg><use href="#icon-minus"/></svg></button>
+                    ${item.available ? "" : "<p>" + escapeHtml(copy("unavailable", "Stok tidak tersedia. Hapus kreasi ini sebelum checkout.")) + "</p>"}
+                    <div class="quantity-control" aria-label="${escapeHtml(copy("qty_group", "Jumlah :name").replace(":name", item.product_title))}">
+                        <button type="button" data-quantity="minus" aria-label="${escapeHtml(copy("qty_minus", "Kurangi jumlah"))}"><svg><use href="#icon-minus"/></svg></button>
                         <span>${escapeHtml(item.quantity)}</span>
-                        <button type="button" data-quantity="plus" aria-label="Tambah jumlah"><svg><use href="#icon-plus"/></svg></button>
+                        <button type="button" data-quantity="plus" aria-label="${escapeHtml(copy("qty_plus", "Tambah jumlah"))}"><svg><use href="#icon-plus"/></svg></button>
                     </div>
                 </div>
-                <button class="cart-remove" type="button" data-remove-cart aria-label="Hapus ${escapeHtml(item.product_title)}"><svg><use href="#icon-close"/></svg></button>
+                <button class="cart-remove" type="button" data-remove-cart aria-label="${escapeHtml(copy("remove_item", "Hapus :name").replace(":name", item.product_title))}"><svg><use href="#icon-close"/></svg></button>
             `;
             container.appendChild(element);
         });
@@ -642,10 +732,14 @@ if (storefront) {
     }
 
     function showQuickView(card) {
+        const copy =
+            typeof getAppCopy === "function"
+                ? getAppCopy
+                : (_key, fallback) => fallback;
         const product = readProduct(card);
         currentQuickProduct = product;
         select("[data-quick-image]").src = product.image;
-        select("[data-quick-image]").alt = product.name;
+        select("[data-quick-image]").alt = product.alt;
         select("[data-quick-category]").textContent = product.category;
         select("[data-quick-name]").textContent = product.name;
         select("[data-quick-price]").textContent = product.priceLabel;
@@ -667,8 +761,8 @@ if (storefront) {
         selectAll("[data-quick-add]", quickViewModal).forEach((button) => {
             button.disabled = soldOut;
             button.firstChild.textContent = soldOut
-                ? "Stok habis "
-                : "Tambahkan ke tas ";
+                ? `${copy("sold_out", "Stok habis")} `
+                : `${copy("add_to_bag", "Tambahkan ke tas")} `;
         });
         const availability = select(
             "[data-quick-availability]",
@@ -676,8 +770,8 @@ if (storefront) {
         );
         if (availability)
             availability.lastChild.textContent = soldOut
-                ? "Stok habis"
-                : "Tersedia";
+                ? copy("sold_out", "Stok habis")
+                : copy("available", "Tersedia");
         openElement(quickViewModal);
     }
 
@@ -733,12 +827,20 @@ if (storefront) {
                 activeCategory !== "Semua";
             strip.hidden = !filtering;
             if (filtering) {
-                const scope = activeWishlistOnly
-                    ? "Favorit Anda"
+                const scopeLabel = activeWishlistOnly
+                    ? getAppCopy("fav_scope", "Favorit Anda")
                     : activeCategory === "Semua"
-                      ? "Semua Kategori"
+                      ? getAppCopy("all_scope", "Semua Kategori")
                       : activeCategory;
-                strip.textContent = `Menampilkan ${visible} kreasi hasil penyaringan (${scope}${query ? ` · kata kunci "${query}"${typoFallback ? " — menampilkan saran mirip" : ""}` : ""})`;
+                const scope = query
+                    ? `${scopeLabel} · ${getAppCopy("query_label", 'kata kunci ":query"').replace(":query", () => query)}${typoFallback ? getAppCopy("similar", " — menampilkan saran mirip") : ""}`
+                    : scopeLabel;
+                strip.textContent = getAppCopy(
+                    "filter_showing",
+                    "Menampilkan :count kreasi hasil penyaringan (:scope)",
+                )
+                    .replace(":count", visible)
+                    .replace(":scope", () => scope);
             }
         }
         const count = select("[data-product-count]");
@@ -818,13 +920,19 @@ if (storefront) {
             `,
                   )
                   .join("")
-            : "<p>Tidak ada kreasi yang ditemukan. Coba kata lain atau hapus pencarian untuk mulai kembali.</p>";
+            : `<p>${escapeHtml(getAppCopy("search_none_html", "Tidak ada kreasi yang ditemukan. Coba kata lain atau hapus pencarian untuk mulai kembali."))}</p>`;
         resultContainers.forEach((el) => {
             el.innerHTML = html;
         });
         const statusText = results.length
-            ? `Menampilkan ${results.length} kreasi${typoFallback ? " — menampilkan saran mirip" : ""}`
-            : "Tidak ada kreasi yang ditemukan.";
+            ? getAppCopy("search_showing", "Menampilkan :count kreasi").replace(
+                  ":count",
+                  results.length,
+              ) +
+              (typoFallback
+                  ? getAppCopy("similar", " — menampilkan saran mirip")
+                  : "")
+            : getAppCopy("search_none", "Tidak ada kreasi yang ditemukan.");
         statusContainers.forEach((el) => {
             el.textContent = statusText;
         });
@@ -955,21 +1063,38 @@ if (storefront) {
                     // removed_quantity 0 means another tab already removed it: a delta of 0 would be rejected.
                     if (!data || !removed || !data.removed_quantity) return;
                     if (requestEpoch !== cartDrawerEpoch) return;
-                    showToast("Kreasi dihapus dari tas Anda.", {
-                        label: "Urungkan",
-                        onClick: () =>
-                            cartRequest(() =>
-                                cartDelta(
-                                    removed.product_id,
-                                    data.removed_quantity,
-                                ),
-                            ).then((restored) => {
-                                // cartRequest already reported the cause. Another tab may have re-added the line, so do not claim it is absent.
-                                const status = select("[data-cart-status]");
-                                if (!restored && status)
-                                    status.textContent = `Penghapusan ${removed.product_title} belum berhasil diurungkan. ${status.textContent}`;
-                            }),
-                    });
+                    showToast(
+                        getAppCopy(
+                            "removed_toast",
+                            "Kreasi dihapus dari tas Anda.",
+                        ),
+                        {
+                            label: getAppCopy("undo", "Urungkan"),
+                            onClick: () =>
+                                cartRequest(() =>
+                                    cartDelta(
+                                        removed.product_id,
+                                        data.removed_quantity,
+                                    ),
+                                ).then((restored) => {
+                                    // cartRequest already reported the cause. Another tab may have re-added the line, so do not claim it is absent.
+                                    const status = select("[data-cart-status]");
+                                    if (!restored && status)
+                                        status.textContent = getAppCopy(
+                                            "undo_failed",
+                                            "Penghapusan :name belum berhasil diurungkan. :status",
+                                        )
+                                            .replace(
+                                                ":name",
+                                                removed.product_title,
+                                            )
+                                            .replace(
+                                                ":status",
+                                                status.textContent,
+                                            );
+                                }),
+                        },
+                    );
                 });
             }
             const quantityButton = event.target.closest("[data-quantity]");
@@ -1020,6 +1145,29 @@ if (storefront) {
         });
     });
 
+    selectAll("[data-share-product]").forEach((button) => {
+        button.addEventListener("click", async () => {
+            const { shareTitle: title, shareUrl: url } = button.dataset;
+            try {
+                if (navigator.share) {
+                    await navigator.share({ title, url });
+                    return;
+                }
+                await navigator.clipboard.writeText(url);
+                showToast(getAppCopy("link_copied", "Tautan kreasi disalin."));
+            } catch (error) {
+                // Batal dari lembar berbagi bukan galat.
+                if (error?.name !== "AbortError")
+                    showToast(
+                        getAppCopy(
+                            "link_failed",
+                            "Tautan tidak dapat dibagikan. Salin dari bilah alamat.",
+                        ),
+                    );
+            }
+        });
+    });
+
     selectAll("[data-filter]").forEach((button) => {
         button.addEventListener("click", () => {
             setActiveFilter(button.dataset.filter);
@@ -1046,8 +1194,14 @@ if (storefront) {
             smoothScrollTo(select("#new-arrivals"));
             showToast(
                 wishlist.length
-                    ? "Menampilkan kreasi favorit Anda."
-                    : "Belum ada kreasi dalam favorit Anda.",
+                    ? getAppCopy(
+                          "fav_showing",
+                          "Menampilkan kreasi favorit Anda.",
+                      )
+                    : getAppCopy(
+                          "fav_none",
+                          "Belum ada kreasi dalam favorit Anda.",
+                      ),
             );
         }),
     );
@@ -1188,7 +1342,11 @@ if (storefront) {
                         firstInvalid?.focus();
                     }
                     throw new Error(
-                        data.message || "Periksa kembali informasi Anda.",
+                        data.message ||
+                            getAppCopy(
+                                "check_info",
+                                "Periksa kembali informasi Anda.",
+                            ),
                     );
                 }
                 if (form.hasAttribute("data-success-reset")) form.reset();
@@ -1198,7 +1356,11 @@ if (storefront) {
                 showToast(data.message);
             } catch (error) {
                 showToast(
-                    error.message || "Terjadi kendala. Silakan coba kembali.",
+                    error.message ||
+                        getAppCopy(
+                            "generic_error",
+                            "Terjadi kendala. Silakan coba kembali.",
+                        ),
                 );
             } finally {
                 submitButton.disabled = false;
@@ -1329,11 +1491,13 @@ selectAll("[data-password-toggle]").forEach((button) => {
         const input = button.closest(".password-wrap").querySelector("input");
         const show = input.type === "password";
         input.type = show ? "text" : "password";
-        button.textContent = show ? "Sembunyikan" : "Lihat";
+        button.textContent = show
+            ? button.dataset.i18nHide
+            : button.dataset.i18nShow;
         button.setAttribute("aria-pressed", String(show));
         button.setAttribute(
             "aria-label",
-            show ? "Sembunyikan kata sandi" : "Tampilkan kata sandi",
+            show ? button.dataset.i18nAriaHide : button.dataset.i18nAriaShow,
         );
     });
 });
