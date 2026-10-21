@@ -1,6 +1,6 @@
 {
   "app/Console/Commands/AdminTotpProvision.php": {
-    "summary": "Perintah admin:totp-provision membuat satu admin baru dengan peran tervalidasi dan TOTP wajib dalam transaksi; informasi setup ditampilkan sekali setelah commit."
+    "summary": "Perintah admin:totp-provision memvalidasi email dan peran, lalu membuat satu admin dengan TOTP wajib dalam transaksi. Setelah commit, kredensial setup ditampilkan sekali; kata sandi dicetak mentah agar penanda gaya konsol tidak mengubahnya, dan protected newPassword menyediakan seam pengujian."
   },
   "app/Console/Commands/AdminTotpRequire.php": {
     "summary": "Perintah admin:totp-require mewajibkan TOTP untuk semua admin hanya jika setiap akun sudah memiliki konfigurasi TOTP, sehingga akun tidak terkunci."
@@ -78,10 +78,10 @@
     "summary": "OrderController mengelola daftar dan rincian pesanan pelanggan, estimasi voucher, checkout alamat tersimpan atau tamu, serta pembatalan pesanan melalui CheckoutService."
   },
   "app/Http/Controllers/OrderReturnController.php": {
-    "summary": "OrderReturnController menghitung kelayakan retur menurut batas waktu dan kuantitas tersisa, membuat returns beserta return_items dalam transaksi, serta menampilkan ringkasan retur pengguna."
+    "summary": "OrderReturnController menyajikan daftar, kelayakan, dan pengajuan retur melalui API. Kelayakan mensyaratkan pesanan selesai, pembayaran terverifikasi lunas, masih dalam periode retur, dan kuantitas tersedia; pengajuan dicatat atomik pada returns dan return_items."
   },
   "app/Http/Controllers/PasswordResetController.php": {
-    "summary": "PasswordResetController menyediakan formulir permintaan dan reset kata sandi, respons permintaan yang tidak membocorkan keberadaan akun, penerbitan token terpusat dan notifikasi perubahan kata sandi."
+    "summary": "PasswordResetController menangani permintaan dan penyelesaian reset kata sandi dengan respons yang tidak mengungkap keberadaan akun, validasi, token sekali pakai, dan notifikasi. Setelah reset berhasil, sesi basis data milik pengguna dihapus dan sesi saat ini juga dilogout serta diinvalidate."
   },
   "app/Http/Controllers/ProfileController.php": {
     "summary": "ProfileController mengelola profil dan bahasa akun, ekspor data pribadi, penghapusan akun dengan pemeriksaan transaksi aktif serta konfirmasi berhenti menerima pengingat keranjang."
@@ -249,7 +249,7 @@
     "summary": "CheckoutService menghitung harga rupiah, diskon voucher, pajak dan ongkir lalu membuat checkout pelanggan atau tamu secara idempoten dengan penguncian stok dan reservasi; mengelola transisi status, pembayaran serta outbox notifikasi."
   },
   "app/Services/DatabaseBackupService.php": {
-    "summary": "DatabaseBackupService membuat cadangan SQLite atau MySQL, mengelola retensi, memeriksa integritas dan menguji pemulihan dengan pembandingan jumlah baris."
+    "summary": "DatabaseBackupService membuat cadangan SQLite atau MySQL/MariaDB terkompresi dengan checksum, menerapkan retensi, dan memverifikasi checksum. Pemulihan uji hanya didukung untuk SQLite dengan perbandingan jumlah baris; driver MySQL/MariaDB ditolak secara fail-closed melalui RuntimeException."
   },
   "app/Services/OrderNotificationDispatcher.php": {
     "summary": "OrderNotificationDispatcher mengklaim lease outbox order_notifications sebelum mengantrekan email status pesanan sesuai bahasa order, menandai dispatch berhasil dan melepas klaim bila pengiriman gagal."
@@ -507,7 +507,7 @@
     "summary": "Kamus bahasa Inggris untuk login, registrasi, reset kata sandi dan tantangan TOTP pelanggan, digunakan melalui namespace terjemahan auth_ui."
   },
   "lang/en/customer_messages.php": {
-    "summary": "Kamus bahasa Inggris untuk validasi domain dan pesan hasil atau kesalahan endpoint pelanggan dan admin, digunakan melalui namespace terjemahan customer_messages."
+    "summary": "Katalog pesan pelanggan bahasa Inggris untuk validasi dan respons API, termasuk pesan kelayakan retur baru yang menjelaskan penolakan pesanan tanpa pembayaran terverifikasi."
   },
   "lang/en/errors_ui.php": {
     "summary": "Kamus bahasa Inggris untuk judul dan pesan halaman kesalahan HTTP, digunakan melalui namespace terjemahan errors_ui."
@@ -534,7 +534,7 @@
     "summary": "Kamus bahasa Prancis untuk login, registrasi, reset kata sandi dan tantangan TOTP pelanggan, digunakan melalui namespace terjemahan auth_ui."
   },
   "lang/fr/customer_messages.php": {
-    "summary": "Kamus bahasa Prancis untuk validasi domain dan pesan hasil atau kesalahan endpoint pelanggan dan admin, digunakan melalui namespace terjemahan customer_messages."
+    "summary": "Katalog pesan pelanggan bahasa Prancis untuk validasi dan respons API, termasuk pesan kelayakan retur baru yang menjelaskan penolakan pesanan tanpa pembayaran terverifikasi."
   },
   "lang/fr/errors_ui.php": {
     "summary": "Kamus bahasa Prancis untuk judul dan pesan halaman kesalahan HTTP, digunakan melalui namespace terjemahan errors_ui."
@@ -564,7 +564,7 @@
     "summary": "Kamus bahasa Indonesia untuk login, registrasi, reset kata sandi dan tantangan TOTP pelanggan, digunakan melalui namespace terjemahan auth_ui."
   },
   "lang/id/customer_messages.php": {
-    "summary": "Kamus bahasa Indonesia untuk validasi domain dan pesan hasil atau kesalahan endpoint pelanggan dan admin, digunakan melalui namespace terjemahan customer_messages."
+    "summary": "Katalog pesan pelanggan bahasa Indonesia untuk validasi dan respons API, termasuk pesan bahwa retur pesanan tanpa pembayaran terverifikasi belum dapat diajukan."
   },
   "lang/id/errors_ui.php": {
     "summary": "Kamus bahasa Indonesia untuk judul dan pesan halaman kesalahan HTTP, digunakan melalui namespace terjemahan errors_ui."
@@ -594,7 +594,7 @@
     "summary": "Kamus bahasa Italia untuk login, registrasi, reset kata sandi dan tantangan TOTP pelanggan, digunakan melalui namespace terjemahan auth_ui."
   },
   "lang/it/customer_messages.php": {
-    "summary": "Kamus bahasa Italia untuk validasi domain dan pesan hasil atau kesalahan endpoint pelanggan dan admin, digunakan melalui namespace terjemahan customer_messages."
+    "summary": "Katalog pesan pelanggan bahasa Italia untuk validasi dan respons API, termasuk pesan kelayakan retur baru yang menjelaskan penolakan pesanan tanpa pembayaran terverifikasi."
   },
   "lang/it/errors_ui.php": {
     "summary": "Kamus bahasa Italia untuk judul dan pesan halaman kesalahan HTTP, digunakan melalui namespace terjemahan errors_ui."
@@ -624,7 +624,7 @@
     "summary": "Kamus bahasa Mandarin untuk login, registrasi, reset kata sandi dan tantangan TOTP pelanggan, digunakan melalui namespace terjemahan auth_ui."
   },
   "lang/zh/customer_messages.php": {
-    "summary": "Kamus bahasa Mandarin untuk validasi domain dan pesan hasil atau kesalahan endpoint pelanggan dan admin, digunakan melalui namespace terjemahan customer_messages."
+    "summary": "Katalog pesan pelanggan bahasa Mandarin untuk validasi dan respons API, termasuk pesan kelayakan retur baru yang menjelaskan penolakan pesanan tanpa pembayaran terverifikasi."
   },
   "lang/zh/errors_ui.php": {
     "summary": "Kamus bahasa Mandarin untuk judul dan pesan halaman kesalahan HTTP, digunakan melalui namespace terjemahan errors_ui."
@@ -813,7 +813,7 @@
     "summary": "View Blade menampilkan beranda editorial ZAFIRA dengan koleksi, katalog interaktif, cerita Maison, layanan, newsletter, concierge serta drawer dan dialog pelanggan."
   },
   "routes/console.php": {
-    "summary": "Mendaftarkan perintah pembersihan keranjang dan dead letter pembayaran, replay pembayaran, pelepasan reservasi serta backup dan verifikasinya; menjadwalkan pengingat, retry notifikasi dan pemeliharaan berkala."
+    "summary": "Mendaftarkan perintah pemeliharaan keranjang, pembayaran, reservasi, dan cadangan beserta jadwal berkala. Cadangan harian pukul 02.00 memakai --verify hanya untuk SQLite; MySQL/MariaDB tetap dicadangkan tanpa klaim verifikasi agar penjadwalan dan retensi berjalan."
   },
   "routes/web.php": {
     "summary": "Mendaftarkan route storefront, katalog, produk, concierge, newsletter, keranjang, checkout dan pelacakan tamu, akun pelanggan serta konsol admin; memasang rate limiter, autentikasi, TOTP, Gate dan feature flag sesuai endpoint."
@@ -990,7 +990,7 @@
     "summary": "Suite PHPUnit AdminTotpReplayTest (tests/Feature). Kasus uji yang ditegaskan: same code replayed after logout and relogin is rejected."
   },
   "tests/Feature/AdminTotpTest.php": {
-    "summary": "Suite PHPUnit AdminTotpTest (tests/Feature). Kasus uji yang ditegaskan: test app key supports encrypted eloquent cast; totp schema exists on memory database; legacy admin can enter console; legacy admin enters via real login without code page; totp admin without second factor gets no console; web guard session gives no console access; unverified admin can still log out; full flow rotates session id twice and grants console; first verification on never verified admin succeeds; wrong code is rejected; same code cannot be used twice; two full verifications with newer codes both succeed; code three steps ahead is rejected and marker unchanged; raw db marker equals vendor timestamp integer; lockout message states remaining seconds as number; compare and swap second call with same old returns zero; concurrent winner between read and swap makes loser replayed; stale model in memory cannot replay; recovery code works once then rejected; recovery code consumed concurrently is rejected; recovery code allows console entry anti lockout; secret is ciphertext and recovery codes are hashed in db; password reset and totp recovery tokens are not interchangeable; corrupt secret raises operational alarm not wrong code; flag without secret redirects to enrol and alarms; verifying on device b throws device a back to challenge; password change voids totp state session and remember token; admin password change does not kill web customer session; legacy password change keeps session and rotates remember token; admin login ignores remember and form has no checkbox; verify rate limit is per admin and ip; cli provisions one admin and prints secrets once; no secret password or code in logs; two independent processes consuming same recovery code; legacy admin sees enrolment banner on dashboard; enrolled admin does not see enrolment banner on dashboard."
+    "summary": "Suite fitur menguji autentikasi admin dengan TOTP, enrolmen, kode pemulihan, pencegahan replay, alarm operasional, dan isolasi sesi. Kasus terbaru memastikan kata sandi provision dicetak utuh meski berisi markup konsol, memakai seam generator yang dapat diuji, serta rahasia tidak masuk log."
   },
   "tests/Feature/AmadisCatalogTest.php": {
     "summary": "Suite PHPUnit AmadisCatalogTest (tests/Feature). Konteks: Requires parent to register: Route::get('/koleksi', [CatalogController::class, 'index'])->name('catalog.index'); Kasus uji yang ditegaskan: lists eight per page in id order with product links; search and attribute filters persist in pagination; like wildcards are literal; out of range page redirects to last page keeping query; locale is validated and labels localized; output is escaped and cart form uses convention."
@@ -1092,7 +1092,7 @@
     "summary": "Suite PHPUnit CustomerTotpTest (tests/Feature). Kasus uji yang ditegaskan: password login with totp waits for second factor; recovery code is consumed once; totp can be enabled and disabled; account without totp logs in in one step; challenge requires pending login; recovery codes are shown only once."
   },
   "tests/Feature/DatabaseBackupTest.php": {
-    "summary": "Suite PHPUnit DatabaseBackupTest (tests/Feature). Kasus uji yang ditegaskan: backup creates compressed file with checksum; verify restores backup and matches row counts; verify rejects tampered backup; verify fails when source drifts after backup; prune keeps only the newest backups; backup command verifies and applies retention; backup is scheduled daily."
+    "summary": "Suite fitur memverifikasi kompresi cadangan, checksum, pemulihan SQLite dan kecocokan baris, retensi, serta jadwal. Tes tambahan memastikan MySQL/MariaDB gagal secara eksplisit saat verifikasi belum didukung, sementara jadwal hanya menambahkan opsi verifikasi pada SQLite."
   },
   "tests/Feature/DatabaseSchemaIntegrityTest.php": {
     "summary": "Suite PHPUnit DatabaseSchemaIntegrityTest (tests/Feature). Kasus uji yang ditegaskan: all migration files are applied in test database; application does not call legacy getcat procedure; every model maps to an existing table with its columns."
@@ -1164,7 +1164,7 @@
     "summary": "Suite PHPUnit OrderOwnershipRegressionTest (tests/Feature). Kasus uji yang ditegaskan: user cannot read or cancel another users order."
   },
   "tests/Feature/OrderReturnRequestTest.php": {
-    "summary": "Suite PHPUnit OrderReturnRequestTest (tests/Feature). Kasus uji yang ditegaskan: eligibility rejects order that is not completed; eligibility lists returnable items reasons and deadline; request records return with summary and reference number; quantity cannot exceed remaining and other reason requires notes; return window expires and other users cannot see or submit."
+    "summary": "Suite fitur menguji kelayakan dan pengajuan retur, kepemilikan pesanan, batas waktu, kuantitas tersisa, dan pesan validasi. Tes tambahan memastikan pesanan berstatus selesai tanpa pembayaran settlement ditolak pada pemeriksaan kelayakan maupun pembuatan retur."
   },
   "tests/Feature/OrderStatusHistoryTest.php": {
     "summary": "Suite PHPUnit OrderStatusHistoryTest (tests/Feature). Kasus uji yang ditegaskan: new order records initial pending history; transition appends history with actor and order flow; full lifecycle records every transition in order; illegal transition is rejected without history or status change; customer order detail exposes timeline without operator identity; status history is append only and immutable; status history cannot be deleted via model."
@@ -1176,7 +1176,7 @@
     "summary": "Suite PHPUnit OrderTaxShippingSnapshotTest (tests/Feature). Kasus uji yang ditegaskan: defaults keep zero shipping and tax; shipping and tax snapshot persisted and client totals ignored; replay returns original snapshot even after rates change; replay with changed address is rejected; tax rounds half up to whole rupiah; tax applies after voucher and shipping is not discounted; guest checkout snapshots shipping and tax."
   },
   "tests/Feature/PasswordResetFlowTest.php": {
-    "summary": "Suite PHPUnit PasswordResetFlowTest (tests/Feature). Kasus uji yang ditegaskan: request page renders and login links to it; unknown email gets same response as known email; valid token resets password and marks has password; token is single use; wrong and expired tokens are rejected; reset sends confirmation notification; request is rate limited per email; broker throttle blocks immediate second token."
+    "summary": "Suite fitur menguji permintaan reset, privasi respons, validitas dan penggunaan tunggal token, batas laju, serta notifikasi. Tes memastikan reset sukses menghapus semua sesi database pengguna terkait tanpa mencabut sesi pengguna lain, sedangkan reset gagal mempertahankan sesi."
   },
   "tests/Feature/PaymentLedgerSourceOfTruthTest.php": {
     "summary": "Suite PHPUnit PaymentLedgerSourceOfTruthTest (tests/Feature). Kasus uji yang ditegaskan: settled only when ledger has paid entry matching total; paid status without ledger is flagged as anomaly; downstream statuses also require ledger but unpaid statuses do not; ledger entries are immutable; admin order detail exposes ledger without raw payload; admin order detail tolerates null payload without warning; admin order detail flags paid order without ledger."
@@ -1212,7 +1212,7 @@
     "summary": "Suite PHPUnit ScheduledTasksAndEnvParityTest (tests/Feature). Kasus uji yang ditegaskan: example documents every literal config environment key; scheduled commands exist and keep their operational contract."
   },
   "tests/Feature/SecurityScanIntegrityTest.php": {
-    "summary": "Suite PHPUnit SecurityScanIntegrityTest (tests/Feature). Kasus uji yang ditegaskan: tracked files do not contain hardcoded secrets; app logs do not leak raw pii."
+    "summary": "Suite fitur memeriksa pola rahasia pada berkas proyek dan kebocoran PII di log aplikasi. Uji pemindai sintetis memastikan cakupan direktori dan allowlist sesuai, hasil hanya memuat jalur berkas, dan berkas biner atau lingkungan dikecualikan."
   },
   "tests/Feature/SeederProductionGuardTest.php": {
     "summary": "Suite PHPUnit SeederProductionGuardTest (tests/Feature). Kasus uji yang ditegaskan: admin seeder refuses to run in production; admin seeder direct run refuses in production; database seeder refuses to run in production; database seeder direct run refuses in production; admin seeder still runs in testing; admin seeder does not use hardcoded plaintext password in testing; admin login page does not contain seeded admin hint."
@@ -1560,7 +1560,7 @@
     "summary": "Mendokumentasikan requirement R-55 untuk sumber token warna dan tipografi brand serta gerbang anti-literal otomatis. Menjelaskan allowlist, penggantian tanpa perubahan render, hasil verifikasi, dan keterbatasan pemeriksaan statis."
   },
   "docs/04-implementation/COUNCIL_DECISIONS.md": {
-    "summary": "Register keputusan lintas fungsi ZAFIRA yang merekam temuan, pilihan implementasi, acceptance criteria, bukti, dan batas tiap perubahan. Keputusan terbaru mencakup penguncian token brand, teks UI terlokalisasi, serta klaim komersial tanpa dark pattern."
+    "summary": "Notulen keputusan lintas fungsi ZAFIRA mencatat temuan, acceptance criteria, keputusan implementasi, bukti, dan batasan perubahan. Keputusan #043 mendokumentasikan verifikasi cadangan MySQL/MariaDB yang fail-closed melalui RuntimeException serta jadwal verifikasi khusus SQLite; keputusan pemindaian keamanan mencatat pelaporan jalur saja dan cakupan pola rahasia."
   },
   "docs/04-implementation/ENGINEERING_EXCELLENCE_PROTOCOL.md": {
     "summary": "Menetapkan standar kerja berbasis bukti, pemilihan lensa audit profesional, riset, penggunaan skill, dan pemeriksaan silang independen. Protokol membedakan fakta, inferensi, serta informasi belum tersedia dan melarang klaim selesai tanpa verifikasi."
@@ -1608,7 +1608,7 @@
     "summary": "Mendokumentasikan R-39 untuk feature flag deterministik, canary atau cohort, migrasi terkendali, dan rollback. Menyediakan acceptance serta bukti lokal sambil menegaskan bahwa mekanisme belum dibuktikan melalui deploy produksi."
   },
   "docs/04-implementation/SCHEDULED_TASKS_AND_ENV_PARITY.md": {
-    "summary": "Referensi tugas terjadwal seperti pemangkasan keranjang dan pengiriman pengingat beserta frekuensi serta tujuan operasionalnya. Menjelaskan kebutuhan paritas konfigurasi antar lingkungan agar scheduler dan fitur terkait berjalan konsisten."
+    "summary": "Panduan tugas scheduler ZAFIRA mencantumkan frekuensi pemangkasan, pengingat, replay pembayaran, pelepasan reservasi, dan cadangan harian pukul 02.00. Cadangan terjadwal memakai verifikasi hanya untuk SQLite; MySQL/MariaDB berjalan tanpa klaim uji pulih, sementara panduan juga menjelaskan paritas konfigurasi dan validasi secret tanpa menyalin nilainya."
   },
   "docs/04-implementation/STOREFRONT_COPY_USABILITY_TEST.md": {
     "summary": "Kit uji kejelasan teks toko dengan partisipan nyata, mencakup persetujuan, privasi, moderator, skenario, dan kriteria lulus. Status menyatakan kit siap tetapi sesi belum dijalankan sehingga tidak memuat bukti keberhasilan pengguna."
@@ -1833,7 +1833,7 @@
     "summary": "Template pull request berbahasa Indonesia dengan bagian Ringkasan, gerbang gaya bahasa untuk teks baru atau yang diubah, dan daftar Verifikasi. Memaksa penulis PR mencantumkan bukti pengujian sebelum review."
   },
   ".github/workflows/ci.yml": {
-    "summary": "Workflow CI GitHub Actions untuk push ke `main` dan setiap pull request, dengan izin baca saja dan concurrency per ref. Job `php` menyiapkan PHP 8.4 plus ekstensi mbstring, pdo_sqlite, gd, bcmath, menyiapkan Node dari `.nvmrc`, memasang dependensi Composer dan npm, lalu menjalankan audit dependensi serta gerbang mutu lainnya."
+    "summary": "Workflow CI GitHub Actions untuk push ke main dan pull request. Memasang dependensi dan menjalankan audit; pemindai rahasia hanya melaporkan nama berkas, memakai allowlist sempit dan mendeteksi pola APP_KEY berbasis base64, serta menggagalkan job jika git grep berakhir dengan galat selain hasil bersih atau temuan."
   },
   ".gitignore": {
     "summary": "Daftar pengecualian Git untuk artefak build, direktori vendor dan node_modules, berkas lingkungan, serta keluaran lokal, agar rahasia dan berkas hasil generate tidak masuk ke riwayat repositori."
@@ -1872,7 +1872,7 @@
     "summary": "Berkas lock Composer yang memaku versi tepat seluruh dependensi PHP beserta turunannya. Dipakai CI dan pengembang agar instalasi `composer install` menghasilkan pohon dependensi yang identik."
   },
   "package-lock.json": {
-    "summary": "Berkas lock npm yang memaku versi tepat dependensi frontend seperti Vite dan Tailwind beserta turunannya, sehingga `npm ci` di CI dan lokal menghasilkan pohon modul yang sama."
+    "summary": "Berkas lock npm memaku pohon dependensi untuk instalasi konsisten melalui npm ci. Versi terkunci mencakup Vite 8.3.5 dan follow-redirects 1.16.1."
   },
   "package.json": {
     "summary": "Manifes npm privat proyek dengan syarat Node 22 ke atas, tipe modul ESM, skrip `build` serta `dev` berbasis Vite, dan devDependencies utama berupa plugin Tailwind untuk Vite, axios, concurrently, laravel-vite-plugin, tailwindcss, dan vite."
