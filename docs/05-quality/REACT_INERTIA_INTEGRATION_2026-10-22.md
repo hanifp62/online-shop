@@ -1,7 +1,9 @@
 # Integrasi React 19 + Inertia 3 — milestone frontend
 
 **Tanggal:** 22 Oktober 2026. **Baseline Git:** `14bdfab95cbb866ca8b6702741425a73fab32329`.
-**Keputusan:** ACCEPTED untuk cakupan lokal di bawah; **migrasi seluruh frontend masih PARTIAL**. Belum ada commit/push migrasi, run GitHub baru, deployment, atau persetujuan produksi. Tidak ada pekerjaan agent berjalan di background setelah handoff milestone ini.
+**Keputusan saat milestone lokal ditutup:** ACCEPTED untuk cakupan lokal di bawah; **migrasi seluruh frontend masih PARTIAL**. Pada snapshot lokal tersebut belum ada commit/push migrasi, run GitHub baru, deployment, atau persetujuan produksi. Tidak ada pekerjaan agent berjalan di background setelah handoff milestone ini.
+
+**Pembaruan publikasi 23 Oktober WIB:** source sudah dipush sebagai `ee5c3e9`; kelima job CI, MySQL3/3 tanpa skip, restore, browser dan kandidat lulus. Lihat [laporan publikasi terikat SHA](REACT_INERTIA_PUBLICATION_2026-10-23.md). Pernyataan belum dipush/diuji remote di bagian bawah adalah riwayat milestone awal, bukan status terbaru. Deployment/approval produksi tetap belum dilakukan.
 
 ## 1. Yang benar-benar diterapkan
 

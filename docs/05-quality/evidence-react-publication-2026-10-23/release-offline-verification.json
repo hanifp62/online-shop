@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python3",
+    "scripts/ci/release_artifact.py",
+    "verify",
+    "--archive",
+    "scratch/react-migration/remote-ee5c3e9/release-candidate-ee5c3e957044c884b702100904cbcdbdaa718b5b/release.tar.gz",
+    "--manifest",
+    "scratch/react-migration/remote-ee5c3e9/release-candidate-ee5c3e957044c884b702100904cbcdbdaa718b5b/release-manifest.json"
+  ],
+  "started_at": "2026-10-22T17:37:24.379535+00:00",
+  "finished_at": "2026-10-22T17:37:24.879289+00:00",
+  "exit_code": 0
+}

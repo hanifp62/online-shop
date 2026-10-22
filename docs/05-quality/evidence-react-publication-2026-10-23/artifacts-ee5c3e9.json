@@ -1,0 +1,42 @@
+{
+  "observed_at": "2026-10-22T17:32:13.273779+00:00",
+  "run_id": 39821579334,
+  "artifacts": [
+    {
+      "id": 12445242458,
+      "name": "browser-summary-ee5c3e957044c884b702100904cbcdbdaa718b5b",
+      "size_in_bytes": 727,
+      "expired": false,
+      "created_at": "2026-10-22T17:29:31Z",
+      "expires_at": "2026-11-05T17:29:30Z",
+      "digest": "sha256:1ed069b1fd16569d19d61b44d17d045d265c45a659091add7e37be6eba0a9df1"
+    },
+    {
+      "id": 12444633403,
+      "name": "quality-summary-ee5c3e957044c884b702100904cbcdbdaa718b5b",
+      "size_in_bytes": 577,
+      "expired": false,
+      "created_at": "2026-10-22T17:27:32Z",
+      "expires_at": "2026-11-05T17:27:31Z",
+      "digest": "sha256:46df1be076fcdb2031b021d3d24be6ef36b87b7f3fda1c5107a582b96765cce8"
+    },
+    {
+      "id": 12444174998,
+      "name": "release-candidate-ee5c3e957044c884b702100904cbcdbdaa718b5b",
+      "size_in_bytes": 35626928,
+      "expired": false,
+      "created_at": "2026-10-22T17:31:11Z",
+      "expires_at": "2026-11-05T17:31:08Z",
+      "digest": "sha256:764b329c32a06a754bd5a3ca1eaae5d471bcab843c1c421a0800172b59880bad"
+    },
+    {
+      "id": 12443964646,
+      "name": "mysql-summary-ee5c3e957044c884b702100904cbcdbdaa718b5b",
+      "size_in_bytes": 1250,
+      "expired": false,
+      "created_at": "2026-10-22T17:28:50Z",
+      "expires_at": "2026-11-05T17:28:49Z",
+      "digest": "sha256:9a5a6a65afc2fe1eae99b2f2c21b1d9cf1a603ee97e4d8628522fec5fe1f71aa"
+    }
+  ]
+}

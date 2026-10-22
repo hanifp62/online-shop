@@ -1,0 +1,25 @@
+{
+  "observed_at": "2026-10-22T17:38:17.975393+00:00",
+  "run_id": 39821579334,
+  "job_id": 119973953940,
+  "source": "gh run view log, in-memory numeric parser restricted to exact Test JS/Test React step labels; raw logs not persisted",
+  "react": {
+    "files": {
+      "passed": 7,
+      "total": 7
+    },
+    "tests": {
+      "passed": 110,
+      "total": 110
+    }
+  },
+  "node": {
+    "tests": 495,
+    "suites": 0,
+    "pass": 495,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  }
+}

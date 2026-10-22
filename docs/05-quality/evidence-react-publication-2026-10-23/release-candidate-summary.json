@@ -1,0 +1,21 @@
+{
+  "observed_at": "2026-10-22T17:38:16.260655+00:00",
+  "release_id": "ee5c3e957044c884b702100904cbcdbdaa718b5b-ebecc0589765fec6000c382093089db42b66e2bc652fe302cc0078d63dc4d2c7",
+  "schema": 1,
+  "source": {
+    "clean": true,
+    "commit": "ee5c3e957044c884b702100904cbcdbdaa718b5b"
+  },
+  "archive": {
+    "format": "tar.gz",
+    "name": "release.tar.gz",
+    "sha256": "ebecc0589765fec6000c382093089db42b66e2bc652fe302cc0078d63dc4d2c7",
+    "size": 35332157
+  },
+  "locks": {
+    "composer.lock": "8991219ae063c712919f87841c2ebdc664363235474e7058e5db7e7404ac20f6",
+    "package-lock.json": "40c872d121fca742a486f3a260c8ee83dd2d9b21f92948a7b0f98f3faf599253"
+  },
+  "files_count": 8005,
+  "mapped_paths": 30
+}

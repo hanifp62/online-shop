@@ -1,0 +1,605 @@
+{
+  "conclusion": "success",
+  "createdAt": "2026-10-22T17:19:16Z",
+  "databaseId": 39821579334,
+  "event": "push",
+  "headSha": "ee5c3e957044c884b702100904cbcdbdaa718b5b",
+  "jobs": [
+    {
+      "completedAt": "2026-10-22T17:27:38Z",
+      "conclusion": "success",
+      "databaseId": 119973953940,
+      "name": "quality",
+      "startedAt": "2026-10-22T17:19:19Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-22T17:19:22Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-22T17:19:20Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:20:16Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 2,
+          "startedAt": "2026-10-22T17:19:22Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:20:19Z",
+          "conclusion": "success",
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "number": 3,
+          "startedAt": "2026-10-22T17:20:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:20:20Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "number": 4,
+          "startedAt": "2026-10-22T17:20:19Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:20:20Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+          "number": 5,
+          "startedAt": "2026-10-22T17:20:20Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:20:56Z",
+          "conclusion": "success",
+          "name": "Dependency test lintas platform",
+          "number": 6,
+          "startedAt": "2026-10-22T17:20:20Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:21:03Z",
+          "conclusion": "success",
+          "name": "Run composer install --no-interaction --prefer-dist --no-progress",
+          "number": 7,
+          "startedAt": "2026-10-22T17:20:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:21:08Z",
+          "conclusion": "success",
+          "name": "Run npm ci",
+          "number": 8,
+          "startedAt": "2026-10-22T17:21:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:21:12Z",
+          "conclusion": "success",
+          "name": "Test React",
+          "number": 9,
+          "startedAt": "2026-10-22T17:21:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:21:12Z",
+          "conclusion": "success",
+          "name": "Audit dependency Composer",
+          "number": 10,
+          "startedAt": "2026-10-22T17:21:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:21:13Z",
+          "conclusion": "success",
+          "name": "Audit dependency npm",
+          "number": 11,
+          "startedAt": "2026-10-22T17:21:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:21:15Z",
+          "conclusion": "success",
+          "name": "Pindai rahasia dan PII secara fail-closed",
+          "number": 12,
+          "startedAt": "2026-10-22T17:21:13Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:21:29Z",
+          "conclusion": "success",
+          "name": "Lint PHP",
+          "number": 13,
+          "startedAt": "2026-10-22T17:21:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:21:31Z",
+          "conclusion": "success",
+          "name": "Run npm run build",
+          "number": 14,
+          "startedAt": "2026-10-22T17:21:29Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:21:31Z",
+          "conclusion": "success",
+          "name": "Validasi migrasi SQLite sementara",
+          "number": 15,
+          "startedAt": "2026-10-22T17:21:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:21:31Z",
+          "conclusion": "success",
+          "name": "Gerbang anti-drift skema",
+          "number": 16,
+          "startedAt": "2026-10-22T17:21:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:21:36Z",
+          "conclusion": "success",
+          "name": "Siapkan root fixture terisolasi",
+          "number": 17,
+          "startedAt": "2026-10-22T17:21:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:27:06Z",
+          "conclusion": "success",
+          "name": "Test PHP lengkap termasuk guard, a11y, brand dan bahasa",
+          "number": 18,
+          "startedAt": "2026-10-22T17:21:36Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:27:06Z",
+          "conclusion": "success",
+          "name": "Gate hasil PHP dengan pengecualian engine exact",
+          "number": 19,
+          "startedAt": "2026-10-22T17:27:06Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:27:09Z",
+          "conclusion": "success",
+          "name": "Test JS",
+          "number": 20,
+          "startedAt": "2026-10-22T17:27:06Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:27:31Z",
+          "conclusion": "success",
+          "name": "Test Python tanpa skip",
+          "number": 21,
+          "startedAt": "2026-10-22T17:27:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:27:33Z",
+          "conclusion": "success",
+          "name": "Publikasikan ringkasan aman, bukan log atau JUnit mentah",
+          "number": 22,
+          "startedAt": "2026-10-22T17:27:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:27:33Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+          "number": 42,
+          "startedAt": "2026-10-22T17:27:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:27:35Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "number": 43,
+          "startedAt": "2026-10-22T17:27:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:27:35Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 44,
+          "startedAt": "2026-10-22T17:27:35Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:27:35Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 45,
+          "startedAt": "2026-10-22T17:27:35Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/hanifp62/online-shop/actions/runs/39821579334/job/119973953940"
+    },
+    {
+      "completedAt": "2026-10-22T17:28:52Z",
+      "conclusion": "success",
+      "databaseId": 119978422168,
+      "name": "mysql",
+      "startedAt": "2026-10-22T17:27:40Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-22T17:27:42Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-22T17:27:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:09Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 2,
+          "startedAt": "2026-10-22T17:27:42Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:12Z",
+          "conclusion": "success",
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "number": 3,
+          "startedAt": "2026-10-22T17:28:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:12Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+          "number": 4,
+          "startedAt": "2026-10-22T17:28:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:19Z",
+          "conclusion": "success",
+          "name": "Run composer install --no-interaction --prefer-dist --no-progress",
+          "number": 5,
+          "startedAt": "2026-10-22T17:28:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:34Z",
+          "conclusion": "success",
+          "name": "Sediakan image engine disposable",
+          "number": 6,
+          "startedAt": "2026-10-22T17:28:19Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:49Z",
+          "conclusion": "success",
+          "name": "Retry InnoDB dan restore antar-container milik job",
+          "number": 7,
+          "startedAt": "2026-10-22T17:28:34Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:50Z",
+          "conclusion": "success",
+          "name": "Publikasikan ringkasan MySQL tanpa dump atau kredensial",
+          "number": 8,
+          "startedAt": "2026-10-22T17:28:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:50Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+          "number": 15,
+          "startedAt": "2026-10-22T17:28:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:50Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 16,
+          "startedAt": "2026-10-22T17:28:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:50Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 17,
+          "startedAt": "2026-10-22T17:28:50Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/hanifp62/online-shop/actions/runs/39821579334/job/119978422168"
+    },
+    {
+      "completedAt": "2026-10-22T17:29:34Z",
+      "conclusion": "success",
+      "databaseId": 119978422188,
+      "name": "browser",
+      "startedAt": "2026-10-22T17:27:40Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-22T17:27:41Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-22T17:27:40Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:08Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 2,
+          "startedAt": "2026-10-22T17:27:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:12Z",
+          "conclusion": "success",
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "number": 3,
+          "startedAt": "2026-10-22T17:28:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:16Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "number": 4,
+          "startedAt": "2026-10-22T17:28:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:17Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+          "number": 5,
+          "startedAt": "2026-10-22T17:28:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:28Z",
+          "conclusion": "success",
+          "name": "Run composer install --no-interaction --prefer-dist --no-progress",
+          "number": 6,
+          "startedAt": "2026-10-22T17:28:17Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:31Z",
+          "conclusion": "success",
+          "name": "Run npm ci",
+          "number": 7,
+          "startedAt": "2026-10-22T17:28:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:32Z",
+          "conclusion": "success",
+          "name": "Run npm run build",
+          "number": 8,
+          "startedAt": "2026-10-22T17:28:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:28:53Z",
+          "conclusion": "success",
+          "name": "Prasyarat browser dan isolasi",
+          "number": 9,
+          "startedAt": "2026-10-22T17:28:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:29:30Z",
+          "conclusion": "success",
+          "name": "Browser, keyboard, checkout paralel dan cleanup",
+          "number": 10,
+          "startedAt": "2026-10-22T17:28:53Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:29:31Z",
+          "conclusion": "success",
+          "name": "Publikasikan hanya ringkasan browser allowlist",
+          "number": 11,
+          "startedAt": "2026-10-22T17:29:30Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:29:31Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+          "number": 20,
+          "startedAt": "2026-10-22T17:29:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:29:31Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "number": 21,
+          "startedAt": "2026-10-22T17:29:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:29:32Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 22,
+          "startedAt": "2026-10-22T17:29:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:29:32Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 23,
+          "startedAt": "2026-10-22T17:29:32Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/hanifp62/online-shop/actions/runs/39821579334/job/119978422188"
+    },
+    {
+      "completedAt": "2026-10-22T17:31:15Z",
+      "conclusion": "success",
+      "databaseId": 119979419073,
+      "name": "release",
+      "startedAt": "2026-10-22T17:29:36Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-22T17:29:39Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-22T17:29:37Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:30:22Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 2,
+          "startedAt": "2026-10-22T17:29:39Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:30:26Z",
+          "conclusion": "success",
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "number": 3,
+          "startedAt": "2026-10-22T17:30:22Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:30:39Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "number": 4,
+          "startedAt": "2026-10-22T17:30:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:30:39Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+          "number": 5,
+          "startedAt": "2026-10-22T17:30:39Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:30:55Z",
+          "conclusion": "success",
+          "name": "Dependency produksi dari lockfile yang diuji",
+          "number": 6,
+          "startedAt": "2026-10-22T17:30:39Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:31:08Z",
+          "conclusion": "success",
+          "name": "Bangun dan verifikasi kandidat rilis",
+          "number": 7,
+          "startedAt": "2026-10-22T17:30:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:31:12Z",
+          "conclusion": "success",
+          "name": "Publikasikan kandidat, bukan deployment atau approval produksi",
+          "number": 8,
+          "startedAt": "2026-10-22T17:31:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:31:12Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+          "number": 14,
+          "startedAt": "2026-10-22T17:31:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:31:12Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "number": 15,
+          "startedAt": "2026-10-22T17:31:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:31:12Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 16,
+          "startedAt": "2026-10-22T17:31:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:31:12Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 17,
+          "startedAt": "2026-10-22T17:31:12Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/hanifp62/online-shop/actions/runs/39821579334/job/119979419073"
+    },
+    {
+      "completedAt": "2026-10-22T17:31:21Z",
+      "conclusion": "success",
+      "databaseId": 119980321529,
+      "name": "php",
+      "startedAt": "2026-10-22T17:31:17Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-22T17:31:18Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-22T17:31:18Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:31:18Z",
+          "conclusion": "success",
+          "name": "Semua gate wajib sukses",
+          "number": 2,
+          "startedAt": "2026-10-22T17:31:18Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T17:31:18Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 3,
+          "startedAt": "2026-10-22T17:31:18Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/hanifp62/online-shop/actions/runs/39821579334/job/119980321529"
+    }
+  ],
+  "startedAt": "2026-10-22T17:19:16Z",
+  "status": "completed",
+  "updatedAt": "2026-10-22T17:31:21Z",
+  "url": "https://github.com/hanifp62/online-shop/actions/runs/39821579334",
+  "observed_at": "2026-10-22T17:31:34.319287+00:00"
+}

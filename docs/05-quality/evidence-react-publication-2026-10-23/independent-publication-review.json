@@ -1,0 +1,34 @@
+{
+  "reviewer_session_id": "9804fc1c-37d5-440a-aa0c-dffde7de600d",
+  "reviewer_is_author": false,
+  "decision": "APPROVE_SCOPED",
+  "scope": "Publication documentation, source identity, evidence consistency, local links and offline candidate verification; not production acceptance",
+  "source_commit": "ee5c3e957044c884b702100904cbcdbdaa718b5b",
+  "run_id": 39821579334,
+  "source_hashes_matched": 75,
+  "local_links_checked": 85,
+  "missing_link_targets": 0,
+  "pending_paths_docs_only": 15,
+  "verification": [
+    {
+      "description": "Node source hashes, pending paths, documentation links; Python offline release verifier",
+      "started_at": "2026-10-22T17:43:00.309Z",
+      "finished_at": "2026-10-22T17:43:00.800Z",
+      "exit_code": 0,
+      "release_verifier_exit": 0
+    },
+    {
+      "description": "Manifest-summary assertions and fresh gh run view metadata compared with stored evidence",
+      "started_at": "2026-10-22T17:43:14.741Z",
+      "finished_at": "2026-10-22T17:43:16.418Z",
+      "exit_code": 0
+    }
+  ],
+  "limitations": [
+    "No PHP, database, browser, build or deployment executed by this reviewer",
+    "Source CI does not establish the subsequent documentation commit CI",
+    "Historical download timeout and log-parser failure were not reproduced by reviewer",
+    "This file transcribes reviewer handoff, not raw execution logs"
+  ],
+  "assignment": "CLOSED"
+}
