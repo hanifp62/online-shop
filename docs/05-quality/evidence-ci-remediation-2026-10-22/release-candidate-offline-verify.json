@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "scripts/ci/release_artifact.py",
+    "verify",
+    "--archive",
+    "scratch/ci-validation/run-39766255281/release-candidate-baee7994fca44b054dc8d63ca826f0cbdccd6967/release.tar.gz",
+    "--manifest",
+    "scratch/ci-validation/run-39766255281/release-candidate-baee7994fca44b054dc8d63ca826f0cbdccd6967/release-manifest.json"
+  ],
+  "started_at": "2026-10-22T11:05:43.973426+00:00",
+  "finished_at": "2026-10-22T11:05:44.907476+00:00",
+  "duration_seconds": 0.934,
+  "timeout_seconds": 120,
+  "status": "COMPLETE",
+  "exit_code": 0,
+  "cleanup": "not_required",
+  "sanitized_log": "docs/05-quality/evidence-ci-remediation-2026-10-22/release-candidate-offline-verify.log",
+  "sanitized_log_sha256": "184eaed30fbe81e336e12f18fae44efd397ee74fcf023064e8abc6b63a958093"
+}

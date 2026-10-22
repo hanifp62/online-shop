@@ -1,7 +1,7 @@
 # Runbook CI/CD dan Gerbang Rilis ZAFIRA
 
 **Tanggal:** 2026-10-22\
-**Status dokumen:** runbook source/lokal; hasil dan batas operasional mengikuti [laporan remediasi](../05-quality/CI_CD_REMEDIATION_REPORT_2026-10-22.md). **Bukan persetujuan rilis atau izin mutasi**.\
+**Status dokumen:** runbook CI sampai kandidat; hasil terbaru dan batas operasional mengikuti [laporan publikasi](../05-quality/CI_CD_PUBLICATION_REPORT_2026-10-22.md). **Bukan persetujuan promosi produksi atau izin mutasi**.\
 **Traceability:** NFR-CICD-001…008 dalam [audit CI/CD §8](../05-quality/CI_CD_END_TO_END_AUDIT_2026-10-22.md).\
 **Aturan kerja:** [model operasi agent](AGENT_OPERATING_MODEL.md), [protokol keunggulan](ENGINEERING_EXCELLENCE_PROTOCOL.md), dan [AGENTS.md](../../AGENTS.md).
 
@@ -11,13 +11,14 @@
 
 | Jenis bukti | Yang diketahui | Batas kesimpulan |
 |---|---|---|
+| CI Linux dan kandidat terbaru | Commit `baee799`, run39766255281: lima job PASS, MySQL restore/cleanup dan kandidat nyata lulus; verifier offline sesudah unduh EXIT=0 | [Bukti publikasi](../05-quality/evidence-ci-remediation-2026-10-22/remote-baee799-success.json). Bukan deployment, smoke tar di staging, recovery produksi atau aktivasi protection |
 | Pembacaan source 2026-10-22 | Workflow dan helper yang ditautkan di bawah tersedia; dependency antar-job, guard, CLI, dan kontrak readiness dapat diperiksa | Pembacaan source bukan eksekusi clean runner, aktivasi proteksi, atau deploy |
 | Bukti integrator lokal | Source readiness APPROVE reviewer427; targeted PHP78 passed/1.392 assertions, dilanjutkan full PHP1.200 passed/3 skipped | Bukti dan command pada [laporan remediasi](../05-quality/CI_CD_REMEDIATION_REPORT_2026-10-22.md); tidak diulang penulis awal runbook. Bukan bukti daemon, Linux CI atau approval produksi |
 | Browser R1 → R2 | **R1 tetap FAIL**: EPERM cleanup dan shared cart. Sesudah perbaikan serta review source independen, **R2 lokal lulus producer dan checker**; HTTP201/422/201, order aktual20+17, aktor berbeda, invariant lulus dan port8042 tanpa listener | [Summary](../05-quality/evidence-ci-remediation-2026-10-22/browser-summary.json) dan [verification](../05-quality/evidence-ci-remediation-2026-10-22/browser-verification.json) integrator; macOS/SQLite/fixture sintetis. Bukan Linux CI, MySQL, staging atau produksi |
-| Audit historis | Audit memotret commit `041ed083a1be330d97d4f335cda8555670045cdd`, run CI lama yang sukses, dan proteksi yang belum aktif saat itu | Jangan memakai run lama sebagai bukti source/workflow baru. Status remote terkini tidak diperiksa dalam penulisan dokumen ini |
+| Audit historis | Audit memotret commit `041ed083a1be330d97d4f335cda8555670045cdd`, run CI lama yang sukses, dan proteksi yang belum aktif saat itu | Jangan memakai run lama sebagai bukti source/workflow baru. Snapshot audit lama dipertahankan; status remote terbaru dirujuk pada laporan publikasi |
 | Gate operasional | Staging, reload worker, approval promosi, penerimaan alert, recovery layanan, RPO/RTO, dan benchmark | **TIDAK TERBUKTI** sampai ada eksekusi berizin dengan bukti yang terikat rilis |
 
-Seluruh blok perintah adalah **instruksi untuk operator/integrator setelah prasyarat dan izin dipenuhi**, bukan rekaman perintah yang telah dijalankan penulis. Penulisan runbook tidak menjalankan tes, instalasi, browser, server, Docker, akses remote, atau membaca `.env*`.
+Seluruh blok perintah adalah **instruksi untuk operator/integrator setelah prasyarat dan izin dipenuhi**, bukan rekaman perintah yang telah dijalankan penulis. Penulisan awal runbook tidak menjalankan tes, instalasi, browser, server, Docker, akses remote, atau membaca `.env*`. Pembaruan status publikasi merujuk eksekusi integrator yang dicatat terpisah dalam laporan/evidence, bukan menjadikan blok instruksi berikut sebagai log.
 
 **Aturan penghentian:** kegagalan, timeout, hasil tidak diketahui, artefak tidak ada, cleanup gagal, atau skip di luar kebijakan menahan gate. Jangan menurunkan assertion, guard database, threshold, atau required check agar terlihat hijau. Dua kegagalan beruntun pada submasalah yang sama memerlukan diagnosis dan eskalasi sesuai protokol.
 
@@ -183,7 +184,7 @@ python3 scripts/ci/mysql_integration.py --output "$RUNNER_TEMP/mysql-evidence"
 - Daemon lokal dipercaya; publikasi port hanya loopback dengan port acak; data MySQL memakai tmpfs, tanpa bind mount/volume host. Setiap akses/cleanup memeriksa ID, label owner/role, image, mount dan port. Image ID serta versi aktual direkam; tag `mysql:8.4` sendiri bukan pin digest lintas run.
 - Migrasi biasa diterapkan pada schema kosong milik container. Guard PHPUnit memeriksa nama schema, engine InnoDB, dan set migrasi lengkap; perintah refresh/reset/wipe ditolak. Jangan mengatur flag test aman secara manual untuk menjalankan suite pada DB host.
 - Harus ada **tepat tiga test yang ditentukan, passed, nol skip**, producer sukses, serta JUnit valid. Fault injection menguji klasifikasi/retry/idempotensi; **bukan deadlock transaksi paralel nyata**, bukan suite lengkap MySQL, dan bukan pengujian MariaDB.
-- Restore dump ke container kedua membandingkan schema/migrasi, row counts, marker sintetis dan foreign-key integrity. Ini bukan restore backup produksi/off-site, uji seluruh nilai bisnis, atau pengukuran RPO/RTO.
+- Restore dump ke container kedua membandingkan schema/migrasi, row counts, marker sintetis dan foreign-key integrity. Fingerprint DDL hanya menyamakan charset redundan `CHARACTER SET utf8mb4` sebelum `COLLATE utf8mb4_unicode_ci` di kepala kolom; hash/count metadata kolom efektif terurut diperiksa terpisah. Literal/comment/expression serta perbedaan lain tetap exact. Ini bukan restore backup produksi/off-site, uji seluruh nilai bisnis, atau pengukuran RPO/RTO.
 - Sukses juga mensyaratkan cleanup dan publikasi summary sukses. SIGINT/SIGTERM mencoba cleanup terbatas; SIGKILL/daemon hilang perlu penanganan runner owner. Jangan memakai prune/kill global atau menghapus container dengan identitas yang tidak lagi terverifikasi.
 
 Artefak yang boleh dipublikasikan: **`mysql-evidence/mysql-integration-*/summary.json` dari run yang sedang dinilai**. Directory `private`, JUnit mentah, kredensial sementara, dan dump bukan artefak publik. Dump berada dalam temporary file, bukan output evidence.
@@ -238,8 +239,8 @@ python3 scripts/ci/release_artifact.py verify \
 ```
 
 - Build dijalankan dari root Git checkout **bersih**, termasuk untracked. Output harus **baru**, di luar checkout dan inputnya, dengan parent yang sudah ada. Berbeda dari MySQL: jangan membuat `release-candidate` lebih dahulu.
-- Source yang diikutkan dibandingkan dengan blob HEAD. Vendor harus merupakan instalasi production Composer 2 yang cocok dengan `composer.lock`; metadata versi/reference dan entry vendor diperiksa. Vite manifest/chunk/asset wajib lengkap. Symlink, hardlink dan entry tidak aman ditolak sesuai kontrak helper.
-- Output hanya `release.tar.gz` dan `release-manifest.json` schema 1. Manifest mengikat commit, digest archive, hash kedua lockfile, serta hash/origin setiap file; `release_id` dibentuk dari commit dan digest archive.
+- Source yang diikutkan dibandingkan dengan blob HEAD. Vendor harus merupakan instalasi production Composer 2 yang cocok dengan `composer.lock`; metadata versi/reference dan entry vendor diperiksa. Vite manifest/chunk/asset wajib lengkap. Hardlink, symlink arsip dan entry tidak aman ditolak. Tiga alias Git storefront yang fixed (`public/app.css`, `public/app.js`, `public/prototype`) dimaterialisasi menjadi file reguler dari tracked blob `prototype/`, tanpa mengikuti symlink filesystem; alias/pemetaan divalidasi ulang. Alias lain dan target link/gitlink tetap ditolak.
+- Output hanya `release.tar.gz` dan `release-manifest.json` schema 1. Manifest mengikat commit, digest archive, hash kedua lockfile, serta hash/origin setiap file. Entri alias wajib menyertakan `git_path` tepat; entri biasa tidak menerima field mapping tersebut. `release_id` dibentuk dari commit dan digest archive.
 - Allowlist mencakup source aplikasi, migrasi, vendor produksi dan build. Tidak membawa dotenv, secret-file, database/dump/log, storage/upload/backup, `bootstrap/cache`, test/docs, atau `node_modules`. Runtime harus menyiapkan writable directory dan konfigurasi sendiri setelah target/izin jelas.
 - Verifier membaca stream archive **tanpa ekstraksi atau eksekusi**. Hash/manifest **bukan signature/attestation**; archive dan manifest wajib berasal dari kanal CI terpercaya. Scanner tetap wajib; allowlist tidak mendeteksi semua secret yang di-hardcode.
 - Normalisasi arsip membuat hasil deterministik untuk input byte identik, **bukan jaminan seluruh toolchain/build reproducible**.

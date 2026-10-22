@@ -2,9 +2,9 @@
 
 **Proyek:** ZAFIRA (La Maison de Lumière — `online-shop`)  
 **Workspace:** `~/Documents/online-shop`  
-**Status kesiapan saat ini — 22 Oktober 2026:** **Remediasi source/lokal CI dan browser terisolasi lulus; BELUM DISETUJUI untuk produksi.** [Laporan CI/CD terbaru](CI_CD_REMEDIATION_REPORT_2026-10-22.md) mencatat PHP1.200 passed/3 skipped, Node485, Python338 tanpa skip, dan browser r2 + cleanup + report gate EXIT=0. Proteksi remote, run Linux CI baru, MySQL/restore/candidate nyata, staging, daemon/alert dan recovery tetap terbuka.
+**Status kesiapan saat ini — 22 Oktober 2026:** **CI Linux sampai kandidat artefak LULUS; BELUM DISETUJUI untuk produksi.** [Laporan publikasi](CI_CD_PUBLICATION_REPORT_2026-10-22.md) mengikat commit `baee799` dan run39766255281: PHP1.200pass+3skip engine exact, ketiganya3/3pass pada MySQL8.4.13; Node485; Python371/0skip; browser/cleanup, restore fixture, build/verify kandidat dan aggregate semuanya PASS. Kandidat juga diverifikasi offline sesudah unduh. Protection `main` belum aktif; staging, promosi, secret manager/operator, daemon/alert, recovery operasional, TPS/load dan a11y menyeluruh tetap terbuka.
 
-> **Supersession terbatas:** bagian R7/Final2 di bawah dipertahankan sebagai riwayat 21 Oktober. Pernyataan «cleanup terblokir» dan «browser belum direrun» di snapshot tersebut bukan status lokal terbaru. Browser r2 hanya membuktikan fixture macOS/SQLite/katalog/keyboard/checkout, bukan semua alur HCI/admin atau produksi.
+> **Supersession terbatas:** bagian R7/Final2, tabel gate, dan urutan handoff di bawah dipertahankan sebagai riwayat 21 Oktober. Pernyataan «cleanup terblokir», «browser belum direrun» dan «restore MySQL belum diuji» bukan status CI terbaru. Bukti baru adalah fixture Linux/SQLite/MySQL dan kandidat, bukan semua alur HCI/admin atau pemulihan produksi; status otoritatif ada pada laporan publikasi.
 
 **Revisi:** 2026-10-21 — REM-20261021 DOC / DOC-04, Final2 berbasis bukti integrator r7. Arsip dasar dan Evaluation Record sebelum r7 dipertahankan dengan label historis.
 

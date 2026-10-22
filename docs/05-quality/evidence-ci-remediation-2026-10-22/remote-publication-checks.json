@@ -1,0 +1,45 @@
+{
+  "recorded_at": "2026-10-22T11:07:50.049078+00:00",
+  "run_id": 39766255281,
+  "node_counts": {
+    "tests": 485,
+    "pass": 485,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "protection": {
+    "query_exit": 1,
+    "protected": false,
+    "mutated": false
+  },
+  "checks": [
+    {
+      "name": "php",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "release",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "mysql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "browser",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "quality",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "raw_logs_saved": false
+}

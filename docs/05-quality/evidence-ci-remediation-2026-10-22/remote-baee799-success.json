@@ -1,0 +1,199 @@
+{
+  "recorded_at": "2026-10-22T11:06:51.204978+00:00",
+  "run_id": 39766255281,
+  "url": "https://github.com/hanifp62/online-shop/actions/runs/39766255281",
+  "commit": "baee7994fca44b054dc8d63ca826f0cbdccd6967",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "quality",
+      "databaseId": 119782336499,
+      "conclusion": "success",
+      "startedAt": "2026-10-22T10:51:46Z",
+      "completedAt": "2026-10-22T10:59:02Z"
+    },
+    {
+      "name": "browser",
+      "databaseId": 119785323978,
+      "conclusion": "success",
+      "startedAt": "2026-10-22T10:59:04Z",
+      "completedAt": "2026-10-22T11:00:32Z"
+    },
+    {
+      "name": "mysql",
+      "databaseId": 119785324080,
+      "conclusion": "success",
+      "startedAt": "2026-10-22T10:59:04Z",
+      "completedAt": "2026-10-22T11:00:16Z"
+    },
+    {
+      "name": "release",
+      "databaseId": 119785951728,
+      "conclusion": "success",
+      "startedAt": "2026-10-22T11:00:35Z",
+      "completedAt": "2026-10-22T11:02:29Z"
+    },
+    {
+      "name": "php",
+      "databaseId": 119786778703,
+      "conclusion": "success",
+      "startedAt": "2026-10-22T11:02:31Z",
+      "completedAt": "2026-10-22T11:02:33Z"
+    }
+  ],
+  "summaries": {
+    "browser-summary-baee7994fca44b054dc8d63ca826f0cbdccd6967/browser-summary.json": {
+      "counts": {
+        "checkout_requests": 3,
+        "commands": 7,
+        "created": 2,
+        "page_content_leaks": 0,
+        "pages": 10,
+        "products": 76,
+        "rejected": 1
+      },
+      "status": "PASS"
+    },
+    "quality-summary-baee7994fca44b054dc8d63ca826f0cbdccd6967/phpunit-summary.json": {
+      "cases": [
+        {
+          "id": "testcase-826",
+          "reason": "ALLOWED_SKIP"
+        },
+        {
+          "id": "testcase-827",
+          "reason": "ALLOWED_SKIP"
+        },
+        {
+          "id": "testcase-828",
+          "reason": "ALLOWED_SKIP"
+        }
+      ],
+      "counts": {
+        "errors": 0,
+        "failures": 0,
+        "passed": 1200,
+        "skipped": 3,
+        "tests": 1203
+      },
+      "reasons": [],
+      "status": "PASS"
+    },
+    "quality-summary-baee7994fca44b054dc8d63ca826f0cbdccd6967/python-summary.json": {
+      "cases": [],
+      "counts": {
+        "errors": 0,
+        "expected_failures": 0,
+        "failures": 0,
+        "import_errors": 0,
+        "skipped": 0,
+        "tests": 371,
+        "unexpected_successes": 0
+      },
+      "reasons": [],
+      "status": "PASS"
+    },
+    "mysql-summary-baee7994fca44b054dc8d63ca826f0cbdccd6967/mysql-integration-dde5ec1f66d1229027b01cad5bc7aef7/summary.json": {
+      "cleanup": "PASS",
+      "cleanup_failures": 0,
+      "commit": "baee7994fca44b054dc8d63ca826f0cbdccd6967",
+      "container_ids": [
+        "70d331b61ac14c5f2a9d1f042b27ef83f0cd46fa14ce345ac1c1b2c52ff702ee",
+        "53630c65a83d9298926ee2f349923326fc71d8c5603a925efa7e23f53345091a"
+      ],
+      "dump_sha256": "8b6d71576d9a8030a87a9eb064fe377d01dab262238f7d895c28688149b61be8",
+      "exit": 0,
+      "image_id": "sha256:b35575a03e5327131916eb8d39222c4c89590881fb44ed69b5814910e5fefa34",
+      "junit_gate": true,
+      "junit_report": {
+        "cases": [],
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "passed": 3,
+          "skipped": 0,
+          "tests": 3
+        },
+        "locations": [],
+        "reasons": [],
+        "status": "PASS"
+      },
+      "migration_exit": 0,
+      "mysql_version": "8.4.13",
+      "producer_exit": 0,
+      "reason": "COMPLETED",
+      "restore": "PASS",
+      "skipped": 0,
+      "snapshot": {
+        "column_count": 331,
+        "columns_sha256": "d7a0895565340edde46964df2ec34e1d987630fd838674342f3495da6be77db6",
+        "foreign_key_violations": 0,
+        "foreign_keys": 35,
+        "marker_rows": 2,
+        "marker_sha256": "7b15a81eb311229f0319d72a247ef7fb16c98bd7428dacbd973bfb6388d26507",
+        "migration_count": 52,
+        "migrations_sha256": "8117b1bd52cd14fce522d36b47f3cc8660f05446fa51be0b9cb5030b726e80e9",
+        "row_counts": {
+          "addresses": 0,
+          "admin_totp_recovery_codes": 0,
+          "admins": 0,
+          "auth_events": 0,
+          "cache": 0,
+          "cache_locks": 0,
+          "cart_items": 0,
+          "carts": 0,
+          "categories": 0,
+          "ci_restore_probe": 2,
+          "concierge_requests": 0,
+          "failed_jobs": 0,
+          "favorites": 0,
+          "inventory_reservations": 0,
+          "job_batches": 0,
+          "jobs": 0,
+          "migrations": 52,
+          "newsletter_subscribers": 0,
+          "order_items": 0,
+          "order_notifications": 0,
+          "order_status_history": 0,
+          "orders": 0,
+          "password_reset_tokens": 0,
+          "payment_dead_letters": 0,
+          "payments": 0,
+          "products": 0,
+          "refunds": 0,
+          "return_items": 0,
+          "returns": 0,
+          "reviews": 0,
+          "sessions": 0,
+          "shipment_tracking_events": 0,
+          "shipments": 0,
+          "social_accounts": 0,
+          "user_info_backups": 0,
+          "user_totp_recovery_codes": 0,
+          "users": 0,
+          "vouchers": 0
+        },
+        "schema_sha256": "96edf08f19063728cf384fbefc94ca080338dfda897a0e928d5406d102bf9f0a"
+      },
+      "status": "PASS",
+      "tests": 3
+    }
+  },
+  "candidate": {
+    "artifact_id": 12421280445,
+    "artifact_name": "release-candidate-baee7994fca44b054dc8d63ca826f0cbdccd6967",
+    "expires_at": "2026-11-05T11:02:22Z",
+    "release_id": "baee7994fca44b054dc8d63ca826f0cbdccd6967-9c7daebf491e866c339c8e8b5016f477e9065c63e55f5c27598e5cbe2dbc1271",
+    "archive": {
+      "format": "tar.gz",
+      "name": "release.tar.gz",
+      "sha256": "9c7daebf491e866c339c8e8b5016f477e9065c63e55f5c27598e5cbe2dbc1271",
+      "size": 35122795
+    },
+    "manifest_sha256": "9a461ca19642e85f935e2c847f15c9fcf48d289a2541ffd1ccd75432c9fd0cbc",
+    "files": 7880,
+    "mapped_source_files": 30,
+    "offline_verification_metadata": "release-candidate-offline-verify.json"
+  },
+  "not_deployed": true
+}
