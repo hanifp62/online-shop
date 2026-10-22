@@ -1,0 +1,10 @@
+{
+  "run_id": 39761262887,
+  "job_id": 119769995058,
+  "recorded_at": "2026-10-22T10:24:27.834028+00:00",
+  "fetch_exit": 0,
+  "fixed_reasons": [
+    "Source links/submodules are not allowed."
+  ],
+  "raw_log_saved": false
+}

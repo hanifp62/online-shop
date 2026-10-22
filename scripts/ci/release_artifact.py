@@ -8,6 +8,8 @@ Dari root checkout BERSIH, setelah composer install --no-dev dan npm run build:
 DIRECTORY harus baru, di luar checkout, dengan parent yang sudah tersedia.
 Output: release.tar.gz (USTAR + gzip) dan release-manifest.json (schema 1).
 Source tracked dibandingkan dengan blob HEAD, bukan sekadar diberi label HEAD.
+Tiga alias storefront tetap dimaterialisasi dari blob prototype commit yang sama;
+git_path wajib merekam sumbernya. Symlink checkout tidak pernah diikuti.
 Vendor/build adalah input hasil build, BUKAN byte source commit. Metadata Composer
 2 harus production dan cocok dengan composer.lock; build Vite harus lengkap.
 CI bertanggung jawab menjalankan install/build/gate pada checkout yang sama.
@@ -55,6 +57,11 @@ REQUIRED = ROOT_FILES | {
 }
 METADATA = {'composer.lock', 'vendor/composer/installed.json', 'public/build/manifest.json'}
 SOURCE_DIRS = {'app', 'config', 'routes', 'resources', 'lang', 'public'}
+SOURCE_ALIASES = {
+    'public/app.css': ('../prototype/app.css', 'prototype/app.css'),
+    'public/app.js': ('../prototype/app.js', 'prototype/app.js'),
+    'public/prototype': ('../prototype', 'prototype'),
+}
 OMIT_PARTS = {
     '.git', '.github', '.gitlab', '.svn', '.hg', 'node_modules', '__pycache__',
     'tests', 'test', 'docs', 'doc', 'ci', 'storage', 'uploads', 'backups',
@@ -124,7 +131,7 @@ def origin(name):
 
 
 @contextmanager
-def open_input(root, name):
+def input_parent(root, name):
     parts = safe_path(name)
     require(not excluded(name), 'Excluded input.')
     # openat + O_NOFOLLOW also protects parent directories, not only the leaf.
@@ -134,14 +141,20 @@ def open_input(root, name):
             child = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=directory)
             os.close(directory)
             directory = child
-        fd = os.open(parts[-1], os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=directory)
+        yield directory, parts[-1]
+    finally:
+        os.close(directory)
+
+
+@contextmanager
+def open_input(root, name):
+    with input_parent(root, name) as (directory, leaf):
+        fd = os.open(leaf, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=directory)
         with os.fdopen(fd, 'rb') as stream:
             info = os.fstat(stream.fileno())
             require(stat.S_ISREG(info.st_mode) and info.st_nlink == 1,
                     'Input must be a regular file, without links.')
             yield stream
-    finally:
-        os.close(directory)
 
 
 def read_input(root, name):
@@ -191,24 +204,72 @@ def clean_commit(root, expected=None):
     return commit
 
 
+def mapped_source_path(name):
+    require(name != 'public/prototype', 'Directory alias cannot be a file entry.')
+    if name in SOURCE_ALIASES:
+        return SOURCE_ALIASES[name][1]
+    if name.startswith('public/prototype/'):
+        return name[len('public/'):]
+    return name
+
+
+def check_alias(root, name, entry, commit):
+    payload, _ = SOURCE_ALIASES[name]
+    mode, object_type, oid = entry
+    # Git's content address proves the literal payload without opening its target.
+    require(mode == '120000' and object_type == 'blob'
+            and oid == blob_hash(payload.encode(), commit), 'Unapproved source alias.')
+    with input_parent(root, name) as (directory, leaf):
+        info = os.stat(leaf, dir_fd=directory, follow_symlinks=False)
+        require(stat.S_ISLNK(info.st_mode) and info.st_nlink == 1,
+                'Source alias must be a single symlink.')
+        require(os.readlink(leaf, dir_fd=directory) == payload, 'Source alias payload changed.')
+
+
 def source_files(root, commit):
-    result = {}
+    tree = {}
     for item in git(root, 'ls-tree', '-r', '-z', '--full-tree', commit).split(b'\0'):
         if not item:
             continue
         header, raw_name = item.split(b'\t', 1)
         name = raw_name.decode('utf-8')
+        if excluded(name):
+            continue
         kind = origin(name)
-        if kind is None:
+        if kind is None and name != 'prototype' and not name.startswith('prototype/'):
             continue
         safe_path(name)
         mode, object_type, oid = header.decode('ascii').split()
-        require(kind == 'git', 'Generated vendor/build files must not be tracked.')
+        require(kind not in {'vendor', 'build'}, 'Generated vendor/build files must not be tracked.')
+        require(COMMIT.fullmatch(oid) and len(oid) == len(commit), 'Invalid Git blob metadata.')
+        require(name not in tree, 'Duplicate source path.')
+        tree[name] = (mode, object_type, oid)
+    result = {}
+
+    def add(name, path):
+        require(path in tree, 'Missing tracked source alias target.')
+        require(origin(name) == 'git' and not excluded(path)
+                and mapped_source_path(name) == path, 'Unapproved source mapping.')
+        mode, object_type, oid = tree[path]
         require(object_type == 'blob' and mode in {'100644', '100755'},
                 'Source links/submodules are not allowed.')
-        require(COMMIT.fullmatch(oid) and len(oid) == len(commit), 'Invalid Git blob metadata.')
         require(name not in result, 'Duplicate source path.')
-        result[name] = (0o755 if mode == '100755' else 0o644, oid)
+        result[name] = (0o755 if mode == '100755' else 0o644, oid, path)
+
+    for name, entry in tree.items():
+        if name in SOURCE_ALIASES:
+            check_alias(root, name, entry, commit)
+            require('prototype' not in tree, 'Source alias target must be a tracked directory.')
+            target = SOURCE_ALIASES[name][1]
+            if name == 'public/prototype':
+                targets = [p for p in tree if p.startswith('prototype/')]
+                require(targets, 'Missing tracked source alias target.')
+                for path in targets:
+                    add('public/' + path, path)
+            else:
+                add(name, target)
+        elif origin(name) == 'git':
+            add(name, name)
     return result
 
 
@@ -385,17 +446,21 @@ def build(root, output):
     files = []
     total = 0
     for name in names:
-        data = read_input(root, name)
+        path = source[name][2] if name in source else name
+        data = read_input(root, path)
         entry = {'path': name, 'size': len(data), 'sha256': hashlib.sha256(data).hexdigest(),
                  'origin': origin(name), 'mode': 0o755 if name.startswith('vendor/bin/') else 0o644}
         if name in source:
-            entry['mode'], entry['git_blob'] = source[name]
+            entry['mode'], entry['git_blob'], _ = source[name]
             require(blob_hash(data, commit) == entry['git_blob'], 'Source bytes differ from commit.')
+            if path != name:
+                entry['git_path'] = path
         total += len(data)
         require(total <= MAX_TOTAL_BYTES, 'Release exceeds total size limit.')
         require(name not in metadata or metadata[name] == data, 'Build metadata changed.')
         files.append(entry)
     clean_commit(root, commit)
+    require(source == source_files(root, commit), 'Source mapping changed during build.')
     output.mkdir(mode=0o700)
     archive = output / ARCHIVE_NAME
     manifest_file = output / MANIFEST_NAME
@@ -403,13 +468,14 @@ def build(root, output):
         with archive.open('xb') as raw, gzip.GzipFile(fileobj=raw, mode='wb', filename='', mtime=0) as gz:
             with tarfile.open(fileobj=gz, mode='w|', format=tarfile.USTAR_FORMAT) as bundle:
                 for entry in files:
-                    data = read_input(root, entry['path'])
+                    data = read_input(root, entry.get('git_path', entry['path']))
                     require(len(data) == entry['size'] and hashlib.sha256(data).hexdigest() == entry['sha256'],
                             'Input changed during build.')
                     member = tarfile.TarInfo(entry['path'])
                     member.size, member.mode = entry['size'], entry['mode']
                     bundle.addfile(member, io.BytesIO(data))
         clean_commit(root, commit)
+        require(source == source_files(root, commit), 'Source mapping changed during build.')
         require(generated == generated_files(root, 'vendor') | generated_files(root, 'public/build'),
                 'Generated input set changed during build.')
         with open_input(output, ARCHIVE_NAME) as stream:
@@ -463,10 +529,15 @@ def manifest_entries(manifest):
     total = 0
     for entry in records:
         require(isinstance(entry, dict), 'Invalid file record.')
-        keys = {'path', 'size', 'sha256', 'origin', 'mode'}
-        exact_keys(entry, keys | ({'git_blob'} if entry.get('origin') == 'git' else set()))
-        name = entry['path']
+        name = entry.get('path')
         safe_path(name)
+        path = mapped_source_path(name)
+        keys = {'path', 'size', 'sha256', 'origin', 'mode'}
+        if path != name:
+            keys.add('git_path')
+            require(entry.get('git_path') == path and not excluded(path)
+                    and entry.get('origin') == 'git', 'Invalid source mapping.')
+        exact_keys(entry, keys | ({'git_blob'} if entry.get('origin') == 'git' else set()))
         require(name not in result and origin(name) == entry['origin']
                 and entry['origin'] in {'git', 'vendor', 'build'}, 'Unexpected/duplicate file record.')
         require(valid_size(entry['size'], MAX_FILE_BYTES) and type(entry['mode']) is int

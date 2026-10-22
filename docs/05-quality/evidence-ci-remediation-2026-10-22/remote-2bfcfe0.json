@@ -1,0 +1,144 @@
+{
+  "recorded_at": "2026-10-22T10:23:34.125795+00:00",
+  "run_id": 39761262887,
+  "commit": "2bfcfe097c7517063dd10f0d40cc01a23f0eb345",
+  "url": "https://github.com/hanifp62/online-shop/actions/runs/39761262887",
+  "artifacts": {
+    "quality-summary-2bfcfe097c7517063dd10f0d40cc01a23f0eb345/phpunit-summary.json": {
+      "cases": [
+        {
+          "id": "testcase-826",
+          "reason": "ALLOWED_SKIP"
+        },
+        {
+          "id": "testcase-827",
+          "reason": "ALLOWED_SKIP"
+        },
+        {
+          "id": "testcase-828",
+          "reason": "ALLOWED_SKIP"
+        }
+      ],
+      "counts": {
+        "errors": 0,
+        "failures": 0,
+        "passed": 1200,
+        "skipped": 3,
+        "tests": 1203
+      },
+      "reasons": [],
+      "status": "PASS"
+    },
+    "quality-summary-2bfcfe097c7517063dd10f0d40cc01a23f0eb345/python-summary.json": {
+      "cases": [],
+      "counts": {
+        "errors": 0,
+        "expected_failures": 0,
+        "failures": 0,
+        "import_errors": 0,
+        "skipped": 0,
+        "tests": 361,
+        "unexpected_successes": 0
+      },
+      "reasons": [],
+      "status": "PASS"
+    },
+    "browser-summary-2bfcfe097c7517063dd10f0d40cc01a23f0eb345/browser-summary.json": {
+      "counts": {
+        "checkout_requests": 3,
+        "commands": 7,
+        "created": 2,
+        "page_content_leaks": 0,
+        "pages": 10,
+        "products": 76,
+        "rejected": 1
+      },
+      "status": "PASS"
+    },
+    "mysql-summary-2bfcfe097c7517063dd10f0d40cc01a23f0eb345/mysql-integration-ccd0014f166239a7e812496d835b7e00/summary.json": {
+      "cleanup": "PASS",
+      "cleanup_failures": 0,
+      "commit": "2bfcfe097c7517063dd10f0d40cc01a23f0eb345",
+      "container_ids": [
+        "ec64983361b988a21c9c9f4b844c1037588e9cd45b6e834cc5761f2591b4f7c8",
+        "ba2f0fb3ed6d1ada696e26b3125658cb0a2625bf6772c32016d54a0afb7071ea"
+      ],
+      "dump_sha256": "4088b6795d950385c79bdf7ca6e037072ab16bb0e2ba4bd4244763381f13687e",
+      "exit": 0,
+      "image_id": "sha256:b35575a03e5327131916eb8d39222c4c89590881fb44ed69b5814910e5fefa34",
+      "junit_gate": true,
+      "junit_report": {
+        "cases": [],
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "passed": 3,
+          "skipped": 0,
+          "tests": 3
+        },
+        "locations": [],
+        "reasons": [],
+        "status": "PASS"
+      },
+      "migration_exit": 0,
+      "mysql_version": "8.4.13",
+      "producer_exit": 0,
+      "reason": "COMPLETED",
+      "restore": "PASS",
+      "skipped": 0,
+      "snapshot": {
+        "column_count": 331,
+        "columns_sha256": "d7a0895565340edde46964df2ec34e1d987630fd838674342f3495da6be77db6",
+        "foreign_key_violations": 0,
+        "foreign_keys": 35,
+        "marker_rows": 2,
+        "marker_sha256": "324f82247757c6e2d58dfc463e945f20e78b55abea5218dece5bc63eb6bbba78",
+        "migration_count": 52,
+        "migrations_sha256": "8117b1bd52cd14fce522d36b47f3cc8660f05446fa51be0b9cb5030b726e80e9",
+        "row_counts": {
+          "addresses": 0,
+          "admin_totp_recovery_codes": 0,
+          "admins": 0,
+          "auth_events": 0,
+          "cache": 0,
+          "cache_locks": 0,
+          "cart_items": 0,
+          "carts": 0,
+          "categories": 0,
+          "ci_restore_probe": 2,
+          "concierge_requests": 0,
+          "failed_jobs": 0,
+          "favorites": 0,
+          "inventory_reservations": 0,
+          "job_batches": 0,
+          "jobs": 0,
+          "migrations": 52,
+          "newsletter_subscribers": 0,
+          "order_items": 0,
+          "order_notifications": 0,
+          "order_status_history": 0,
+          "orders": 0,
+          "password_reset_tokens": 0,
+          "payment_dead_letters": 0,
+          "payments": 0,
+          "products": 0,
+          "refunds": 0,
+          "return_items": 0,
+          "returns": 0,
+          "reviews": 0,
+          "sessions": 0,
+          "shipment_tracking_events": 0,
+          "shipments": 0,
+          "social_accounts": 0,
+          "user_info_backups": 0,
+          "user_totp_recovery_codes": 0,
+          "users": 0,
+          "vouchers": 0
+        },
+        "schema_sha256": "96edf08f19063728cf384fbefc94ca080338dfda897a0e928d5406d102bf9f0a"
+      },
+      "status": "PASS",
+      "tests": 3
+    }
+  }
+}

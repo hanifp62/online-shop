@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "scratch/ci-validation/venv/bin/python",
+    "-B",
+    "scripts/ci/run_python_tests.py"
+  ],
+  "started_at": "2026-10-22T10:46:49.301312+00:00",
+  "finished_at": "2026-10-22T10:47:12.373757+00:00",
+  "duration_seconds": 23.072,
+  "timeout_seconds": 180,
+  "status": "COMPLETE",
+  "exit_code": 0,
+  "cleanup": "not_required",
+  "sanitized_log": "docs/05-quality/evidence-ci-remediation-2026-10-22/python314-release-alias.log",
+  "sanitized_log_sha256": "e37acd1a6e64be93aa6cb38c3fcba826417b292611c010f4ee1208434c5142cd"
+}

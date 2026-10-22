@@ -1,4 +1,4 @@
-"""CICD-05/08: artefak diuji hanya dengan fixture; Git/Composer/npm tidak dijalankan."""
+"""CICD-05/08, NFR-CICD-005: fixture saja; Git/Composer/npm tidak dijalankan."""
 from contextlib import redirect_stderr, redirect_stdout
 import copy
 import gzip
@@ -82,6 +82,25 @@ class ReleaseArtifactTests(unittest.TestCase):
             self.tracked[path] = (mode, blob(data))
         return target
 
+    def storefront_aliases(self):
+        targets = {
+            'prototype/app.css': b'body { color: navy; }',
+            'prototype/app.js': b'console.log("storefront");',
+            'prototype/index.html': b'<h1>Maison</h1>',
+            'prototype/admin/index.html': b'<h1>Atelier</h1>',
+            'prototype/assets/fonts/display.woff2': b'synthetic-font',
+        }
+        for path, data in targets.items():
+            self.put(path, data, tracked=True)
+        for name, payload in (
+            ('public/app.css', '../prototype/app.css'),
+            ('public/app.js', '../prototype/app.js'),
+            ('public/prototype', '../prototype'),
+        ):
+            (self.root / name).symlink_to(payload)
+            self.tracked[name] = ('120000', blob(payload.encode()))
+        return targets
+
     def fake_git(self, argv, **kwargs):
         self.assertEqual(argv[0], 'git')
         self.assertIn('--no-pager', argv)
@@ -94,8 +113,9 @@ class ReleaseArtifactTests(unittest.TestCase):
         elif args == ('status', '--porcelain=v1', '-z', '--untracked-files=all', '--ignore-submodules=none'):
             stdout = self.status
         elif args == ('ls-tree', '-r', '-z', '--full-tree', self.commit):
-            stdout = b''.join(f'{mode} blob {oid}\t{path}'.encode() + b'\0'
-                              for path, (mode, oid) in sorted(self.tracked.items()))
+            stdout = b''.join(
+                f'{mode} {"commit" if mode == "160000" else "blob"} {oid}\t{path}'.encode() + b'\0'
+                for path, (mode, oid) in sorted(self.tracked.items()))
         else:
             self.fail(f'Unexpected Git command: {args}')
         return subprocess.CompletedProcess(argv, 0, stdout, b'')
@@ -112,6 +132,8 @@ class ReleaseArtifactTests(unittest.TestCase):
         self.assertIs(manifest['source']['clean'], True)
         files = {entry['path']: entry for entry in manifest['files']}
         self.assertEqual(files['public/logo.svg']['origin'], 'git')
+        self.assertEqual(manifest['schema'], 1)
+        self.assertTrue(all('git_path' not in e for e in manifest['files']))
         self.assertEqual(files['public/build/assets/app-abc.js']['origin'], 'build')
         self.assertEqual(files['vendor/autoload.php']['origin'], 'vendor')
         for lock in ('composer.lock', 'package-lock.json'):
@@ -121,6 +143,278 @@ class ReleaseArtifactTests(unittest.TestCase):
         release.build(self.root, second)
         for filename in ('release.tar.gz', 'release-manifest.json'):
             self.assertEqual((self.output / filename).read_bytes(), (second / filename).read_bytes())
+
+    def test_storefront_aliases_materialize_tracked_regular_blobs_without_following_links(self):
+        targets = self.storefront_aliases()
+        self.put('prototype/app.js', targets['prototype/app.js'], tracked=True, mode='100755')
+        expected = {'public/' + path: path for path in targets}
+        expected.update({'public/app.css': 'prototype/app.css', 'public/app.js': 'prototype/app.js'})
+        original = release.read_input
+
+        def guarded(root, name):
+            self.assertNotIn(name, expected, 'must open the Git source, not the alias')
+            return original(root, name)
+
+        with patch.object(release, 'read_input', side_effect=guarded):
+            manifest = self.build()
+        records = {e['path']: e for e in manifest['files']}
+        self.assertEqual({p: e['git_path'] for p, e in records.items() if 'git_path' in e}, expected)
+        self.assertNotIn('public/prototype', records)
+        self.assertTrue(records.keys().isdisjoint(targets))
+        for member, data in self.archive_items():
+            self.assertEqual(member.type, tarfile.REGTYPE)
+            self.assertEqual(member.linkname, '')
+            if member.name in expected:
+                target = expected[member.name]
+                self.assertEqual(data, targets[target])
+                self.assertEqual(records[member.name]['git_blob'], self.tracked[target][1])
+                self.assertEqual(records[member.name]['origin'], 'git')
+                self.assertEqual(member.mode, 0o755 if target == 'prototype/app.js' else 0o644)
+        second = self.base / 'second'
+        release.build(self.root, second)
+        for filename in ('release.tar.gz', 'release-manifest.json'):
+            self.assertEqual((self.output / filename).read_bytes(), (second / filename).read_bytes())
+        for name in ('public/app.css', 'public/app.js', 'public/prototype'):
+            self.assertTrue((self.root / name).is_symlink())
+        self.root.rename(self.base / 'unavailable-checkout')
+        with patch.object(release.subprocess, 'run', side_effect=AssertionError('offline')), \
+             patch.object(tarfile.TarFile, 'extractall', side_effect=AssertionError('no extraction')):
+            self.assertEqual(self.verify(), manifest)
+
+    def test_storefront_alias_git_payload_and_checkout_payload_are_both_literal(self):
+        self.storefront_aliases()
+        for name in ('public/app.css', 'public/app.js', 'public/prototype'):
+            link = self.root / name
+            expected, metadata = os.readlink(link), self.tracked[name]
+            payloads = ('../prototype/other.js', '/absolute', '../../escape',
+                        expected + '\n', expected + '/../app.css', '../prototype/private.key')
+            for payload in payloads:
+                for change_git in (True, False):
+                    with self.subTest(name=name, payload=payload, change_git=change_git):
+                        if change_git:
+                            self.tracked[name] = ('120000', blob(payload.encode()))
+                        else:
+                            link.unlink()
+                            link.symlink_to(payload)
+                        with patch.object(release, 'read_input', side_effect=AssertionError('no reads')), \
+                             self.assertRaisesRegex(release.ArtifactError, 'alias'):
+                            self.build()
+                        self.assertFalse(self.output.exists())
+                        self.tracked[name] = metadata
+                        link.unlink()
+                        link.symlink_to(expected)
+            for mode in ('100644', '160000'):
+                self.tracked[name] = (mode, metadata[1])
+                with self.subTest(mode=mode), self.assertRaisesRegex(release.ArtifactError, 'alias'):
+                    self.build()
+            self.tracked[name] = metadata
+        self.tracked['public/other.css'] = ('120000', blob(b'../prototype/app.css'))
+        with self.assertRaisesRegex(release.ArtifactError, 'links/submodules'):
+            self.build()
+
+    def test_storefront_private_and_untracked_targets_are_excluded_before_open(self):
+        self.storefront_aliases()
+        forbidden = {'prototype/private.key', 'prototype/auth.json', 'prototype/.npmrc',
+                     'prototype/docs/private.txt', 'prototype/uploads/photo.jpg',
+                     'prototype/export.sql.gz', 'prototype/.gitignore', 'prototype/untracked.js'}
+        for path in forbidden:
+            self.put(path, 'SYNTHETIC-PRIVATE-TARGET', tracked=path != 'prototype/untracked.js')
+        (self.root / 'prototype/keys').symlink_to(self.base / 'unreadable')
+        self.tracked['prototype/keys'] = ('120000', blob(b'private-link'))
+        original = release.read_input
+
+        def guarded(root, name):
+            self.assertNotIn(name, forbidden | {'prototype/keys'})
+            return original(root, name)
+
+        with patch.object(release, 'read_input', side_effect=guarded):
+            manifest = self.build()
+        self.assertTrue({e['path'] for e in manifest['files']}.isdisjoint(
+            {'public/' + path for path in forbidden | {'prototype/keys'}}))
+        self.assertNotIn(b'SYNTHETIC-PRIVATE-TARGET', gzip.decompress((self.output / 'release.tar.gz').read_bytes()))
+        self.verify()
+
+    def test_storefront_manifest_mapping_is_required_and_strictly_allowlisted(self):
+        self.storefront_aliases()
+        original = self.build()
+        for record in original['files']:
+            if 'git_path' not in record:
+                continue
+            for path in (None, '', '/prototype/app.css', '../prototype/app.css',
+                         'prototype/missing.css', 'prototype/private.key',
+                         'prototype/app.css/../app.css', 'public/app.css', [],
+                         'prototype/app.js' if record['git_path'] != 'prototype/app.js' else 'prototype/app.css'):
+                with self.subTest(name=record['path'], path=path):
+                    manifest = copy.deepcopy(original)
+                    entry = next(e for e in manifest['files'] if e['path'] == record['path'])
+                    if path is None:
+                        del entry['git_path']
+                    else:
+                        entry['git_path'] = path
+                    self.save_manifest(manifest)
+                    with self.assertRaisesRegex(release.ArtifactError, 'source mapping'):
+                        self.verify()
+        for name in ('public/logo.svg', 'public/prototype', 'public/other.css',
+                     'vendor/autoload.php', 'public/build/assets/app-abc.js'):
+            with self.subTest(name=name):
+                manifest = copy.deepcopy(original)
+                record = next(e for e in manifest['files'] if e['path'] == 'public/app.css')
+                record['path'] = name
+                self.save_manifest(manifest)
+                with self.assertRaises(release.ArtifactError):
+                    self.verify()
+
+    def test_storefront_verifier_binds_target_blob_not_alias_blob_or_only_sha256(self):
+        self.storefront_aliases()
+        original = self.build()
+        for name in ('public/app.css', 'public/app.js', 'public/prototype/admin/index.html'):
+            with self.subTest(name=name):
+                manifest = copy.deepcopy(original)
+                entry = next(e for e in manifest['files'] if e['path'] == name)
+                entry['git_blob'] = blob(b'../prototype')
+                self.save_manifest(manifest)
+                with self.assertRaisesRegex(release.ArtifactError, 'Source blob mismatch'):
+                    self.verify()
+        self.save_manifest(original)
+        items = self.archive_items()
+        for member, data in items:
+            if member.name == 'public/app.css':
+                changed = b'X' + data[1:]
+                entry = next(e for e in original['files'] if e['path'] == member.name)
+                entry['sha256'] = hashlib.sha256(changed).hexdigest()
+        self.save_manifest(original)
+        self.repack([(member, b'X' + data[1:] if member.name == 'public/app.css' else data)
+                     for member, data in items])
+        with self.assertRaisesRegex(release.ArtifactError, 'Source blob mismatch'):
+            self.verify()
+
+    def test_storefront_targets_must_exist_and_match_their_tracked_blobs(self):
+        targets = self.storefront_aliases()
+        for name in ('prototype/app.css', 'prototype/admin/index.html'):
+            with self.subTest(name=name):
+                self.put(name, b'changed')
+                with self.assertRaisesRegex(release.ArtifactError, 'differ from commit'):
+                    self.build()
+                (self.root / name).unlink()
+                with self.assertRaises(FileNotFoundError):
+                    self.build()
+                self.put(name, targets[name])
+                self.assertFalse(self.output.exists())
+        del self.tracked['prototype/app.css']
+        with patch.object(release, 'read_input', side_effect=AssertionError('no untracked reads')), \
+             self.assertRaisesRegex(release.ArtifactError, 'Missing tracked'):
+            self.build()
+        for name in list(self.tracked):
+            if name.startswith('prototype/') or name in {'public/app.css', 'public/app.js'}:
+                del self.tracked[name]
+        with self.assertRaisesRegex(release.ArtifactError, 'Missing tracked'):
+            self.build()
+
+    def test_storefront_nested_git_symlinks_and_gitlinks_are_rejected_before_reads(self):
+        self.storefront_aliases()
+        for name in ('prototype/app.css', 'prototype/assets/link', 'prototype'):
+            original = self.tracked.get(name)
+            for mode in ('120000', '160000'):
+                with self.subTest(name=name, mode=mode):
+                    self.tracked[name] = (mode, blob(b'../outside'))
+                    with patch.object(release, 'read_input', side_effect=AssertionError('no reads')), \
+                         self.assertRaises(release.ArtifactError):
+                        self.build()
+                    self.assertFalse(self.output.exists())
+            if original is None:
+                del self.tracked[name]
+            else:
+                self.tracked[name] = original
+
+    def test_storefront_target_leaf_and_parent_symlinks_hardlinks_and_fifo_fail_closed(self):
+        targets = self.storefront_aliases()
+        for name in ('prototype/app.css', 'prototype/admin', 'prototype'):
+            with self.subTest(name=name):
+                target, saved = self.root / name, self.base / 'saved-target'
+                target.rename(saved)
+                target.symlink_to(saved)
+                with self.assertRaises(OSError):
+                    self.build()
+                target.unlink()
+                saved.rename(target)
+                self.assertFalse(self.output.exists())
+        target, extra = self.root / 'prototype/app.css', self.base / 'hardlink'
+        os.link(target, extra)
+        with self.assertRaisesRegex(release.ArtifactError, 'without links'):
+            self.build()
+        extra.unlink()
+        target.unlink()
+        os.mkfifo(target)
+        with self.assertRaisesRegex(release.ArtifactError, 'regular file'):
+            self.build()
+        self.assertFalse(self.output.exists())
+        target.unlink()
+        self.put('prototype/app.css', targets['prototype/app.css'])
+
+    def test_storefront_alias_entry_and_safe_parent_are_checked_without_following(self):
+        self.storefront_aliases()
+        for name in ('public/app.css', 'public/app.js', 'public/prototype'):
+            link = self.root / name
+            payload = os.readlink(link)
+            link.unlink()
+            with self.assertRaises(FileNotFoundError):
+                release.source_files(self.root, self.commit)
+            link.write_text(payload)
+            with self.assertRaisesRegex(release.ArtifactError, 'single symlink'):
+                release.source_files(self.root, self.commit)
+            link.unlink()
+            link.symlink_to(payload)
+        original_open, original_readlink = release.os.open, release.os.readlink
+
+        def nofollow(path, flags, *args, **kwargs):
+            self.assertTrue(flags & os.O_NOFOLLOW)
+            return original_open(path, flags, *args, **kwargs)
+
+        def readlink(leaf, *, dir_fd=None):
+            self.assertIn(leaf, {'app.css', 'app.js', 'prototype'})
+            self.assertIsInstance(dir_fd, int)
+            return original_readlink(leaf, dir_fd=dir_fd)
+
+        with patch.object(release.os, 'open', side_effect=nofollow), \
+             patch.object(release.os, 'readlink', side_effect=readlink):
+            release.source_files(self.root, self.commit)
+        public, saved = self.root / 'public', self.base / 'saved-public'
+        public.rename(saved)
+        public.symlink_to(saved)
+        with patch.object(release.os, 'readlink', side_effect=AssertionError('unsafe parent')), \
+             self.assertRaises(OSError):
+            release.source_files(self.root, self.commit)
+
+    def test_storefront_alias_and_mapping_changes_are_rechecked_before_and_after_archive(self):
+        self.storefront_aliases()
+        original = release.clean_commit
+        for phase in (2, 3):
+            for name in ('public/app.css', 'public/app.js', 'public/prototype', 'prototype/added.js'):
+                calls = 0
+                link = self.root / name
+                payload = os.readlink(link) if name.startswith('public/') else None
+
+                def mutate(root, expected=None, *, phase=phase, payload=payload, name=name, link=link):
+                    nonlocal calls
+                    calls += 1
+                    if calls == phase:
+                        if payload is None:
+                            self.put(name, b'new tracked descendant', tracked=True)
+                        else:
+                            link.unlink()
+                            link.symlink_to('../prototype/other')
+                    return original(root, expected)
+
+                with self.subTest(phase=phase, name=name), \
+                     patch.object(release, 'clean_commit', side_effect=mutate), \
+                     self.assertRaisesRegex(release.ArtifactError, 'changed'):
+                    self.build()
+                self.assertFalse(self.output.exists())
+                link.unlink()
+                if payload is None:
+                    del self.tracked[name]
+                else:
+                    link.symlink_to(payload)
 
     def test_dirty_tree_fails_before_file_reads_or_output_creation(self):
         for status in (b' M app/A.php\0', b'M  config/app.php\0', b'?? scratch.txt\0'):
@@ -370,8 +664,9 @@ class ReleaseArtifactTests(unittest.TestCase):
             del self.tracked[path]
 
     def test_source_or_generated_bytes_changing_during_build_leave_no_artifact(self):
+        self.storefront_aliases()
         original = release.read_input
-        for path in ('public/logo.svg', 'public/build/assets/app-abc.js'):
+        for path in ('public/logo.svg', 'public/build/assets/app-abc.js', 'prototype/admin/index.html'):
             reads = 0
 
             def mutate(root, name):
@@ -457,21 +752,23 @@ class ReleaseArtifactTests(unittest.TestCase):
         self.assertFalse((self.base / 'escape').exists())
 
     def test_tar_links_special_types_and_extensions_rejected_before_payload_read(self):
+        self.storefront_aliases()
         self.build()
-        for kind in (tarfile.SYMTYPE, tarfile.LNKTYPE, tarfile.DIRTYPE, tarfile.FIFOTYPE,
-                     tarfile.CHRTYPE, tarfile.BLKTYPE, tarfile.XHDTYPE,
-                     tarfile.XGLTYPE, tarfile.GNUTYPE_LONGNAME, tarfile.GNUTYPE_SPARSE):
-            with self.subTest(kind=kind):
-                member = tarfile.TarInfo('public/logo.svg')
-                member.type = kind
-                if kind in (tarfile.SYMTYPE, tarfile.LNKTYPE):
-                    member.linkname = '../../outside'
-                member.size = release.MAX_FILE_BYTES + 1
-                data = member.tobuf(format=tarfile.USTAR_FORMAT)
-                (self.output / 'release.tar.gz').write_bytes(gzip.compress(data, mtime=0))
-                self.refresh_archive_digest()
-                with self.assertRaisesRegex(release.ArtifactError, 'links/special/extension'):
-                    self.verify()
+        for name in ('public/logo.svg', 'public/app.css', 'public/prototype/index.html'):
+            for kind in (tarfile.SYMTYPE, tarfile.LNKTYPE, tarfile.DIRTYPE, tarfile.FIFOTYPE,
+                         tarfile.CHRTYPE, tarfile.BLKTYPE, tarfile.XHDTYPE,
+                         tarfile.XGLTYPE, tarfile.GNUTYPE_LONGNAME, tarfile.GNUTYPE_SPARSE):
+                with self.subTest(name=name, kind=kind):
+                    member = tarfile.TarInfo(name)
+                    member.type = kind
+                    if kind in (tarfile.SYMTYPE, tarfile.LNKTYPE):
+                        member.linkname = '../../outside'
+                    member.size = release.MAX_FILE_BYTES + 1
+                    data = member.tobuf(format=tarfile.USTAR_FORMAT)
+                    (self.output / 'release.tar.gz').write_bytes(gzip.compress(data, mtime=0))
+                    self.refresh_archive_digest()
+                    with self.assertRaisesRegex(release.ArtifactError, 'links/special/extension'):
+                        self.verify()
 
     def test_manifest_cannot_authorize_excluded_entries_even_if_self_consistent(self):
         self.build()
@@ -624,9 +921,10 @@ class ReleaseArtifactTests(unittest.TestCase):
                 opened.assert_not_called()
 
     def test_sha256_git_object_format_is_supported(self):
+        self.storefront_aliases()
         self.commit = 'a' * 64
         for name, (mode, _) in self.tracked.items():
-            data = (self.root / name).read_bytes()
+            data = os.readlink(self.root / name).encode() if mode == '120000' else (self.root / name).read_bytes()
             oid = hashlib.sha256(b'blob ' + str(len(data)).encode() + b'\0' + data).hexdigest()
             self.tracked[name] = (mode, oid)
         manifest = self.build()
