@@ -111,14 +111,77 @@ class RemediationGatesTests(unittest.TestCase):
 
     def test_racing_exit_requires_positive_matching_child_observation(self):
         wrong_child = SimpleNamespace(si_pid=999, si_code=supervisor.os.CLD_EXITED, si_status=0)
-        for second in (None, wrong_child, ChildProcessError()):
+        invalid_code = SimpleNamespace(si_pid=123, si_code=supervisor.os.CLD_STOPPED, si_status=0)
+        for second in (wrong_child, invalid_code, ChildProcessError()):
             with self.subTest(second=second), \
                  patch.object(supervisor.os, 'waitid', side_effect=[None, second]), \
                  patch.object(supervisor.os, 'getpgid', side_effect=ProcessLookupError()), \
-                 patch.object(supervisor.os, 'killpg') as kill:
+                 patch.object(supervisor.os, 'killpg') as kill, \
+                 patch.object(supervisor.time, 'sleep') as sleep:
+                process = child()
                 with self.assertRaises(RuntimeError):
-                    supervisor.stop_owned(child())
+                    supervisor.stop_owned(process)
                 kill.assert_not_called()
+                sleep.assert_not_called()
+                process.wait.assert_not_called()
+                process.poll.assert_not_called()
+
+    def test_delayed_exit_confirmation_keeps_identity_pinned_until_singleton_reap(self):
+        process = child()
+        exited = SimpleNamespace(si_pid=123, si_code=supervisor.os.CLD_EXITED, si_status=7)
+        clock = [0.0]
+        events = []
+        def sleep(interval):
+            self.assertAlmostEqual(interval, 0.001)
+            process.wait.assert_not_called()
+            process.poll.assert_not_called()
+            kill.assert_not_called()
+            clock[0] += interval
+        def inventory(group):
+            self.assertEqual(group, 123)
+            process.wait.assert_not_called()
+            events.append('inventory')
+            return {123}
+        process.wait.side_effect = lambda **_: events.append('reap')
+        with patch.object(supervisor.os, 'waitid', side_effect=[None, None, None, exited]) as waitid, \
+             patch.object(supervisor.os, 'getpgid', side_effect=ProcessLookupError()), \
+             patch.object(supervisor.time, 'monotonic', side_effect=lambda: clock[0]), \
+             patch.object(supervisor.time, 'sleep', side_effect=sleep) as pause, \
+             patch.object(supervisor.os, 'killpg') as kill, \
+             patch.object(supervisor, 'group_members', side_effect=inventory):
+            supervisor.stop_owned(process)
+            kill.assert_not_called()
+        self.assertEqual(pause.call_count, 2)
+        self.assertEqual(events, ['inventory', 'reap'])
+        process.wait.assert_called_once_with(timeout=1)
+        process.poll.assert_not_called()
+        for call in waitid.call_args_list:
+            self.assertEqual(call.args, (supervisor.os.P_PID, 123,
+                supervisor.os.WEXITED | supervisor.os.WNOHANG | supervisor.os.WNOWAIT))
+
+    def test_permanent_unknown_exit_deadline_blocks_stop_without_signal_or_reap(self):
+        process = child()
+        clock = [0.0]
+        def sleep(interval):
+            self.assertGreater(interval, 0)
+            self.assertLessEqual(interval, 0.001)
+            process.wait.assert_not_called()
+            process.poll.assert_not_called()
+            kill.assert_not_called()
+            clock[0] += interval
+        with patch.object(supervisor.os, 'waitid', return_value=None), \
+             patch.object(supervisor.os, 'getpgid', side_effect=ProcessLookupError()), \
+             patch.object(supervisor.time, 'monotonic', side_effect=lambda: clock[0]), \
+             patch.object(supervisor.time, 'sleep', side_effect=sleep), \
+             patch.object(supervisor.os, 'killpg') as kill, \
+             patch.object(supervisor, 'group_members') as inventory:
+            with self.assertRaisesRegex(RuntimeError, 'identity unconfirmed'):
+                supervisor.stop_owned(process)
+            self.assertAlmostEqual(clock[0], 0.100)
+            kill.assert_not_called()
+            inventory.assert_not_called()
+            process.wait.assert_not_called()
+            process.poll.assert_not_called()
 
     def test_cicd004_exited_singleton_reaps_without_any_group_signal(self):
         process = child()

@@ -57,11 +57,19 @@ def exit_status(process):
         try:
             group = os.getpgid(process.pid)
         except ProcessLookupError:
-            # Darwin may hide an exited child's PGID while WNOWAIT still pins
-            # its PID. A racing exit needs positive, matching child observation.
+            # Darwin can hide the PGID before waitid exposes exit status.
+            # Keep identity unknown (no signals or reap) until matching WNOWAIT
+            # confirmation arrives; permanent uncertainty still fails closed.
+            deadline = time.monotonic() + 0.100
             result = observe()
-            if result is None:
-                raise RuntimeError('owned child identity unconfirmed after PGID lookup failed')
+            while result is None:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise RuntimeError('owned child identity unconfirmed after PGID lookup failed')
+                time.sleep(min(0.001, remaining))
+                if time.monotonic() >= deadline:
+                    raise RuntimeError('owned child identity unconfirmed after PGID lookup failed')
+                result = observe()
         else:
             if group != process.pid:
                 raise RuntimeError('owned leader changed process group')
