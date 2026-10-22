@@ -1,0 +1,1 @@
+{"cases": [{"id": "case-1", "reason": "FAILURES"}], "counts": {"errors": 0, "expected_failures": 0, "failures": 1, "import_errors": 0, "skipped": 0, "tests": 338, "unexpected_successes": 0}, "reasons": ["FAILURES"], "status": "FAIL"}

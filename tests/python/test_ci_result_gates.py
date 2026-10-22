@@ -8,6 +8,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+from types import ModuleType
 import unittest
 from unittest.mock import patch
 
@@ -116,6 +117,60 @@ class ResultGateTests(unittest.TestCase):
                 self.assertEqual(set(summary), {'status', 'counts', 'reasons', 'cases'})
                 for case in summary['cases']:
                     self.assertRegex(case['id'], r'^case-[0-9]+$')
+                    self.assertEqual(case['test_index'], 1)
+                if kind == 'empty':
+                    self.assertIn('NO_TESTS', summary['reasons'])
+                    self.assertEqual(summary['cases'], [])
+
+    def test_python_full_suite_indices_cover_all_outcomes(self):
+        kinds = ('fail', 'pass', 'error', 'skip', 'expected_failure', 'unexpected_success')
+        expected = [('FAILURES', 2), ('ERRORS', 4), ('SKIPPED', 5),
+                    ('EXPECTED_FAILURES', 6), ('UNEXPECTED_SUCCESSES', 7)]
+        for _ in range(2):
+            suite = unittest.TestSuite([
+                synthetic_suite('pass'),
+                unittest.TestSuite(synthetic_suite(kind) for kind in kinds),
+            ])
+            status, summary = self.call(runner, [], suite=suite)
+            self.assertEqual(status, 1)
+            self.assertEqual(summary['counts']['tests'], 7)
+            self.assertEqual(summary['cases'], [
+                {'id': 'case-' + str(ordinal), 'reason': reason, 'test_index': index}
+                for ordinal, (reason, index) in enumerate(expected, 1)
+            ])
+
+    def test_python_repeated_test_object_has_no_unique_discovery_index(self):
+        case = next(iter(synthetic_suite('fail')))
+        status, summary = self.call(runner, [], suite=unittest.TestSuite([case, case]))
+        self.assertEqual(status, 1)
+        self.assertEqual(summary['counts']['tests'], 2)
+        self.assertEqual(summary['cases'], [
+            {'id': 'case-' + str(ordinal), 'reason': 'FAILURES', 'test_index': None}
+            for ordinal in (1, 2)
+        ])
+
+    def test_python_subtest_outcomes_share_parent_index_without_calling_id(self):
+        class Case(unittest.TestCase):
+            def id(self):
+                raise AssertionError(PRIVATE)
+
+            def runTest(self):
+                for kind in ('fail', 'error', 'skip'):
+                    with self.subTest(PRIVATE, private=PRIVATE):
+                        with self.subTest(nested=PRIVATE):
+                            if kind == 'error':
+                                raise RuntimeError(PRIVATE)
+                            if kind == 'skip':
+                                self.skipTest(PRIVATE)
+                            self.fail(PRIVATE)
+        suite = unittest.TestSuite([synthetic_suite('pass'), unittest.TestSuite([Case()])])
+        status, summary = self.call(runner, [], suite=suite)
+        self.assertEqual(status, 1)
+        self.assertEqual(summary['counts']['tests'], 2)
+        self.assertEqual(summary['cases'], [
+            {'id': 'case-' + str(ordinal), 'reason': reason, 'test_index': 2}
+            for ordinal, reason in enumerate(('FAILURES', 'ERRORS', 'SKIPPED'), 1)
+        ])
 
     def test_python_skip_is_not_unittest_success(self):
         with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
@@ -135,12 +190,18 @@ class ResultGateTests(unittest.TestCase):
         self.assertEqual(status, 1)
         self.assertGreater(summary['counts']['errors'], 0)
         self.assertGreater(summary['counts']['import_errors'], 0)
+        self.assertEqual(summary['cases'], [{'id': 'case-1', 'reason': 'ERRORS', 'test_index': 1}])
 
     def test_python_runner_exception_never_becomes_success_or_raw_output(self):
         with patch.object(runner.unittest.TestLoader, 'discover', side_effect=RuntimeError(PRIVATE)):
             status, summary = self.call(runner, [])
         self.assertEqual(status, 1)
         self.assertEqual(summary['reasons'], ['RUNNER_ERROR'])
+        with patch.object(runner.unittest.TextTestRunner, 'run', side_effect=RuntimeError(PRIVATE)):
+            status, summary = self.call(runner, [], suite=synthetic_suite('pass'))
+        self.assertEqual(status, 1)
+        self.assertEqual(summary, {'status': 'FAIL', 'counts': None,
+                                   'reasons': ['RUNNER_ERROR'], 'cases': []})
 
     def test_six_skips_cannot_be_reported_as_six_passes(self):
         for kind, expected in [('skip', 1), ('pass', 0)]:
@@ -159,9 +220,36 @@ class ResultGateTests(unittest.TestCase):
 
                 def runTest(self):
                     pass
-            status, summary = self.call(runner, [], suite=unittest.TestSuite([Case()]))
+            suite = unittest.TestSuite([synthetic_suite('pass'), Case(), Case(), synthetic_suite('fail')])
+            status, summary = self.call(runner, [], suite=suite)
             self.assertEqual(status, 1)
+            self.assertEqual(summary['counts']['tests'], 2)
             self.assertEqual(summary['counts']['skipped' if skip else 'errors'], 1)
+            self.assertIn('INCOMPLETE_SUITE', summary['reasons'])
+            self.assertEqual(summary['cases'], [
+                {'id': 'case-1', 'reason': 'FAILURES', 'test_index': 4},
+                {'id': 'case-2', 'reason': 'SKIPPED' if skip else 'ERRORS', 'test_index': None},
+            ])
+
+    def test_python_module_setup_skip_and_error_have_no_test_index(self):
+        for skip in (True, False):
+            module = ModuleType('synthetic_module_setup')
+
+            def setup():
+                raise unittest.SkipTest(PRIVATE) if skip else RuntimeError(PRIVATE)
+
+            module.setUpModule = setup
+            case = next(iter(synthetic_suite('pass')))
+            type(case).__module__ = module.__name__
+            with patch.dict(sys.modules, {module.__name__: module}):
+                status, summary = self.call(runner, [], suite=unittest.TestSuite([case]))
+            self.assertEqual(status, 1)
+            self.assertEqual(summary['counts']['tests'], 0)
+            self.assertIn('NO_TESTS', summary['reasons'])
+            self.assertIn('INCOMPLETE_SUITE', summary['reasons'])
+            self.assertEqual(summary['cases'], [
+                {'id': 'case-1', 'reason': 'SKIPPED' if skip else 'ERRORS', 'test_index': None},
+            ])
 
     def test_python_early_stop_and_discovery_exit_are_failures(self):
         class Stopped(unittest.TestSuite):
@@ -192,6 +280,7 @@ class ResultGateTests(unittest.TestCase):
             'logger.addHandler(logging.StreamHandler(sys.stderr))\n'
             'class Loud(unittest.TestCase):\n'
             '    def id(self): return private\n'
+            '    def test_before(self): pass\n'
             '    def test_output(self):\n'
             '        print(private)\n'
             '        print(private, file=sys.stderr)\n'
@@ -200,10 +289,12 @@ class ResultGateTests(unittest.TestCase):
             '        logger.warning(private)\n'
             '        subprocess.run([sys.executable, "-c", "print(" + repr(private) + ")"], check=True, timeout=5)\n'
         )
-        for kind, expected in [('pass', 0), ('skip', 1), ('fail', 1), ('import', 1), ('empty', 1)]:
+        for kind, expected in [('pass', 0), ('skip', 1), ('fail', 1), ('error', 1), ('import', 1), ('empty', 1)]:
             content = source
             if kind in ('skip', 'fail'):
                 content += '        self.' + ('skipTest' if kind == 'skip' else 'fail') + '(private)\n'
+            if kind == 'error':
+                content += '        raise RuntimeError(private)\n'
             if kind == 'import':
                 content += 'raise ImportError(private)\n'
             fixture.write_text(content if kind != 'empty' else '')
@@ -213,7 +304,72 @@ class ResultGateTests(unittest.TestCase):
             self.assertTrue(PRIVATE not in process.stdout + process.stderr)
             self.assertEqual(process.stderr, '')
             self.assertEqual(len(process.stdout.splitlines()), 1)
-            self.assertEqual(json.loads(process.stdout)['status'], 'PASS' if expected == 0 else 'FAIL')
+            summary = json.loads(process.stdout)
+            self.assertEqual(summary['status'], 'PASS' if expected == 0 else 'FAIL')
+            if kind in ('skip', 'fail', 'error'):
+                self.assertEqual(summary['counts']['tests'], 2)
+                self.assertEqual(summary['cases'][0]['test_index'], 2)
+
+    def test_real_python_cli_captures_finalizers_and_exception_tracebacks(self):
+        project = self.directory / 'finalizers'
+        script = project / 'scripts/ci/run_python_tests.py'
+        script.parent.mkdir(parents=True)
+        script.write_bytes((ROOT / 'scripts/ci/run_python_tests.py').read_bytes())
+        folder = project / 'tests/python'
+        folder.mkdir(parents=True)
+        finalized = self.directory / 'finalized.txt'
+        source = (
+            'import gc, os, sys, unittest, weakref\n'
+            'gc.disable()\n'  # Kebocoran tidak boleh tersamarkan oleh GC otomatis.
+            'private = ' + repr(PRIVATE) + '\n'
+            'def released():\n'
+            '    with open("finalized.txt", "a", encoding="utf-8") as output:\n'
+            '        output.write("released\\n")\n'
+            '    print(private)\n'
+            '    print(private, file=sys.stderr)\n'
+            '    os.write(1, (private + "\\n").encode())\n'
+            '    os.write(2, (private + "\\n").encode())\n'
+            'class Held: pass\n'
+            'def crash():\n'
+            '    local = Held()\n'
+            '    weakref.finalize(local, released)\n'
+            '    error = SystemExit(0)\n'
+            '    raise error\n'  # Siklus error -> traceback -> frame -> error.
+            'class Case(unittest.TestCase):\n'
+            '    def __init__(self, *args, **kwargs):\n'
+            '        super().__init__(*args, **kwargs)\n'
+            '        weakref.finalize(self, released)\n'
+            '    def test_first(self): pass\n'
+            '    def test_second(self):\n'
+            '        if mode == "failure": self.fail(private)\n'
+            'class BrokenSuite(unittest.TestSuite):\n'
+            '    def run(self, result, debug=False): crash()\n'
+            'def load_tests(loader, tests, pattern):\n'
+            '    if mode == "discovery": crash()\n'
+            '    if mode == "runner": return BrokenSuite(tests)\n'
+            '    return tests\n'
+        )
+        for kind in ('pass', 'failure', 'discovery', 'runner'):
+            with self.subTest(kind=kind):
+                finalized.unlink(missing_ok=True)
+                (folder / 'test_finalizers.py').write_text('mode = ' + repr(kind) + '\n' + source)
+                process = subprocess.run([sys.executable, '-B', str(script)], cwd=self.directory,
+                                         capture_output=True, text=True, timeout=10)
+                self.assertEqual(process.returncode, 0 if kind == 'pass' else 1)
+                self.assertEqual(len(finalized.read_text().splitlines()),
+                                 3 if kind in ('discovery', 'runner') else 2)
+                self.assertEqual((len(process.stdout.splitlines()), len(process.stderr.splitlines())),
+                                 (1, 0), 'Finalizer output escaped capture; raw output withheld.')
+                self.assertTrue(PRIVATE not in process.stdout + process.stderr)
+                summary = json.loads(process.stdout)
+                self.assertEqual(summary['status'], 'PASS' if kind == 'pass' else 'FAIL')
+                if kind in ('discovery', 'runner'):
+                    self.assertEqual(summary['reasons'], ['RUNNER_ERROR'])
+                else:
+                    self.assertEqual(summary['counts']['tests'], 2)
+                    self.assertEqual(summary['cases'], [] if kind == 'pass' else [
+                        {'id': 'case-1', 'reason': 'FAILURES', 'test_index': 2},
+                    ])
 
     def test_browser_valid_report_and_multiline_commands(self):
         self.commands = self.commands.replace('am01\t' + STAMP + '\t' + STAMP + '\t0\tsynthetic command\n',

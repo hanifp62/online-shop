@@ -91,12 +91,23 @@ def export(root_arg, stem, destination_arg):
                     'source_sha256': source_hashes, 'sanitization': 'pattern-based; not arbitrary secret detection'}
         data['manifest.json'] = (json.dumps(manifest, indent=2) + '\n').encode()
         written = {}
+
+        def close_output(fd, error):
+            try:
+                os.close(fd)
+            except OSError:
+                if error is None:
+                    raise
+                error.add_note('export output descriptor close failed')
+
         try:
             for name, content in data.items():
                 fd = os.open(name, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600, dir_fd=destfd)
+                # Pin all four output inodes until commit/rollback to prevent unlink/recreate ABA.
+                stack.push(lambda _type, error, _traceback, fd=fd: close_output(fd, error))
                 info = os.fstat(fd)
                 written[name] = (info.st_dev, info.st_ino)
-                with os.fdopen(fd, 'wb') as handle:
+                with os.fdopen(fd, 'wb', closefd=False) as handle:
                     handle.write(content)
             refuse(set(os.listdir(destfd)) == set(data))
         except BaseException as export_error:

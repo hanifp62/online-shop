@@ -1,3 +1,4 @@
+import errno
 import hashlib
 import importlib.util
 import json
@@ -9,6 +10,7 @@ import shutil
 import subprocess
 import sys
 import unittest
+from contextlib import nullcontext
 from unittest import mock
 
 REPO = Path(__file__).resolve().parents[2]
@@ -208,12 +210,196 @@ class ExportTests(unittest.TestCase):
             if mode == 'wb':
                 count['n'] += 1
                 if count['n'] == fail_at:
-                    if before_fail:
-                        before_fail()
-                    os.close(fd)
-                    raise OSError('injected write failure')
+                    with real(fd, mode, *args, **kwargs):
+                        if before_fail:
+                            before_fail()
+                        raise OSError('injected write failure')
             return real(fd, mode, *args, **kwargs)
         return mock.patch.object(module.os, 'fdopen', fdopen)
+
+    def track_output_fds(self, module):
+        """Observe without duplicating/pinning FDs; reclaim leaks only after test assertions."""
+        real_open, real_fstat, real_close = module.os.open, module.os.fstat, module.os.close
+        outputs = {}
+
+        def cleanup(fd, identity):
+            try:
+                info = real_fstat(fd)
+            except OSError as error:
+                if error.errno != errno.EBADF:
+                    raise
+            else:
+                if (info.st_dev, info.st_ino) == identity:
+                    real_close(fd)
+
+        def opened(name, flags, *args, **kwargs):
+            fd = real_open(name, flags, *args, **kwargs)
+            if flags & os.O_CREAT:
+                info = real_fstat(fd)
+                identity = (info.st_dev, info.st_ino)
+                outputs[name] = (fd, identity)
+                self.addCleanup(cleanup, fd, identity)
+            return fd
+
+        return mock.patch.object(module.os, 'open', opened), outputs
+
+    def assert_output_fds_closed(self, outputs):
+        for fd, _ in outputs.values():
+            with self.assertRaises(OSError) as caught:
+                os.fstat(fd)
+            self.assertEqual(caught.exception.errno, errno.EBADF)
+
+    def test_output_fds_stay_pinned_until_commit_and_close_after_success(self):
+        stem = self.real_capture()
+        module = self.load_exporter()
+        tracking, outputs = self.track_output_fds(module)
+        real_listdir = module.os.listdir
+        commits = []
+
+        def listdir(fd):
+            if outputs:
+                self.assertEqual(len(outputs), 4)
+                for output_fd, identity in outputs.values():
+                    info = os.fstat(output_fd)
+                    self.assertEqual((info.st_dev, info.st_ino), identity)
+                    self.assertEqual(info.st_nlink, 1)
+                    self.assertFalse(os.get_inheritable(output_fd))
+                commits.append(True)
+            return real_listdir(fd)
+
+        with tracking, mock.patch.object(module.os, 'listdir', listdir):
+            files = module.export(str(self.root), stem, str(self.destination))
+            self.assert_output_fds_closed(outputs)
+        self.assertEqual(commits, [True])
+        self.assertEqual(files, sorted(outputs))
+
+    def test_output_fds_close_on_open_fstat_fdopen_and_partial_write_failures(self):
+        stem = self.real_capture()
+
+        def exercise(operation, fail_at):
+            module = self.load_exporter()
+            tracking, outputs = self.track_output_fds(module)
+            failure = OSError(errno.EIO, 'injected output ' + operation + ' failure')
+            with tracking:
+                real_open, real_fstat, real_fdopen = module.os.open, module.os.fstat, module.os.fdopen
+
+                def opened(name, flags, *args, **kwargs):
+                    if operation == 'open' and flags & os.O_CREAT and len(outputs) + 1 == fail_at:
+                        raise failure
+                    return real_open(name, flags, *args, **kwargs)
+
+                def fstat(fd):
+                    if operation == 'fstat' and len(outputs) == fail_at and fd == next(reversed(outputs.values()))[0]:
+                        raise failure
+                    return real_fstat(fd)
+
+                def fdopen(fd, mode='r', *args, **kwargs):
+                    if mode == 'wb' and len(outputs) == fail_at:
+                        if operation == 'fdopen':
+                            raise failure
+                        if operation == 'write':
+                            stream = real_fdopen(fd, mode, *args, **kwargs)
+                            writer = mock.MagicMock()
+                            writer.__enter__.return_value = writer
+                            writer.__exit__.side_effect = stream.__exit__
+
+                            def partial_write(content):
+                                stream.write(content[:1])
+                                raise failure
+
+                            writer.write.side_effect = partial_write
+                            return writer
+                    return real_fdopen(fd, mode, *args, **kwargs)
+
+                with mock.patch.object(module.os, 'open', opened), \
+                     mock.patch.object(module.os, 'fstat', fstat), \
+                     mock.patch.object(module.os, 'fdopen', fdopen), self.assertRaises(OSError) as caught:
+                    module.export(str(self.root), stem, str(self.destination))
+                self.assertIs(caught.exception, failure)
+                self.assertEqual(len(outputs), fail_at - (operation == 'open'))
+                self.assert_output_fds_closed(outputs)
+            if operation == 'fstat':
+                # Unknown identity must not authorize rollback deletion, even with a pinned fd.
+                unverified = next(reversed(outputs))
+                self.assertEqual({p.name for p in self.destination.iterdir()}, {unverified})
+                (self.destination / unverified).unlink()
+            else:
+                self.assertEqual(list(self.destination.iterdir()), [])
+
+        for operation in ('open', 'fstat', 'fdopen', 'write'):
+            for fail_at in (1, 3, 4):
+                with self.subTest(operation=operation, fail_at=fail_at):
+                    exercise(operation, fail_at)
+
+    def test_output_close_failure_preserves_original_and_closes_remaining_fds(self):
+        stem = self.real_capture()
+
+        def exercise(fail_write):
+            module = self.load_exporter()
+            tracking, outputs = self.track_output_fds(module)
+            real_close = module.os.close
+            close_error = OSError(errno.EIO, 'injected descriptor close failure')
+            closed = []
+
+            def close(fd):
+                real_close(fd)
+                if fd in {item[0] for item in outputs.values()}:
+                    closed.append(fd)
+                    if len(closed) == 1:
+                        raise close_error
+
+            with tracking, (self.failing_writes(module, 4) if fail_write else nullcontext()), \
+                 mock.patch.object(module.os, 'close', close), self.assertRaises(OSError) as caught:
+                module.export(str(self.root), stem, str(self.destination))
+            self.assertEqual(len(outputs), 4)
+            self.assertEqual(len(closed), 4)
+            self.assertEqual(set(closed), {item[0] for item in outputs.values()})
+            self.assert_output_fds_closed(outputs)
+            if fail_write:
+                self.assertEqual(str(caught.exception), 'injected write failure')
+                self.assertIn('export output descriptor close failed', caught.exception.__notes__)
+                self.assertEqual(list(self.destination.iterdir()), [])
+            else:
+                self.assertIs(caught.exception, close_error)
+                self.assertEqual({p.name for p in self.destination.iterdir()}, set(outputs))
+
+        for fail_write in (True, False):
+            with self.subTest(fail_write=fail_write):
+                exercise(fail_write)
+
+    def test_output_inode_stays_pinned_after_unlink_recreate_through_rollback(self):
+        stem = self.real_capture()
+        module = self.load_exporter()
+        first = stem + '.json'
+        tracking, outputs = self.track_output_fds(module)
+        observed = []
+        real_stat = module.os.stat
+
+        def observe():
+            info = os.fstat(outputs[first][0])
+            observed.append(((info.st_dev, info.st_ino), info.st_nlink))
+
+        def replace_first():
+            (self.destination / first).unlink()
+            (self.destination / first).write_text('replacement')
+            observe()
+
+        def rollback_stat(name, *args, **kwargs):
+            if name == first and kwargs.get('dir_fd') is not None:
+                try:
+                    observe()
+                except OSError as error:
+                    observed.append(error.errno)
+            return real_stat(name, *args, **kwargs)
+
+        with tracking, self.failing_writes(module, 2, replace_first), \
+             mock.patch.object(module.os, 'stat', rollback_stat), self.assertRaises(OSError) as caught:
+            module.export(str(self.root), stem, str(self.destination))
+        self.assertEqual(str(caught.exception), 'injected write failure')
+        self.assertEqual(observed, [(outputs[first][1], 0)] * 2)
+        self.assert_output_fds_closed(outputs)
+        self.assertEqual({p.name for p in self.destination.iterdir()}, {first})
+        self.assertEqual((self.destination / first).read_text(), 'replacement')
 
     def test_write_failure_on_later_file_rolls_back_all_created_files(self):
         stem = self.real_capture()

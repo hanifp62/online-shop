@@ -1,0 +1,42 @@
+{
+  "task": "CICD-PUB-20261022",
+  "recorded_at": "2026-10-22T05:18:38.544164+00:00",
+  "base_commit": "ac28d1e30e25c1092bedb230713121d123be663e",
+  "initial_run": "https://github.com/hanifp62/online-shop/actions/runs/39722123468",
+  "source_sha256": {
+    "scripts/amadis/export_evidence.py": "e039cf7a3748ad34d31c15d2b37320592e92a54cc784931c14d667f03719ad0e",
+    "scripts/ci/run_python_tests.py": "6f1bfe65cb0475383e93affb7d922cf9f3f011766778cc356be62b17a367fd5e",
+    "tests/python/test_amadis_export.py": "e46e6850462364bf4ba2f8cd60306bcd4607738aef690ba4199fb1418ad5ea98",
+    "tests/python/test_ci_result_gates.py": "8ec012dee81328e8dc384454640a81c43e08ce256a2b06e7ff7d41c5ea7319aa"
+  },
+  "local_validation": {
+    "python314": {
+      "tests": 347,
+      "skipped": 0,
+      "exit": 0,
+      "metadata": "python314-publish-r1.json"
+    },
+    "python312_macos": {
+      "status": "FAIL",
+      "errors": 13,
+      "cause": "os.waitid unavailable; supervisor capability guard preserved",
+      "metadata": "python312-publish-r1.json"
+    },
+    "node": {
+      "tests": 485,
+      "exit": 0,
+      "metadata": "node-publish-r1.json"
+    }
+  },
+  "independent_review": {
+    "reporter": "9092e8f9-4a5b-4f51-9275-17540868732b",
+    "exporter": "5e073663-8519-4d5e-a988-551b5d0e589a",
+    "decision": "APPROVE scoped source"
+  },
+  "limits": [
+    "Initial Linux failure identity not recoverable from historical ordinal",
+    "Inode ownership defect independently reproduced, not asserted as proven historical CI cause",
+    "New Linux run pending",
+    "No deployment or protection mutation"
+  ]
+}

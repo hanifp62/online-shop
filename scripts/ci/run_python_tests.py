@@ -5,8 +5,10 @@ CLI tanpa argumen. Stdout satu JSON {status, counts, reasons, cases}; exit 1
 untuk hasil ditolak/error, 2 untuk argumen invalid. Semua skip (termasuk
 FontTools), expected failure, unexpected success, dan suite kosong ditolak.
 Identitas/diagnostik asli tidak keluar: kasus memakai ordinal, log dibuang.
+Kasus menambah test_index: posisi daun discovery (1-based), null bila tidak unik/terpetakan.
 """
 from contextlib import contextmanager, redirect_stderr, redirect_stdout
+import gc
 import json
 import os
 from pathlib import Path
@@ -42,35 +44,65 @@ def rejected(reason):
     return {'status': 'FAIL', 'counts': None, 'reasons': [reason], 'cases': []}
 
 
+def iter_tests(suite):
+    """Urutan daun discovery depth-first, sebelum TestSuite membersihkan isinya."""
+    if isinstance(suite, unittest.BaseTestSuite):
+        for test in suite:
+            yield from iter_tests(test)
+    else:
+        yield suite
+
+
+def _run_tests(suite, log):
+    """Frame terpisah: referensi suite/result lepas sebelum output dipulihkan."""
+    try:
+        loader = unittest.TestLoader()
+        if suite is None:
+            suite = loader.discover(str(ROOT / 'tests/python'))
+        planned = suite.countTestCases()
+        # Simpan referensi agar cleanup suite tidak memungkinkan id objek dipakai ulang.
+        discovered = list(iter_tests(suite))
+        test_indices = {}
+        for index, test in enumerate(discovered, 1):
+            identity = id(test)
+            test_indices[identity] = None if identity in test_indices else index
+        result = unittest.TextTestRunner(stream=log, verbosity=0).run(suite)
+        outcomes = {
+            'failures': result.failures, 'errors': result.errors, 'skipped': result.skipped,
+            'expected_failures': result.expectedFailures,
+            'unexpected_successes': result.unexpectedSuccesses,
+        }
+        counts = {'tests': result.testsRun, 'import_errors': len(loader.errors)}
+        counts.update({name: len(entries) for name, entries in outcomes.items()})
+        reasons = [name.upper() for name, value in counts.items() if name != 'tests' and value]
+        if not result.testsRun:
+            reasons.append('NO_TESTS')
+        if result.testsRun != planned or result.shouldStop:
+            reasons.append('INCOMPLETE_SUITE')
+        cases = []
+        for name, entries in outcomes.items():
+            for entry in entries:
+                test = entry if name == 'unexpected_successes' else entry[0]
+                if isinstance(test, unittest.case._SubTest):
+                    test = test.test_case
+                cases.append({'id': 'case-' + str(len(cases) + 1), 'reason': name.upper(),
+                              'test_index': test_indices.get(id(test))})
+        return {'status': 'FAIL' if reasons else 'PASS', 'counts': counts,
+                'reasons': reasons, 'cases': cases}
+    except BaseException:
+        # SystemExit(0), interrupt, discovery, dan formatting error juga bukan sukses.
+        return rejected('RUNNER_ERROR')
+
+
 def run_tests(suite=None):
     """Suite injection hanya untuk regression sintetis; default selalu discovery."""
     try:
         with quiet_output() as log:
-            loader = unittest.TestLoader()
-            if suite is None:
-                suite = loader.discover(str(ROOT / 'tests/python'))
-            planned = suite.countTestCases()
-            result = unittest.TextTestRunner(stream=log, verbosity=0).run(suite)
-            outcomes = {
-                'failures': result.failures, 'errors': result.errors, 'skipped': result.skipped,
-                'expected_failures': result.expectedFailures,
-                'unexpected_successes': result.unexpectedSuccesses,
-            }
-            counts = {'tests': result.testsRun, 'import_errors': len(loader.errors)}
-            counts.update({name: len(entries) for name, entries in outcomes.items()})
-            reasons = [name.upper() for name, value in counts.items() if name != 'tests' and value]
-            if not result.testsRun:
-                reasons.append('NO_TESTS')
-            if result.testsRun != planned or result.shouldStop:
-                reasons.append('INCOMPLETE_SUITE')
-            cases = []
-            for name, entries in outcomes.items():
-                for _ in entries:
-                    cases.append({'id': 'case-' + str(len(cases) + 1), 'reason': name.upper()})
-            return {'status': 'FAIL' if reasons else 'PASS', 'counts': counts,
-                    'reasons': reasons, 'cases': cases}
+            summary = _run_tests(suite, log)
+            # Siklus exception/traceback dapat menahan frame helper setelah ia kembali.
+            gc.collect()
+            return summary
     except BaseException:
-        # SystemExit(0), interrupt, discovery, dan formatting error juga bukan sukses.
         return rejected('RUNNER_ERROR')
 
 
