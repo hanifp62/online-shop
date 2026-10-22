@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "checks": [
+    "catalog-native",
+    "catalog-spa-pagination-history",
+    "catalog-repeated-filters",
+    "catalog-locale-head",
+    "catalog-dialog-cart",
+    "catalog-mobile",
+    "auth-native-post-errors",
+    "auth-other-pages",
+    "catalog-delayed-chunk-draft",
+    "entry-failure-fallback",
+    "no-js-and-explicit-rollback",
+    "admin-private-history",
+    "account-native-update-export-logout",
+    "reset-native-flash-validation",
+    "customer-totp-native-challenge",
+    "admin-totp-native-challenge",
+    "console-clean"
+  ],
+  "consoleErrors": 0,
+  "supervisorExit": 0,
+  "cleanup": "PASS"
+}

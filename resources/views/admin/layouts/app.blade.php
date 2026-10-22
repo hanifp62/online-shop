@@ -11,10 +11,16 @@
     <link href="https://fonts.bunny.net/css?family=bodoni-moda:400,400i,500,500i,600,700,900&family=manrope:300,400,500,600,700&display=swap" rel="stylesheet">
     <script type="application/json" id="zafira-admin-table-copy">@json(__('admin_ui.table_js'))</script>
     <script type="application/json" id="zafira-app-copy">@json(__('shop_ui.app_js'))</script>
-    @vite(['resources/css/app.css', 'resources/css/admin.css', 'resources/js/app.js'])
+    @if (isset($page))
+        @viteReactRefresh
+        @vite(['resources/css/app.css', 'resources/css/admin.css', 'resources/js/inertia.jsx'])
+    @else
+        @vite(['resources/css/app.css', 'resources/css/admin.css', 'resources/js/app.js'])
+    @endif
     @yield('styles')
 </head>
 <body class="admin-console">
+<x-private-page-lifecycle />
 <a class="skip-link" href="#main-content">{{ __('admin_ui.common.skip') }}</a>
 <header class="admin-work-header">
     <div class="admin-work-top">
@@ -38,11 +44,18 @@
         @if (auth('admin')->user()->isAdmin())
         <a href="{{ route('admin.auth-events.index') }}"@if ($activePage === 'auth-events') aria-current="page"@endif>{{ __('admin_ui.common.auth_log') }}</a>
         @endif
+        @if (in_array($activePage, ['auth-events', 'operations-summary'], true) && auth('admin')->user()->isAdmin() && app(\App\Support\FeatureFlags::class)->enabled('admin_ops_summary', (string) auth('admin')->id()))
+        <a href="{{ route('admin.reports.operations-summary') }}"@if ($activePage === 'operations-summary') aria-current="page"@endif lang="id">Ringkasan operasional</a>
+        @endif
         <a href="{{ route('home') }}">{{ __('admin_ui.common.view_store') }}</a>
     </nav>
 </header>
 <main id="main-content" class="admin-work-main" tabindex="-1">
-    @yield('content')
+    @if (isset($page))
+        <x-react-root :page="$page">@yield('content')</x-react-root>
+    @else
+        @yield('content')
+    @endif
 </main>
 @yield('after-content')
 </body>

@@ -1,0 +1,213 @@
+[
+  {
+    "run": "browser-r1",
+    "failedStage": "catalog-repeated-filters",
+    "sourceLine": 65,
+    "consoleErrors": 0,
+    "published_success_summary": false,
+    "flow_status": "FAIL",
+    "supervisor_exit": 1
+  },
+  {
+    "run": "browser-r2",
+    "failedStage": "catalog-repeated-filters",
+    "sourceLine": 72,
+    "consoleErrors": 0,
+    "published_success_summary": false,
+    "flow_status": "FAIL",
+    "supervisor_exit": 1
+  },
+  {
+    "run": "browser-r3",
+    "consoleErrors": 0,
+    "published_success_summary": true,
+    "flow_status": "PASS",
+    "supervisor_exit": 0
+  },
+  {
+    "run": "browser-r4",
+    "failedStage": "admin-private-history",
+    "sourceLine": 189,
+    "consoleErrors": 0,
+    "published_success_summary": false,
+    "flow_status": "FAIL",
+    "supervisor_exit": 1
+  },
+  {
+    "run": "browser-r5",
+    "failedStage": "catalog-spa-pagination-history",
+    "sourceLine": 49,
+    "consoleErrors": 0,
+    "published_success_summary": false,
+    "flow_status": "FAIL",
+    "supervisor_exit": 1
+  },
+  {
+    "run": "browser-r6",
+    "consoleErrors": 0,
+    "published_success_summary": false,
+    "flow_status": "PASS",
+    "supervisor_exit": 1
+  },
+  {
+    "run": "browser-r7",
+    "consoleErrors": 0,
+    "published_success_summary": true,
+    "flow_status": "PASS",
+    "supervisor_exit": 0
+  },
+  {
+    "run": "browser-r8",
+    "failedStage": "account-native-update-export-logout",
+    "sourceLine": 197,
+    "consoleErrors": 0,
+    "published_success_summary": false,
+    "flow_status": "FAIL",
+    "supervisor_exit": 1
+  },
+  {
+    "run": "browser-r9",
+    "failedStage": "account-native-update-export-logout",
+    "sourceLine": 18,
+    "consoleErrors": 0,
+    "published_success_summary": false,
+    "flow_status": "FAIL",
+    "supervisor_exit": 1
+  },
+  {
+    "run": "browser-r10",
+    "failedStage": "account-native-update-export-logout",
+    "sourceLine": 18,
+    "consoleErrors": 0,
+    "actualNumber": null,
+    "expectedNumber": null,
+    "frames": [
+      {
+        "file": "acceptance_react_security.cjs",
+        "line": 18
+      },
+      {
+        "file": "acceptance_react_security.cjs",
+        "line": 60
+      },
+      {
+        "file": "acceptance_react.cjs",
+        "line": 197
+      }
+    ],
+    "published_success_summary": false,
+    "flow_status": "FAIL",
+    "supervisor_exit": 1
+  },
+  {
+    "run": "browser-r11",
+    "failedStage": "account-native-update-export-logout",
+    "sourceLine": 23,
+    "consoleErrors": 0,
+    "actualNumber": null,
+    "expectedNumber": null,
+    "frames": [
+      {
+        "file": "acceptance_react_security.cjs",
+        "line": 23
+      },
+      {
+        "file": "acceptance_react_security.cjs",
+        "line": 53
+      },
+      {
+        "file": "acceptance_react.cjs",
+        "line": 197
+      }
+    ],
+    "published_success_summary": false,
+    "flow_status": "FAIL",
+    "supervisor_exit": 1
+  },
+  {
+    "run": "browser-r12",
+    "failedStage": "account-native-update-export-logout",
+    "sourceLine": 33,
+    "consoleErrors": 0,
+    "actualNumber": null,
+    "expectedNumber": null,
+    "frames": [
+      {
+        "file": "acceptance_react_security.cjs",
+        "line": 33
+      },
+      {
+        "file": "acceptance_react_security.cjs",
+        "line": 69
+      },
+      {
+        "file": "acceptance_react.cjs",
+        "line": 197
+      }
+    ],
+    "navigation": [
+      {
+        "method": "POST",
+        "status": 200,
+        "navigation": true,
+        "action": true,
+        "mainFrame": true
+      }
+    ],
+    "published_success_summary": false,
+    "flow_status": "FAIL",
+    "supervisor_exit": 1
+  },
+  {
+    "run": "browser-r13",
+    "failedStage": "account-native-update-export-logout",
+    "sourceLine": 35,
+    "consoleErrors": 0,
+    "actualNumber": null,
+    "expectedNumber": null,
+    "frames": [
+      {
+        "file": "acceptance_react_security.cjs",
+        "line": 35
+      },
+      {
+        "file": "acceptance_react_security.cjs",
+        "line": 71
+      },
+      {
+        "file": "acceptance_react.cjs",
+        "line": 197
+      }
+    ],
+    "navigation": [
+      {
+        "method": "POST",
+        "status": 200,
+        "navigation": true,
+        "action": true,
+        "mainFrame": true,
+        "fromWorker": true,
+        "hasLocation": false,
+        "redirected": false,
+        "inertia": false
+      }
+    ],
+    "published_success_summary": false,
+    "flow_status": "FAIL",
+    "supervisor_exit": 1
+  },
+  {
+    "run": "browser-r14",
+    "consoleErrors": 0,
+    "published_success_summary": true,
+    "flow_status": "PASS",
+    "supervisor_exit": 0
+  },
+  {
+    "run": "browser-final",
+    "consoleErrors": 0,
+    "published_success_summary": true,
+    "flow_status": "PASS",
+    "supervisor_exit": 0
+  }
+]

@@ -2,6 +2,8 @@
 
 Selamat datang di indeks dokumentasi teknis dan produk untuk proyek e-commerce **ZAFIRA** (`online-shop`). Seluruh dokumen disusun secara sistematis, berbasis bukti (*evidence-driven*), dan saling terhubung (*traceable*).
 
+**Migrasi React/Inertia — milestone lokal 22 Oktober 2026:** React19.3.1 + Inertia React3.9.1/Laravel3.5.2 telah terintegrasi pada **11 komponen halaman**. PHP1.247pass+3engineexactskip, React110, Node495, Python373, nativebrowser17checks dan cleanup lulus. **Seluruh frontend masih PARTIAL**, belum commit/push atau run CI remote untuk migrasi ini. [Laporan cakupan, bukti, risiko dan halaman tersisa](05-quality/REACT_INERTIA_INTEGRATION_2026-10-22.md), [kontrak migrasi](04-implementation/REACT_INERTIA_MIGRATION.md), [evidence aman](05-quality/evidence-react-inertia-2026-10-22/). Status CI di paragraf berikut adalah baseline sebelum migrasi, bukan hasil diff baru.
+
 **CI sampai kandidat rilis LULUS — 22 Oktober 2026:** commit `baee7994fca44b054dc8d63ca826f0cbdccd6967` sudah dipush ke `main`; [run39766255281](https://github.com/hanifp62/online-shop/actions/runs/39766255281) menuntaskan kelima job (`quality`, `mysql`, `browser`, `release`, aggregate `php`) dengan success. PHP1.200pass+3skip engine exact yang kemudian **3/3pass di MySQL**, Node485pass, Python371pass/0skip; MySQL8.4.13 restore/cleanup dan browser nyata lulus. Kandidat7.880file tersedia dan verifikasi offline setelah unduh EXIT=0. [Laporan publikasi lengkap](05-quality/CI_CD_PUBLICATION_REPORT_2026-10-22.md), [bukti remote](05-quality/evidence-ci-remediation-2026-10-22/remote-baee799-success.json), dan [runbook](04-implementation/CI_CD_RELEASE_RUNBOOK.md). **Belum persetujuan produksi:** `main` belum protected; staging/promotion, operator/secret manager, daemon/alert, recovery operasional, TPS/load dan a11y menyeluruh tetap gate terpisah. Tidak ada deployment atau mutasi database operasional. Riwayat kegagalan dan batas macOS/Python3.12 tetap dicatat, bukan diubah menjadi PASS.
 
 **Riwayat perbaikan CI/CD lokal — 22 Oktober 2026, sebelum publikasi di atas:** [Laporan remediasi dan batas penerimaan](05-quality/CI_CD_REMEDIATION_REPORT_2026-10-22.md), [runbook rilis](04-implementation/CI_CD_RELEASE_RUNBOOK.md), dan [evidence](05-quality/evidence-ci-remediation-2026-10-22/). PHP **1.200 passed/3 skipped**, Node **485 passed**, Python **338 passed tanpa skip**, Pint383, build/lint/audit lulus. Browser nyata lokal + gate lulus: 76 produk, keyboard/fokus, tiga cart independen, checkout20+17 dari stok37 dan cleanup. Scanner/report fail-closed, workflow quality/MySQL/browser/candidate/aggregate serta readiness dan proteksi berizin telah dibuat. **Belum CI/CD produksi:** belum commit/push/run GitHub baru, protection aktif, MySQL/restore Linux, candidate nyata, staging, alert dan recovery. Tidak ada deployment atau mutasi DB operasional.
@@ -69,6 +71,7 @@ docs/
 │   ├── ACCEPTANCE_CRITERIA.md                # Rincian kriteria penerimaan per fitur
 │   ├── SAFE_RELEASE_R39.md                   # R-39: flag, cohort, rollback & migrasi terkendali
 │   ├── CI_CD_RELEASE_RUNBOOK.md              # Gate CI, artefak, staging, readiness dan recovery
+│   ├── REACT_INERTIA_MIGRATION.md             # Kontrak migrasi, renderer, rollback dan cakupan
 │   ├── R44_BROWSER_QA_PLAN.md                # Rencana QA browser tabel admin R-44
 │   ├── R44_SESSION_LEDGER.md                 # Ledger sesi dan rekonsiliasi bukti R-44
 │   ├── STOREFRONT_TEXT_INVENTORY.md          # Inventaris teks permukaan toko (fitur 38.1)
@@ -86,6 +89,7 @@ docs/
 │   ├── CI_CD_END_TO_END_AUDIT_2026-10-22.md  # Baseline remote dan gap CI/CD
 │   ├── CI_CD_REMEDIATION_REPORT_2026-10-22.md # Perbaikan, bukti lokal dan gate eksternal
 │   ├── CI_CD_PUBLICATION_REPORT_2026-10-22.md # Push main, CI Linux hijau dan kandidat terverifikasi
+│   ├── REACT_INERTIA_INTEGRATION_2026-10-22.md # Milestone frontend lokal; seluruh migrasi masih partial
 │   ├── QUALITY_REVIEW.md                     # Evaluasi kualitas lintas lapisan & verifikasi hasil
 │   ├── PROJECT_READINESS_REPORT.md           # Laporan kesiapan proyek & status deliverable
 │   ├── COUNCIL_AUDIT_REPORT.md                # Evaluasi silang dewan, koreksi fase, dan backlog remediasi

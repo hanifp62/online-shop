@@ -1,0 +1,21 @@
+{
+  "evidence_kind": "execution_transcript_summary",
+  "executed_on": "2026-10-22",
+  "note": "Counts and exit codes transcribed from commands actually executed by the integrator; not a substitute for the machine-generated PHP/browser summaries. No raw logs or credentials are included.",
+  "checks": [
+    { "command": "node --test", "exit": 0, "passed": 495, "skipped": 0 },
+    { "command": "npm run test:react", "exit": 0, "files": 7, "passed": 110 },
+    { "command": "scratch/ci-validation/venv/bin/python scripts/ci/run_python_tests.py", "exit": 0, "passed": 373, "skipped": 0, "errors": 0, "environment": "macOS Python 3.14" },
+    { "command": "npm run build", "exit": 0, "react_entry_kb": 351.66, "react_entry_gzip_kb": 110.26 },
+    { "command": "vendor/bin/pint --test", "exit": 0, "files": 397 },
+    { "command": "scratch/ci-validation/actionlint .github/workflows/ci.yml", "exit": 0 },
+    { "command": "python3 scripts/ci/security_scan.py --mode secrets", "exit": 0 },
+    { "command": "python3 scripts/ci/security_scan.py --mode pii", "exit": 0 },
+    { "command": "git --no-pager diff --check", "exit": 0 },
+    { "command": "composer audit --locked --no-interaction", "exit": 0, "advisories": 0 },
+    { "command": "npm audit --audit-level=high", "exit": 0, "vulnerabilities": 0 },
+    { "command": "composer validate --strict --no-check-publish", "exit": 1, "reason": "Exact-version warnings for Dompdf and Inertia; intentional compatibility pins, not invalid schema." },
+    { "command": "composer validate --no-check-publish", "exit": 0, "warnings": "Exact-version pins retained." }
+  ],
+  "not_executed": ["new GitHub Actions run for this diff", "new MySQL/InnoDB engine validation", "staging deployment", "production deployment", "load/TPS benchmark", "comprehensive assistive-technology audit"]
+}

@@ -1,4 +1,5 @@
 // FR-REM-007: progressive manual refresh; the SSR snapshot stays in the DOM until success.
+const bindings = new WeakMap();
 export function initOperationsSummary({
     document = globalThis.document,
     fetch = globalThis.fetch,
@@ -10,11 +11,23 @@ export function initOperationsSummary({
     const report = document?.querySelector("[data-ops-report]");
     const status = document?.querySelector("[data-ops-refresh-status]");
     if (!form || !report || !status || !fetch) return null;
+    const root = form.closest?.('[data-react-fallback]');
+    if (root?.dataset.reactBoot === 'ready') return null;
+    if (bindings.has(form)) return bindings.get(form);
     const button = form.querySelector('[type="submit"]');
     let busy = false;
+    let disposed = false;
+    let cancelRefresh;
+
+    function dispose() {
+        disposed = true;
+        form.removeEventListener('submit', onSubmit);
+        root?.removeEventListener('zafira:react-claim', dispose);
+        cancelRefresh?.();
+    }
 
     async function refresh(url) {
-        if (busy) return false;
+        if (busy || disposed) return false;
         const target = new URL(url, document.location.href);
         const endpoint = new URL(form.action, document.location.href);
         if (target.origin !== endpoint.origin || target.pathname !== endpoint.pathname) return false;
@@ -27,6 +40,9 @@ export function initOperationsSummary({
         try {
             // The deadline includes headers AND the response body. A late body cannot commit.
             const result = await Promise.race([
+                new Promise((_, reject) => {
+                    cancelRefresh = () => { controller.abort(); reject(new Error('react_claim')); };
+                }),
                 (async () => {
                     const response = await fetch(target.href, {
                         method: "GET", credentials: "same-origin", cache: "no-store",
@@ -49,32 +65,41 @@ export function initOperationsSummary({
                     }, timeoutMs);
                 }),
             ]);
+            if (disposed) return false;
             report.replaceChildren(...result.nodes);
             report.dataset.asOf = result.asOf;
             document.querySelector("[data-ops-validation-errors]")?.remove();
             status.textContent = `Pembacaan diperbarui: ${result.asOf}. Cakupan dan periode tercantum pada laporan.`;
             return true;
         } catch {
+            if (disposed) return false;
             status.textContent = report.dataset.asOf
                 ? `Data lama — penyegaran gagal. Snapshot ${report.dataset.asOf} tetap ditampilkan; filter baru belum diterapkan. Periksa tanggal atau koneksi, lalu coba lagi. Jika sesi berakhir, masuk kembali.`
                 : "Ringkasan belum tersedia. Periksa tanggal atau koneksi, lalu coba lagi. Jika sesi berakhir, masuk kembali.";
             return false;
         } finally {
             timers.clearTimeout(timer);
-            report.setAttribute("aria-busy", "false");
-            button.disabled = false;
+            cancelRefresh = null;
+            if (!disposed) {
+                report.setAttribute("aria-busy", "false");
+                button.disabled = false;
+            }
             busy = false;
         }
     }
 
-    form.addEventListener("submit", (event) => {
+    function onSubmit(event) {
         event.preventDefault();
         const url = new URL(form.action, document.location.href);
         const FormData = document.defaultView.FormData;
         url.search = new URLSearchParams(new FormData(form)).toString();
         void refresh(url.href);
-    });
-    return { refresh };
+    }
+    form.addEventListener('submit', onSubmit);
+    root?.addEventListener('zafira:react-claim', dispose, { once: true });
+    const api = { refresh };
+    bindings.set(form, api);
+    return api;
 }
 
 if (typeof document !== "undefined") initOperationsSummary();

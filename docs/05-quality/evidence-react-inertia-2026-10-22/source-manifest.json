@@ -1,0 +1,307 @@
+{
+  "baseline": "14bdfab95cbb866ca8b6702741425a73fab32329",
+  "recorded_at": "2026-10-22T16:19:29.493713+00:00",
+  "scope": "changed implementation, tests, dependency and configuration files; docs and dotenv excluded",
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "31fe93f5fff6f749a81d0770b41b2c689d9235b1c2b69f3462ca77144d4acbe8"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "ebf09d4c5fbf59e29e7f95e1eeef43c34fa99c0bf98cfdfa25bec3cd25ff419c"
+    },
+    {
+      "path": "app/Http/Controllers/AdminAuthController.php",
+      "sha256": "c23382be02a11327dafd666dfdefcdfb20555d0d2b2676e2edbc0f5d635b040a"
+    },
+    {
+      "path": "app/Http/Controllers/AdminAuthEventController.php",
+      "sha256": "a0752fb47b1e5384ee77b09336d2fe1740a242398671828222f8a52686d47783"
+    },
+    {
+      "path": "app/Http/Controllers/AdminOperationsSummaryController.php",
+      "sha256": "c41dcd486fad7efa06e5780590d0445074c97b8e40c496916d8424d5a8ce2378"
+    },
+    {
+      "path": "app/Http/Controllers/AdminTotpController.php",
+      "sha256": "1f161c9b9dd1349584a8e531d3b53fbed0ddc1406f6e4da1bc00880d55ab42ed"
+    },
+    {
+      "path": "app/Http/Controllers/AuthController.php",
+      "sha256": "e7e30c29386ce2f36d4310112e1a4e4ce6724c897d48e8f29e48cc92e2e6bfa8"
+    },
+    {
+      "path": "app/Http/Controllers/CatalogController.php",
+      "sha256": "a66d74a7e79e25796e7fe086fb37b525df8f64dd7cf3e1593a638da4118efa89"
+    },
+    {
+      "path": "app/Http/Controllers/CustomerTotpController.php",
+      "sha256": "22d3d1ffbf6543d4d5d2bc84971fd971e82f8a5a52687810eb1e122eac5914b3"
+    },
+    {
+      "path": "app/Http/Controllers/PasswordResetController.php",
+      "sha256": "d5dd2387a2493740377bc4d2f6181d35c3ad913f86dff132ec6cd980db928868"
+    },
+    {
+      "path": "app/Http/Controllers/ProfileController.php",
+      "sha256": "6d9fc2c1b290546f8601ee0a794dbc9cd500d6e7bbd08507e50f32dd5ebf7148"
+    },
+    {
+      "path": "app/Http/Middleware/HandleInertiaRequests.php",
+      "sha256": "b23917e989239e46ea3a0bd8d3ada00df86fb4478bb3249f2ff2569b2718bf3a"
+    },
+    {
+      "path": "app/Support/AccountPageProps.php",
+      "sha256": "9eeff5f7c3a3e4b770787fcb2dada278e0c084e32862b13e624699ddb928713c"
+    },
+    {
+      "path": "app/Support/AdminReadPageProps.php",
+      "sha256": "e9e258a37912177b25dbf34faa3923287115ca91422453a4b20593b15d639366"
+    },
+    {
+      "path": "app/Support/AuthPageProps.php",
+      "sha256": "237c2ec5f0d27d8ce795f9aa2b90ba4575463e81c134209f7558d2f218f3d929"
+    },
+    {
+      "path": "app/Support/AuthSecurityPageProps.php",
+      "sha256": "5488ef114e2e84f2c1bf676f61d3f0f9bd6d0ae62c49a913b3d6b7abf592bbcc"
+    },
+    {
+      "path": "app/Support/CatalogPageProps.php",
+      "sha256": "b355245342615410fccb834cc68c093d7fdfbf0f540b2f06e57e3d06e12838c2"
+    },
+    {
+      "path": "app/Support/FrontendPage.php",
+      "sha256": "72828385a2525b782d02990e67086779736d0be78b797053325596921446536f"
+    },
+    {
+      "path": "bootstrap/app.php",
+      "sha256": "21832b23957aa8f341b5839c080967dccc7ae9d92a589be1af9ff7e227640373"
+    },
+    {
+      "path": "composer.json",
+      "sha256": "5e468b1b9f5124d4ab3c850c0faf24e6cf9a2d3756ca55f3e4dcbd37f41b4d34"
+    },
+    {
+      "path": "composer.lock",
+      "sha256": "8991219ae063c712919f87841c2ebdc664363235474e7058e5db7e7404ac20f6"
+    },
+    {
+      "path": "config/frontend.php",
+      "sha256": "e0188db6e901c2d982a268285cae21bf39bcbd05a7ab3af97e86b2a604ac5a42"
+    },
+    {
+      "path": "config/inertia.php",
+      "sha256": "909518353ce367bed4237dfc19111cfe5b7699aad5f5a7ab7da69f5f8e70fb58"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "40c872d121fca742a486f3a260c8ee83dd2d9b21f92948a7b0f98f3faf599253"
+    },
+    {
+      "path": "package.json",
+      "sha256": "894ea7b1dc81f8ca7238d02b4034aa923f912b76c42f8945f43bac34987494c6"
+    },
+    {
+      "path": "public/js/admin-operations-summary.js",
+      "sha256": "0a75be4ccd3988ef816a76dfc879917ed7edae5bde5b50ea942bdcca3222f6f7"
+    },
+    {
+      "path": "resources/js/components/AuthForm.jsx",
+      "sha256": "4f4147640adcf0e54f43b3b0429327da05c45e9bdd916adaf162f6016e18a4bf"
+    },
+    {
+      "path": "resources/js/components/AuthSecurity.jsx",
+      "sha256": "503e34a8c17dbb900494b3045926fee2a08547aa115ee2d84969eb1e03ea1bcf"
+    },
+    {
+      "path": "resources/js/inertia.jsx",
+      "sha256": "9cdabe157ff3d51cfb5d0014c2ed11628447cbb4510b36d014d17a2f9b092b86"
+    },
+    {
+      "path": "resources/js/lib/catalog.js",
+      "sha256": "aada7a6fb411f41a93548c2ce0220bfcfdfe42172cd1592defe6860d9084513d"
+    },
+    {
+      "path": "resources/js/pages/Account/Show.jsx",
+      "sha256": "a0fd132178c2396da93e8c0252454bd766922fcd8b0fa716f0e8f13cdc9ee5aa"
+    },
+    {
+      "path": "resources/js/pages/Admin/AuthEvents.jsx",
+      "sha256": "c65b6ff04ebe88b9a9703ddb8d8c5039e7b41189adcf0ffe78d53d6f7e3a187d"
+    },
+    {
+      "path": "resources/js/pages/Admin/Login.jsx",
+      "sha256": "e8b449cd7f23eb00a83e4de6da90cab79fe5ddda11603d68b26677461afcaa30"
+    },
+    {
+      "path": "resources/js/pages/Admin/OperationsSummary.jsx",
+      "sha256": "4ea81f94f0abebb9a8f0db00a312e163e551a2063ba8c5e130749b77fcbae810"
+    },
+    {
+      "path": "resources/js/pages/Admin/TotpChallenge.jsx",
+      "sha256": "11dd029f66e4dec55fa2f0cb689b26e2f2af2d08dc048c1d0e707929f8d1c45c"
+    },
+    {
+      "path": "resources/js/pages/Auth/ForgotPassword.jsx",
+      "sha256": "7e1f9694dc541a1d53baf8361946be8a4b20d93fe42f276ad86f2def44ae212b"
+    },
+    {
+      "path": "resources/js/pages/Auth/Login.jsx",
+      "sha256": "80fcf753a733d2bdd107ff3d309a260f130bedffcc1a79cc70563eb2e8fcb405"
+    },
+    {
+      "path": "resources/js/pages/Auth/Register.jsx",
+      "sha256": "172c2e164a0ec7c09c589e4377ae695c11c62aa4d155db40ba40db65a50a2745"
+    },
+    {
+      "path": "resources/js/pages/Auth/ResetPassword.jsx",
+      "sha256": "bc475b2858557e33b5680d7493c651a5b38fc81806e3b404e91d330946109d9c"
+    },
+    {
+      "path": "resources/js/pages/Auth/TotpChallenge.jsx",
+      "sha256": "7e2dc62796c9fa7e45e03cffba26a4b0f6a1ec50cc450cf77b2e3a034ccf5a89"
+    },
+    {
+      "path": "resources/js/pages/Catalog/Index.jsx",
+      "sha256": "45183017a5eb83690adfa56131ac8d67f143cc6734a19f6179ec425e9475964f"
+    },
+    {
+      "path": "resources/views/account/show.blade.php",
+      "sha256": "b2c248718f465209acafcccc4cd2a50c46c6e7e8df2f7ece26db5d84077427fb"
+    },
+    {
+      "path": "resources/views/admin/auth-events.blade.php",
+      "sha256": "78464b92550bcfecd27ccab18a21c7e2424b38f6b79818121e271eaec10c6a02"
+    },
+    {
+      "path": "resources/views/admin/layouts/app.blade.php",
+      "sha256": "ee1dfe47a5a04eadbf62edb17a1737f33251dd5862a4081d623327a6a180b866"
+    },
+    {
+      "path": "resources/views/admin/login.blade.php",
+      "sha256": "5a6a36e18d24f549598ae5c641e3de3952ccdbf7d3707380cce7cbeb64043744"
+    },
+    {
+      "path": "resources/views/admin/totp.blade.php",
+      "sha256": "626eafe65857a3780cf85f8e6cb1c73c409534a5b952a63fb34f13ce6852c530"
+    },
+    {
+      "path": "resources/views/auth/login.blade.php",
+      "sha256": "46371f6c4d3443f96947ad1f966fbffa46fc8b8f4ed32f0d344bf029be974f54"
+    },
+    {
+      "path": "resources/views/auth/password-email.blade.php",
+      "sha256": "a8fdd7e2664c640320c5f5688e810871901a717bcda406326e8bf992e462798d"
+    },
+    {
+      "path": "resources/views/auth/password-reset.blade.php",
+      "sha256": "84f3f054ef28963651766e06c42976e7e07540863c7ebf062862d32f8487becb"
+    },
+    {
+      "path": "resources/views/auth/register.blade.php",
+      "sha256": "7a6dfee0ca61197de444e9e9c35fc90113ce4b1298297ca9fbc83ccbb29d8a7c"
+    },
+    {
+      "path": "resources/views/auth/totp.blade.php",
+      "sha256": "e670e017cd0933c4731ca01fb9f4f291bf02730310fdebdeb964d5d7c4a746d7"
+    },
+    {
+      "path": "resources/views/catalog/index.blade.php",
+      "sha256": "4280e92d31de5efe9f7ba9da92d61b8c7ca2dcd5d6df352630226389264208b4"
+    },
+    {
+      "path": "resources/views/components/private-page-lifecycle.blade.php",
+      "sha256": "b9c7d81581d808c8ed2444991b05a521e576c912d9c550db8915ca51c16f3904"
+    },
+    {
+      "path": "resources/views/components/react-root.blade.php",
+      "sha256": "b536d2be644d1af02fbb185629615dd7de9a91ab60418393e82c5015cd83e619"
+    },
+    {
+      "path": "scripts/amadis/acceptance_react.cjs",
+      "sha256": "39fdacaa7cbf176e24419835d90584632c0ac6af4fe681894c2f0d2666745f1b"
+    },
+    {
+      "path": "scripts/amadis/acceptance_react.sh",
+      "sha256": "2ec44c3981c7ab5d2ff8cdfeec53d3164c49119aa0431c4b79d25e63dc17f7cf"
+    },
+    {
+      "path": "scripts/amadis/acceptance_react_security.cjs",
+      "sha256": "ef87c2e849849d56bb6d0072d81fe13283595e1856fed29010d4c0f156be4bdb"
+    },
+    {
+      "path": "scripts/amadis/acceptance_server.py",
+      "sha256": "6d6c0b673959baa0707a8cc1c57e0f444e80deeedfe4909383e00d5c01ab8468"
+    },
+    {
+      "path": "tests/Feature/InertiaAccountTest.php",
+      "sha256": "0b9e8b04e81070458990bb6e8b2f64a29a8987d49bb2489b904ac44024cb746c"
+    },
+    {
+      "path": "tests/Feature/InertiaAdminReadTest.php",
+      "sha256": "f2cc1522b38afafcdc82263e014b9af3f25535f46fd6642995a85d9cc0815872"
+    },
+    {
+      "path": "tests/Feature/InertiaAuthSecurityTest.php",
+      "sha256": "f3fae79c1d90cac26ce3c296358ba7005a15e0e733014ec17b631ac3a1930c29"
+    },
+    {
+      "path": "tests/Feature/InertiaAuthTest.php",
+      "sha256": "f0b30b7884b8beecb860c9e7c377a1c9c47c8bc1fd4462ec7e2b8e2312a659a5"
+    },
+    {
+      "path": "tests/Feature/InertiaCatalogTest.php",
+      "sha256": "a1248c26fadceb37037c2b197ab67c9160fafe3ade5bc2851638ba97f650b544"
+    },
+    {
+      "path": "tests/admin-operations-summary.test.mjs",
+      "sha256": "4472e16c022810cc0f4176abb9a269ffbacd7092f29e23257a82c98a76f0d59f"
+    },
+    {
+      "path": "tests/ci-react-gate.test.mjs",
+      "sha256": "0f5cc74804faee01fbb81165ecc3a5d7e54c9903214b5d9a3d67e268c4629d57"
+    },
+    {
+      "path": "tests/python/test_remediation_gates.py",
+      "sha256": "7fb6ae1699e6329170516cb959293aa970ad023483860ef548ddec526879e82e"
+    },
+    {
+      "path": "tests/react/account.spec.jsx",
+      "sha256": "cf4af7a4b1baeeafae99153549888b73bab497916148e8ed281a505dbced5758"
+    },
+    {
+      "path": "tests/react/admin-read.spec.jsx",
+      "sha256": "0fd4b855860a55e9b2bc3fe90897fe6ee93227b3a91082d48e2ff2c8d6182db8"
+    },
+    {
+      "path": "tests/react/auth-security.spec.jsx",
+      "sha256": "1af79d4a4269bc793090b1c23e10d29b1e7556867cdb8f52231e121a9a63e876"
+    },
+    {
+      "path": "tests/react/auth.spec.jsx",
+      "sha256": "64444e31d9dce35571ddffb67b34297edada268baff6f4689a22c1bf28c3145e"
+    },
+    {
+      "path": "tests/react/catalog.spec.jsx",
+      "sha256": "f2c8aecbb68a782c7e870877dc2568c165577eb7bfe22e9d0279fca92ee0f5cf"
+    },
+    {
+      "path": "tests/react/frontend-handoff.spec.jsx",
+      "sha256": "9808ee85f0cc23cea33ba4c842044deb205a03c6bc4cadfaca0ae88608a0f376"
+    },
+    {
+      "path": "tests/react/private-lifecycle.spec.jsx",
+      "sha256": "5708ce29acd012640a194d3dbc572d184e9ac60b94c1787a21fce5b4ff5ac28a"
+    },
+    {
+      "path": "vite.config.js",
+      "sha256": "87672663c8f3e1800454f22c231a0afb8776983992a188dc633ca394dc868aa9"
+    },
+    {
+      "path": "vitest.config.js",
+      "sha256": "b6eea136b0feb27950422ce57713ecc43dfe84f0b5a616aafdd94cfd7f9e77a0"
+    }
+  ]
+}

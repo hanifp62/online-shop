@@ -5,7 +5,7 @@
 **Keputusan Arsitektur:** `COUNCIL_DECISIONS.md` #042  
 **Tanggal Inventarisasi:** 2026-10-20  
 **Pembaruan:** Lihat `STOREFRONT_TEXT_REWRITE_LOG.md` untuk perubahan E-01–E-13 pada tanggal yang sama.  
-**Total Berkas Tampilan:** 40 berkas Blade (`resources/views/**/*.blade.php`), diperbarui REM-20261021 dengan panel ringkasan operasional.
+**Total Berkas Tampilan:** 42 berkas Blade (`resources/views/**/*.blade.php`), diperbarui FE-MIG-20261022 dengan root fallback React dan lifecycle halaman privat. Inventaris JSX migrasi tercatat pada `REACT_INERTIA_MIGRATION.md`; teks native memakai kamus yang sama, bukan copy baru.
 
 ---
 
@@ -18,7 +18,7 @@
 | **3. Konsol Admin / Atelier** | 9 | Fungsional, efisien, padat data, netral | Artisan & Operator Atelier |
 | **4. Surel Transaksional** | 4 | Sopan-formal, hangat, bernomor referensi | Pembeli menunggu kabar |
 | **5. Halaman Galat (HTTP Errors)** | 7 | Membantu, tidak menyalahkan, solutif | Pengguna yang tersesat |
-| **6. Parsial, Komponen & Sitemap** | 5 | Modular, konsisten, terstandarisasi | Lintas permukaan |
+| **6. Parsial, Komponen & Sitemap** | 7 | Modular, konsisten, terstandarisasi | Lintas permukaan |
 
 ---
 
@@ -86,11 +86,13 @@ Semua teks kunci di bawah dikutip verbatim dari berkas (title, h1/h2, tombol, su
 | `resources/views/errors/500.blade.php` | "Ada kendala di sisi kami" |
 | `resources/views/errors/503.blade.php` | "Sedang dalam perawatan" |
 
-### Klaster 6: Parsial, Komponen & Sitemap (5 Berkas)
+### Klaster 6: Parsial, Komponen & Sitemap (7 Berkas)
 
 | Berkas | Teks kunci (verbatim) |
 |---|---|
 | `resources/views/components/brand-mark.blade.php` | Logo tipografis ZAFIRA |
+| `resources/views/components/react-root.blade.php` | Boundary fallback Blade → native React; tidak menambah copy pengguna. Teks kontrol password mengikuti data kamus; input/interaksi aktif tidak ditimpa. |
+| `resources/views/components/private-page-lifecycle.blade.php` | Tanpa copy pengguna. Menyembunyikan dokumen privat saat ditinggalkan dan meminta pemeriksaan server saat BFCache dipulihkan. |
 | `resources/views/partials/product-header.blade.php` | Tombol "Rendez-vous privat" |
 | `resources/views/partials/product-footer.blade.php` | h2 "Apa yang Anda cari?", "Sebuah waktu, khusus untuk Anda."; tombol "Rendez-vous", "Hapus" |
 | `resources/views/partials/purchase-cart.blade.php` | Eyebrow "Pembelian katalog", h2 "Tas Belanja (0)"; tombol "Jelajahi koleksi", "Konsultasikan isi tas lama" (ringkasan "Tas belanja versi lama di peramban ini") |

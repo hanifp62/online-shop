@@ -6,6 +6,9 @@ use App\Http\Middleware\AuthenticateGuardSession;
 use App\Models\User;
 use App\Notifications\PasswordChanged;
 use App\Services\PasswordResetTokenIssuer;
+use App\Support\AuthPageProps;
+use App\Support\AuthSecurityPageProps;
+use App\Support\FrontendPage;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,12 +17,13 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password as PasswordRule;
+use Inertia\Response;
 
 class PasswordResetController extends Controller
 {
     public function request(): mixed
     {
-        return view('auth.password-email');
+        return FrontendPage::render('Auth/ForgotPassword', 'auth.password-email', [], AuthPageProps::forgotPassword(request()));
     }
 
     public function email(Request $request, PasswordResetTokenIssuer $issuer): RedirectResponse
@@ -41,7 +45,13 @@ class PasswordResetController extends Controller
 
     public function reset(string $token, Request $request): mixed
     {
-        return view('auth.password-reset', ['token' => $token, 'email' => $request->query('email')]);
+        $email = $request->query('email');
+        $response = FrontendPage::render('Auth/ResetPassword', 'auth.password-reset', [
+            'token' => $token, 'email' => is_string($email) ? $email : '',
+        ], AuthSecurityPageProps::reset($request));
+
+        // Flash is request-scoped in Inertia v3 and excluded from history props.
+        return $response instanceof Response ? $response->flash('resetToken', $token) : $response;
     }
 
     public function update(Request $request): RedirectResponse

@@ -5,18 +5,21 @@ namespace App\Http\Controllers;
 use App\Http\Middleware\AuthenticateGuardSession;
 use App\Models\Admin;
 use App\Services\AuthEventRecorder;
+use App\Support\AuthSecurityPageProps;
+use App\Support\FrontendPage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Inertia\Response as InertiaResponse;
 
 class AdminAuthController extends Controller
 {
     public function __construct(private readonly AuthEventRecorder $events) {}
 
-    public function showLogin(): View
+    public function showLogin(): View|InertiaResponse
     {
-        return view('admin.login');
+        return FrontendPage::render('Admin/Login', 'admin.login', [], AuthSecurityPageProps::adminLogin(request()));
     }
 
     public function login(Request $request): RedirectResponse

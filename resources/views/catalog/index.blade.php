@@ -4,8 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $t['title'] }} — ZAFIRA: La Maison de Lumière</title>
-    <link rel="canonical" href="{{ $canonical }}">
+    <title data-inertia="">{{ $t['title'] }} — ZAFIRA: La Maison de Lumière</title>
+    <link rel="canonical" href="{{ $canonical }}" data-inertia="canonical">
+        @isset($page)
+            @viteReactRefresh
+            @vite('resources/js/inertia.jsx')
+        @endisset
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=bodoni-moda:400,500,600,700&family=manrope:300,400,500,600,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('prototype/app.css') }}">
@@ -486,6 +490,7 @@
     </style>
 </head>
 <body class="catalog-page">
+<x-react-root :page="$page ?? null">
     <a class="catalog-skip" href="#main-catalog">{{ $t['skip'] }}</a>
 
     <header class="catalog-header">
@@ -750,6 +755,7 @@
         <p>© {{ date('Y') }} ZAFIRA Maison. {{ $t['lead'] }}</p>
     </footer>
 
+</x-react-root>
     <script type="application/json" id="catalog-purchase-copy">@json(__('shop_ui.catalog.js'))</script>
     <script>
         (function() {
@@ -768,6 +774,9 @@
             }
             syncFilters();
             mobile.addEventListener('change', syncFilters);
+            document.getElementById('app')?.addEventListener('zafira:react-claim', function() {
+                mobile.removeEventListener('change', syncFilters);
+            }, {once: true});
 
             document.querySelectorAll('[data-quick-view]').forEach(function(btn) {
                 btn.addEventListener('click', function() {

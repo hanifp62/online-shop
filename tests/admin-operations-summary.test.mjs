@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { JSDOM } from "jsdom";
 import { initOperationsSummary } from "../public/js/admin-operations-summary.js";
 
 const OLD = "2026-10-21T12:00:00Z";
@@ -257,6 +258,82 @@ for (const failure of ["http", "invalid-report", "body-timeout"]) {
         assert.equal(env.button.disabled, false);
     });
 }
+
+// NFR-FE-001/002/004, FR-REM-007: fallback owns refresh until React claims the root.
+function ownershipFixture(state = 'pending', fetch = async () => response({ ok: false })) {
+    const dom = new JSDOM(`<div id="app" data-react-fallback data-react-boot="${state}"><form data-ops-filters action="${URL.split('?')[0]}"><input name="period" value="today"><button type="submit">Refresh</button></form><p data-ops-refresh-status></p><div data-ops-report data-as-of="${OLD}"><table><tbody><tr><td>Old snapshot</td></tr></tbody></table></div></div>`, { url: URL });
+    const document = dom.window.document;
+    const root = document.getElementById('app');
+    const form = root.querySelector('form');
+    const options = { document, fetch, parse: () => new dom.window.DOMParser().parseFromString(`<div data-ops-report data-as-of="${NEW}"><table></table></div>`, 'text/html') };
+    return { dom, document, root, form, options, submit: () => form.dispatchEvent(new dom.window.Event('submit', { bubbles: true, cancelable: true })) };
+}
+
+for (const state of ['pending', 'fallback']) {
+    test(`fallback ${state} keeps the snapshot on manual refresh failure`, async () => {
+        let calls = 0;
+        const env = ownershipFixture(state, async () => { calls++; return response({ ok: false }); });
+        try {
+            initOperationsSummary(env.options);
+            assert.equal(env.submit(), false);
+            await tick();
+            assert.equal(calls, 1);
+            assert.equal(env.root.querySelector('[data-ops-report]').dataset.asOf, OLD);
+            assert.match(env.root.querySelector('[data-ops-refresh-status]').textContent, /Data lama/);
+        } finally { env.dom.window.close(); }
+    });
+}
+
+test('React-ready DOM is never bound by the late legacy module', () => {
+    const env = ownershipFixture('ready');
+    try {
+        assert.equal(initOperationsSummary(env.options), null);
+        assert.equal(env.submit(), true, 'legacy must not intercept React submit');
+    } finally { env.dom.window.close(); }
+});
+
+test('claim removes the legacy submit listener and cancels in-flight work without touching React DOM', async () => {
+    const body = deferred();
+    let signal;
+    const env = ownershipFixture('pending', async (_, options) => { signal = options.signal; return response({ text: () => body.promise }); });
+    try {
+        const api = initOperationsSummary(env.options);
+        const pending = api.refresh(URL);
+        await tick();
+        env.root.dispatchEvent(new env.dom.window.Event('zafira:react-claim'));
+        env.root.dataset.reactBoot = 'ready';
+        const report = env.root.querySelector('[data-ops-report]');
+        const status = env.root.querySelector('[data-ops-refresh-status]');
+        report.textContent = 'React-owned snapshot';
+        status.textContent = 'React-owned status';
+        assert.equal(env.submit(), true, 'listener must be detached synchronously on claim');
+        assert.equal(signal.aborted, true);
+        assert.equal(await pending, false);
+        body.resolve('late-report');
+        await tick();
+        assert.equal(report.textContent, 'React-owned snapshot');
+        assert.equal(status.textContent, 'React-owned status');
+        assert.equal(await api.refresh(URL), false);
+    } finally { env.dom.window.close(); }
+});
+
+test('initialization is idempotent for the same fallback form', () => {
+    const env = ownershipFixture();
+    try {
+        assert.equal(initOperationsSummary(env.options), initOperationsSummary(env.options));
+    } finally { env.dom.window.close(); }
+});
+
+test('fallback module is available even when the response contains an Inertia page', () => {
+    const view = readFileSync(new globalThis.URL('../resources/views/admin/operations-summary.blade.php', import.meta.url), 'utf8');
+    assert.doesNotMatch(view, /@unless\s*\(isset\(\$page\)\)/);
+});
+
+test('auth-event Blade context uses recorder sanitization, never raw context serialization', () => {
+    const view = readFileSync(new globalThis.URL('../resources/views/admin/auth-events.blade.php', import.meta.url), 'utf8');
+    assert.match(view, /sanitizeContext\(\(array\)\s*\$event->context\)/);
+    assert.doesNotMatch(view, /json_encode\(\$event->context/);
+});
 
 test("queue SQL aliases avoid MySQL/MariaDB DELAYED and retain JSON contract", () => {
     const source = readFileSync(new globalThis.URL("../app/Services/OperationalMetrics.php", import.meta.url), "utf8");

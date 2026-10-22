@@ -43,6 +43,8 @@ jobs:
           python3 -m pip install --disable-pip-version-check -r scripts/ci/requirements.txt
       - run: composer install --no-interaction --prefer-dist --no-progress
       - run: npm ci
+      - name: Test React
+        run: npm run test:react
       - name: Audit dependency Composer
         run: composer audit --locked --no-interaction
       - name: Audit dependency npm
@@ -167,11 +169,14 @@ jobs:
           export AM_CHROMIUM
           bash scripts/amadis/acceptance_isolated.sh "$RUNNER_TEMP/browser-evidence"
           python3 scripts/ci/check_browser_report.py "$RUNNER_TEMP/browser-evidence" | tee "$RUNNER_TEMP/browser-summary.json"
+          bash scripts/amadis/acceptance_react.sh "$RUNNER_TEMP/react-browser-evidence"
       - name: Publikasikan hanya ringkasan browser allowlist
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: browser-summary-${{ github.sha }}
-          path: ${{ runner.temp }}/browser-summary.json
+          path: |
+            ${{ runner.temp }}/browser-summary.json
+            ${{ runner.temp }}/react-browser-evidence/summary.json
           if-no-files-found: error
           retention-days: 14
 

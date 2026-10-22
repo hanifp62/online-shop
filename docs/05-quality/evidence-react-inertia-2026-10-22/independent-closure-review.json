@@ -1,0 +1,27 @@
+{
+  "kind": "independent_review_report",
+  "reviewed_on": "2026-10-22",
+  "reviewer_session": "5e4f992e-3b1e-4fa3-901e-e6757310731e",
+  "decision": "APPROVE_SCOPED_LOCAL_MILESTONE",
+  "reported_checks": {
+    "bounded_metadata_check_exit": 0,
+    "source_entries": 75,
+    "matching_source_hashes": 75,
+    "source_drift": 0,
+    "missing_source_files": 0,
+    "local_documentation_targets": 59,
+    "broken_targets": 0,
+    "allowlisted_components": 11,
+    "native_browser_checks": 17,
+    "php_passed": 1247,
+    "php_skipped": 3,
+    "browser_history_runs": 15
+  },
+  "limits": [
+    "Reviewer verified metadata, hashes and claim boundaries; did not rerun application PHP, browser, build or DB.",
+    "Entire frontend migration remains partial.",
+    "No approval of production readiness, deployment, remote CI or new MySQL engine results.",
+    "Three exact engine skips are not MySQL passes.",
+    "R6 flow PASS remains supervisor failure in history."
+  ]
+}

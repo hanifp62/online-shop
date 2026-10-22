@@ -1,0 +1,34 @@
+[
+  {
+    "command": [
+      "bash",
+      "scripts/amadis/acceptance_isolated.sh",
+      "scratch/react-migration/legacy-browser-publication",
+      "8042"
+    ],
+    "started_at": "2026-10-22T17:16:49.216185+00:00",
+    "finished_at": "2026-10-22T17:16:58.179635+00:00",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python3",
+      "scripts/ci/check_browser_report.py",
+      "scratch/react-migration/legacy-browser-publication"
+    ],
+    "started_at": "2026-10-22T17:16:58.179993+00:00",
+    "finished_at": "2026-10-22T17:16:58.200828+00:00",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/amadis/acceptance_react.sh",
+      "scratch/react-migration/browser-publication",
+      "8043"
+    ],
+    "started_at": "2026-10-22T17:16:58.201117+00:00",
+    "finished_at": "2026-10-22T17:17:17.042245+00:00",
+    "exit_code": 0
+  }
+]

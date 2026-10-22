@@ -1,0 +1,11 @@
+{
+  "command": [
+    "scripts/amadis/launch.sh",
+    "test",
+    "--log-junit=/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-430918e77a627eef8a2ef67a/evidence/phpunit-publication.xml"
+  ],
+  "started_at": "2026-10-22T17:11:52.128762+00:00",
+  "finished_at": "2026-10-22T17:16:15.129654+00:00",
+  "exit_code": 0,
+  "assertions": 159143
+}

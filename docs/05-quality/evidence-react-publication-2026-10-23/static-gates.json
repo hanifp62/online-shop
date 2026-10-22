@@ -1,0 +1,94 @@
+[
+  {
+    "command": [
+      "vendor/bin/pint",
+      "--test"
+    ],
+    "started_at": "2026-10-22T17:11:05.226747+00:00",
+    "finished_at": "2026-10-22T17:11:05.574236+00:00",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "composer",
+      "validate",
+      "--no-check-publish"
+    ],
+    "started_at": "2026-10-22T17:11:05.574304+00:00",
+    "finished_at": "2026-10-22T17:11:05.709472+00:00",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "composer",
+      "audit",
+      "--locked",
+      "--no-interaction"
+    ],
+    "started_at": "2026-10-22T17:11:05.709527+00:00",
+    "finished_at": "2026-10-22T17:11:07.989334+00:00",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "npm",
+      "audit",
+      "--audit-level=high"
+    ],
+    "started_at": "2026-10-22T17:11:07.989460+00:00",
+    "finished_at": "2026-10-22T17:11:08.630501+00:00",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "scratch/ci-validation/actionlint",
+      ".github/workflows/ci.yml"
+    ],
+    "started_at": "2026-10-22T17:11:08.630608+00:00",
+    "finished_at": "2026-10-22T17:11:08.646311+00:00",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "git",
+      "--no-pager",
+      "diff",
+      "--check"
+    ],
+    "started_at": "2026-10-22T17:11:08.646383+00:00",
+    "finished_at": "2026-10-22T17:11:08.666187+00:00",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python3",
+      "scripts/ci/security_scan.py",
+      "--mode",
+      "secrets"
+    ],
+    "started_at": "2026-10-22T17:11:08.666259+00:00",
+    "finished_at": "2026-10-22T17:11:10.082271+00:00",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python3",
+      "scripts/ci/security_scan.py",
+      "--mode",
+      "pii"
+    ],
+    "started_at": "2026-10-22T17:11:10.082331+00:00",
+    "finished_at": "2026-10-22T17:11:10.143050+00:00",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "started_at": "2026-10-22T17:11:10.143111+00:00",
+    "finished_at": "2026-10-22T17:11:10.857473+00:00",
+    "exit_code": 0
+  }
+]

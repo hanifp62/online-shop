@@ -101,6 +101,10 @@
         .pagination-container {
             margin-top: 20px;
         }
+        .admin-work-main .active-filters-box { margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .admin-work-main .active-filters-box > .badge { background: var(--zafira-linen); color: var(--zafira-charcoal); border: 1px solid var(--zafira-border); }
+        .admin-work-main .filters :focus-visible, .pagination-container a:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+        .pagination-container a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 12px; }
         @media (max-width: 640px) {
             .admin-work-main .filters { flex-direction: column; align-items: stretch; }
             .admin-work-main .filters select, .admin-work-main .filters input[type="text"], .admin-work-main .filters button { width: 100%; }
@@ -194,8 +198,9 @@
                     <td>{{ $event->ip ?? '-' }}</td>
                     <td>@if($event->request_id)<code style="font-size: 11px;">{{ $event->request_id }}</code>@else<span style="color: var(--zafira-muted);">-</span>@endif</td>
                     <td>
-                        @if($event->context && !empty((array)$event->context))
-                            <pre style="font-size: 11px; margin: 0;">{{ json_encode($event->context, JSON_UNESCAPED_SLASHES) }}</pre>
+                        @php($safeContext = app(\App\Services\AuthEventRecorder::class)->sanitizeContext((array) $event->context))
+                        @if(!empty($safeContext))
+                            <pre style="font-size: 11px; margin: 0;">{{ json_encode($safeContext, JSON_UNESCAPED_SLASHES) }}</pre>
                         @else
                             <span style="color: var(--zafira-muted);">-</span>
                         @endif

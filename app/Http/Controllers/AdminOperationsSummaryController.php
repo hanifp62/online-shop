@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Services\OperationalMetrics;
+use App\Support\AdminReadPageProps;
+use App\Support\FrontendPage;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -37,7 +39,7 @@ class AdminOperationsSummaryController extends Controller
                 return response()->json(['message' => 'Periksa rentang tanggal UTC.', 'errors' => $validator->errors()], 422)->header('Cache-Control', 'no-store');
             }
 
-            return response()->view('admin.operations-summary', ['report' => null, 'filters' => $filters, 'validationErrors' => $errors], 422)->header('Cache-Control', 'no-store');
+            return $this->page($request, null, $filters, 422, $errors);
         }
         if ($period !== 'custom') {
             $from = $asOf->startOfDay()->subDays(match ($period) {
@@ -55,6 +57,15 @@ class AdminOperationsSummaryController extends Controller
             return response()->json($report, $status)->header('Cache-Control', 'no-store');
         }
 
-        return response()->view('admin.operations-summary', compact('report', 'filters'), $status)->header('Cache-Control', 'no-store');
+        return $this->page($request, $report, $filters, $status);
+    }
+
+    private function page(Request $request, ?array $report, array $filters, int $status, array $validationErrors = []): Response
+    {
+        $page = FrontendPage::render('Admin/OperationsSummary', 'admin.operations-summary',
+            compact('report', 'filters', 'validationErrors'), AdminReadPageProps::operations($report, $filters, $validationErrors));
+        $response = $page instanceof \Inertia\Response ? $page->toResponse($request) : response($page);
+
+        return $response->setStatusCode($status)->header('Cache-Control', 'no-store');
     }
 }

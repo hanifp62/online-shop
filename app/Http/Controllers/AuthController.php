@@ -6,6 +6,8 @@ use App\Http\Middleware\AuthenticateGuardSession;
 use App\Models\User;
 use App\Services\CartStore;
 use App\Services\CheckoutService;
+use App\Support\AuthPageProps;
+use App\Support\FrontendPage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +17,7 @@ class AuthController extends Controller
 {
     public function showRegister()
     {
-        return view('auth.register');
+        return FrontendPage::render('Auth/Register', 'auth.register', [], AuthPageProps::register(request()));
     }
 
     public function register(Request $request)
@@ -61,7 +63,7 @@ class AuthController extends Controller
 
     public function showLogin()
     {
-        return view('auth.login');
+        return FrontendPage::render('Auth/Login', 'auth.login', [], AuthPageProps::login(request()));
     }
 
     public function login(Request $request)

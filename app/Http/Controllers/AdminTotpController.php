@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Middleware\EnsureAdminTotp;
 use App\Services\AuthEventRecorder;
 use App\Services\TotpService;
+use App\Support\AuthSecurityPageProps;
+use App\Support\FrontendPage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\View\View;
+use Inertia\Response as InertiaResponse;
 
 class AdminTotpController extends Controller
 {
@@ -16,13 +19,13 @@ class AdminTotpController extends Controller
 
     public function __construct(private readonly TotpService $totp, private readonly AuthEventRecorder $events) {}
 
-    public function show(Request $request): View|RedirectResponse
+    public function show(Request $request): View|InertiaResponse|RedirectResponse
     {
         if (! $request->user('admin')->requiresTotp()) {
             return redirect()->route('admin.dashboard');
         }
 
-        return view('admin.totp');
+        return FrontendPage::render('Admin/TotpChallenge', 'admin.totp', [], AuthSecurityPageProps::adminTotp($request));
     }
 
     public function verify(Request $request): RedirectResponse

@@ -5,6 +5,7 @@ use App\Http\Middleware\AuthenticateGuardSession;
 use App\Http\Middleware\AuthorizeAdmin;
 use App\Http\Middleware\CorrelationIdMiddleware;
 use App\Http\Middleware\FeatureFlag;
+use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -43,6 +44,7 @@ return Application::configure(basePath: dirname(__DIR__))
             AuthenticateGuardSession::class.':web',
             AuthenticateGuardSession::class.':admin',
             ShareErrorsFromSession::class,
+            HandleInertiaRequests::class,
             SecurityHeaders::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);

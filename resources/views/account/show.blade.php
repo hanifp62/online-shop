@@ -8,10 +8,17 @@
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=bodoni-moda:400,400i,500,500i,600&family=manrope:300,400,500,600&display=swap" rel="stylesheet">
-    <script type="application/json" id="zafira-app-copy">@json(__('shop_ui.app_js'))</script>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @isset($page)
+        @viteReactRefresh
+        @vite(['resources/css/app.css', 'resources/js/inertia.jsx'])
+    @else
+        <script type="application/json" id="zafira-app-copy">@json(__('shop_ui.app_js'))</script>
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @endisset
 </head>
 <body>
+<x-private-page-lifecycle />
+<x-react-root :page="$page ?? null">
 <main class="auth-page">
     <section class="auth-visual" aria-label="{{ __('account_ui.common.brand_world') }}">
         <img src="{{ asset('prototype/assets/hero_couture.jpg') }}" alt="{{ __('account_ui.common.editorial') }}" width="1400" height="1750" fetchpriority="high">
@@ -163,5 +170,6 @@
 
 <div class="toast" role="status" aria-live="polite" @if(session('success')) data-flash="{{ session('success') }}" @endif><span><svg aria-hidden="true"><use href="#icon-check"/></svg></span><p data-toast-message></p></div>
 <svg class="icon-sprite" aria-hidden="true"><symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol></svg>
+</x-react-root>
 </body>
 </html>

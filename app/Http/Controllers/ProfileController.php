@@ -14,6 +14,8 @@ use App\Models\Review;
 use App\Models\SocialAccount;
 use App\Models\User;
 use App\Models\UserInfoBackup;
+use App\Support\AccountPageProps;
+use App\Support\FrontendPage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -22,21 +24,23 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Inertia\Response as InertiaResponse;
 use Symfony\Component\HttpFoundation\StreamedJsonResponse;
 
 class ProfileController extends Controller
 {
-    public function show(Request $request): View
+    public function show(Request $request): View|InertiaResponse
     {
         $user = $request->user();
+        $history = ConciergeRequest::where('user_id', $user->id)
+            ->latest()
+            ->take(10)
+            ->get();
 
-        return view('account.show', [
+        return FrontendPage::render('Account/Show', 'account.show', [
             'user' => $user,
-            'history' => ConciergeRequest::where('user_id', $user->id)
-                ->latest()
-                ->take(10)
-                ->get(),
-        ]);
+            'history' => $history,
+        ], AccountPageProps::show($request, $user, $history));
     }
 
     public function update(Request $request): RedirectResponse

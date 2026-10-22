@@ -6,6 +6,8 @@ use App\Http\Middleware\AuthenticateGuardSession;
 use App\Models\User;
 use App\Services\CheckoutService;
 use App\Services\TotpService;
+use App\Support\AuthSecurityPageProps;
+use App\Support\FrontendPage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -14,6 +16,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\View\View;
 
 /**
  * Verifikasi dua langkah opsional untuk pelanggan: tidak pernah dipaksa.
@@ -58,13 +61,13 @@ class CustomerTotpController extends Controller
         return redirect('/')->with('success', __('customer_messages.customer_totp.login'));
     }
 
-    public function challenge(Request $request): Response|RedirectResponse
+    public function challenge(Request $request): View|\Inertia\Response|RedirectResponse
     {
         if (! $this->pendingUserId($request)) {
             return redirect()->route('login');
         }
 
-        return response()->view('auth.totp')->header('Cache-Control', 'no-store, private');
+        return FrontendPage::render('Auth/TotpChallenge', 'auth.totp', [], AuthSecurityPageProps::customerTotp($request));
     }
 
     public function verify(Request $request): RedirectResponse

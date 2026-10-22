@@ -1,0 +1,31 @@
+{
+  "task_ref": "FE-PUB-20261023",
+  "role": "independent test verifier",
+  "gates": [
+    {
+      "command": "node --test",
+      "start_utc": "2026-10-22T17:09:34.467592+00:00",
+      "end_utc": "2026-10-22T17:09:37.478147+00:00",
+      "exit": 0,
+      "counts": {"tests": 495, "pass": 495, "fail": 0, "cancelled": 0, "skipped": 0, "todo": 0}
+    },
+    {
+      "command": "npm run test:react",
+      "start_utc": "2026-10-22T17:09:42.996609+00:00",
+      "end_utc": "2026-10-22T17:09:43.773266+00:00",
+      "exit": 0,
+      "counts": {"test_files_passed": 7, "tests_passed": 110}
+    },
+    {
+      "command": "scratch/ci-validation/venv/bin/python scripts/ci/run_python_tests.py",
+      "start_utc": "2026-10-22T17:09:48.059522+00:00",
+      "end_utc": "2026-10-22T17:09:59.055587+00:00",
+      "exit": 0,
+      "status": "PASS",
+      "counts": {"tests": 373, "failures": 0, "errors": 0, "import_errors": 0, "skipped": 0, "expected_failures": 0, "unexpected_successes": 0},
+      "reasons": [],
+      "cases": []
+    }
+  ],
+  "notes": ["Earlier Node run 2026-10-22T17:09:24.583610+00:00 to 2026-10-22T17:09:27.758388+00:00 exited 0 but the summary parser did not recognize Node's info prefix; the counted rerun above is authoritative.", "No PHP, application DB, browser, build, git mutation, or remote operation performed."]
+}
