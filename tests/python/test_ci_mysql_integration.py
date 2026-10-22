@@ -422,11 +422,26 @@ class MysqlIsolationTests(unittest.TestCase):
         with self.assertRaisesRegex(ci.LaneError, 'RESTORE_COMPARISON_FAILED'):
             self.lane.run()
         self.assertEqual(self.lane.summary['schema_comparison'], {
+            'table_lines_equal_without_separators': False, 'columns_equal_in_order': True,
             'defaults_equal': True, 'ddl_equal': False,
             'ddl_equal_without_auto_increment': True, 'ddl_lines_equal_unordered': False,
             'source_auto_increment': [4], 'restored_auto_increment': [1],
         })
         self.assertNotIn(SECRET, json.dumps(self.lane.summary))
+        self.assertNotIn('restore', self.lane.summary)
+
+    def test_restore_diagnostic_distinguishes_table_clause_order_from_column_order(self):
+        self.orchestration(changed_restore=True)
+        columns = '  `a` int,\n  `b` int,\n'
+        source = 'probe\tCREATE TABLE `probe` (\n' + columns + '  KEY `x` (`a`),\n  KEY `y` (`b`)\n) ENGINE=InnoDB\n'
+        restored = 'probe\tCREATE TABLE `probe` (\n' + columns + '  KEY `y` (`b`),\n  KEY `x` (`a`)\n) ENGINE=InnoDB\n'
+        self.lane._schema_snapshots = {'source': ('same', source), 'restore': ('same', restored)}
+        with self.assertRaisesRegex(ci.LaneError, 'RESTORE_COMPARISON_FAILED'):
+            self.lane.run()
+        comparison = self.lane.summary['schema_comparison']
+        self.assertTrue(comparison['table_lines_equal_without_separators'])
+        self.assertTrue(comparison['columns_equal_in_order'])
+        self.assertFalse(comparison['ddl_lines_equal_unordered'])
         self.assertNotIn('restore', self.lane.summary)
 
     def test_restore_streams_unlinked_dump_and_records_only_digest(self):

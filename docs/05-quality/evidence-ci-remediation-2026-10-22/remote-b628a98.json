@@ -1,0 +1,140 @@
+{
+  "recorded_at": "2026-10-22T06:38:03.013061+00:00",
+  "run_id": 39734130255,
+  "commit": "b628a98a70d14e8b12b6706a9febc64e253622d7",
+  "url": "https://github.com/hanifp62/online-shop/actions/runs/39734130255",
+  "artifacts": {
+    "browser-summary-b628a98a70d14e8b12b6706a9febc64e253622d7/browser-summary.json": {
+      "counts": {
+        "checkout_requests": 3,
+        "commands": 7,
+        "created": 2,
+        "page_content_leaks": 0,
+        "pages": 10,
+        "products": 76,
+        "rejected": 1
+      },
+      "status": "PASS"
+    },
+    "quality-summary-b628a98a70d14e8b12b6706a9febc64e253622d7/phpunit-summary.json": {
+      "cases": [
+        {
+          "id": "testcase-826",
+          "reason": "ALLOWED_SKIP"
+        },
+        {
+          "id": "testcase-827",
+          "reason": "ALLOWED_SKIP"
+        },
+        {
+          "id": "testcase-828",
+          "reason": "ALLOWED_SKIP"
+        }
+      ],
+      "counts": {
+        "errors": 0,
+        "failures": 0,
+        "passed": 1200,
+        "skipped": 3,
+        "tests": 1203
+      },
+      "reasons": [],
+      "status": "PASS"
+    },
+    "quality-summary-b628a98a70d14e8b12b6706a9febc64e253622d7/python-summary.json": {
+      "cases": [],
+      "counts": {
+        "errors": 0,
+        "expected_failures": 0,
+        "failures": 0,
+        "import_errors": 0,
+        "skipped": 0,
+        "tests": 352,
+        "unexpected_successes": 0
+      },
+      "reasons": [],
+      "status": "PASS"
+    },
+    "mysql-summary-b628a98a70d14e8b12b6706a9febc64e253622d7/mysql-integration-e8e8367e39824a021a18ef75820a0654/summary.json": {
+      "cleanup": "PASS",
+      "cleanup_failures": 0,
+      "commit": "b628a98a70d14e8b12b6706a9febc64e253622d7",
+      "container_ids": [
+        "aff49bca456d9c60e6c8fadc40335cdc7e37d6c0627a54e191880af55517cf1b",
+        "60cc705825fdc4443b2ea743737d6be61f38720d6fc4f26fe1c340eebc9af4ed"
+      ],
+      "dump_sha256": "8b53254cc2944b891c60e1ddc5154473bd0c4618a32e5329e0699e3fcd10ccfe",
+      "exit": 1,
+      "image_id": "sha256:b35575a03e5327131916eb8d39222c4c89590881fb44ed69b5814910e5fefa34",
+      "junit_gate": true,
+      "junit_report": {
+        "cases": [],
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "passed": 3,
+          "skipped": 0,
+          "tests": 3
+        },
+        "locations": [],
+        "reasons": [],
+        "status": "PASS"
+      },
+      "migration_exit": 0,
+      "mysql_version": "8.4.13",
+      "producer_exit": 0,
+      "reason": "RESTORE_COMPARISON_FAILED",
+      "restore_comparison": {
+        "foreign_key_violations": true,
+        "foreign_keys": true,
+        "marker_rows": true,
+        "marker_sha256": true,
+        "migration_count": true,
+        "migrations_sha256": true,
+        "row_counts": true,
+        "schema_sha256": false
+      },
+      "schema_comparison": {
+        "ddl_equal": false,
+        "ddl_equal_without_auto_increment": false,
+        "ddl_lines_equal_unordered": false,
+        "defaults_equal": true,
+        "restored_auto_increment": [
+          4,
+          4,
+          13,
+          4,
+          3,
+          53,
+          3,
+          2,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4
+        ],
+        "source_auto_increment": [
+          4,
+          4,
+          13,
+          4,
+          3,
+          53,
+          3,
+          2,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "skipped": 0,
+      "status": "FAIL",
+      "tests": 3
+    }
+  }
+}

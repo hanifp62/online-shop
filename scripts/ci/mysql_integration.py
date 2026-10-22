@@ -380,8 +380,19 @@ class Lane:
                 source_defaults, source_ddl = self._schema_snapshots['source']
                 restored_defaults, restored_ddl = self._schema_snapshots['restore']
                 # Diagnostic hints only: acceptance still requires the exact full snapshot.
-                without_counter = lambda ddl: re.sub(r' AUTO_INCREMENT=[0-9]+\b', '', ddl)
+                def without_counter(ddl):
+                    return re.sub(r' AUTO_INCREMENT=[0-9]+\b', '', ddl)
+                def table_parts(ddl):
+                    return [part.splitlines() for part in re.split(
+                        r'(?m)^(?=[A-Za-z_][A-Za-z0-9_]{0,63}\tCREATE TABLE )', ddl) if part]
+                source_parts, restored_parts = table_parts(source_ddl), table_parts(restored_ddl)
                 self.summary['schema_comparison'] = {
+                    'table_lines_equal_without_separators': (
+                        [sorted(line.rstrip().removesuffix(',') for line in part) for part in source_parts]
+                        == [sorted(line.rstrip().removesuffix(',') for line in part) for part in restored_parts]),
+                    'columns_equal_in_order': (
+                        [[line.rstrip().removesuffix(',') for line in part if line.lstrip().startswith('`')] for part in source_parts]
+                        == [[line.rstrip().removesuffix(',') for line in part if line.lstrip().startswith('`')] for part in restored_parts]),
                     'defaults_equal': source_defaults == restored_defaults,
                     'ddl_equal': source_ddl == restored_ddl,
                     'ddl_equal_without_auto_increment': without_counter(source_ddl) == without_counter(restored_ddl),
