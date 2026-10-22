@@ -1,0 +1,12 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "tests/admin-remediation.test.mjs",
+    "tests/ops-remediation.test.mjs",
+    "tests/storefront-remediation.test.mjs"
+  ],
+  "started": "2026-10-21T12:17:22.657743+00:00",
+  "finished": "2026-10-21T12:17:22.844345+00:00",
+  "exit": 1
+}

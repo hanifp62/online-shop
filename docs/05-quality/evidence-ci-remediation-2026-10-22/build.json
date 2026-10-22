@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "npm",
+    "run",
+    "build"
+  ],
+  "started_at": "2026-10-21T19:53:32.329844+00:00",
+  "finished_at": "2026-10-21T19:53:33.210319+00:00",
+  "duration_seconds": 0.88,
+  "timeout_seconds": 120,
+  "status": "COMPLETE",
+  "exit_code": 0,
+  "cleanup": "not_required",
+  "sanitized_log": "docs/05-quality/evidence-ci-remediation-2026-10-22/build.log",
+  "sanitized_log_sha256": "bfbd559ac7ec65463402dfbd42f75e7731ad2d3020301adfd3d03887ad31b01c"
+}

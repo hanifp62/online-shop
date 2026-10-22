@@ -21,7 +21,7 @@ class RefundStateMachineTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function createCompletedReturn(): array
+    private function createCompletedReturn(int $settledAmount = 500000): array
     {
         $category = Category::create(['cat_title' => 'Parfum']);
         $product = Product::create([
@@ -44,7 +44,7 @@ class RefundStateMachineTest extends TestCase
         DB::transaction(fn () => $checkout->markPaid($order));
         Payment::create([
             'order_id' => $order->id, 'provider' => 'midtrans', 'provider_transaction_id' => 'tx-'.uniqid(),
-            'provider_order_id' => (string) $order->id, 'event_status' => 'settlement', 'amount' => 500000,
+            'provider_order_id' => (string) $order->id, 'event_status' => 'settlement', 'amount' => $settledAmount,
             'outcome' => 'paid',
         ]);
         foreach (['processing', 'shipped', 'completed'] as $status) {
@@ -54,6 +54,12 @@ class RefundStateMachineTest extends TestCase
         $return = OrderReturn::create([
             'order_id' => $order->id, 'user_id' => $user->id, 'return_number' => OrderReturn::generateReturnNumber($order->id),
             'status' => OrderReturn::STATUS_APPROVED, 'reason' => 'damaged', 'requested_refund_amount' => 500000,
+        ]);
+
+        $item = $order->items()->sole();
+        $return->items()->create([
+            'order_item_id' => $item->id, 'product_id' => $item->product_id,
+            'quantity' => 1, 'unit_price' => 500000, 'subtotal' => 500000,
         ]);
 
         return [$user, $order, $return];
@@ -106,10 +112,24 @@ class RefundStateMachineTest extends TestCase
         $service->transition($refund, Refund::STATUS_DANA_DIKIRIM, ['provider_refund_id' => 'ref-999']);
     }
 
+    public function test_header_amount_must_match_real_return_items(): void
+    {
+        [, , $return] = $this->createCompletedReturn();
+        $return->update(['requested_refund_amount' => 9999999]);
+
+        $this->postJson('/returns/'.$return->id.'/refunds', ['reason' => 'Synthetic malformed header'])
+            ->assertUnprocessable()->assertJsonValidationErrors('manual_reconciliation');
+        $this->assertSame(500000, (int) $return->items()->sum('subtotal'));
+        $this->assertDatabaseCount('refunds', 0);
+    }
+
     public function test_refund_cannot_exceed_settled_payment_total(): void
     {
-        [, $order, $return] = $this->createCompletedReturn();
-        $return->update(['requested_refund_amount' => 9999999]);
+        // A valid Rp500.000 item claim against a deliberately underpaid historical ledger.
+        // Do not use a malformed header/no-items fixture to exercise the paid-money cap.
+        [, $order, $return] = $this->createCompletedReturn(settledAmount: 250000);
+        $this->assertSame(500000, (int) $return->items()->sum('subtotal'));
+        $this->assertSame(250000, (int) $order->payments()->where('outcome', 'paid')->sum('amount'));
 
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('melebihi pembayaran yang tercatat');

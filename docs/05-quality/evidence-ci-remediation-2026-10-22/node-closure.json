@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "node",
+    "--test"
+  ],
+  "started_at": "2026-10-21T21:48:25.163168+00:00",
+  "finished_at": "2026-10-21T21:48:28.181356+00:00",
+  "duration_seconds": 3.018,
+  "timeout_seconds": 120,
+  "status": "COMPLETE",
+  "exit_code": 0,
+  "cleanup": "not_required",
+  "sanitized_log": "docs/05-quality/evidence-ci-remediation-2026-10-22/node-closure.log",
+  "sanitized_log_sha256": "4c6764f8ee5cd855345e4ca2e4078f1a61120895166033784355bcacf54a890c"
+}

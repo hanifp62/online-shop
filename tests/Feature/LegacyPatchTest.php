@@ -343,11 +343,12 @@ class LegacyPatchTest extends TestCase
 
     public function test_home_renders_dynamic_category_pills(): void
     {
-        Category::create(['cat_title' => 'Kategori Dinamis']);
+        $category = Category::create(['cat_title' => 'Kategori Dinamis']);
 
         $this->get('/')
             ->assertOk()
-            ->assertSee('data-filter="Kategori Dinamis"', false);
+            ->assertSee('Kategori Dinamis')
+            ->assertSee('href="'.route('catalog.index', ['category' => $category->cat_id]).'"', false);
     }
 
     public function test_category_mutation_flushes_storefront_cache(): void
@@ -360,12 +361,17 @@ class LegacyPatchTest extends TestCase
             ->post(route('admin.categories.store'), ['cat_title' => 'Kategori Cache'])
             ->assertRedirect();
 
-        $this->get('/')->assertOk()->assertSee('data-filter="Kategori Cache"', false);
+        $category = Category::where('cat_title', 'Kategori Cache')->firstOrFail();
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Kategori Cache')
+            ->assertSee('href="'.route('catalog.index', ['category' => $category->cat_id]).'"', false);
     }
 
     public function test_sitemap_only_lists_public_urls(): void
     {
-        $content = $this->get('/sitemap.xml')->assertOk()->getContent();
+        $content = $this->get('/sitemap.xml')->assertOk()->streamedContent();
 
         $this->assertStringNotContainsString('/login', $content);
         $this->assertStringNotContainsString('/register', $content);

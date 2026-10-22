@@ -1,0 +1,11 @@
+{
+  "command": [
+    "./scripts/amadis/launch.sh",
+    "test"
+  ],
+  "started": "2026-10-21T16:14:40.792773+00:00",
+  "finished": "2026-10-21T16:18:58.973400+00:00",
+  "exit": 0,
+  "source_manifest": "source-manifest-final.json",
+  "source_manifest_sha256": "00ce886e701352f67f9bb798c65ff7620dce37750afea35d554550b4b8ed2d8f"
+}

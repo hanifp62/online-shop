@@ -12,6 +12,7 @@ use Database\Seeders\ProductSeeder;
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Routing\Middleware\ThrottleRequests;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
@@ -62,10 +63,9 @@ class StorefrontTest extends TestCase
 
     public function test_sitemap_is_accessible(): void
     {
-        $this->get('/sitemap.xml')
-            ->assertOk()
-            ->assertSee('http://localhost', false)
-            ->assertSee('sac-seraphine', false);
+        $content = $this->get('/sitemap.xml')->assertOk()->streamedContent();
+        $this->assertStringContainsString('http://localhost', $content);
+        $this->assertStringContainsString('sac-seraphine', $content);
     }
 
     public function test_product_detail_page_404_for_unknown_slug(): void
@@ -141,6 +141,13 @@ class StorefrontTest extends TestCase
     public function test_concierge_order_items_use_server_side_name_and_price(): void
     {
         Mail::fake();
+        $product = Product::where('product_slug', 'sac-seraphine')->firstOrFail();
+        $product->update(['stock' => 3]);
+        $this->actingAs(User::factory()->create())->postJson('/cart/items', [
+            'product_id' => $product->product_id, 'quantity' => 2,
+        ])->assertOk();
+        $cartBefore = DB::table('carts')->orderBy('id')->get()->toJson();
+        $itemsBefore = DB::table('cart_items')->orderBy('id')->get()->toJson();
 
         $this->postJson('/concierge', $this->conciergePayload([
             ['id' => 'sac-seraphine', 'name' => 'Nama Palsu', 'price' => 1, 'quantity' => 2],
@@ -150,6 +157,12 @@ class StorefrontTest extends TestCase
         $this->assertStringContainsString('Sac Séraphine (2x) Rp18.750.000', $notes);
         $this->assertStringContainsString('Total: Rp37.500.000', $notes);
         $this->assertStringNotContainsString('Nama Palsu', $notes);
+        $this->assertSame($cartBefore, DB::table('carts')->orderBy('id')->get()->toJson());
+        $this->assertSame($itemsBefore, DB::table('cart_items')->orderBy('id')->get()->toJson());
+        $this->assertSame(3, (int) $product->fresh()->stock);
+        foreach (['orders', 'order_items', 'inventory_reservations', 'payments'] as $table) {
+            $this->assertDatabaseCount($table, 0);
+        }
     }
 
     public function test_concierge_accepts_empty_hidden_order_items(): void

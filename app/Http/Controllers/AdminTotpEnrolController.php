@@ -27,6 +27,8 @@ class AdminTotpEnrolController extends Controller
 
     private const MAX_ATTEMPTS = 5;
 
+    private const STATE_TTL = 300;
+
     public function __construct(
         private readonly TotpService $totp,
         private readonly Google2FA $google2fa,
@@ -45,6 +47,10 @@ class AdminTotpEnrolController extends Controller
         $uri = $this->totp->provisioningUri($admin->email, $secret);
         $request->session()->put(self::PENDING_SECRET, Crypt::encryptString($secret));
         $request->session()->put(self::PENDING_URI, Crypt::encryptString($uri));
+        $request->session()->put('totp_enrol_state', [
+            'admin_id' => $admin->id, 'expires_at' => now()->addSeconds(self::STATE_TTL)->timestamp,
+        ]);
+        $request->session()->forget([self::FRESH_CODES, 'totp_enrol_codes_state']);
 
         return response()
             ->view('admin.totp-enrol', ['secret' => $secret, 'uri' => $uri, 'qr' => $this->totp->qrDataUri($uri)])
@@ -61,16 +67,33 @@ class AdminTotpEnrolController extends Controller
         $validated = $request->validate(['code' => ['required', 'string', 'regex:/^\d{6}$/']]);
 
         $key = 'admin-totp-enrol:'.$admin->id.'|'.$request->ip();
-        if (RateLimiter::tooManyAttempts($key, self::MAX_ATTEMPTS)) {
-            $seconds = RateLimiter::availableIn($key);
+        $accountKey = 'admin-totp-enrol:account:'.$admin->id;
+        $ipKey = 'admin-totp-enrol:ip:'.$request->ip();
+        if (RateLimiter::tooManyAttempts($key, self::MAX_ATTEMPTS)
+            || RateLimiter::tooManyAttempts($accountKey, self::MAX_ATTEMPTS)
+            || RateLimiter::tooManyAttempts($ipKey, 25)) {
+            $seconds = max(RateLimiter::availableIn($key), RateLimiter::availableIn($accountKey), RateLimiter::availableIn($ipKey));
 
             return back()->withErrors(['code' => trans('admin_ui.flash.rate_limited', ['seconds' => $seconds])]);
         }
 
         $pending = $request->session()->get(self::PENDING_SECRET);
-        if (! is_string($pending) || $pending === '') {
+        $state = $request->session()->get('totp_enrol_state');
+        if (! is_array($state) || ($state['admin_id'] ?? null) !== $admin->id
+            || ($state['expires_at'] ?? 0) <= now()->timestamp || ! is_string($pending) || $pending === '') {
+            $request->session()->forget([self::PENDING_SECRET, self::PENDING_URI, 'totp_enrol_state']);
+
             return redirect()->route('admin.totp.enrol')
                 ->withErrors(['code' => trans('admin_ui.flash.enrol_expired')]);
+        }
+
+        $accountAttempt = RateLimiter::increment($accountKey, 60);
+        $ipAttempt = RateLimiter::increment($ipKey, 60);
+        $pairAttempt = RateLimiter::increment($key, 60);
+        if ($accountAttempt > self::MAX_ATTEMPTS || $ipAttempt > 25 || $pairAttempt > self::MAX_ATTEMPTS) {
+            $seconds = max(RateLimiter::availableIn($key), RateLimiter::availableIn($accountKey), RateLimiter::availableIn($ipKey));
+
+            return back()->withErrors(['code' => trans('admin_ui.flash.rate_limited', ['seconds' => $seconds])]);
         }
 
         try {
@@ -109,8 +132,9 @@ class AdminTotpEnrolController extends Controller
 
         if ($timestamp === false) {
             $this->events->recordTotpFailure($admin->id, $request->ip(), 'invalid_code');
-            RateLimiter::hit($key, 60);
-            if (RateLimiter::tooManyAttempts($key, self::MAX_ATTEMPTS)) {
+
+            if (RateLimiter::tooManyAttempts($key, self::MAX_ATTEMPTS)
+                || RateLimiter::tooManyAttempts($accountKey, self::MAX_ATTEMPTS)) {
                 $this->events->recordLockout('admin', $admin->id, $request->ip(), 'enrol');
             }
 
@@ -134,13 +158,12 @@ class AdminTotpEnrolController extends Controller
         }
 
         if (! $won) {
-            $request->session()->forget([self::PENDING_SECRET, self::PENDING_URI]);
+            $request->session()->forget([self::PENDING_SECRET, self::PENDING_URI, 'totp_enrol_state', self::FRESH_CODES, 'totp_enrol_codes_state']);
 
             return redirect()->route('admin.dashboard');
         }
 
-        RateLimiter::clear($key);
-        $request->session()->forget([self::PENDING_SECRET, self::PENDING_URI]);
+        $request->session()->forget([self::PENDING_SECRET, self::PENDING_URI, 'totp_enrol_state']);
         // The code just verified counts as this device's second factor.
         $request->session()->regenerate(true);
         $request->session()->put(EnsureAdminTotp::SESSION_KEY, [
@@ -149,6 +172,9 @@ class AdminTotpEnrolController extends Controller
             'last_used_at' => (int) $timestamp,
         ]);
         $request->session()->put(self::FRESH_CODES, Crypt::encryptString(json_encode($codes)));
+        $request->session()->put('totp_enrol_codes_state', [
+            'admin_id' => $admin->id, 'expires_at' => now()->addSeconds(self::STATE_TTL)->timestamp,
+        ]);
         $this->events->recordEnrolConfirmed($admin->id, $request->ip());
         // No LOGIN_SUCCESS here: console access was already granted (and recorded) at the password step.
         $this->events->recordSessionRotated('admin', $admin->id, $request->ip(), 'enrol');
@@ -183,6 +209,11 @@ class AdminTotpEnrolController extends Controller
     {
         // pull(): the codes are rendered exactly once, so a refresh cannot reveal them again.
         $blob = $request->session()->pull(self::FRESH_CODES);
+        $state = $request->session()->pull('totp_enrol_codes_state');
+        if (! is_array($state) || ($state['admin_id'] ?? null) !== $request->user('admin')->id
+            || ($state['expires_at'] ?? 0) <= now()->timestamp) {
+            return redirect()->route('admin.dashboard');
+        }
         $codes = null;
         if (is_string($blob)) {
             try {

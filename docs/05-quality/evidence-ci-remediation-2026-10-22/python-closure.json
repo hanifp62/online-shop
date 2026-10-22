@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "scratch/ci-validation/venv/bin/python",
+    "scripts/ci/run_python_tests.py"
+  ],
+  "started_at": "2026-10-21T21:48:28.233332+00:00",
+  "finished_at": "2026-10-21T21:48:37.887835+00:00",
+  "duration_seconds": 9.654,
+  "timeout_seconds": 120,
+  "status": "COMPLETE",
+  "exit_code": 0,
+  "cleanup": "not_required",
+  "sanitized_log": "docs/05-quality/evidence-ci-remediation-2026-10-22/python-closure.log",
+  "sanitized_log_sha256": "8cf1418e4cabc3ef233fb450df296756e89d2b955f68e5c88ed6233e765f54dd"
+}

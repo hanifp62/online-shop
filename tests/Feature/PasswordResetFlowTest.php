@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Notifications\PasswordChanged;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
@@ -146,28 +147,56 @@ class PasswordResetFlowTest extends TestCase
         Notification::assertSentToTimes($user, ResetPassword::class, 1);
     }
 
-    public function test_reset_revokes_existing_database_sessions_of_that_user_only(): void
+    private function browser(string $method, string $uri, array $data = [], ?string $sid = null): array
+    {
+        $this->app['session']->driver()->flush();
+        Auth::forgetGuards();
+        Auth::shouldUse('web');
+        $this->defaultCookies = $sid ? [config('session.cookie') => $sid] : [];
+        $response = $this->call($method, $uri, $data, $this->prepareCookiesForRequest());
+
+        return [$response, $this->app['session']->driver()->getId()];
+    }
+
+    private function loginBrowser(User $user): string
+    {
+        [, $sid] = $this->browser('GET', '/login');
+        [$response, $sid] = $this->browser('POST', '/login', [
+            'email' => $user->email, 'password' => 'Lama#12345',
+        ], $sid);
+        $response->assertRedirect();
+        [$response] = $this->browser('GET', '/akun', [], $sid);
+        $response->assertOk();
+
+        return $sid;
+    }
+
+    public function test_reset_logically_revokes_both_old_database_sessions_and_preserves_other_user(): void
     {
         config(['session.driver' => 'database']);
+        Notification::fake();
         $user = $this->user();
         $other = $this->user(['email' => 'lain@example.test']);
-        $row = fn (string $id, int $uid) => DB::table('sessions')->insert([
-            'id' => $id, 'user_id' => $uid, 'payload' => '', 'last_activity' => time(),
-        ]);
-        $row('sesi-lama-1', $user->id);
-        $row('sesi-lama-2', $user->id);
-        $row('sesi-orang-lain', $other->id);
+        $oldOne = $this->loginBrowser($user);
+        $oldTwo = $this->loginBrowser($user);
+        $otherSession = $this->loginBrowser($other);
         $token = Password::broker('users')->createToken($user);
 
-        $this->post(route('password.update'), [
-            'token' => $token,
-            'email' => $user->email,
-            'password' => 'Baru#12345',
-            'password_confirmation' => 'Baru#12345',
-        ])->assertRedirect(route('login'));
-
-        $this->assertDatabaseMissing('sessions', ['user_id' => $user->id]);
-        $this->assertDatabaseHas('sessions', ['id' => 'sesi-orang-lain']);
+        [$response] = $this->browser('POST', '/reset-kata-sandi', [
+            'token' => $token, 'email' => $user->email,
+            'password' => 'Baru#12345', 'password_confirmation' => 'Baru#12345',
+        ]);
+        $response->assertRedirect('/login');
+        // Revocation is functional and guard-scoped, not ambiguous bulk deletion by sessions.user_id.
+        foreach ([$oldOne, $oldTwo] as $sid) {
+            [$response] = $this->browser('GET', '/akun', [], $sid);
+            $response->assertRedirect('/login');
+            $this->assertGuest('web');
+        }
+        [$response] = $this->browser('GET', '/akun', [], $otherSession);
+        $response->assertOk();
+        $this->assertAuthenticatedAs($other, 'web');
+        $this->assertDatabaseHas('sessions', ['id' => $otherSession]);
     }
 
     public function test_failed_reset_keeps_existing_sessions(): void

@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "node",
+    "-e",
+    "const {chromium}=require(\"playwright\"); (async()=>{const browser=await chromium.launch({headless:true,executablePath:chromium.executablePath(),timeout:15000}); try {const page=await browser.newPage(); await page.goto(\"about:blank\"); console.log(JSON.stringify({launch:\"PASS\",page:\"about:blank\",version:browser.version()}));} finally {await browser.close();}})().catch(()=>{console.error(\"Chromium prerequisite failed; no application test executed\");process.exitCode=1});"
+  ],
+  "started_at": "2026-10-21T20:02:42.305083+00:00",
+  "finished_at": "2026-10-21T20:02:45.352185+00:00",
+  "duration_seconds": 3.047,
+  "timeout_seconds": 30,
+  "status": "COMPLETE",
+  "exit_code": 0,
+  "cleanup": "not_required",
+  "sanitized_log": "docs/05-quality/evidence-ci-remediation-2026-10-22/browser-prerequisite.log",
+  "sanitized_log_sha256": "8335848b70025c235c9faa37a25e844d97f33852c282ef8a6eefb2841e6ffe76"
+}

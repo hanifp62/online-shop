@@ -18,7 +18,9 @@ class EnvironmentUniformityTest extends TestCase
         $this->assertSame('22', $nvmrc, '.nvmrc harus menargetkan Node 22 LTS');
 
         $package = json_decode(file_get_contents($root.'/package.json'), true);
-        $this->assertSame('>=22', $package['engines']['node'] ?? null, 'package.json engines.node harus >=22');
+        $this->assertSame('^22.12.0 || >=24.0.0', $package['engines']['node'] ?? null, 'Minimum Node harus sesuai Vite/plugin');
+        $lock = json_decode(file_get_contents($root.'/package-lock.json'), true);
+        $this->assertSame($package['engines']['node'], $lock['packages']['']['engines']['node'] ?? null);
 
         $ci = file_get_contents($root.'/.github/workflows/ci.yml');
         $this->assertStringContainsString('node-version-file: .nvmrc', $ci, 'CI harus membaca .nvmrc');
@@ -39,7 +41,7 @@ class EnvironmentUniformityTest extends TestCase
         $script = dirname(__DIR__, 2).'/scripts/ci/protect-main.sh';
         $this->assertFileExists($script);
         $content = file_get_contents($script);
-        $this->assertStringContainsString('"contexts": ["php"]', $content);
+        $this->assertStringContainsString('"checks": [{"context": "php", "app_id": 15368}]', $content);
         $this->assertStringContainsString('gh api -X PUT', $content);
     }
 }

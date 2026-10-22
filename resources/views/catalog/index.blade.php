@@ -18,7 +18,13 @@
             --zafira-ink: #1b1b1b;
             --zafira-line: rgba(13, 27, 42, 0.12);
         }
+        /* Keep the document scroller; the prototype dock belongs to its own shell. */
+        html { --dock-band: 0px; height: auto; min-height: 100%; overflow: visible; }
         body.catalog-page {
+            height: auto;
+            min-height: 100vh;
+            overflow-x: clip;
+            overflow-y: visible;
             margin: 0;
             background: var(--zafira-ivory);
             color: var(--zafira-ink);
@@ -835,13 +841,24 @@
                 promise.then(function() { feedback.textContent = ok + (name ? ': ' + name : ''); })
                     .catch(function(e) { feedback.textContent = e.message; });
             }
+            var setRequests = Promise.resolve();
+            var setVersion = 0;
             document.querySelectorAll('form[action$="/cart/items"]').forEach(function(form) {
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
                     var fields = new FormData(form);
                     var qty = Math.min(99, Math.max(1, parseInt(fields.get('quantity'), 10) || 1));
-                    report(send(form.action, {product_id: Number(fields.get('product_id')), quantity: qty}),
-                        catalogText('updated', 'Tas belanja diperbarui. Jumlah :qty menggantikan jumlah sebelumnya').replace(':qty', qty));
+                    var payload = {product_id: Number(fields.get('product_id')), quantity: qty};
+                    var version = ++setVersion;
+                    feedback.textContent = catalogText('processing', 'Memproses…');
+                    // Snapshot intent now; serialize server writes, not just their UI callbacks.
+                    setRequests = setRequests.catch(function() {}).then(function() {
+                        return send(form.action, payload);
+                    }).then(function() {
+                        if (version === setVersion) feedback.textContent = catalogText('updated', 'Tas belanja diperbarui. Jumlah :qty menggantikan jumlah sebelumnya').replace(':qty', qty);
+                    }).catch(function(error) {
+                        if (version === setVersion) feedback.textContent = error.message;
+                    });
                     if (dialog.open) closeDialog();
                 });
             });

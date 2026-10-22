@@ -14,7 +14,7 @@ BASE = Path('/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode')
 
 class SnapshotTests(unittest.TestCase):
     def setUp(self):
-        self.root = BASE / ('amadis-snapshottest-' + secrets.token_hex(8))
+        self.root = BASE / ('amadis-' + secrets.token_hex(12))
         self.root.mkdir(mode=0o700)
         self.addCleanup(shutil.rmtree, self.root, True)
         (self.root / 'identity.json').write_text(json.dumps({'root': str(self.root.resolve()),
@@ -49,9 +49,13 @@ class SnapshotTests(unittest.TestCase):
         with self.assertRaises(SystemExit):
             self.run_main('snapshot', '--table=users')
 
+
+class SnapshotSourceTests(unittest.TestCase):
     def test_php_snapshot_is_query_only_and_column_allowlisted(self):
         source = (REPO / 'scripts/amadis/artisan.php').read_text()
-        block = source.split("'amadis:lifecycle-snapshot'", 1)[1].split('$status = $kernel->handle', 1)[0]
+        marker = "if (($argv[1] ?? '') === 'amadis:lifecycle-snapshot') {"
+        self.assertEqual(source.count(marker), 1)
+        block = source.split(marker, 1)[1].split('\nif (', 1)[0]
         self.assertIn('PRAGMA query_only = ON', block)
         self.assertNotIn("'users'", block)
         self.assertNotIn("'admins'", block)

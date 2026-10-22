@@ -1,0 +1,8 @@
+{
+  "time": "2026-10-21T15:39:42.361179+00:00",
+  "artifact": "docs/05-quality/evidence-remediation-2026-10-21/node-red.log",
+  "action": "redact patterns flagged by SecurityScanIntegrityTest; values never printed; exit evidence unchanged",
+  "matches": 2,
+  "sha256_before": "bf1dde2ca955822b0289eb03f4dcf3cfae89ec858098bbd6d29e8af694eb0eb8",
+  "sha256_after": "4df0368681fb8e98061672b9cfc1f7fa5e69e1578699cc3071bb5bc12b0f3110"
+}

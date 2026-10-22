@@ -17,6 +17,9 @@ class ReturnItem extends Model
         'unit_price',
         'subtotal',
         'condition_note',
+        'allocation_version',
+        'allocation_quantity_before',
+        'allocation_amount_before',
     ];
 
     protected function casts(): array
@@ -25,6 +28,8 @@ class ReturnItem extends Model
             'quantity' => 'integer',
             'unit_price' => 'integer',
             'subtotal' => 'integer',
+            'allocation_quantity_before' => 'integer',
+            'allocation_amount_before' => 'integer',
         ];
     }
 

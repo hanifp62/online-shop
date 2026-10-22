@@ -1,0 +1,10 @@
+{
+  "command": [
+    "./scripts/amadis/launch.sh",
+    "test",
+    "--filter=EmailVerificationTest"
+  ],
+  "started": "2026-10-21T15:30:35.616943+00:00",
+  "finished": "2026-10-21T15:30:40.356316+00:00",
+  "exit": 1
+}

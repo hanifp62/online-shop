@@ -64,7 +64,7 @@ class AmadisLockTests(unittest.TestCase):
         signal.alarm(60)
         self.addCleanup(signal.alarm, 0)
         # Fresh unique root per test: never reuses or overwrites earlier evidence.
-        self.root = BASE / ('amadis-locktest-' + secrets.token_hex(8))
+        self.root = BASE / ('amadis-' + secrets.token_hex(12))
         self.root.mkdir(mode=0o700)
         database = self.root / 'database.sqlite'
         (self.root / 'identity.json').write_text(json.dumps({'root': str(self.root.resolve()),

@@ -10,23 +10,73 @@ function fn(name) {
   assert.ok(start >= 0 && end > start, `function ${name} must exist`);
   return app.slice(start, end + 2);
 }
+// Load the real manager too: renderer tests must not stub away overlay integration.
+const overlayManager = app.slice(app.indexOf('let drawerOpener = null;'), app.indexOf('\nfunction openDrawer('));
+assert.ok(overlayManager.includes('function openOverlay('));
+
+function dom(ids = []) {
+  const nodes = new Map();
+  const document = { getElementById: id => nodes.get(id), querySelectorAll: () => [] };
+  const encode = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  function element(tag = 'div') {
+    const classes = new Set();
+    const attrs = new Map();
+    return {
+      tagName: tag.toUpperCase(), children: [], parentNode: null, inert: false, style: {},
+      classList: { add: name => classes.add(name), remove: name => classes.delete(name), contains: name => classes.has(name) },
+      setAttribute: (name, value) => attrs.set(name, value),
+      hasAttribute: name => attrs.has(name),
+      get innerHTML() {
+        return (this.html || '') + this.children.map(child => `<${child.tagName.toLowerCase()} class="${child.classes()}">${child.innerHTML}</${child.tagName.toLowerCase()}>`).join('');
+      },
+      set innerHTML(value) { this.html = value; this.children = []; },
+      set textContent(value) { this.html = encode(value); this.text = String(value); this.children = []; },
+      get textContent() { return this.text || ''; },
+      classes: () => [...classes].join(' '),
+      appendChild(child) { child.remove(); child.parentNode = this; this.children.push(child); return child; },
+      remove() {
+        if (this.parentNode) this.parentNode.children.splice(this.parentNode.children.indexOf(this), 1);
+        this.parentNode = null; this.removed = true;
+      },
+      contains(node) { return node === this || this.children.some(child => child.contains(node)); },
+      querySelector(selector) {
+        for (const child of this.children) {
+          if ((selector === '.toast-action-btn' && child.classList.contains('toast-action-btn')) ||
+              (selector.includes('button') && child.tagName === 'BUTTON')) return child;
+          const found = child.querySelector(selector);
+          if (found) return found;
+        }
+        return null;
+      },
+      addEventListener(type, callback) { (this.listeners ??= {})[type] = callback; },
+      focus() { document.activeElement = this; },
+      blur() { if (document.activeElement === this) document.activeElement = document.body; },
+      scrollTo() {},
+    };
+  }
+  document.createElement = element;
+  document.body = element('body');
+  document.activeElement = document.body;
+  for (const id of ids) {
+    const node = element();
+    nodes.set(id, node);
+    document.body.appendChild(node);
+  }
+  return { document, nodes };
+}
+
 const payload = '<img src=x onerror="globalThis.injected=1">';
 function setup(record) {
-  const nodes = new Map();
-  const button = { addEventListener(type, callback) { this.callback = callback; } };
-  const toast = { querySelector: () => button, remove() { this.removed = true; } };
-  nodes.set('toast-container', { appendChild(node) { this.child = node; } });
-  nodes.set('kanban-board-container', {});
-  nodes.set('account-history-list', {});
+  const { document, nodes } = dom(['toast-container', 'kanban-board-container', 'account-history-list']);
   const context = {
     localStorage: { getItem: () => JSON.stringify([record]) },
-    document: { getElementById: id => nodes.get(id), createElement: () => toast },
+    document,
     window: {}, setTimeout() {}, formatRupiah: value => String(value),
   };
   // Execute the real storage loader and renderers, with no browser storage or network.
   const load = app.slice(app.indexOf('  load(key, fallback) {'), app.indexOf('\n  save(key, data) {'));
-  vm.runInNewContext(`const loader = { ${load} }; const store = { concierge: loader.load('zafira_v3_5_concierge', []), products: [], categories: [] };\n${['escapeHtml', 'showToast', 'renderKanbanBoard', 'renderAccountPortal'].map(fn).join('\n')}`, context);
-  return { context, nodes, button, toast };
+  vm.runInNewContext(`const loader = { ${load} }; const store = { concierge: loader.load('zafira_v3_5_concierge', []), products: [], categories: [] };\n${overlayManager}\n${['escapeHtml', 'showToast', 'renderKanbanBoard', 'renderAccountPortal'].map(fn).join('\n')}`, context);
+  return { context, nodes };
 }
 for (const [renderer, target, fields] of [
   ['renderKanbanBoard', 'kanban-board-container', ['name', 'phone', 'service', 'date', 'notes']],
@@ -58,35 +108,46 @@ test('numeric order controls retain numeric IDs for strict-equality callers', ()
   assert.match(nodes.get('account-history-list').innerHTML, /openAuthenticityModal\(42\)/);
 });
 test('toast escapes message and action label while retaining SVG and undo callback', () => {
-  const { context, toast, button } = setup({ notes: payload });
+  const { context, nodes } = setup({ notes: payload });
   vm.runInNewContext('showToast(store.concierge[0].notes, "info", store.concierge[0].notes, () => { globalThis.undone = true; })', context);
+  const toast = nodes.get('toast-container').children[0];
+  const button = toast.querySelector('.toast-action-btn');
   assert.ok(!toast.innerHTML.includes(payload), 'stored payload reaches toast HTML');
+  assert.equal(button.textContent, payload, 'action label stays literal text');
+  assert.match(button.innerHTML, /&lt;img src=x onerror=&quot;globalThis.injected=1&quot;&gt;/);
   assert.match(toast.innerHTML, /<svg /);
   assert.match(toast.innerHTML, /<button class="toast-action-btn"/);
-  button.callback({ stopPropagation() {} });
+  assert.equal(toast.parentNode, nodes.get('toast-container'));
+  button.listeners.click({ stopPropagation() {} });
   assert.equal(context.undone, true);
-  assert.equal(toast.removed, true);
+  assert.equal(toast.parentNode, null);
+  assert.ok(!nodes.get('toast-container').children.includes(toast));
 });
 
 test('authenticity certificate escapes stored order fields', () => {
-  const nodes = new Map([['authenticity-modal-content', {}], ['authenticity-modal', { classList: { add() {} } }], ['drawer-backdrop', { classList: { add() {} } }]]);
-  const context = { document: { getElementById: id => nodes.get(id) }, store: { concierge: [{ id: 42, name: payload, service: payload, artisan: payload, notes: payload }] } };
-  vm.runInNewContext(`${fn('escapeHtml')}\n${fn('openAuthenticityModal')}`, context);
+  const { document, nodes } = dom(['authenticity-modal-content', 'authenticity-modal', 'drawer-backdrop']);
+  const context = { document, store: { concierge: [{ id: 42, name: payload, service: payload, artisan: payload, notes: payload }] } };
+  vm.runInNewContext(`${overlayManager}\n${fn('escapeHtml')}\n${fn('openAuthenticityModal')}`, context);
   vm.runInNewContext('openAuthenticityModal(42)', context);
   assert.ok(!nodes.get('authenticity-modal-content').innerHTML.includes(payload));
+  assert.match(nodes.get('authenticity-modal-content').innerHTML, /&lt;img src=x onerror=&quot;globalThis.injected=1&quot;&gt;/);
+  assert.equal(nodes.get('authenticity-modal').classList.contains('open'), true);
+  assert.equal(context.document.activeElement, nodes.get('authenticity-modal'));
 });
 
 function render(names, call, ids, store, extra = {}) {
-  const nodes = new Map(ids.map(id => [id, { classList: { add() {} } }]));
-  const base = { document: { body: { scrollTo() {} }, getElementById: id => nodes.get(id), querySelectorAll: () => [] }, store, window: {}, formatRupiah: String, localStorage: { getItem: () => null } };
+  const { document, nodes } = dom(ids);
+  const base = { document, store, window: {}, formatRupiah: String, localStorage: { getItem: () => null } };
   const context = { ...base, ...extra, document: { ...base.document, ...(extra.document || {}) } };
-  vm.runInNewContext(['escapeHtml', 'safeImageSrc', ...names].map(fn).join('\n') + '\n' + call, context);
+  vm.runInNewContext(overlayManager + '\n' + ['escapeHtml', 'safeImageSrc', ...names].map(fn).join('\n') + '\n' + call, context);
   return nodes;
 }
 test('work order escapes stored order fields', () => {
   const nodes = render(['openWorkOrderModal'], 'openWorkOrderModal(42)', ['work-order-modal-content', 'work-order-modal', 'drawer-backdrop'],
     { concierge: [{ id: 42, name: payload, phone: payload, date: payload, serial: payload, artisan: payload, notes: payload }] });
   assert.ok(!nodes.get('work-order-modal-content').innerHTML.includes(payload));
+  assert.match(nodes.get('work-order-modal-content').innerHTML, /&lt;img src=x onerror=&quot;globalThis.injected=1&quot;&gt;/);
+  assert.equal(nodes.get('work-order-modal').classList.contains('open'), true);
 });
 test('cart drawer escapes product, size and monogram', () => {
   const store = { cart: [{ productId: 1, qty: 1, size: payload, monogram: payload }], products: [{ id: 1 }], getProductLocalized: () => ({ title: payload, price: 1, images: [payload] }), getCartTotal: () => 1 };

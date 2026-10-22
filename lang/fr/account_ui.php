@@ -81,7 +81,7 @@ return [
     'recovery' => [
         'title' => 'Codes de secours — ZAFIRA',
         'heading' => 'Conservez vos codes de secours.',
-        'intro' => 'Ces codes ne sont affichés qu’une fois. Conservez-les en lieu sûr ; chacun est utilisable une fois si votre application d’authentification est indisponible.',
+        'intro' => 'Ouvrez la page des codes une seule fois dans les 5 minutes suivant l’activation. Conservez les codes en lieu sûr ; chacun est utilisable une fois sans authentificateur. La limite de 5 minutes concerne l’ouverture de la page, pas les codes conservés.',
         'submit' => 'Je les ai conservés',
     ],
     'unsubscribe' => [

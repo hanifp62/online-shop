@@ -1,0 +1,45 @@
+{
+  "checked_at": "2026-10-21T17:16:02.102967+00:00",
+  "source_manifest": "docs/05-quality/evidence-remediation-2026-10-21/source-manifest-export-final.json",
+  "source_files_checked": 132,
+  "source_drift": [],
+  "local_markdown_targets_checked": 34,
+  "missing_targets": [],
+  "metadata_checks": {
+    "baseline_sha_matches_remote": true,
+    "all_remote_responses_accounted_for": true,
+    "ci_run_matches_baseline": true,
+    "pii_defect_reproduced": true
+  },
+  "diff_check_argv": [
+    "git",
+    "--no-pager",
+    "diff",
+    "--check"
+  ],
+  "diff_check_exit": 0,
+  "diff_check_output_suppressed": false,
+  "document_sha256": {
+    "docs/05-quality/CI_CD_END_TO_END_AUDIT_2026-10-22.md": "d8646fbcda0f3c4abbddb85f815f3dc845e062af91b09bf5a76b2730f386924a",
+    "docs/04-implementation/TEAM_SUPPORT_LEDGER.md": "ab3fe07eb654791580845b1c51ecfc7e785ceb4f092a14c47b4d34181c4598c7",
+    "docs/README.md": "e0ce598f8a7046070ee36d0095073ddb9c461f4a7da0d4b467849a7dd15833f5"
+  },
+  "reviewers": {
+    "CI": "9bd61a94-aa82-4095-9750-4259fd7f7e6d APPROVE scoped factual report",
+    "CD": "1051e569-f163-4f4a-8d1d-b99271d7c9b5 APPROVE scoped factual report"
+  },
+  "known_incomplete_checks": [
+    {
+      "path": "remote-test-summary.json",
+      "collector_exit": 1,
+      "gh_exit": 0
+    },
+    {
+      "path": "remote-test-summary-r2.json",
+      "collector_exit": 1,
+      "gh_exit": 0
+    }
+  ],
+  "scope": "Read-only source verification and document target existence. Anchors/external URLs not validated here. No application suite rerun. Closure pass is not CI/CD/product readiness.",
+  "exit_code": 0
+}

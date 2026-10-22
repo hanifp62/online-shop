@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "npm",
+    "audit",
+    "--audit-level=high"
+  ],
+  "started_at": "2026-10-21T20:02:42.413108+00:00",
+  "finished_at": "2026-10-21T20:02:43.034212+00:00",
+  "duration_seconds": 0.621,
+  "timeout_seconds": 90,
+  "status": "COMPLETE",
+  "exit_code": 0,
+  "cleanup": "not_required",
+  "sanitized_log": "docs/05-quality/evidence-ci-remediation-2026-10-22/npm-audit.log",
+  "sanitized_log_sha256": "6d8c5c8f3d7684adb070417bd608d01ae90aa3dc26a65af03ffda4955f38d9a3"
+}

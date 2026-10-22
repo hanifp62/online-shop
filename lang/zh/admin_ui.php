@@ -2,6 +2,7 @@
 
 return [
     'table_js' => [
+        'saved_refresh_failed' => '订单状态已保存，但表格尚未刷新。请重新加载表格以查看最新数据。',
         'selected' => '已选择 :count 项',
         'unsaved_confirm' => '管理表格中有未保存的更改。继续并放弃这些更改吗？',
         'cancel_confirm' => '永久取消此订单？此操作无法撤销。',
@@ -23,7 +24,7 @@ return [
     'login' => ['title' => '管理员登录 — ZAFIRA', 'visual_label' => '管理面板', 'image_alt' => 'ZAFIRA 高级定制时装大片', 'home_label' => 'ZAFIRA 首页', 'eyebrow' => '管理', 'quote_heading' => 'Maison ZAFIRA 指挥室与工坊信息系统', 'quote_body' => '管理工艺数据、高定订单、审计档案和礼宾服务。', 'heading' => '管理员登录。', 'submit' => '登录仪表盘'],
     'totp' => ['title' => '两步验证 — ZAFIRA', 'heading' => '两步验证。', 'intro' => '输入身份验证器应用中的 6 位数字。', 'code' => '6 位验证码', 'submit' => '验证', 'help' => '无法打开身份验证器？', 'recovery_code' => '恢复代码', 'recovery_submit' => '使用恢复代码'],
     'enrol' => ['title' => '启用两步验证 — ZAFIRA', 'heading' => '启用两步验证。', 'intro' => '将此密钥添加到身份验证器应用，然后输入首个 6 位验证码。', 'qr_alt' => '身份验证器应用二维码', 'setup_key' => '设置密钥', 'uri' => '身份验证器 URI', 'submit' => '启用'],
-    'recovery' => ['title' => '保存恢复代码 — ZAFIRA', 'heading' => '保存恢复代码', 'intro' => '这些代码只显示一次。身份验证器不可用时，每个代码只能使用一次。', 'codes' => '恢复代码', 'saved' => '我已保存'],
+    'recovery' => ['title' => '保存恢复代码 — ZAFIRA', 'heading' => '保存恢复代码', 'intro' => '请在启用后的 5 分钟内打开代码页面一次。请妥善保存代码；身份验证器不可用时，每个代码只能使用一次。5 分钟限制仅用于打开页面，并非已保存代码的有效期。', 'codes' => '恢复代码', 'saved' => '我已保存'],
     'events' => ['heading' => '身份验证事件日志', 'intro' => 'Maison ZAFIRA 官方安全与控制台会话记录', 'event' => '事件', 'all_events' => '全部事件', 'outcome' => '结果', 'all_outcomes' => '全部结果', 'request_hint' => '例如 1f0c…', 'region' => '身份验证日志表格，可横向滚动', 'caption' => '身份验证事件与控制台会话历史', 'time' => '时间', 'actor' => '操作者', 'context' => '上下文', 'empty' => '暂无身份验证事件记录。', 'success' => '成功', 'failure' => '失败', 'request_id' => '请求 ID'],
     'report' => ['title' => 'ZAFIRA - 订单报告', 'pagination' => '第 {PAGE_NUM} 页，共 {PAGE_COUNT} 页', 'period' => '期间（UTC）：:from 至 :to UTC', 'orders_created' => '已创建订单：:count（已取消：:cancelled）', 'non_cancelled_value' => '未取消订单金额：Rp :value', 'note' => '备注：此为已记录的订单金额，并非已收款或已核实的收入。', 'status_line' => '状态 :status：:count', 'row' => '#:id | :date | :status | 客户：:customer | Rp :total', 'exceeded_limit' => '报告超过 :max 笔订单。请缩小日期范围后重新下载。'],
     'invoice' => ['title' => '订单单据 #:id', 'heading' => 'ZAFIRA — 订单单据 #:id', 'date' => '日期', 'client' => '客户', 'status' => '状态', 'destination' => '收货地址', 'product' => '商品', 'quantity' => '数量', 'price' => '单价', 'subtotal' => '小计', 'discount' => '折扣', 'total' => '合计'],

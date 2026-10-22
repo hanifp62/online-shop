@@ -12,67 +12,226 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
-  php:
+  quality:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: shivammathur/setup-php@v2
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2
         with:
           php-version: '8.4'
           extensions: mbstring, pdo_sqlite, gd, bcmath
           coverage: none
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .nvmrc
           cache: npm
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Dependency test lintas platform
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y poppler-utils
+          python3 -m pip install --disable-pip-version-check -r scripts/ci/requirements.txt
       - run: composer install --no-interaction --prefer-dist --no-progress
       - run: npm ci
       - name: Audit dependency Composer
         run: composer audit --locked --no-interaction
       - name: Audit dependency npm
         run: npm audit --audit-level=high
-      - name: Pindai rahasia ter-hardcode
+      - name: Pindai rahasia dan PII secara fail-closed
         run: |
-          # -l: hanya nama file, nilai yang cocok tidak pernah masuk log CI.
-          # Dikecualikan hanya fixture sentinel yang memang berisi pola palsu.
-          # rc 0 = ada kecocokan, rc 1 = bersih, rc >1 = git grep gagal (jangan dianggap bersih).
-          set +e
-          git grep -lIE '(sk_live|SB-Mid-server-[A-Za-z0-9_-]{10,}|Mid-server-[A-Za-z0-9_-]{10,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY|ghp_[A-Za-z0-9]{30,}|ngpk_[A-Za-z0-9]{10,}|base64:[A-Za-z0-9+/]{43}=)' -- . ':!.github/workflows/ci.yml' ':!tests/Feature/SecurityScanIntegrityTest.php' ':!tests/python/test_amdis_launch_sanitization.py' ':!phpunit.xml'
-          rc=$?
-          set -e
-          if [ "$rc" -eq 0 ]; then
-            echo "Pola rahasia ditemukan pada file di atas (nilai tidak dicetak)"; exit 1
-          elif [ "$rc" -ne 1 ]; then
-            echo "git grep gagal dengan exit code $rc; pemindaian rahasia tidak dapat dipercaya"; exit "$rc"
-          fi
-      - name: Pindai log PII
-        run: |
-          if grep -RInE 'Log::(info|warning|error|debug)\(.*(email|password|phone|address|token)' app; then
-            echo "Pola PII potensial pada log aplikasi"; exit 1
-          fi
-      - run: npm run build
-      - name: Lint (Pint)
+          python3 scripts/ci/security_scan.py --mode secrets
+          python3 scripts/ci/security_scan.py --mode pii
+      - name: Lint PHP
         run: vendor/bin/pint --test
-      - name: Validasi migrasi (fresh, SQLite sementara)
+      - run: npm run build
+      - name: Validasi migrasi SQLite sementara
         run: |
-          cp .env.example .env
-          php artisan key:generate --no-interaction
-          touch database/ci.sqlite
-          DB_CONNECTION=sqlite DB_DATABASE=database/ci.sqlite php artisan migrate --force
-      - name: Gerbang anti-drift skema (tidak ada migrasi tertunda)
+          touch "$RUNNER_TEMP/ci.sqlite"
+          APP_ENV=testing DB_CONNECTION=sqlite DB_DATABASE="$RUNNER_TEMP/ci.sqlite" php artisan migrate --force --no-interaction
+      - name: Gerbang anti-drift skema
         run: |
-          if DB_CONNECTION=sqlite DB_DATABASE=database/ci.sqlite php artisan migrate:status | grep -q Pending; then
-            echo "Ada migrasi belum diterapkan"; exit 1
-          fi
-      - name: Uji Aksesibilitas & Skema
-        run: php artisan test tests/Feature/StorefrontA11yMarkupTest.php tests/Feature/AdminA11yLandmarkTest.php tests/Feature/AdminAuthFormA11yTest.php tests/Feature/AdminTableA11yMarkupTest.php tests/Feature/DatabaseSchemaIntegrityTest.php tests/Feature/IndexMigrationTest.php
-      - name: Kunci nama brand
-        run: php artisan test tests/Feature/BrandNameConsistencyTest.php
-      - name: Gerbang gaya bahasa
-        run: php artisan test tests/Feature/VoiceAndToneConsistencyTest.php
-      - name: Test PHP
-        run: php artisan test
+          status=$(APP_ENV=testing DB_CONNECTION=sqlite DB_DATABASE="$RUNNER_TEMP/ci.sqlite" php artisan migrate:status) || {
+            echo "migrate:status gagal; status skema tidak diketahui"; exit 1;
+          }
+          case "$status" in
+            *Pending*) echo "Ada migrasi belum diterapkan"; exit 1 ;;
+          esac
+      - name: Siapkan root fixture terisolasi
+        run: |
+          # Preserve the existing guard boundary; the runner itself is disposable.
+          sudo install -d -m 700 /private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode
+          sudo chown --reference=. /private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode
+          root=$(scripts/amadis/launch.sh init)
+          printf 'AMADIS_ROOT=%s\n' "$root" >> "$GITHUB_ENV"
+      - name: Test PHP lengkap termasuk guard, a11y, brand dan bahasa
+        run: scripts/amadis/launch.sh test "--log-junit=$AMADIS_ROOT/evidence/phpunit.xml"
+      - name: Gate hasil PHP dengan pengecualian engine exact
+        run: |
+          python3 scripts/ci/check_test_report.py "$AMADIS_ROOT/evidence/phpunit.xml" \
+            --allow-skipped-test 'Tests.Feature.MysqlCheckoutRetryTest::test_deadlock_retry_succeeds_replays_and_cancel_restores_stock_only_once' \
+            --allow-skipped-test 'Tests.Feature.MysqlCheckoutRetryTest::test_deadlock_exhaustion_returns_503_without_partial_writes_and_key_is_reusable' \
+            --allow-skipped-test 'Tests.Feature.MysqlCheckoutRetryTest::test_lock_wait_timeout_is_not_classified_as_deadlock' \
+            --summary-json "$RUNNER_TEMP/phpunit-summary.json"
       - name: Test JS
         run: node --test
+      - name: Test Python tanpa skip
+        run: python3 scripts/ci/run_python_tests.py | tee "$RUNNER_TEMP/python-summary.json"
+      - name: Publikasikan ringkasan aman, bukan log atau JUnit mentah
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: quality-summary-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/phpunit-summary.json
+            ${{ runner.temp }}/python-summary.json
+          if-no-files-found: error
+          retention-days: 14
+
+  mysql:
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo_mysql, gd, bcmath
+          coverage: none
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Sediakan image engine disposable
+        run: docker pull mysql:8.4
+      - name: Retry InnoDB dan restore antar-container milik job
+        run: |
+          install -d -m 700 "$RUNNER_TEMP/mysql-evidence"
+          python3 scripts/ci/mysql_integration.py --output "$RUNNER_TEMP/mysql-evidence"
+      - name: Publikasikan ringkasan MySQL tanpa dump atau kredensial
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: mysql-summary-${{ github.sha }}
+          path: ${{ runner.temp }}/mysql-evidence/mysql-integration-*/summary.json
+          if-no-files-found: error
+          retention-days: 14
+
+  browser:
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo_sqlite, gd, bcmath
+          coverage: none
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - run: composer install --no-interaction --prefer-dist --no-progress
+      - run: npm ci
+      - run: npm run build
+      - name: Prasyarat browser dan isolasi
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y sqlite3 lsof
+          node node_modules/playwright/cli.js install --with-deps chromium
+          sudo install -d -m 700 /private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode
+          sudo chown --reference=. /private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode
+      - name: Browser, keyboard, checkout paralel dan cleanup
+        run: |
+          umask 077
+          export AM_PLAYWRIGHT="$GITHUB_WORKSPACE/node_modules/playwright"
+          AM_CHROMIUM=$(node -p 'require("playwright").chromium.executablePath()')
+          export AM_CHROMIUM
+          bash scripts/amadis/acceptance_isolated.sh "$RUNNER_TEMP/browser-evidence"
+          python3 scripts/ci/check_browser_report.py "$RUNNER_TEMP/browser-evidence" | tee "$RUNNER_TEMP/browser-summary.json"
+      - name: Publikasikan hanya ringkasan browser allowlist
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: browser-summary-${{ github.sha }}
+          path: ${{ runner.temp }}/browser-summary.json
+          if-no-files-found: error
+          retention-days: 14
+
+  release:
+    needs: [quality, mysql, browser]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo_sqlite, gd, bcmath
+          coverage: none
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Dependency produksi dari lockfile yang diuji
+        run: |
+          composer install --no-dev --no-interaction --prefer-dist --no-progress --optimize-autoloader
+          npm ci
+          npm run build
+          python3 scripts/ci/security_scan.py --mode secrets
+      - name: Bangun dan verifikasi kandidat rilis
+        run: |
+          python3 scripts/ci/release_artifact.py build --output "$RUNNER_TEMP/release-candidate"
+          python3 scripts/ci/release_artifact.py verify \
+            --archive "$RUNNER_TEMP/release-candidate/release.tar.gz" \
+            --manifest "$RUNNER_TEMP/release-candidate/release-manifest.json"
+      - name: Publikasikan kandidat, bukan deployment atau approval produksi
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-candidate-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/release-candidate/release.tar.gz
+            ${{ runner.temp }}/release-candidate/release-manifest.json
+          if-no-files-found: error
+          retention-days: 14
+
+  # Keep the existing required-check name; no skipped/cancelled dependency may pass.
+  php:
+    needs: [quality, mysql, browser, release]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Semua gate wajib sukses
+        env:
+          QUALITY: ${{ needs.quality.result }}
+          MYSQL: ${{ needs.mysql.result }}
+          BROWSER: ${{ needs.browser.result }}
+          RELEASE: ${{ needs.release.result }}
+        run: |
+          test "$QUALITY" = success
+          test "$MYSQL" = success
+          test "$BROWSER" = success
+          test "$RELEASE" = success

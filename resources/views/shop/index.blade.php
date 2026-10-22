@@ -87,6 +87,9 @@
             $('clear-cart').disabled = !cart.items.length;
             if (loggedIn) $('checkout-button').disabled = !pendingCheckout && (!cart.items.length || cart.items.some(item => !item.available));
             else $('guest-checkout-button').disabled = !pendingCheckout && (!cart.items.length || cart.items.some(item => !item.available));
+            // A replay uses the frozen payload, so edited/invalid visible fields must not
+            // block it at the browser's constraint-validation gate before submit fires.
+            $(loggedIn ? 'checkout-button' : 'guest-checkout-button').formNoValidate = Boolean(pendingCheckout);
             document.querySelector('main').removeAttribute('aria-busy');
             busy = false;
         }
@@ -112,8 +115,8 @@
             if (!item.available) row.append(text('p', shopText('unavailable', 'Stok tidak tersedia. Hapus atau periksa kembali sebelum checkout.')));
             const controls = text('div', ''); controls.className = 'row';
             const qty = document.createElement('input'); qty.type = 'number'; qty.min = 1; qty.max = 99; qty.value = item.quantity; qty.setAttribute('aria-label', shopText('qty_aria', `Jumlah ${item.product_title}`, {title: item.product_title})); qty.style.maxWidth = '90px';
-            const update = text('button', shopText('update', 'Ubah jumlah')); update.type = 'button'; update.onclick = () => action(async () => { await api(@json(route('cart.items.store')), 'POST', {product_id:item.product_id, quantity:Number(qty.value)}); checkoutKey = pendingCheckout = null; await loadCart(); message(shopText('qty_updated', 'Jumlah di tas belanja diperbarui.')); });
-            const remove = text('button', shopText('remove', 'Hapus')); remove.type = 'button'; remove.className = 'secondary'; remove.onclick = () => action(async () => { await api(@json(url('/cart/items')).concat('/' + item.product_id), 'DELETE'); checkoutKey = pendingCheckout = null; await loadCart(); message(shopText('removed', 'Kreasi dihapus dari tas.')); });
+            const update = text('button', shopText('update', 'Ubah jumlah')); update.type = 'button'; update.onclick = () => action(async () => { requireSettledCheckout(); await api(@json(route('cart.items.store')), 'POST', {product_id:item.product_id, quantity:Number(qty.value)}); checkoutKey = pendingCheckout = null; await loadCart(); message(shopText('qty_updated', 'Jumlah di tas belanja diperbarui.')); });
+            const remove = text('button', shopText('remove', 'Hapus')); remove.type = 'button'; remove.className = 'secondary'; remove.onclick = () => action(async () => { requireSettledCheckout(); await api(@json(url('/cart/items')).concat('/' + item.product_id), 'DELETE'); checkoutKey = pendingCheckout = null; await loadCart(); message(shopText('removed', 'Kreasi dihapus dari tas.')); });
             controls.append(qty, update, remove); row.append(controls); list.append(row);
         }
         $('cart-total').textContent = shopText('subtotal', 'Subtotal: :amount', {amount: money(cart.subtotal)});
@@ -177,7 +180,7 @@
         for (const address of data.addresses) {
             const row = text('div', ''); row.className = 'item';
             row.append(text('strong', address.label + (address.is_default ? ' · ' + shopText('default_suffix', 'Utama') : '')), text('p', `${address.recipient_name} · ${address.phone} · ${address.line1}${address.line2 ? ', ' + address.line2 : ''}, ${address.city}, ${address.province} ${address.postal_code}`));
-            const remove = text('button', shopText('remove_address', 'Hapus alamat')); remove.type = 'button'; remove.className = 'secondary'; remove.onclick = () => action(async () => { if (!confirm(shopText('confirm_remove_address', 'Hapus alamat ini? Pesanan lama tetap menyimpan salinannya.'))) return; await api(@json(url('/addresses')).concat('/' + address.id), 'DELETE'); checkoutKey = pendingCheckout = null; await loadAddresses(); message(shopText('address_removed', 'Alamat dihapus.')); }); row.append(remove); list.append(row);
+            const remove = text('button', shopText('remove_address', 'Hapus alamat')); remove.type = 'button'; remove.className = 'secondary'; remove.onclick = () => action(async () => { if (!confirm(shopText('confirm_remove_address', 'Hapus alamat ini? Pesanan lama tetap menyimpan salinannya.'))) return; requireSettledCheckout(); await api(@json(url('/addresses')).concat('/' + address.id), 'DELETE'); checkoutKey = pendingCheckout = null; await loadAddresses(); message(shopText('address_removed', 'Alamat dihapus.')); }); row.append(remove); list.append(row);
             const option = new Option(address.label + ' — ' + address.line1, address.id); option.selected = !!address.is_default; select.add(option);
         }
         if (!data.addresses.some(a => a.is_default) && select.options.length) select.selectedIndex = 0;
@@ -207,8 +210,11 @@
                     form.onsubmit = event => { event.preventDefault(); const fields = new FormData(form); action(async () => { await api(@json(route('reviews.store')), 'POST', {order_id:order.id, product_id:item.product_id, rating:Number(fields.get('rating')), body:fields.get('body')}); form.replaceWith(text('p', shopText('review_sent', 'Ulasan terkirim. Terima kasih.'))); message(shopText('review_saved', 'Ulasan tersimpan.')); }); }; row.append(form);
                 }
             }
-            if (['pending', 'paid', 'processing'].includes(order.status)) {
+            if (order.status === 'pending') {
                 const cancel = text('button', shopText('cancel_order', 'Batalkan pesanan')); cancel.type = 'button'; cancel.className = 'secondary'; cancel.onclick = () => action(async () => { if (!confirm(shopText('confirm_cancel', 'Batalkan pesanan #:id?', {id: order.id}))) return; await api(@json(url('/orders')).concat('/' + order.id + '/cancel'), 'POST'); await loadOrders(ordersPage); message(shopText('order_cancelled', 'Pesanan dibatalkan.')); }); row.append(cancel);
+            } else if (['paid', 'processing'].includes(order.status)) {
+                row.append(text('p', shopText('paid_cancel_unavailable', 'Pesanan yang sudah dibayar atau diproses tidak dapat dibatalkan di sini. Hubungi concierge untuk membahas langkah berikutnya; pengembalian dana tidak otomatis.')));
+                                const help = text('a', shopText('contact_concierge', 'Hubungi concierge')); help.href = @json(route('home')) + '#services'; row.append(help);
             }
             list.append(row);
         }
@@ -229,10 +235,20 @@
         }
         $('favorite-count').textContent = shopText('favorite_count', '(:count favorit)', {count: data.favorites.length});
     }
-    $('clear-cart').onclick = () => action(async () => { if (!confirm(shopText('confirm_clear', 'Kosongkan seluruh tas belanja?'))) return; await api(@json(route('cart.clear')), 'DELETE'); checkoutKey = pendingCheckout = null; await loadCart(); message(shopText('cart_cleared', 'Tas belanja dikosongkan.')); });
+    function pendingCheckoutMessage() {
+        return shopText('checkout_pending', 'Hasil checkout sebelumnya belum pasti. Percobaan berikutnya memakai rincian pesanan semula; periksa Pesanan sebelum membuat pesanan baru.');
+    }
+    function requireSettledCheckout() {
+        if (pendingCheckout) throw new Error(pendingCheckoutMessage());
+    }
+    function checkoutInputChanged() {
+        if (pendingCheckout) { message(pendingCheckoutMessage(), true); return; }
+        checkoutKey = null;
+    }
+    $('clear-cart').onclick = () => action(async () => { if (!confirm(shopText('confirm_clear', 'Kosongkan seluruh tas belanja?'))) return; requireSettledCheckout(); await api(@json(route('cart.clear')), 'DELETE'); checkoutKey = pendingCheckout = null; await loadCart(); message(shopText('cart_cleared', 'Tas belanja dikosongkan.')); });
     if (loggedIn) {
         $('address-form').onsubmit = event => { event.preventDefault(); const fields = new FormData(event.target); action(async () => { await api(@json(route('addresses.store')), 'POST', Object.fromEntries(fields)); event.target.reset(); await loadAddresses(); message(shopText('address_saved', 'Alamat tersimpan.')); }); };
-        $('checkout-form').addEventListener('input', () => { checkoutKey = pendingCheckout = null; });
+        $('checkout-form').addEventListener('input', checkoutInputChanged);
         $('checkout-form')?.voucher_code?.addEventListener?.('change', event => action(() => refreshVoucherQuote(event.target.form)));
         $('checkout-form').onsubmit = event => { event.preventDefault(); action(async () => {
             if (!pendingCheckout) {
@@ -247,7 +263,7 @@
         }); };
     }
     if (!loggedIn) {
-        $('guest-checkout-form').addEventListener('input', () => { checkoutKey = pendingCheckout = null; });
+        $('guest-checkout-form').addEventListener('input', checkoutInputChanged);
         $('guest-checkout-form').onsubmit = event => { event.preventDefault(); const fields = new FormData(event.target); action(async () => {
             if (!pendingCheckout) {
                 await loadCart(); // Validate only new attempts; an uncertain response must replay the original payload.

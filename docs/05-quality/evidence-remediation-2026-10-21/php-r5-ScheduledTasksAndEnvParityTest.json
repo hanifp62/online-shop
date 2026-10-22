@@ -1,0 +1,10 @@
+{
+  "command": [
+    "./scripts/amadis/launch.sh",
+    "test",
+    "--filter=ScheduledTasksAndEnvParityTest"
+  ],
+  "started": "2026-10-21T15:30:51.787809+00:00",
+  "finished": "2026-10-21T15:30:54.869986+00:00",
+  "exit": 1
+}

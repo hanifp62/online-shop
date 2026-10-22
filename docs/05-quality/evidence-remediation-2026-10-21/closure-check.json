@@ -1,0 +1,10 @@
+{
+  "time": "2026-10-21T16:20:45.120751+00:00",
+  "source_files_checked": 131,
+  "source_drift": [],
+  "markdown_links_checked": 64,
+  "missing_links": [],
+  "diff_check_exit": 0,
+  "baseline": "041ed083a1be330d97d4f335cda8555670045cdd",
+  "scope": "target existence only, anchors/external URLs not validated; environment and operational data not read"
+}

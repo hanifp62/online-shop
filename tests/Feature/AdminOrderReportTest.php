@@ -10,11 +10,24 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Tests\Support\PdfTextExtractor;
 use Tests\TestCase;
 
 class AdminOrderReportTest extends TestCase
 {
     use RefreshDatabase;
+
+    private static ?PdfTextExtractor $pdfExtractor = null;
+
+    public static function tearDownAfterClass(): void
+    {
+        try {
+            self::$pdfExtractor?->close();
+        } finally {
+            self::$pdfExtractor = null;
+            parent::tearDownAfterClass();
+        }
+    }
 
     protected function setUp(): void
     {
@@ -47,34 +60,12 @@ class AdminOrderReportTest extends TestCase
         return $order->fresh();
     }
 
-    /**
-     * Genuine text extraction through macOS PDFKit (tests/Support/pdf-text.swift); pages split by form feed.
-     * shortcut: macOS-only (swiftc + PDFKit); skips elsewhere, swap for poppler pdftotext on Linux CI.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     private function pdfText(string $pdf): array
     {
-        static $binary = null;
-        if (PHP_OS_FAMILY !== 'Darwin' || ! is_executable('/usr/bin/swiftc')) {
-            $this->markTestSkipped('PDF text extraction needs macOS PDFKit (swiftc).');
-        }
-        $dir = sys_get_temp_dir();
-        if ($binary === null) {
-            $binary = $dir.'/zafira-pdf-text-'.sha1_file(base_path('tests/Support/pdf-text.swift'));
-            if (! is_file($binary)) {
-                exec('/usr/bin/swiftc -O -module-cache-path '.escapeshellarg($dir.'/swift-module-cache').' '
-                    .escapeshellarg(base_path('tests/Support/pdf-text.swift')).' -o '.escapeshellarg($binary).' 2>&1', $out, $rc);
-                $this->assertSame(0, $rc, implode("\n", $out));
-            }
-        }
-        $file = tempnam($dir, 'pdf');
-        file_put_contents($file, $pdf);
-        exec(escapeshellarg($binary).' '.escapeshellarg($file), $lines, $rc);
-        unlink($file);
-        $this->assertSame(0, $rc, 'PDFKit could not open the PDF.');
+        self::$pdfExtractor ??= new PdfTextExtractor;
 
-        return $lines;
+        return explode("\n", self::$pdfExtractor->extract($pdf));
     }
 
     public function test_pdf_service_embeds_unicode_font_and_sanitizes_html_and_unicode(): void

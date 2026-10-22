@@ -1,0 +1,17 @@
+{
+  "started_at": "2026-10-21T17:05:50.110043+00:00",
+  "completed_at": "2026-10-21T17:05:54.118905+00:00",
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "39578450137",
+    "--repo",
+    "hanifp62/online-shop",
+    "--log"
+  ],
+  "exit_code": 0,
+  "scope": "Only allowlisted numeric test summaries retained. Raw logs and stderr neither printed nor saved; no skipped reasons retained.",
+  "raw_logs_retained": false,
+  "summaries": []
+}

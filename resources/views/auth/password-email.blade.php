@@ -28,9 +28,9 @@
             @if ($errors->any())
                 <div class="auth-errors" role="alert"><ul>@foreach ($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul></div>
             @endif
-            <form method="POST" action="{{ route('password.email') }}" novalidate>
+            <form method="POST" action="{{ route('password.email') }}" data-auth-form novalidate>
                 @csrf
-                <div class="field"><label for="email">{{ __('auth_ui.common.email') }}</label><input id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email"></div>
+                <div class="field"><label for="email">{{ __('auth_ui.common.email') }}</label><input id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email" @error('email') aria-invalid="true" aria-describedby="email-error" @enderror>@error('email')<small id="email-error">{{ $message }}</small>@enderror</div>
                 <button class="button button-sapphire" type="submit">{{ __('auth_ui.forgotten.submit') }}</button>
             </form>
         </div>

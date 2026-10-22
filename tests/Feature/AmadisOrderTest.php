@@ -14,6 +14,8 @@ use Illuminate\Database\DeadlockException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Schema;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\TestCase;
@@ -139,12 +141,29 @@ class AmadisOrderTest extends TestCase
         $this->assertSame(2, (int) $product->fresh()->stock);
     }
 
-    /** Simulasi kegagalan kueri saat penulisan stok; $failures = berapa kali gagal sebelum berhasil. */
-    private function failStockWrites(int $failures, int $code = 5): object
+    /** Inject before stock writes, or after stock/voucher claims to prove whole-checkout rollback. */
+    private function failStockWrites(int $failures, int $code = 5, bool $afterClaims = false): object
     {
-        $state = (object) ['remaining' => $failures, 'seen' => 0];
-        DB::connection()->beforeExecuting(function (string $sql) use ($state, $code) {
-            if ($state->remaining > 0 && str_starts_with($sql, 'update '.DB::connection()->getQueryGrammar()->wrapTable('products').' ')) {
+        $state = (object) ['remaining' => $failures, 'seen' => 0, 'attempts' => []];
+        $connection = DB::connection();
+        $target = $afterClaims
+            ? 'insert into '.$connection->getQueryGrammar()->wrapTable('orders').' '
+            : 'update '.$connection->getQueryGrammar()->wrapTable('products').' ';
+        $connection->beforeExecuting(function (string $sql) use ($state, $code, $afterClaims, $connection, $target) {
+            if (! str_starts_with($sql, $target)) {
+                return;
+            }
+            if ($afterClaims) {
+                $state->attempts[] = [
+                    'level' => $connection->transactionLevel(),
+                    'physical' => $connection->getPdo()->inTransaction(),
+                    'stock' => $connection->table('products')->orderBy('product_id')->pluck('stock')->all(),
+                    'voucher_used' => $connection->table('vouchers')->orderBy('id')->pluck('used')->all(),
+                    'orders' => $connection->table('orders')->count(),
+                    'items' => $connection->table('order_items')->count(),
+                ];
+            }
+            if ($state->remaining > 0) {
                 $state->remaining--;
                 $state->seen++;
                 $msg = $code === 5 ? 'database is locked' : 'general error';
@@ -157,6 +176,51 @@ class AmadisOrderTest extends TestCase
         return $state;
     }
 
+    /** Separate physical SQLite owner; never commit/rollback the suite's RefreshDatabase transaction. */
+    private function withPhysicalSqliteCheckout(callable $scenario): void
+    {
+        $this->requireSqliteLockSimulation();
+        $name = 'amadis_sqlite_lock_test';
+        $originalName = DB::getDefaultConnection();
+        $originalConnection = DB::connection($originalName);
+        $originalPdo = $originalConnection->getPdo();
+        $originalLevel = $originalConnection->transactionLevel();
+        $originalSchema = Schema::getFacadeRoot();
+        $connections = config('database.connections');
+        $this->assertFalse(array_key_exists($name, $connections), 'Reserved SQLite fixture connection must not already exist.');
+        $this->assertSame(1, $originalLevel);
+        $this->assertTrue($originalPdo->inTransaction());
+        config(['database.connections.'.$name => [
+            'driver' => 'sqlite', 'database' => ':memory:', 'prefix' => '',
+            'foreign_key_constraints' => true,
+        ]]);
+        try {
+            DB::setDefaultConnection($name);
+            $isolated = DB::connection($name);
+            $this->assertSame('sqlite', $isolated->getDriverName());
+            $this->assertSame(':memory:', $isolated->getDatabaseName());
+            $this->assertNotSame($originalPdo, $isolated->getPdo());
+            // Schema's cached facade must follow the real isolated connection during migrations.
+            Schema::swap($isolated->getSchemaBuilder());
+            $this->artisan('migrate', ['--database' => $name, '--force' => true])->assertExitCode(0);
+            $this->assertSame($name, DB::getDefaultConnection());
+            $this->assertSame(0, $isolated->transactionLevel());
+            $this->assertFalse($isolated->getPdo()->inTransaction());
+            Mail::fake(); // Real commits may dispatch outbox callbacks; never send mail from this fixture.
+            $scenario();
+            $this->assertSame(0, $isolated->transactionLevel());
+            $this->assertFalse($isolated->getPdo()->inTransaction());
+        } finally {
+            DB::setDefaultConnection($originalName);
+            Schema::swap($originalSchema);
+            DB::purge($name);
+            config(['database.connections' => $connections]);
+        }
+        $this->assertSame($originalPdo, $originalConnection->getPdo());
+        $this->assertSame($originalLevel, $originalConnection->transactionLevel());
+        $this->assertTrue($originalPdo->inTransaction());
+    }
+
     private function requireSqliteLockSimulation(): void
     {
         // Simulates SQLite error code 5; MySQL lock semantics differ, so these are engine-specific, not all-engine proof.
@@ -167,47 +231,74 @@ class AmadisOrderTest extends TestCase
 
     public function test_transient_sqlite_lock_is_retried_once_and_creates_single_order(): void
     {
-        $this->requireSqliteLockSimulation();
-        $user = User::factory()->create();
-        $address = $this->address($user);
-        $product = $this->product();
-        $voucher = Voucher::create(['code' => 'SUTRA', 'discount_amount' => 10000, 'quota' => 5, 'per_user_limit' => 1]);
-        $this->actingAs($user)->postJson('/cart/items', ['product_id' => $product->product_id, 'quantity' => 1])->assertOk();
-        $state = $this->failStockWrites(1);
+        $this->withPhysicalSqliteCheckout(function (): void {
+            $user = User::factory()->create();
+            $address = $this->address($user);
+            $product = $this->product();
+            $voucher = Voucher::create(['code' => 'SUTRA', 'discount_amount' => 10000, 'quota' => 5, 'per_user_limit' => 1]);
+            $this->actingAs($user)->postJson('/cart/items', ['product_id' => $product->product_id, 'quantity' => 1])->assertOk();
+            $state = $this->failStockWrites(1, afterClaims: true);
+            $payload = ['address_id' => $address->id, 'idempotency_key' => 'busy-once', 'voucher_code' => 'SUTRA'];
+            $this->assertSame(0, DB::transactionLevel());
+            $this->assertFalse(DB::connection()->getPdo()->inTransaction());
 
-        $this->postJson('/checkout', ['address_id' => $address->id, 'idempotency_key' => 'busy-once', 'voucher_code' => 'SUTRA'])->assertCreated();
+            $id = $this->postJson('/checkout', $payload)->assertCreated()->json('order.id');
+            $this->postJson('/checkout', $payload)->assertOk()->assertJsonPath('order.id', $id);
 
-        $this->assertSame(1, $state->seen);
-        $this->assertDatabaseCount('orders', 1);
-        $this->assertSame(2, (int) $product->fresh()->stock);
-        $this->assertSame(1, (int) $voucher->fresh()->used);
+            $this->assertSame(1, $state->seen);
+            $attempt = ['level' => 2, 'physical' => true, 'stock' => [2], 'voucher_used' => [1], 'orders' => 0, 'items' => 0];
+            $this->assertSame([$attempt, $attempt], $state->attempts, 'Retry must roll back both claims and rerun the whole HTTP owner.');
+            $this->assertDatabaseCount('orders', 1);
+            $this->assertDatabaseCount('order_items', 1);
+            $this->assertDatabaseCount('inventory_reservations', 1);
+            $this->assertDatabaseCount('cart_items', 0);
+            $this->assertSame(2, (int) $product->fresh()->stock);
+            $this->assertSame(1, (int) $voucher->fresh()->used);
+        });
     }
 
     public function test_exhausted_sqlite_lock_returns_503_without_partial_state_and_key_stays_usable(): void
     {
-        $this->requireSqliteLockSimulation();
-        $user = User::factory()->create();
-        $address = $this->address($user);
-        $product = $this->product();
-        $voucher = Voucher::create(['code' => 'SUTRA', 'discount_amount' => 10000, 'quota' => 5, 'per_user_limit' => 1]);
-        $this->actingAs($user)->postJson('/cart/items', ['product_id' => $product->product_id, 'quantity' => 1])->assertOk();
-        $payload = ['address_id' => $address->id, 'idempotency_key' => 'busy-always', 'voucher_code' => 'SUTRA'];
-        $state = $this->failStockWrites(PHP_INT_MAX);
+        $this->withPhysicalSqliteCheckout(function (): void {
+            $user = User::factory()->create();
+            $address = $this->address($user);
+            $product = $this->product();
+            $voucher = Voucher::create(['code' => 'SUTRA', 'discount_amount' => 10000, 'quota' => 5, 'per_user_limit' => 1]);
+            $this->actingAs($user)->postJson('/cart/items', ['product_id' => $product->product_id, 'quantity' => 1])->assertOk();
+            $payload = ['address_id' => $address->id, 'idempotency_key' => 'busy-always', 'voucher_code' => 'SUTRA'];
+            $state = $this->failStockWrites(PHP_INT_MAX, afterClaims: true);
+            $this->assertSame(0, DB::transactionLevel());
+            $this->assertFalse(DB::connection()->getPdo()->inTransaction());
 
-        $this->postJson('/checkout', $payload)->assertStatus(503);
+            $this->postJson('/checkout', $payload)->assertStatus(503);
 
-        $this->assertSame(4, $state->seen); // percobaan awal + 3 retry, lalu berhenti.
-        $this->assertDatabaseCount('orders', 0);
-        $this->assertSame(3, (int) $product->fresh()->stock);
-        $this->assertSame(0, (int) $voucher->fresh()->used);
-        $this->assertSame([$product->product_id => 1], session('cart'));
+            $this->assertSame(3, $state->seen); // HTTP owner: three total attempts, not four inner-service attempts.
+            $attempt = ['level' => 2, 'physical' => true, 'stock' => [2], 'voucher_used' => [1], 'orders' => 0, 'items' => 0];
+            $this->assertSame([$attempt, $attempt, $attempt], $state->attempts);
+            $this->assertSame(0, DB::transactionLevel());
+            $this->assertFalse(DB::connection()->getPdo()->inTransaction());
+            $this->assertDatabaseCount('orders', 0);
+            $this->assertDatabaseCount('order_items', 0);
+            $this->assertDatabaseCount('inventory_reservations', 0);
+            $this->assertSame(3, (int) $product->fresh()->stock);
+            $this->assertSame(0, (int) $voucher->fresh()->used);
+            $this->assertSame([$product->product_id => 1], session('cart'));
+            $cartId = DB::table('carts')->where('user_id', $user->id)->value('id');
+            $this->assertNotNull($cartId);
+            $this->assertSame([$product->product_id => 1], DB::table('cart_items')->where('cart_id', $cartId)->pluck('quantity', 'product_id')->all());
 
-        $state->remaining = 0;
-        $this->postJson('/checkout', $payload)->assertCreated();
-        $this->postJson('/checkout', $payload)->assertOk();
-        $this->assertDatabaseCount('orders', 1);
-        $this->assertSame(2, (int) $product->fresh()->stock);
-        $this->assertSame(1, (int) $voucher->fresh()->used);
+            $state->remaining = 0;
+            $id = $this->postJson('/checkout', $payload)->assertCreated()->json('order.id');
+            $this->postJson('/checkout', $payload)->assertOk()->assertJsonPath('order.id', $id);
+            $this->assertSame(3, $state->seen);
+            $this->assertSame([$attempt, $attempt, $attempt, $attempt], $state->attempts);
+            $this->assertDatabaseCount('orders', 1);
+            $this->assertDatabaseCount('order_items', 1);
+            $this->assertDatabaseCount('inventory_reservations', 1);
+            $this->assertDatabaseCount('cart_items', 0);
+            $this->assertSame(2, (int) $product->fresh()->stock);
+            $this->assertSame(1, (int) $voucher->fresh()->used);
+        });
     }
 
     public function test_non_transient_query_error_is_not_retried(): void

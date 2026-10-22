@@ -192,16 +192,17 @@ class RescueBackendAuditTest extends TestCase
 
     public function test_admin_logout_requires_post_and_preserves_customer_if_both_active(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['password' => 'Dual-customer!Password123']);
         $admin = Admin::create([
             'name' => 'Dual Admin',
             'email' => 'dual@test.local',
             'password' => 'Pass#1234',
         ]);
 
-        $this->withSession([]);
-        auth()->guard('web')->login($user);
-        auth()->guard('admin')->login($admin);
+        $this->post('/login', ['email' => $user->email, 'password' => 'Dual-customer!Password123'])->assertRedirect('/');
+        $this->post('/admin/login', ['email' => $admin->email, 'password' => 'Pass#1234'])->assertRedirect('/admin');
+        $this->assertAuthenticatedAs($user, 'web');
+        $this->assertAuthenticatedAs($admin, 'admin');
 
         $this->get(route('admin.logout'))->assertStatus(405);
         $sessionId = session()->getId();
@@ -219,16 +220,17 @@ class RescueBackendAuditTest extends TestCase
 
     public function test_customer_logout_preserves_admin_session_if_both_active(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['password' => 'Dual-customer!Password123']);
         $admin = Admin::create([
             'name' => 'Dual Admin 2',
             'email' => 'dual2@test.local',
             'password' => 'Pass#1234',
         ]);
 
-        $this->withSession([]);
-        auth()->guard('web')->login($user);
-        auth()->guard('admin')->login($admin);
+        $this->post('/login', ['email' => $user->email, 'password' => 'Dual-customer!Password123'])->assertRedirect('/');
+        $this->post('/admin/login', ['email' => $admin->email, 'password' => 'Pass#1234'])->assertRedirect('/admin');
+        $this->assertAuthenticatedAs($user, 'web');
+        $this->assertAuthenticatedAs($admin, 'admin');
         $sessionId = session()->getId();
         $token = session()->token();
 
@@ -415,7 +417,7 @@ class RescueBackendAuditTest extends TestCase
         $response->assertHeader('Content-Type', 'application/xml');
         $response->assertHeader('Cache-Control', 'max-age=3600, public');
 
-        $content = $response->getContent();
+        $content = $response->streamedContent();
         $this->assertStringContainsString('<?xml version="1.0" encoding="UTF-8"?>', $content);
         $this->assertStringContainsString('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', $content);
         $this->assertStringNotContainsString('/admin', $content);

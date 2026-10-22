@@ -1,0 +1,10 @@
+{
+  "command": [
+    "./scripts/amadis/launch.sh",
+    "test",
+    "--filter=ResidualLiteralLocaleTest"
+  ],
+  "started": "2026-10-21T15:30:48.314922+00:00",
+  "finished": "2026-10-21T15:30:51.787596+00:00",
+  "exit": 1
+}

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Controllers\AdminCategoryController;
 use App\Models\Category;
 use App\Models\Product;
 use App\Services\CheckoutService;
@@ -48,11 +49,12 @@ class StorefrontCacheSerializationTest extends TestCase
     public function test_cold_then_warm_request_render_identically_and_second_skips_catalog_queries(): void
     {
         $this->product();
-        $this->assertNull($this->cacheKey('storefront:products:v3'));
+        $revision = AdminCategoryController::storefrontRevision();
+        $this->assertNull($this->cacheKey("storefront:products:v4:{$revision}"));
 
         $cold = $this->get('/')->assertOk()->getContent();
 
-        $key = $this->cacheKey('storefront:products:v3');
+        $key = $this->cacheKey("storefront:products:v4:{$revision}");
         $this->assertNotNull($key);
         $cached = Cache::get($key);
         $this->assertInstanceOf(EloquentCollection::class, $cached);
@@ -62,9 +64,9 @@ class StorefrontCacheSerializationTest extends TestCase
 
         $queries = 0;
         DB::listen(function ($query) use (&$queries) {
-            if (str_contains($query->sql, 'from `products`') || str_contains($query->sql, 'from `categories`')) {
+            if (preg_match('/from ["`](products|categories)["`]/', $query->sql)) {
                 // welcome.blade.php resolves purchase ids per render; that lookup is not cached by design.
-                if (! str_contains($query->sql, 'product_slug` in')) {
+                if (! preg_match('/product_slug["`] in/', $query->sql)) {
                     $queries++;
                 }
             }
@@ -93,7 +95,8 @@ class StorefrontCacheSerializationTest extends TestCase
         $this->assertStringContainsString('Étole Saphir', $cold);
         // The app-copy JSON blob carries the label for client-side use; only visible markup matters.
         $this->assertStringNotContainsString('Stok habis', preg_replace('#<script type="application/json" id="zafira-app-copy">.*?</script>#s', '', $cold));
-        $relatedKey = $this->cacheKey("storefront:related:{$category->cat_id}:{$first->product_id}:v3");
+        $revision = AdminCategoryController::storefrontRevision();
+        $relatedKey = $this->cacheKey("storefront:related:{$category->cat_id}:{$first->product_id}:v4:{$revision}");
         $this->assertNotNull($relatedKey);
         $cached = Cache::get($relatedKey);
         $this->assertInstanceOf(EloquentCollection::class, $cached);
@@ -106,7 +109,7 @@ class StorefrontCacheSerializationTest extends TestCase
         DB::table('products')->where('product_id', $related->product_id)->update(['stock' => 1]);
         $relatedQueries = 0;
         DB::listen(function ($query) use (&$relatedQueries) {
-            if (str_contains($query->sql, 'from `products`') && str_contains($query->sql, '`product_id` !=')) {
+            if (preg_match('/from ["`]products["`]/', $query->sql) && preg_match('/["`]product_id["`] !=/', $query->sql)) {
                 $relatedQueries++;
             }
         });

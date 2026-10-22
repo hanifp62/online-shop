@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "bash",
+    "scripts/amadis/acceptance_isolated.sh",
+    "/Users/hanifpriyambodo/Documents/online-shop/scratch/ci-validation/browser-r1"
+  ],
+  "started_at": "2026-10-21T20:02:54.454675+00:00",
+  "finished_at": "2026-10-21T20:03:02.341221+00:00",
+  "duration_seconds": 7.886,
+  "timeout_seconds": 360,
+  "status": "COMPLETE",
+  "exit_code": 1,
+  "cleanup": "not_required",
+  "sanitized_log": "docs/05-quality/evidence-ci-remediation-2026-10-22/browser-acceptance-r1.log",
+  "sanitized_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

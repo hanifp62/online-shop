@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "vendor/bin/pint",
+    "--test"
+  ],
+  "started_at": "2026-10-21T19:43:23.116203+00:00",
+  "finished_at": "2026-10-21T19:43:24.067399+00:00",
+  "duration_seconds": 0.951,
+  "timeout_seconds": 120,
+  "status": "COMPLETE",
+  "exit_code": 0,
+  "cleanup": "not_required",
+  "sanitized_log": "docs/05-quality/evidence-ci-remediation-2026-10-22/pint-full.log",
+  "sanitized_log_sha256": "13460c3595208f6260506a30b23abec458ad00ad6c5cb26b97e52c417692a69e"
+}

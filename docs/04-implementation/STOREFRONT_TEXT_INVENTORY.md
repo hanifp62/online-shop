@@ -5,7 +5,7 @@
 **Keputusan Arsitektur:** `COUNCIL_DECISIONS.md` #042  
 **Tanggal Inventarisasi:** 2026-10-20  
 **Pembaruan:** Lihat `STOREFRONT_TEXT_REWRITE_LOG.md` untuk perubahan E-01–E-13 pada tanggal yang sama.  
-**Total Berkas Tampilan:** 39 berkas Blade (`resources/views/**/*.blade.php`)
+**Total Berkas Tampilan:** 40 berkas Blade (`resources/views/**/*.blade.php`), diperbarui REM-20261021 dengan panel ringkasan operasional.
 
 ---
 
@@ -15,7 +15,7 @@
 |---|---|---|---|
 | **1. Storefront Publik** | 5 | Editorial, puitis terukur, anggun, inspiratif | Madame Vivienne (Klien VIP) |
 | **2. Akun & Autentikasi Pelanggan** | 10 | Jelas, aman, adem, meyakinkan | Pelanggan terdaftar |
-| **3. Konsol Admin / Atelier** | 8 | Fungsional, efisien, padat data, netral | Artisan & Operator Atelier |
+| **3. Konsol Admin / Atelier** | 9 | Fungsional, efisien, padat data, netral | Artisan & Operator Atelier |
 | **4. Surel Transaksional** | 4 | Sopan-formal, hangat, bernomor referensi | Pembeli menunggu kabar |
 | **5. Halaman Galat (HTTP Errors)** | 7 | Membantu, tidak menyalahkan, solutif | Pengguna yang tersesat |
 | **6. Parsial, Komponen & Sitemap** | 5 | Modular, konsisten, terstandarisasi | Lintas permukaan |
@@ -51,7 +51,7 @@ Semua teks kunci di bawah dikutip verbatim dari berkas (title, h1/h2, tombol, su
 | `resources/views/account/totp-recovery.blade.php` | Title "Kode Cadangan — ZAFIRA"; h1 "Simpan kode cadangan Anda." |
 | `resources/views/account/cart-reminder-unsubscribed.blade.php` | h1 "Pengingat keranjang dihentikan"; tombol "Hentikan pengingat" |
 
-### Klaster 3: Konsol Admin Atelier (8 Berkas)
+### Klaster 3: Konsol Admin Atelier (9 Berkas)
 
 | Berkas | Teks kunci (verbatim) |
 |---|---|
@@ -63,6 +63,7 @@ Semua teks kunci di bawah dikutip verbatim dari berkas (title, h1/h2, tombol, su
 | `resources/views/admin/totp-enrol-recovery.blade.php` | h1 "Simpan Kode Cadangan" |
 | `resources/views/admin/auth-events.blade.php` | Log peristiwa autentikasi; tombol "Filter" |
 | `resources/views/admin/components/table-controls.blade.php` | Kontrol tabel; tombol "Baris ringkas" |
+| `resources/views/admin/operations-summary.blade.php` | Tambahan 2026-10-21, FR-REM-007: "Ringkasan operasional", "Periode kejadian", "Terapkan / Segarkan", "Backlog saat ini — seluruh umur", "Belum diperiksa". Bahasa Indonesia eksplisit melalui `lang="id"`; status parsial/unknown bukan kesehatan menyeluruh. JS `public/js/admin-operations-summary.js` mempertahankan snapshot dan mengumumkan "Data lama" saat refresh gagal. Flag mati secara default; lokalisasi panel lima bahasa dan pembaca layar belum terbukti. |
 
 ### Klaster 4: Surel Transaksional (4 Berkas)
 

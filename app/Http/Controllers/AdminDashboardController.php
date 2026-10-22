@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\EnsureAdminTotp;
+use App\Http\Middleware\AuthenticateGuardSession;
 use App\Models\Category;
 use App\Models\ConciergeRequest;
 use App\Models\NewsletterSubscriber;
@@ -232,7 +232,6 @@ class AdminDashboardController extends Controller
                 'remember_token' => Str::random(60),
             ]);
             if ($usesTotp) {
-                $admin->totp_last_used_at = null;
                 $admin->totpRecoveryCodes()->delete();
             }
             $admin->save();
@@ -241,13 +240,16 @@ class AdminDashboardController extends Controller
         if ($usesTotp) {
             // Admin guard only; the shared web guard session is left intact.
             Auth::guard('admin')->logout();
-            $request->session()->forget(EnsureAdminTotp::SESSION_KEY);
+            AuthenticateGuardSession::clear($request, 'admin');
             $request->session()->regenerate(true);
             app(AuthEventRecorder::class)->recordSessionRotated('admin', $admin->id, $request->ip(), 'password_update');
 
             return redirect()->route('admin.login')
                 ->with('success', __('admin_ui.flash.password_rotated'));
         }
+
+        AuthenticateGuardSession::remember($request, 'admin', $admin);
+        $request->session()->regenerate(true);
 
         return back()->with('success', __('admin_ui.flash.password_updated'));
     }

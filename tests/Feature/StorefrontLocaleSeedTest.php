@@ -28,9 +28,11 @@ class StorefrontLocaleSeedTest extends TestCase
 
     public function test_zh_homepage_renders_chinese_copy_and_body_language(): void
     {
-        $this->get('/?locale=zh')->assertOk()
-            ->assertSee('<html lang="zh" data-server-locale="zh"', false)
-            ->assertSee('<body class="storefront" lang="zh">', false)
+        $response = $this->get('/?locale=zh')->assertOk();
+        $this->assertSame(1, preg_match('/<body\b[^>]*>/i', $response->getContent(), $body));
+        $this->assertMatchesRegularExpression('/\sclass="(?:[^\"]*\s)?storefront(?:\s[^\"]*)?"/', $body[0]);
+        $this->assertMatchesRegularExpression('/\slang="zh"/', $body[0]);
+        $response->assertSee('<html lang="zh" data-server-locale="zh"', false)
             ->assertSee('<span lang="fr">Édition No. 01</span>', false)
             ->assertSee('关闭个人资料')
             ->assertSee('一段时光，')

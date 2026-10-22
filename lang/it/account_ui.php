@@ -81,7 +81,7 @@ return [
     'recovery' => [
         'title' => 'Codici di recupero — ZAFIRA',
         'heading' => 'Conserva i codici di recupero.',
-        'intro' => 'Questi codici sono mostrati una sola volta. Conservali al sicuro; ciascuno è utilizzabile una volta se l’app di autenticazione non è disponibile.',
+        'intro' => 'Apri la pagina dei codici una sola volta entro 5 minuti dall’attivazione. Conserva i codici al sicuro; ciascuno è utilizzabile una volta senza autenticatore. Il limite di 5 minuti riguarda l’apertura della pagina, non i codici salvati.',
         'submit' => 'Li ho conservati',
     ],
     'unsubscribe' => [

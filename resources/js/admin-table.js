@@ -175,7 +175,10 @@ export function initAdminTables({
     // Status change posts JSON (FormData carries _token + _method=PATCH), then swaps
     // only the table regions; without JS the form stays a native POST.
     const submitOrderStatus = async (form, key, body) => {
-        if (statusSubmitting || form.getAttribute?.("data-submitting") === "true") return;
+        if (statusSubmitting || form.getAttribute?.("data-submitting") === "true") {
+                    announce(getAdminTableCopy("saving", "Menyimpan status pesanan… Tunggu hingga selesai, lalu coba lagi."));
+                    return;
+                }
         const targetStatus = (typeof body?.get === "function" ? body.get("status") : body?.status) || "";
         if (targetStatus === "cancelled" && !win.confirm(getAdminTableCopy("cancel_confirm", "Batalkan pesanan ini secara permanen? Tindakan ini tidak dapat diurungkan."))) {
             form.reset?.();
@@ -217,10 +220,19 @@ export function initAdminTables({
                 if (section) showError(section, "http", msg);
                 return;
             }
-            await load(key, renderedHref, { focus: "if-inside" });
-            announce(getAdminTableCopy("saved", "Status pesanan berhasil diperbarui."));
-            // The submitted select is no longer a draft; do not ask to discard it.
-            form.reset?.();
+            // Commit only the submitted status, not other drafts or the old default.
+            const select = controls.find((control) => control.tagName === "SELECT");
+            if (select) Array.from(select.options ?? []).forEach((option) => {
+                option.defaultSelected = option.value === targetStatus;
+            });
+            const refreshed = await load(key, renderedHref, { focus: "if-inside" });
+            if (refreshed === true) {
+                announce(getAdminTableCopy("saved", "Status pesanan berhasil diperbarui."));
+            } else if (refreshed !== "superseded") {
+                const message = getAdminTableCopy("saved_refresh_failed", "Status pesanan tersimpan, tetapi tabel belum diperbarui. Muat ulang tabel untuk melihat data terbaru.");
+                if (section) showError(section, "http", message);
+                announce(message);
+            }
         } catch {
             if (section) showError(section);
         } finally {
@@ -339,7 +351,7 @@ export function initAdminTables({
                 throw new Error("Redirected outside dashboard");
             }
             const html = await response.text();
-            if (controller !== mine) return;
+            if (controller !== mine) return "superseded";
             const fresh = parse(html);
             // Every region must be present before any swap, else a half-replaced DOM
             // leaves stale links/hidden inputs while the URL has already moved on.
@@ -403,8 +415,9 @@ export function initAdminTables({
                 doc.querySelector(`[data-admin-table="${focusKey}"]`)
                     ?.querySelector("h2")
                     ?.focus();
+            return true;
         } catch (error) {
-            if (error.name === "AbortError" || controller !== mine) return;
+            if (error.name === "AbortError" || controller !== mine) return "superseded";
             if (restoreOnCancel)
                 win.history.replaceState(renderedState, "", renderedHref);
             announce("");

@@ -77,12 +77,13 @@ test('FR-SOLDOUT-01: shared quick view resets sold-out state when opening an in-
     }
 });
 
-test('FR-SOLDOUT-01: home/related payload selects stock under v3 cache keys with matching invalidation', () => {
+test('FR-SOLDOUT-01: home/related payload selects stock under revisioned v4 keys with matching invalidation', () => {
     assert.match(storefront, /'stock' => max\(0,\s*\(int\)\s*\$product->stock\)/);
     assert.equal((storefront.match(/'product_price', 'stock'/g) || []).length, 3);
-    assert.match(storefront, /'storefront:products:v3'/);
-    assert.match(storefront, /storefront:related:\{\$product->product_cat\}:\{\$product->product_id\}:v3/);
-    assert.match(invalidation, /'storefront:products:v3'/);
-    assert.match(invalidation, /storefront:related:\{\$product->product_cat\}:\{\$product->product_id\}:v3/);
+    assert.match(storefront, /storefront:products:v4:\{\$revision\}/);
+    assert.match(storefront, /storefront:related:\{\$product->product_cat\}:\{\$product->product_id\}:v4:\{\$revision\}/);
+    assert.match(storefront, /\$revision = AdminCategoryController::storefrontRevision\(\)/);
+    assert.match(invalidation, /Cache::forever\('storefront:revision:v1', \(string\) Str::uuid\(\)\)/);
+    assert.match(invalidation, /StorefrontCacheReclaimer::pruneExpired\(50\)/);
     assert.doesNotMatch(storefront + invalidation, /storefront:(products|related)[^'"]*:v2/);
 });

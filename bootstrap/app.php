@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HealthController;
+use App\Http\Middleware\AuthenticateGuardSession;
 use App\Http\Middleware\AuthorizeAdmin;
 use App\Http\Middleware\CorrelationIdMiddleware;
 use App\Http\Middleware\FeatureFlag;
@@ -30,11 +31,17 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->prepend(CorrelationIdMiddleware::class);
+        // Laravel skips TrustHosts in local/testing; deployed origins must match the configured host.
+        $middleware->trustHosts(at: fn () => [
+            '^'.preg_quote((string) parse_url(config('app.url'), PHP_URL_HOST)).'$',
+        ], subdomains: false);
         $middleware->alias(['admin.can' => AuthorizeAdmin::class, 'feature' => FeatureFlag::class]);
         $middleware->web(replace: [
             ShareErrorsFromSession::class => SetLocale::class,
         ]);
         $middleware->web(append: [
+            AuthenticateGuardSession::class.':web',
+            AuthenticateGuardSession::class.':admin',
             ShareErrorsFromSession::class,
             SecurityHeaders::class,
             AddLinkHeadersForPreloadedAssets::class,

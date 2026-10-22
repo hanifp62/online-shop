@@ -113,7 +113,7 @@ class EmailVerificationTest extends TestCase
     public function test_verification_persists_across_devices_and_stays_isolated_per_account(): void
     {
         $user = User::factory()->unverified()->create(['email' => 'vivienne@example.com', 'password' => Hash::make('password')]);
-        $other = User::factory()->unverified()->create();
+        $other = User::factory()->unverified()->create(['password' => Hash::make('password')]);
 
         // Perangkat A: verifikasi lewat tautan email.
         $this->actingAs($user)->get($this->verifyUrl($user))->assertRedirect(route('account.show'));
@@ -127,6 +127,11 @@ class EmailVerificationTest extends TestCase
 
         $this->assertNotNull($user->fresh()->email_verified_at);
         $this->assertNull($other->fresh()->email_verified_at);
-        $this->actingAs($other)->get('/akun')->assertSee('Email belum terverifikasi');
+        // Switch accounts through login so the persisted guard ID and fingerprint share the same owner.
+        $this->post('/logout')->assertRedirect('/');
+        Auth::forgetGuards();
+        $this->post('/login', ['email' => $other->email, 'password' => 'password'])->assertRedirect('/');
+        $this->assertAuthenticatedAs($other, 'web');
+        $this->get('/akun')->assertOk()->assertSee('Email belum terverifikasi');
     }
 }

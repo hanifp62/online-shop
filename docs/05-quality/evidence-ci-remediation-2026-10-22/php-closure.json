@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "scripts/amadis/launch.sh",
+    "test",
+    "--log-junit=/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-9c9ec36075a82589e02eadbb/evidence/phpunit.xml"
+  ],
+  "started_at": "2026-10-21T21:50:54.397933+00:00",
+  "finished_at": "2026-10-21T21:55:10.472132+00:00",
+  "duration_seconds": 256.074,
+  "timeout_seconds": 600,
+  "status": "COMPLETE",
+  "exit_code": 0,
+  "cleanup": "not_required",
+  "sanitized_log": "docs/05-quality/evidence-ci-remediation-2026-10-22/php-closure.log",
+  "sanitized_log_sha256": "9b49a0efb970202a43cb549e548ae96ef76d3ad1f892776890b0a4d6ed38e9d3"
+}

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "vendor/bin/pint",
+    "app/Jobs/ReleaseExpiredReservations.php",
+    "app/Models/PaymentDeadLetter.php",
+    "app/Services/ReturnAllocation.php",
+    "tests/Feature/EnvironmentUniformityTest.php",
+    "tests/Feature/TransactionRemediationTest.php"
+  ],
+  "started": "2026-10-21T15:18:10.793654+00:00",
+  "finished": "2026-10-21T15:18:11.247657+00:00",
+  "exit": 0
+}

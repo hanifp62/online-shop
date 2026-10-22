@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-10-21T21:57:36.852395+00:00",
+  "git_head": "041ed083a1be330d97d4f335cda8555670045cdd",
+  "expected_head": "041ed083a1be330d97d4f335cda8555670045cdd",
+  "source_paths": 137,
+  "source_mismatches": [],
+  "local_link_targets_checked": 103,
+  "missing_links": [],
+  "git_diff_check_exit": 0,
+  "working_tree_entries": 309,
+  "untracked_entries": 187,
+  "documents": {
+    "docs/05-quality/CI_CD_REMEDIATION_REPORT_2026-10-22.md": "8729aaa5681ec6b49701f3656a030002a2bf184c28680fed3f3360701c589a64",
+    "docs/04-implementation/CI_CD_RELEASE_RUNBOOK.md": "343922f220b9ef8ff81b8e8c8c563c69c38b723abf031a811129848d6bc58ea1",
+    "docs/README.md": "4eade83327cf1c891d9a5d7e80b6f390ec1bb79fefef823dfb8eb43f7e4c5a6c",
+    "docs/05-quality/PROJECT_READINESS_REPORT.md": "f632d7f1241dc362a306e0c7e8491d9492527589c7bc5cbd9e947ae3dbfe3aa1"
+  },
+  "verification_index_sha256": "951f9803b15795ccf042e78b0b04375d789fe51fbf80a7b09afb05f537554989",
+  "scope": "source hash + current docs links; no operational secret reads or remote actions",
+  "status": "PASS"
+}

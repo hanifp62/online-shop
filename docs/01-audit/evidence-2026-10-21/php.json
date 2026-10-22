@@ -1,0 +1,9 @@
+{
+  "command": [
+    "./scripts/amadis/launch.sh",
+    "test"
+  ],
+  "started": "2026-10-21T10:41:35.516342+00:00",
+  "finished": "2026-10-21T10:45:27.291383+00:00",
+  "exit": 0
+}

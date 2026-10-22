@@ -6,9 +6,20 @@ use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Database\ConfigurationUrlParser;
 use Illuminate\Foundation\Testing\RefreshDatabaseState;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 abstract class TestCase extends BaseTestCase
 {
+    protected function tearDown(): void
+    {
+        try {
+            parent::tearDown();
+        } finally {
+            // Production-mode tests set Symfony's process-wide host policy; Laravel only resets its middleware.
+            Request::setTrustedHosts([]);
+        }
+    }
+
     public static function validateTestDatabase(array $connection, bool $safeMySql): void
     {
         $driver = $connection['driver'] ?? null;
@@ -48,7 +59,7 @@ abstract class TestCase extends BaseTestCase
         $engines = array_unique(array_map(fn ($row) => strtolower((string) $row->engine), $database->select(
             "select engine as engine from information_schema.tables where table_schema = database() and table_type = 'BASE TABLE'"
         )));
-        if (count($expected) !== 30
+        if ($expected === []
             || $applied !== $expected
             || $engines !== ['innodb']) {
             throw new \RuntimeException('Isolated, migrated InnoDB MySQL test schema required; refusing refresh.');

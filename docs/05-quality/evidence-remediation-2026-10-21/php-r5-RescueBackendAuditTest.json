@@ -1,0 +1,10 @@
+{
+  "command": [
+    "./scripts/amadis/launch.sh",
+    "test",
+    "--filter=RescueBackendAuditTest"
+  ],
+  "started": "2026-10-21T15:30:40.356968+00:00",
+  "finished": "2026-10-21T15:30:48.314021+00:00",
+  "exit": 1
+}

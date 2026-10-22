@@ -24,12 +24,12 @@
             @if ($errors->any())
                 <div class="auth-errors" role="alert"><ul>@foreach ($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul></div>
             @endif
-            <form method="POST" action="{{ route('password.update') }}" novalidate>
+            <form method="POST" action="{{ route('password.update') }}" data-auth-form novalidate>
                 @csrf
                 <input type="hidden" name="token" value="{{ $token }}">
-                <div class="field"><label for="email">{{ __('auth_ui.common.email') }}</label><input id="email" name="email" type="email" value="{{ old('email', $email) }}" required autocomplete="email"></div>
-                <div class="field"><label for="password">{{ __('auth_ui.reset.new_password') }}</label><input id="password" name="password" type="password" required autocomplete="new-password"></div>
-                <div class="field"><label for="password_confirmation">{{ __('auth_ui.reset.confirm_password') }}</label><input id="password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password"></div>
+                <div class="field"><label for="email">{{ __('auth_ui.common.email') }}</label><input id="email" name="email" type="email" value="{{ old('email', $email) }}" required autocomplete="email" @error('email') aria-invalid="true" aria-describedby="email-error" @enderror>@error('email')<small id="email-error">{{ $message }}</small>@enderror</div>
+                <div class="field"><label for="password">{{ __('auth_ui.reset.new_password') }}</label><input id="password" name="password" type="password" required autocomplete="new-password" @error('password') aria-invalid="true" aria-describedby="password-error" @enderror>@error('password')<small id="password-error">{{ $message }}</small>@enderror</div>
+                <div class="field"><label for="password_confirmation">{{ __('auth_ui.reset.confirm_password') }}</label><input id="password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password" @error('password_confirmation') aria-invalid="true" aria-describedby="password-confirmation-error" @enderror>@error('password_confirmation')<small id="password-confirmation-error">{{ $message }}</small>@enderror</div>
                 <button class="button button-sapphire" type="submit">{{ __('auth_ui.reset.submit') }}</button>
             </form>
         </div>

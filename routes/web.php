@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminAuthEventController;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminOperationsSummaryController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminTotpController;
@@ -74,7 +75,15 @@ RateLimiter::for('login', function ($request) {
 
     return $limits;
 });
-RateLimiter::for('password-reset', fn ($job) => [Limit::perHour(5)->by('email:'.mb_strtolower((string) $job->input('email'))), Limit::perHour(20)->by('ip:'.$job->ip())]);
+RateLimiter::for('password-reset', function ($request) {
+    $limits = [Limit::perHour(20)->by('ip:'.$request->ip())];
+    $email = $request->input('email');
+    if (is_string($email) && trim($email) !== '') {
+        $limits[] = Limit::perHour(5)->by('email:'.hash('sha256', mb_strtolower(trim($email))));
+    }
+
+    return $limits;
+});
 RateLimiter::for('register', fn ($job) => Limit::perHour(5)->by($job->ip()));
 RateLimiter::for('concierge', fn ($job) => Limit::perHour(3)->by($job->ip()));
 RateLimiter::for('newsletter', fn ($job) => Limit::perDay(5)->by($job->ip()));
@@ -246,6 +255,7 @@ Route::middleware([NoStore::class, 'auth:admin', EnsureAdminTotp::class])->group
     Route::patch('/admin/orders/{id}', [AdminOrderController::class, 'updateStatus'])->whereNumber('id')->middleware('admin.can:manage-orders')->name('admin.orders.update');
     Route::get('/admin/orders/{id}/invoice', [AdminOrderController::class, 'invoice'])->whereNumber('id')->middleware('admin.can:manage-orders')->name('admin.orders.invoice');
     Route::get('/admin/reports/sales-summary', [AdminOrderController::class, 'salesSummary'])->middleware(['feature:admin_sales_summary', 'admin.can:view-reports'])->name('admin.reports.sales-summary');
+    Route::get('/admin/reports/operations-summary', [AdminOperationsSummaryController::class, 'index'])->middleware(['feature:admin_ops_summary', 'admin.can:view-reports'])->name('admin.reports.operations-summary');
     Route::get('/admin/reports/orders.pdf', [AdminOrderController::class, 'report'])->middleware('admin.can:view-reports')->name('admin.orders.report');
     Route::get('/admin/auth-events', [AdminAuthEventController::class, 'index'])->middleware('admin.can:view-audit-log')->name('admin.auth-events.index');
     Route::patch('/admin/refunds/{id}', [RefundController::class, 'update'])->whereNumber('id')->middleware('admin.can:manage-refunds')->name('admin.refunds.update');

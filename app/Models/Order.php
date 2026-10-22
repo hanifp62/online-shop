@@ -11,8 +11,8 @@ class Order extends Model
 {
     public const STATUS_FLOW = [
         'pending' => ['paid', 'cancelled'],
-        'paid' => ['processing', 'cancelled'],
-        'processing' => ['shipped', 'cancelled'],
+        'paid' => ['processing'],
+        'processing' => ['shipped'],
         'shipped' => ['completed'],
         'completed' => [],
         'cancelled' => [],

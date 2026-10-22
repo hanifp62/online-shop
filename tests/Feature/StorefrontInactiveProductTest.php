@@ -46,7 +46,10 @@ class StorefrontInactiveProductTest extends TestCase
         $this->get(route('products.show', 'nonaktif-rahasia'))->assertNotFound();
         $this->get(route('products.show', 'aktif-satu'))->assertOk()
             ->assertSee('Kreasi aktif-dua')->assertDontSee('Kreasi nonaktif-rahasia');
-        $this->get(route('sitemap'))->assertOk()->assertDontSee('nonaktif-rahasia');
+        $sitemap = $this->get(route('sitemap'))->assertOk()->streamedContent();
+        $this->assertStringNotContainsString('nonaktif-rahasia', $sitemap);
+        $this->assertStringContainsString('aktif-satu', $sitemap);
+        $this->assertStringContainsString('aktif-dua', $sitemap);
 
         $this->postJson(route('concierge.store'), [
             'name' => 'Klien', 'email' => 'klien@example.test', 'phone' => '0812345678',

@@ -1,0 +1,24 @@
+[
+  {
+    "command": [
+      "launch.sh",
+      "snapshot"
+    ],
+    "exit": 0
+  },
+  {
+    "command": [
+      "launch.sh",
+      "serve",
+      "8016"
+    ],
+    "pid": 4679
+  },
+  {
+    "command": [
+      "stop-owned-group",
+      "4679"
+    ],
+    "exit": 0
+  }
+]

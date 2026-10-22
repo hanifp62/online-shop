@@ -1,0 +1,19 @@
+{
+  "root": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-2d564c3986aae9098dee3831",
+  "started": "2026-10-21T10:51:43.427547+00:00",
+  "steps": [
+    {
+      "action": "migrate",
+      "exit": 0
+    },
+    {
+      "action": "seed",
+      "exit": 0
+    },
+    {
+      "action": "provision",
+      "exit": 0
+    }
+  ],
+  "finished": "2026-10-21T10:51:44.772148+00:00"
+}

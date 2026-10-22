@@ -93,11 +93,17 @@ class ValidationLocaleTest extends TestCase
         $this->assertSame('启用会话已过期。请重新开始启用。', trans('admin_ui.flash.enrol_expired', [], 'zh'));
 
         $secret = app(TotpService::class)->generateSecret();
-        $this->actingAs($admin, 'admin')->withSession(['totp_enrol_secret' => Crypt::encryptString($secret)])
+        $this->actingAs($admin, 'admin')->withSession([
+            'totp_enrol_secret' => Crypt::encryptString($secret),
+            'totp_enrol_state' => ['admin_id' => $admin->id, 'expires_at' => now()->addMinutes(5)->timestamp],
+        ])
             ->post('/admin/totp/enrol?locale=en', ['code' => '000000'])
             ->assertSessionHasErrors(['code' => 'The code does not match. Check your device clock.']);
 
-        $this->actingAs($admin, 'admin')->withSession(['totp_enrol_secret' => 'not-valid-ciphertext'])
+        $this->actingAs($admin, 'admin')->withSession([
+            'totp_enrol_secret' => 'not-valid-ciphertext',
+            'totp_enrol_state' => ['admin_id' => $admin->id, 'expires_at' => now()->addMinutes(5)->timestamp],
+        ])
             ->post('/admin/totp/enrol?locale=fr', ['code' => '123456'])
             ->assertSessionHasErrors(['code' => trans('admin_ui.flash.enrol_unavailable', [], 'fr')]);
 

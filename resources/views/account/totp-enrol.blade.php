@@ -22,7 +22,7 @@
             @endif
             <img src="{{ $qr }}" alt="{{ __('account_ui.enrol.qr_alt') }}" width="220" height="220" style="display:block;margin:16px 0">
             <p style="font-size:12px;color:var(--muted)">{{ __('account_ui.enrol.manual') }} <code style="word-break:break-all">{{ $secret }}</code></p>
-            <form method="POST" action="{{ route('account.totp.store') }}" novalidate>
+            <form method="POST" action="{{ route('account.totp.store') }}" data-auth-form novalidate>
                 @csrf
                 <div class="field"><label for="code">{{ __('account_ui.enrol.code') }}</label><input id="code" name="code" type="text" inputmode="numeric" pattern="\d{6}" maxlength="6" autocomplete="one-time-code" required autofocus @error('code') aria-invalid="true" aria-describedby="code-error" @enderror>@error('code')<p id="code-error" class="form-error">{{ $message }}</p>@enderror</div>
                 <button class="button button-sapphire" type="submit">{{ __('account_ui.enrol.submit') }}</button>

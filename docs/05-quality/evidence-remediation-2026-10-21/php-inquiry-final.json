@@ -1,0 +1,10 @@
+{
+  "command": [
+    "./scripts/amadis/launch.sh",
+    "test",
+    "--filter=StorefrontTest"
+  ],
+  "started": "2026-10-21T15:54:14.486550+00:00",
+  "finished": "2026-10-21T15:54:18.104966+00:00",
+  "exit": 0
+}

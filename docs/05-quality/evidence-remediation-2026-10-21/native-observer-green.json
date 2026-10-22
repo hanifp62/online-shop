@@ -1,0 +1,8 @@
+{
+  "started": "2026-10-21T15:52:29.129340+00:00",
+  "finished": "2026-10-21T15:52:29.185783+00:00",
+  "status": "NATIVE_EXIT_OBSERVER_OK",
+  "observed_exit": 0,
+  "child_exit": 0,
+  "scope": "observer only; no signals, no ps, no browser/server/DB; cleanup permission remains unverified"
+}

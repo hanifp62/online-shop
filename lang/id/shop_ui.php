@@ -2,6 +2,11 @@
 
 return [
     'app_js' => [
+        'wish_saved_local' => ':name disimpan di perangkat ini saja. Masuk untuk menyimpan favorit di akun; daftar lokal tidak digabung otomatis.',
+        'wish_failed' => 'Favorit belum dapat diperbarui. Silakan coba lagi.',
+        'wish_session' => 'Sesi berakhir. Silakan masuk kembali untuk menyimpan favorit.',
+        'err_stock' => 'Stok tidak mencukupi atau kreasi tidak tersedia. Kurangi jumlah atau pilih kreasi lain.',
+        'err_rate' => 'Terlalu banyak permintaan. Tunggu sebentar lalu coba lagi.',
         'sold_out' => 'Stok habis',
         'add_to_bag' => 'Tambahkan ke tas',
         'available' => 'Tersedia',
@@ -125,6 +130,7 @@ return [
         'auth_greeting' => 'Halo, :name',
     ],
     'footer' => [
+        'search_submit' => 'Cari di seluruh koleksi',
         'collection' => 'Koleksi',
         'women' => 'Wanita',
         'men' => 'Pria',
@@ -193,6 +199,9 @@ return [
         'continue' => 'Lanjut ke belanja',
     ],
     'welcome' => [
+        'featured_note' => 'Pilihan beranda menampilkan hingga 24 kreasi, bukan seluruh koleksi. Kategori dan pencarian membuka katalog lengkap.',
+        'view_all' => 'Lihat semua koleksi',
+        'featured_empty' => 'Tidak ada kreasi pada pilihan beranda yang sedang ditampilkan. Ini bukan hasil seluruh katalog.',
         'returns_policy' => 'Sistem menerima permintaan retur untuk pesanan akun berstatus selesai, maksimal 7 hari sejak status selesai dicatat. Jumlah barang yang sudah diajukan tidak dapat diajukan ulang, kecuali pengajuannya ditolak. Permintaan ditinjau; pengembalian dana tidak otomatis. Formulir retur pelanggan belum tersedia di storefront. Hubungi concierge untuk bantuan. Ongkir mengikuti ringkasan checkout; tidak ada janji ongkir gratis, pengiriman internasional, atau garansi seumur hidup.',
         'region_badge' => 'Indonesia / ID',
         'profile_close' => 'Tutup Profil',
@@ -364,6 +373,9 @@ return [
         'wax_hint' => 'Sentuh stempel untuk melihat pratinjau segel lilin',
     ],
     'shop' => [
+        'paid_cancel_unavailable' => 'Pesanan yang sudah dibayar atau diproses tidak dapat dibatalkan di sini. Hubungi concierge untuk membahas langkah berikutnya; pengembalian dana tidak otomatis.',
+        'contact_concierge' => 'Hubungi concierge',
+        'checkout_pending' => 'Hasil checkout sebelumnya belum pasti. Percobaan berikutnya memakai rincian pesanan semula; periksa Pesanan sebelum membuat pesanan baru.',
         'title' => 'Belanja — ZAFIRA La Maison de Lumière',
         'skip' => 'Lewati ke konten utama',
         'nav_label' => 'Navigasi belanja',
@@ -492,6 +504,7 @@ return [
         'unknown' => 'Status belum tersedia',
     ],
     'request' => [
+        'timeout' => 'Permintaan terlalu lama. Hasil tindakan belum pasti; periksa Pesanan sebelum mencoba checkout lagi.',
         'network' => 'Jaringan terputus. Periksa koneksi, lalu coba lagi.',
         '401' => 'Silakan masuk, lalu kembali ke Belanja.',
         '403' => 'Akses tidak diizinkan untuk tindakan ini.',

@@ -9,5 +9,16 @@
 
 ## Verifikasi
 
-- [ ] `php artisan test` lulus
-- [ ] `vendor/bin/pint --test` lulus
+- [ ] Requirement/AC terkait dan risiko perubahan ditautkan
+- [ ] Check agregat `php` sukses pada SHA PR terbaru (quality, MySQL/restore, browser, release candidate)
+- [ ] PHP lengkap melalui launcher terisolasi dan JUnit gate lulus; hanya tiga skip engine yang disetujui pada lane SQLite
+- [ ] Node dan Python lulus tanpa skip; `vendor/bin/pint --test` dan build lulus
+- [ ] Scanner secret/PII dan audit dependency lulus; tidak melampirkan log/JUnit/credential mentah
+- [ ] Reviewer independen menyetujui push terbaru
+
+## Rilis (jika relevan)
+
+- [ ] Release ID/digest, target staging, hasil smoke, dan approval tercatat
+- [ ] Migrasi/N−1, reload worker/scheduler, serta `ops:readiness` diperiksa
+- [ ] Rollback aplikasi dibedakan dari kill switch dan restore data; bukti drill/RPO/RTO ditautkan
+- [ ] Belum diuji atau terblokir ditulis eksplisit; artefak CI bukan izin deploy produksi

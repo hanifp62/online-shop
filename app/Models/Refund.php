@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 class Refund extends Model
 {
@@ -83,6 +84,22 @@ class Refund extends Model
 
     public static function generateRefundNumber(int $orderId): string
     {
-        return sprintf('REF-%s-%04d-%s', now()->format('Ymd'), $orderId, strtoupper(substr(bin2hex(random_bytes(2)), 0, 4)));
+        if ($orderId < 1) {
+            throw new \InvalidArgumentException('Refund order ID must be positive.');
+        }
+        // Exact integer base36 (no floating-point base_convert precision loss).
+        $digits = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $namespace = '';
+        $remaining = $orderId;
+        do {
+            $namespace = $digits[$remaining % 36].$namespace;
+            $remaining = intdiv($remaining, 36);
+        } while ($remaining > 0);
+
+        // Full UUID bytes, not a truncated prefix: 13 + 22 + separators fits varchar(40).
+        $uuid = hex2bin(str_replace('-', '', (string) Str::uuid()));
+        $token = rtrim(strtr(base64_encode($uuid), '+/', '-_'), '=');
+
+        return 'REF-'.$namespace.'-'.$token;
     }
 }

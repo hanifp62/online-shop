@@ -16,9 +16,9 @@ class AdminProductController extends Controller
         $validated = $request->validate([
             'product_title' => ['required', 'string', 'max:255'],
             'product_cat' => ['required', 'integer', Rule::exists('categories', 'cat_id')],
-            'product_price' => ['required', 'numeric', 'min:0'],
+            'product_price' => ['required', 'numeric', 'min:0', 'max:99999999', 'regex:/\A[0-9]+(?:\.0{1,2})?\z/'],
             'product_slug' => ['nullable', 'string', 'max:255', 'unique:products,product_slug'],
-            'product_image' => ['required', 'string', 'max:1000'],
+            'product_image' => ['required', 'string', 'max:255'],
             'product_badge' => ['nullable', 'string', 'max:50'],
             'product_color' => ['nullable', 'string', 'max:50'],
             'product_alt' => ['nullable', 'string', 'max:255'],
@@ -60,9 +60,9 @@ class AdminProductController extends Controller
         $validated = $request->validate([
             'product_title' => ['sometimes', 'string', 'max:255'],
             'product_cat' => ['sometimes', 'integer', Rule::exists('categories', 'cat_id')],
-            'product_price' => ['sometimes', 'numeric', 'min:0'],
+            'product_price' => ['sometimes', 'numeric', 'min:0', 'max:99999999', 'regex:/\A[0-9]+(?:\.0{1,2})?\z/'],
             'product_slug' => ['sometimes', 'nullable', 'string', 'max:255', Rule::unique('products', 'product_slug')->ignore($product->product_id, 'product_id')],
-            'product_image' => ['sometimes', 'string', 'max:1000'],
+            'product_image' => ['sometimes', 'string', 'max:255'],
             'product_badge' => ['sometimes', 'nullable', 'string', 'max:50'],
             'product_color' => ['sometimes', 'nullable', 'string', 'max:50'],
             'product_alt' => ['sometimes', 'nullable', 'string', 'max:255'],

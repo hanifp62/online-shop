@@ -1,0 +1,10 @@
+{
+  "command": [
+    "./scripts/amadis/launch.sh",
+    "test",
+    "--filter=stream_preserves_exact_export_values"
+  ],
+  "started": "2026-10-21T16:39:06.926637+00:00",
+  "finished": "2026-10-21T16:39:10.428011+00:00",
+  "exit": 1
+}

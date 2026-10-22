@@ -1,0 +1,9 @@
+{
+  "command": [
+    "vendor/bin/pint",
+    "app/Http/Controllers/ProfileController.php"
+  ],
+  "started": "2026-10-21T16:41:09.577926+00:00",
+  "finished": "2026-10-21T16:41:09.817350+00:00",
+  "exit": 0
+}

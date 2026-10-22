@@ -29,6 +29,12 @@ class PaymentWebhookService
     /** @return int HTTP status code */
     public function handle(string $rawBody, array $n): int
     {
+        return $this->process($rawBody, $n);
+    }
+
+    /** Replay passes an immutable selected observation; null is exclusively the live-ingress path. */
+    private function process(string $rawBody, array $n, ?array $replayObservation = null): int
+    {
         $serverKey = (string) config('services.midtrans.server_key');
         if ($serverKey === '') {
             Log::error('midtrans.server_key kosong; notifikasi ditolak.');
@@ -50,6 +56,11 @@ class PaymentWebhookService
             return 422;
         }
 
+        if ($replayObservation !== null && ($replayObservation['order_id'] === null
+            || (int) $replayObservation['order_id'] !== (int) $orderId)) {
+            return 422;
+        }
+
         // JSON angka desimal harus dipertahankan byte-for-byte untuk material signature.
         $raw = json_decode($rawBody, true, 512, JSON_BIGINT_AS_STRING);
         if (! is_array($raw) || ! preg_match('/"gross_amount"\s*:\s*("(?:\\\\.|[^"\\\\])*"|-?\d+(?:\.\d+)?)/', $rawBody, $match)) {
@@ -68,15 +79,23 @@ class PaymentWebhookService
 
         if (Cache::get('midtrans:circuit_open_until', 0) > now()->timestamp) {
             Log::warning('midtrans.circuit_open; request ditolak sementara', ['order_id' => $orderId]);
-            $this->deadLetter($orderId, (string) $n['transaction_id'], $rawBody, 'circuit_open');
+            if ($replayObservation === null) {
+                $this->deadLetter($orderId, (string) $n['transaction_id'], $rawBody, 'circuit_open');
+            }
 
             return 503;
         }
 
+        // Observe the hold BEFORE network I/O. A newer failure must not be acknowledged by this response.
+        $observation = $replayObservation ?? PaymentDeadLetter::where('provider', self::PROVIDER)
+            ->where('order_id', (int) $orderId)->where('transaction_id', (string) $n['transaction_id'])
+            ->whereNull('resolved_at')->first(['id', 'order_id', 'attempts'])?->only(['id', 'order_id', 'attempts']);
         $status = $this->fetchStatus($orderId, $serverKey);
         if ($status === null) {
             $this->recordUpstreamFailure();
-            $this->deadLetter($orderId, (string) $n['transaction_id'], $rawBody, 'status_api_unavailable');
+            if ($replayObservation === null) {
+                $this->deadLetter($orderId, (string) $n['transaction_id'], $rawBody, 'status_api_unavailable');
+            }
 
             return 503;
         }
@@ -101,51 +120,99 @@ class PaymentWebhookService
             || ($eventStatus === 'capture' && ($status['fraud_status'] ?? null) === 'accept');
 
         try {
-            DB::transaction(fn () => $this->record($orderId, $status, $eventStatus, $amount, $success));
+            DB::transaction(function () use ($orderId, $status, $eventStatus, $amount, $success, $observation) {
+                // record() acquires the order lock; keep it through the version-aware acknowledgement.
+                $this->record($orderId, $status, $eventStatus, $amount, $success);
+                if ($observation) {
+                    PaymentDeadLetter::whereKey($observation['id'])->where('order_id', $observation['order_id'])
+                        ->where('attempts', $observation['attempts'])->whereNull('resolved_at')
+                        ->update(['resolved_at' => now()]);
+                }
+            });
         } catch (UniqueConstraintViolationException) {
             // Notifikasi paralel yang sama sudah tercatat; aman dianggap duplikat.
         }
 
-        PaymentDeadLetter::where('provider', self::PROVIDER)
-            ->where('transaction_id', (string) $n['transaction_id'])
-            ->whereNull('resolved_at')
-            ->update(['resolved_at' => now()]);
-
         return 200;
+    }
+
+    /** Replay owns failure accounting; HTTP 200 alone never resolves a hold. */
+    public function replay(PaymentDeadLetter $letter): ?int
+    {
+        $id = $letter->id;
+        $attempts = $letter->attempts;
+        $orderId = $letter->order_id;
+        if (! PaymentDeadLetter::eligibleForReplay()->whereKey($id)->where('order_id', $orderId)->where('attempts', $attempts)->exists()) {
+            return null;
+        }
+        $rawBody = $letter->raw_body;
+        $decoded = json_decode($rawBody, true);
+        $status = $this->process($rawBody, is_array($decoded) ? $decoded : [], [
+            'id' => $id, 'order_id' => $orderId, 'attempts' => $attempts,
+        ]);
+
+        DB::transaction(function () use ($id, $attempts, $orderId, $status) {
+            Order::whereKey($orderId)->lockForUpdate()->first();
+            // The ONLY replay failure writer, including circuit-open/upstream 503.
+            // Live ingress may have advanced the version; never overwrite its body/reason/version.
+            $next = $attempts + 1;
+            $reason = $status === 200 ? 'replay_unresolved_200' : 'replay_http_'.$status;
+            PaymentDeadLetter::whereKey($id)->where('order_id', $orderId)->where('attempts', $attempts)
+                ->whereNull('resolved_at')->update([
+                    'attempts' => $next,
+                    'reason' => ($next >= PaymentDeadLetter::MAX_REPLAY_ATTEMPTS ? 'quarantined:' : '').$reason,
+                    'last_attempted_at' => now(),
+                ]);
+        });
+
+        return $status;
     }
 
     /** Notifikasi bertanda tangan sah yang gagal diproses disimpan untuk diputar ulang. */
     private function deadLetter(string $orderId, string $transactionId, string $rawBody, string $reason): void
     {
-        $letter = PaymentDeadLetter::where('provider', self::PROVIDER)
-            ->where('transaction_id', $transactionId)
-            ->whereNull('resolved_at')
-            ->first();
+        DB::transaction(function () use ($orderId, $transactionId, $rawBody, $reason) {
+            $order = Order::whereKey((int) $orderId)->lockForUpdate()->first();
+            $letter = PaymentDeadLetter::where('provider', self::PROVIDER)
+                ->where('transaction_id', $transactionId)
+                ->whereNull('resolved_at')
+                ->first();
 
-        if ($letter) {
-            $letter->update(['attempts' => $letter->attempts + 1, 'reason' => $reason, 'last_attempted_at' => now()]);
+            if ($letter) {
+                $letter->update(['attempts' => $letter->attempts + 1, 'reason' => $reason, 'raw_body' => $rawBody, 'last_attempted_at' => now()]);
 
-            return;
-        }
+                return;
+            }
 
-        PaymentDeadLetter::create([
-            'order_id' => Order::whereKey((int) $orderId)->value('id'),
-            'provider' => self::PROVIDER,
-            'reason' => $reason,
-            'transaction_id' => $transactionId,
-            'attempts' => 1,
-            'raw_body' => $rawBody,
-            'last_attempted_at' => now(),
-        ]);
+            PaymentDeadLetter::create([
+                'order_id' => $order?->id,
+                'provider' => self::PROVIDER,
+                'reason' => $reason,
+                'transaction_id' => $transactionId,
+                'attempts' => 1,
+                'raw_body' => $rawBody,
+                'last_attempted_at' => now(),
+            ]);
+        });
     }
 
     private function record(string $orderId, array $status, string $eventStatus, ?int $amount, bool $success): void
     {
         $order = Order::whereKey((int) $orderId)->lockForUpdate()->first();
 
+        // Preserve immutable observations without collapsing challenge -> accept.
+        $ledgerEvent = $eventStatus === 'capture' && ! $success
+            ? 'capture_'.(in_array($status['fraud_status'] ?? '', ['challenge', 'deny'], true) ? $status['fraud_status'] : 'unconfirmed')
+            : $eventStatus;
+        // Older ledgers stored challenge under plain capture; never mutate that row.
+        if ($eventStatus === 'capture' && $success && Payment::where('provider', self::PROVIDER)
+            ->where('provider_transaction_id', (string) $status['transaction_id'])
+            ->where('event_status', 'capture')->where('outcome', 'recorded')->exists()) {
+            $ledgerEvent = 'capture_accept';
+        }
         $exists = Payment::where('provider', self::PROVIDER)
             ->where('provider_transaction_id', (string) $status['transaction_id'])
-            ->where('event_status', $eventStatus)
+            ->where('event_status', $ledgerEvent)
             ->exists();
         if ($exists) {
             return;
@@ -159,6 +226,10 @@ class PaymentWebhookService
             if ($amount === null || $amount !== (int) $order->total) {
                 $outcome = 'amount_mismatch';
                 Log::warning('midtrans.nominal tidak cocok', ['order_id' => $orderId]);
+            } elseif ($order->payments()->where('provider', self::PROVIDER)
+                ->where('provider_transaction_id', (string) $status['transaction_id'])
+                ->where('outcome', 'paid')->where('amount', $amount)->exists()) {
+                $outcome = 'reconciled';
             } elseif ($order->status !== 'pending') {
                 $outcome = 'order_not_payable';
                 Log::alert('midtrans.pembayaran sukses pada order tidak pending; perlu refund manual', [
@@ -176,7 +247,7 @@ class PaymentWebhookService
             'provider' => self::PROVIDER,
             'provider_transaction_id' => (string) $status['transaction_id'],
             'provider_order_id' => $orderId,
-            'event_status' => $eventStatus,
+            'event_status' => $ledgerEvent,
             'amount' => $amount ?? 0,
             'outcome' => $outcome,
             'payload' => collect($status)->only([

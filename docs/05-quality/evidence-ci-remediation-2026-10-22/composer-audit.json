@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "scripts/amadis/launch.sh",
+    "composer-audit",
+    "--locked",
+    "--format=json"
+  ],
+  "started_at": "2026-10-21T20:03:07.269077+00:00",
+  "finished_at": "2026-10-21T20:03:11.091976+00:00",
+  "duration_seconds": 3.823,
+  "timeout_seconds": 90,
+  "status": "COMPLETE",
+  "exit_code": 0,
+  "cleanup": "not_required",
+  "sanitized_log": "docs/05-quality/evidence-ci-remediation-2026-10-22/composer-audit.log",
+  "sanitized_log_sha256": "3d68c4566587606c21e4bcd82b55d322ddb79158f657d9fb90bf0d24ab5bccdf"
+}

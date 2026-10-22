@@ -22,13 +22,16 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link rel="preconnect" href="https://images.unsplash.com">
     <link href="https://fonts.bunny.net/css?family=bodoni-moda:400,400i,500,500i,600&family=manrope:300,400,500,600&display=swap" rel="stylesheet">
-    <script type="application/json" id="zafira-app-copy">@json(__('shop_ui.app_js'))</script>
+    @php
+        $storefrontAppCopy = array_merge(__('shop_ui.app_js'), ['stock_rejection' => __('customer_messages.cart.stock'), 'adjust_stock_rejection' => __('customer_messages.cart.adjust_stock')]);
+    @endphp
+    <script type="application/json" id="zafira-app-copy">@json($storefrontAppCopy)</script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         [data-product-add]:disabled { cursor: not-allowed; }
     </style>
 </head>
-<body class="storefront product-page">
+<body class="storefront product-page" @auth data-favorites-url="{{ route('favorites.index') }}" data-favorites-page="{{ route('shop.index') }}#favorit" @endauth>
     <a class="skip-link" href="#main-content">{{ __('shop_ui.pdp.skip') }}</a>
     @include('partials.product-header')
 

@@ -1856,6 +1856,7 @@
         pendingLanguage = lang;
         if (savingLanguage) return;
         savingLanguage = true;
+        let savedInBatch = false;
         const status = document.getElementById("locale-status");
         const messages = {
             id: ["Menyimpan bahasa…", "Bahasa belum tersimpan. Silakan coba lagi."],
@@ -1880,6 +1881,7 @@
                 });
                 if (!response.ok) throw new Error("Locale save failed");
                 confirmedLanguage = chosen;
+                savedInBatch = true;
                 const url = new URL(window.location.href);
                 url.searchParams.delete("locale");
                 window.history.replaceState(null, "", url);
@@ -1895,6 +1897,9 @@
             }
         }
         savingLanguage = false;
+        // Even if the newest choice failed, reload into the last accepted locale,
+        // never while another session/profile write is pending.
+        if (savedInBatch) window.location.reload();
     }
 
     function applyLanguage(lang) {

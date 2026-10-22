@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "python3",
+    "scripts/ci/security_scan.py",
+    "--mode",
+    "pii"
+  ],
+  "started_at": "2026-10-21T21:37:13.919053+00:00",
+  "finished_at": "2026-10-21T21:37:13.981400+00:00",
+  "duration_seconds": 0.062,
+  "timeout_seconds": 30,
+  "status": "COMPLETE",
+  "exit_code": 0,
+  "cleanup": "not_required",
+  "sanitized_log": "docs/05-quality/evidence-ci-remediation-2026-10-22/scanner-final-pii.log",
+  "sanitized_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

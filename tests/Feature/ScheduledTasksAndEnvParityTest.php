@@ -25,7 +25,10 @@ class ScheduledTasksAndEnvParityTest extends TestCase
     public function test_scheduled_commands_exist_and_keep_their_operational_contract(): void
     {
         $expected = [
+            'ops:heartbeat' => ['* * * * *', true],
             'carts:prune' => ['0 0 * * *', false],
+            'storefront-cache:prune' => ['0 * * * *', true],
+            'auth-events:prune' => ['0 0 * * *', true],
             'cart-reminders:send' => ['0 * * * *', true],
             'payments:prune-dead-letters' => ['0 0 * * *', false],
             'payments:replay-dead-letters' => ['*/5 * * * *', true],

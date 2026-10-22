@@ -1,0 +1,9 @@
+{
+  "started": "2026-10-21T15:38:41.476607+00:00",
+  "finished": "2026-10-21T15:38:41.530056+00:00",
+  "status": "FAIL",
+  "child_exit": 0,
+  "scope": "single native child, no browser/server/DB; effective permission mode not established",
+  "failure": "ProcessLookupError errno 3 at acceptance_server.exit_status os.getpgid",
+  "correction": "The initial scope described an unsandboxed request. That option is not in the available terminal schema, so this artifact does not claim that elevation was granted."
+}

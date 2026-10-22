@@ -81,7 +81,7 @@ return [
     'recovery' => [
         'title' => 'Recovery Codes — ZAFIRA',
         'heading' => 'Save your recovery codes.',
-        'intro' => 'These codes are shown only once. Store them safely; each code can be used once if your authenticator is unavailable.',
+        'intro' => 'Open the codes page once within 5 minutes of activation. Store the codes safely; each code can be used once when your authenticator is unavailable. The 5-minute limit applies to opening the page, not to the saved codes.',
         'submit' => 'I have saved them',
     ],
     'unsubscribe' => [

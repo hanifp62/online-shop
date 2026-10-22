@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\AuthenticateGuardSession;
 use App\Models\User;
 use App\Notifications\PasswordChanged;
 use App\Services\PasswordResetTokenIssuer;
@@ -9,7 +10,6 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -24,7 +24,7 @@ class PasswordResetController extends Controller
 
     public function email(Request $request, PasswordResetTokenIssuer $issuer): RedirectResponse
     {
-        $request->validate(['email' => ['required', 'email', 'max:255']]);
+        $request->validate(['email' => ['required', 'string', 'email', 'max:255']]);
         $user = User::where('email', $request->string('email')->lower())->first();
         // Broker throttle (auth.passwords.users.throttle) dihormati: token baru tidak dibuat dalam jeda tersebut.
         if ($user && ! Password::broker('users')->getRepository()->recentlyCreatedToken($user)) {
@@ -47,16 +47,12 @@ class PasswordResetController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
-            'token' => ['required'], 'email' => ['required', 'email'],
+            'token' => ['required', 'string'], 'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'confirmed', PasswordRule::min(8)->letters()->mixedCase()->numbers()->symbols()],
         ]);
         $status = Password::broker('users')->reset($credentials, function (User $user, string $password): void {
             $user->forceFill(['password' => Hash::make($password), 'has_password' => true, 'remember_token' => Str::random(60)])->save();
-            if (config('session.driver') === 'database') {
-                DB::connection(config('session.connection'))
-                    ->table(config('session.table'))
-                    ->where('user_id', $user->id)->delete();
-            }
+            // Guard fingerprints revoke old customer sessions without deleting another guard's shared session row.
             event(new PasswordReset($user));
             try {
                 $user->notify(new PasswordChanged);
@@ -69,9 +65,14 @@ class PasswordResetController extends Controller
             return back()->withErrors(['email' => __('customer_messages.auth.reset_invalid')]);
         }
 
-        // Jika pelaku reset sedang masuk, sesi ini pun dicabut agar tidak ditulis ulang setelah dihapus.
-        Auth::guard('web')->logout();
-        $request->session()->invalidate();
+        // Revoke this customer guard too, without destroying an independent admin login.
+        Auth::guard('web')->logoutCurrentDevice();
+        AuthenticateGuardSession::clear($request, 'web');
+        if (Auth::guard('admin')->check()) {
+            AuthenticateGuardSession::rotate($request, 'web');
+        } else {
+            $request->session()->invalidate();
+        }
         $request->session()->regenerateToken();
 
         return redirect()->route('login')->with('success', __('customer_messages.auth.reset_done'));

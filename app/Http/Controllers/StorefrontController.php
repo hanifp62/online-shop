@@ -12,25 +12,30 @@ use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class StorefrontController extends Controller
 {
+    public const FEATURED_PRODUCT_LIMIT = 24;
+
     public function index(): View
     {
         // server-cache-lru: katalog jarang berubah, cache lintas-request 5 menit.
         // server-serialization: select kolom yang dipakai view saja.
         // Key katalog dihapus oleh AdminCategoryController setelah mutasi kategori/produk.
-        $products = Cache::remember('storefront:products:v3', 300, fn () => Product::where('is_active', true)->with(['category:cat_id,cat_title'])
+        $revision = AdminCategoryController::storefrontRevision();
+        $products = Cache::remember("storefront:products:v4:{$revision}", 300, fn () => Product::where('is_active', true)->with(['category:cat_id,cat_title'])
             ->select(['product_id', 'product_cat', 'product_brand', 'product_title', 'product_slug', 'product_price', 'stock', 'product_image', 'product_badge', 'product_color', 'product_alt', 'product_description', 'product_material', 'product_composition', 'product_origin', 'product_care', 'product_craft'])
             ->orderBy('product_id')
+            ->limit(self::FEATURED_PRODUCT_LIMIT)
             ->get());
 
-        $categories = Cache::remember('storefront:categories:v2', 300, fn () => Category::orderBy('cat_id')->get(['cat_id', 'cat_title']));
+        $categories = Cache::remember("storefront:categories:v3:{$revision}", 300, fn () => Category::orderBy('cat_id')->get(['cat_id', 'cat_title']));
 
         return view('welcome', [
             'categories' => $categories,
@@ -74,8 +79,9 @@ class StorefrontController extends Controller
             ->where('product_slug', $slug)
             ->firstOrFail();
 
+        $revision = AdminCategoryController::storefrontRevision();
         $related = Cache::remember(
-            "storefront:related:{$product->product_cat}:{$product->product_id}:v3",
+            "storefront:related:{$product->product_cat}:{$product->product_id}:v4:{$revision}",
             300,
             fn () => Product::where('is_active', true)->with(['category:cat_id,cat_title'])
                 ->select(['product_id', 'product_cat', 'product_brand', 'product_title', 'product_slug', 'product_price', 'stock', 'product_image', 'product_badge', 'product_color', 'product_alt', 'product_description', 'product_material', 'product_composition', 'product_origin', 'product_care', 'product_craft'])
@@ -111,21 +117,30 @@ class StorefrontController extends Controller
         ]);
     }
 
-    public function sitemap(): Response
+    public function sitemap(): StreamedResponse
     {
-        // robots.txt Disallow login/register/akun/admin, jadi sitemap hanya
-        // berisi URL publik yang boleh di-crawl: home + produk.
-        $urls = [route('home')];
+        $lastModified = now()->toDateString();
 
-        foreach (Product::where('is_active', true)->orderBy('product_id')->get(['product_slug']) as $product) {
-            $urls[] = route('products.show', $product->product_slug);
-        }
+        return response()->stream(function () use ($lastModified): void {
+            echo '<?xml version="1.0" encoding="UTF-8"?>'."\n";
+            echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
+            $writeUrl = static function (string $url) use ($lastModified): void {
+                $escaped = htmlspecialchars($url, ENT_QUOTES | ENT_XML1 | ENT_SUBSTITUTE, 'UTF-8');
+                echo "    <url>\n        <loc>{$escaped}</loc>\n        <lastmod>{$lastModified}</lastmod>\n        <changefreq>weekly</changefreq>\n        <priority>0.8</priority>\n    </url>\n";
+            };
+            $writeUrl(route('home'));
 
-        $content = view('sitemap', ['urls' => $urls])->render();
-
-        return response($content)
-            ->header('Content-Type', 'application/xml')
-            ->header('Cache-Control', 'public, max-age=3600');
+            // Keyset batches avoid PDO buffering the entire catalogue and avoid OFFSET scans.
+            foreach (DB::table('products')->where('is_active', true)
+                ->whereNotNull('product_slug')->whereRaw("TRIM(product_slug) <> ''")
+                ->select(['product_id', 'product_slug'])->lazyById(500, 'product_id') as $product) {
+                $writeUrl(route('products.show', $product->product_slug));
+            }
+            echo '</urlset>';
+        }, 200, [
+            'Content-Type' => 'application/xml',
+            'Cache-Control' => 'public, max-age=3600',
+        ]);
     }
 
     public function bookConcierge(Request $request): JsonResponse|RedirectResponse

@@ -1,0 +1,17 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests/python",
+    "-p",
+    "test_amadis_lock.py",
+    "-v"
+  ],
+  "started": "2026-10-21T10:47:18.790868+00:00",
+  "finished": "2026-10-21T10:47:18.915144+00:00",
+  "exit": 1
+}

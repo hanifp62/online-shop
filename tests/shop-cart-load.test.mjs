@@ -67,8 +67,30 @@ function shop({ loggedIn, responses }) {
 }
 
 const submit = (h, id) => h.$(id).onsubmit({ preventDefault() {}, target: { address_id: { value: '3' }, voucher_code: { value: '' }, reset() {} } });
+// Browser constraint validation runs before submit handlers, unless this submitter is a replay.
+const browserSubmit = (h, id, valid) => {
+    const button = h.$(id === 'checkout-form' ? 'checkout-button' : 'guest-checkout-button');
+    if (button.disabled || (!button.formNoValidate && !valid)) return false;
+    submit(h, id);
+    return true;
+};
 const isCart = (c) => c.url === '/r/cart.show';
 const isCheckout = (c) => c.url === '/r/checkout.store';
+
+test('R1: only pending orders offer cancel; paid/processing explain the boundary and link to concierge information', async () => {
+    const orders = ['pending', 'paid', 'processing'].map((status, index) => ({ id: index + 1, status, total: 200, items: [] }));
+    const h = shop({ loggedIn: true, responses: [{ items: [], subtotal: 0 }, { addresses: [] }, { data: orders, current_page: 1, last_page: 1, total: 3 }, { favorites: [] }] });
+    await flush();
+    const rows = h.$('order-list').children;
+    assert.equal(rows.length, 3);
+    assert.ok(rows[0].find((node) => node.tag === 'button' && node.textContent === 'Batalkan pesanan'));
+    for (const row of rows.slice(1)) {
+        assert.equal(row.find((node) => node.tag === 'button' && node.textContent === 'Batalkan pesanan'), null);
+        assert.match(row.text, /tidak dapat dibatalkan di sini/);
+        assert.match(row.text, /pengembalian dana tidak otomatis/);
+        assert.equal(row.find((node) => node.tag === 'a').href, '/r/home#services');
+    }
+});
 
 for (const loggedIn of [true, false]) {
     const who = loggedIn ? 'account' : 'guest';
@@ -144,6 +166,25 @@ for (const loggedIn of [true, false]) {
         if (!loggedIn) assert.match(h.$('guest-order-confirmation').text, /trk-1/, 'guest tracking token still surfaced');
     });
 
+    for (const constraint of ['required', 'email']) {
+        test(`R1 ${who}: pending replay bypasses ${constraint} gating, normal new checkout never does`, async () => {
+            const h = shop({ loggedIn, responses: [...boot, { items: [item], subtotal: 200 }, new Error('lost response'), { order: { id: 17, total: 200, status: 'pending', items: [] } }, { items: [item], subtotal: 200 }] });
+            await flush();
+            assert.equal(browserSubmit(h, form, false), false, 'normal invalid submission emits no submit event');
+            assert.equal(h.calls.filter(isCheckout).length, 0);
+            assert.equal(browserSubmit(h, form, true), true);
+            await flush();
+            assert.equal(h.$(button).formNoValidate, true);
+            assert.equal(browserSubmit(h, form, false), true, 'invalid edited fields must not gate a frozen-payload retry');
+            await flush();
+            const attempts = h.calls.filter(isCheckout);
+            assert.equal(attempts.length, 2);
+            assert.deepEqual(attempts[1].body, attempts[0].body);
+            assert.equal(h.$(button).formNoValidate, false);
+            assert.equal(browserSubmit(h, form, false), false, 'normal validation resumes after success');
+        });
+    }
+
     test(`${who}: a rejected checkout drops the pending replay and aborts on an empty cart`, async () => {
         const rejected = Object.assign(new Error('Stok habis.'), { status: 422 });
         const h = shop({
@@ -154,6 +195,7 @@ for (const loggedIn of [true, false]) {
         submit(h, form);
         await flush();
         assert.equal(h.$('feedback').attrs.role, 'alert', 'error switches feedback to alert role');
+        assert.equal(h.$(button).formNoValidate, false, 'a definitive rejection restores normal validation');
         submit(h, form);
         await flush();
         assert.equal(h.calls.filter(isCheckout).length, 1, 'no replay after a definitive rejection');

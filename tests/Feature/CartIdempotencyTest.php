@@ -99,15 +99,19 @@ class CartIdempotencyTest extends TestCase
 
     public function test_customer_logout_clears_cart_without_logging_out_admin(): void
     {
-        $user = User::factory()->create();
+        $customerPassword = 'Cart-customer!Password123';
+        $user = User::factory()->create(['password' => $customerPassword]);
         $admin = Admin::create([
             'name' => 'Cart Admin',
             'email' => 'cart-admin@example.test',
             'password' => 'Test-password-123!',
         ]);
-        $this->withSession([]);
-        auth()->guard('web')->login($user);
-        auth()->guard('admin')->login($admin);
+        // Authenticate through requests so both guards receive their real session fingerprints.
+        $this->post('/login', ['email' => $user->email, 'password' => $customerPassword])->assertRedirect('/');
+        $this->post('/admin/login', ['email' => $admin->email, 'password' => 'Test-password-123!'])
+            ->assertRedirect('/admin');
+        $this->assertAuthenticatedAs($user, 'web');
+        $this->assertAuthenticatedAs($admin, 'admin');
         $product = $this->product('logout');
         $this->postJson('/cart/items', ['product_id' => $product->product_id, 'quantity' => 1])->assertOk();
         $this->getJson('/cart')->assertJsonCount(1, 'items');

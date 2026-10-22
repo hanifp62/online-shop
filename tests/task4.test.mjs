@@ -15,9 +15,16 @@ test('storefront overlays include focus trap, opener return, and Escape close be
     assert.match(app, /event\.key === (['"])Tab\1[\s\S]*?event\.preventDefault\(\)/);
 });
 
-test('search and catalog filters have accessible names and exposed state', () => {
-    assert.match(welcome, /<form[^>]+role="search"[\s\S]*?<label[^>]+for="live-catalog-search-input"/);
-    assert.match(welcome, /data-filter="Semua" aria-pressed="true"/);
+test('search and category navigation have accessible names without falsely exposing local filter state', () => {
+    // R1: bounded featured cards are not catalog results. Categories now navigate, not toggle.
+    assert.match(welcome, /<form[^>]+role="search"[\s\S]*?<label[^>]+for="home-catalog-query"/);
+    assert.match(welcome, /<input[^>]+id="home-catalog-query"[^>]+name="q"/);
+    const categories = welcome.match(/<div class="filter-bar"[\s\S]*?<\/div>/)?.[0];
+    assert.ok(categories);
+    assert.match(categories, /role="group" aria-label="\{\{ __\('shop_ui.welcome.filter_label'\) \}\}"/);
+    assert.match(categories, /route\('catalog.index', \['category' => \$category->cat_id\]\)/);
+    assert.match(categories, /\{\{ \$category->cat_title \}\}/);
+    assert.doesNotMatch(categories, /aria-pressed|data-filter=/);
     assert.match(welcome, /role="status" aria-live="polite"[\s\S]*?data-product-count/);
     assert.match(footer, /<form[^>]+role="search"[\s\S]*?<label[^>]+for="search-input-pdp"/);
 });

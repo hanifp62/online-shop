@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\AuthenticateGuardSession;
 use App\Models\User;
 use App\Services\CheckoutService;
 use App\Services\TotpService;
@@ -28,6 +29,8 @@ class CustomerTotpController extends Controller
 
     private const LOGIN_TTL = 300;
 
+    private const STATE_TTL = 300;
+
     private const MAX_ATTEMPTS = 5;
 
     public function __construct(private readonly TotpService $totp) {}
@@ -35,19 +38,20 @@ class CustomerTotpController extends Controller
     /** Selesaikan login; bila akun memakai TOTP, tunda sampai kode kedua diverifikasi. */
     public static function completeLogin(Request $request, User $user, bool $remember): RedirectResponse
     {
+        AuthenticateGuardSession::clear($request, 'web');
         if ($user->hasTotp()) {
-            $request->session()->regenerate();
+            AuthenticateGuardSession::rotate($request, 'web');
             $request->session()->put(self::PENDING_LOGIN, [
                 'user_id' => $user->id,
                 'remember' => $remember,
+                'password' => AuthenticateGuardSession::fingerprint($user),
                 'expires_at' => now()->addSeconds(self::LOGIN_TTL)->getTimestamp(),
             ]);
 
             return redirect()->route('login.totp');
         }
 
-        Auth::login($user, $remember);
-        $request->session()->regenerate();
+        AuthenticateGuardSession::rotate($request, 'web', fn () => Auth::guard('web')->login($user, $remember));
         $request->attributes->set('cart_allow_merge', true);
         CheckoutService::cart($request);
 
@@ -99,12 +103,12 @@ class CustomerTotpController extends Controller
         RateLimiter::clear($key);
         $pending = $request->session()->pull(self::PENDING_LOGIN);
         $user = User::find($userId);
-        if (! $user) {
+        if (! $user || ! is_string($pending['password'] ?? null)
+            || ! hash_equals(AuthenticateGuardSession::fingerprint($user), $pending['password'])) {
             return redirect()->route('login');
         }
 
-        Auth::login($user, (bool) ($pending['remember'] ?? false));
-        $request->session()->regenerate();
+        AuthenticateGuardSession::rotate($request, 'web', fn () => Auth::guard('web')->login($user, (bool) ($pending['remember'] ?? false)));
         $request->attributes->set('cart_allow_merge', true);
         CheckoutService::cart($request);
 
@@ -124,6 +128,10 @@ class CustomerTotpController extends Controller
         $secret = $this->totp->generateSecret();
         $uri = $this->totp->provisioningUri($user->email, $secret);
         $request->session()->put(self::PENDING_SECRET, Crypt::encryptString($secret));
+        $request->session()->put('customer_totp_state', [
+            'user_id' => $user->id, 'expires_at' => now()->addSeconds(self::STATE_TTL)->timestamp,
+        ]);
+        $request->session()->forget([self::FRESH_CODES, 'customer_totp_codes_state']);
 
         return response()
             ->view('account.totp-enrol', ['secret' => $secret, 'qr' => $this->totp->qrDataUri($uri)])
@@ -144,6 +152,13 @@ class CustomerTotpController extends Controller
         }
 
         $pending = $request->session()->get(self::PENDING_SECRET);
+        $state = $request->session()->get('customer_totp_state');
+        if (! is_array($state) || ($state['user_id'] ?? null) !== $user->id
+            || ($state['expires_at'] ?? 0) <= now()->timestamp) {
+            $request->session()->forget([self::PENDING_SECRET, 'customer_totp_state']);
+
+            return redirect()->route('account.totp.enrol')->withErrors(['code' => __('customer_messages.customer_totp.enrol_expired')]);
+        }
         try {
             $secret = is_string($pending) ? Crypt::decryptString($pending) : null;
         } catch (\Throwable) {
@@ -161,18 +176,32 @@ class CustomerTotpController extends Controller
         }
 
         $codes = $this->totp->generateRecoveryCodes();
-        DB::transaction(function () use ($user, $secret, $timestamp, $codes) {
-            $user->forceFill([
-                'totp_secret' => $secret,
+        $won = DB::transaction(function () use ($user, $secret, $timestamp, $codes): bool {
+            $updated = DB::table('users')->where('id', $user->id)->whereNull('totp_secret')->update([
+                'totp_secret' => Crypt::encryptString($secret),
                 'totp_enabled_at' => now(),
                 'totp_last_used_at' => $timestamp,
-            ])->save();
+                'updated_at' => now(),
+            ]);
+            if ($updated !== 1) {
+                return false;
+            }
             $this->totp->replaceUserRecoveryCodes($user, $codes);
+
+            return true;
         });
+        if (! $won) {
+            $request->session()->forget([self::PENDING_SECRET, 'customer_totp_state', self::FRESH_CODES, 'customer_totp_codes_state']);
+
+            return redirect()->route('account.show');
+        }
 
         RateLimiter::clear($key);
-        $request->session()->forget(self::PENDING_SECRET);
+        $request->session()->forget([self::PENDING_SECRET, 'customer_totp_state']);
         $request->session()->put(self::FRESH_CODES, Crypt::encryptString(json_encode($codes)));
+        $request->session()->put('customer_totp_codes_state', [
+            'user_id' => $user->id, 'expires_at' => now()->addSeconds(self::STATE_TTL)->timestamp,
+        ]);
 
         return redirect()->route('account.totp.recovery');
     }
@@ -181,6 +210,11 @@ class CustomerTotpController extends Controller
     {
         // pull(): kode cadangan hanya tampil sekali.
         $blob = $request->session()->pull(self::FRESH_CODES);
+        $state = $request->session()->pull('customer_totp_codes_state');
+        if (! is_array($state) || ($state['user_id'] ?? null) !== $request->user()->id
+            || ($state['expires_at'] ?? 0) <= now()->timestamp) {
+            return redirect()->route('account.show');
+        }
         try {
             $codes = is_string($blob) ? json_decode(Crypt::decryptString($blob), true) : null;
         } catch (\Throwable) {
@@ -226,7 +260,10 @@ class CustomerTotpController extends Controller
     private function pendingUserId(Request $request): ?int
     {
         $pending = $request->session()->get(self::PENDING_LOGIN);
-        if (! is_array($pending) || ($pending['expires_at'] ?? 0) < now()->getTimestamp()) {
+        $user = is_array($pending) ? User::find($pending['user_id'] ?? 0) : null;
+        if (! $user || ! is_string($pending['password'] ?? null)
+            || ! hash_equals(AuthenticateGuardSession::fingerprint($user), $pending['password'])
+            || ($pending['expires_at'] ?? 0) <= now()->getTimestamp()) {
             $request->session()->forget(self::PENDING_LOGIN);
 
             return null;

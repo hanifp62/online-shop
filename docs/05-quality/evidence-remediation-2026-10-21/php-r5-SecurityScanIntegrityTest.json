@@ -1,0 +1,10 @@
+{
+  "command": [
+    "./scripts/amadis/launch.sh",
+    "test",
+    "--filter=SecurityScanIntegrityTest"
+  ],
+  "started": "2026-10-21T15:31:19.730823+00:00",
+  "finished": "2026-10-21T15:31:24.041267+00:00",
+  "exit": 1
+}

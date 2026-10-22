@@ -81,7 +81,7 @@ return [
     'recovery' => [
         'title' => 'Kode Cadangan — ZAFIRA',
         'heading' => 'Simpan kode cadangan Anda.',
-        'intro' => 'Kode ini hanya ditampilkan sekali. Simpan di tempat aman; setiap kode hanya dapat dipakai satu kali bila autentikator tidak tersedia.',
+        'intro' => 'Halaman kode dapat dibuka sekali dalam 5 menit setelah aktivasi. Simpan kode di tempat aman; setiap kode dapat dipakai sekali bila autentikator tidak tersedia. Batas 5 menit berlaku untuk membuka halaman, bukan masa berlaku kode yang disimpan.',
         'submit' => 'Saya sudah menyimpannya',
     ],
     'unsubscribe' => [

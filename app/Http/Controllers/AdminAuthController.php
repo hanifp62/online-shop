@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\AuthenticateGuardSession;
 use App\Models\Admin;
 use App\Services\AuthEventRecorder;
 use Illuminate\Http\RedirectResponse;
@@ -54,6 +55,7 @@ class AdminAuthController extends Controller
     {
         $admin = Auth::guard('admin')->user();
         Auth::guard('admin')->logout();
+        AuthenticateGuardSession::clear($request, 'admin');
 
         // Guard ganda berbagi sesi: jangan hancurkan sesi bila user
         // masih login di browser yang sama (kompatibilitas admin/user).

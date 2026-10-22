@@ -1,0 +1,17 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests/python",
+    "-p",
+    "test_amadis_boundary_root.py",
+    "-v"
+  ],
+  "started": "2026-10-21T10:47:18.559276+00:00",
+  "finished": "2026-10-21T10:47:18.680263+00:00",
+  "exit": 0
+}

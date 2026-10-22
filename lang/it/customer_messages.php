@@ -95,6 +95,7 @@ return [
         ],
         'rejected_return' => 'Un reso rifiutato non può richiedere il rimborso.',
         'duplicate' => 'Il rimborso per questo reso è già stato richiesto.',
+        'number_unavailable' => 'Non è ancora possibile assegnare un numero di rimborso. Riprova.',
         'transition' => 'La transizione di rimborso da :from a :to non è consentita.',
         'rejection_required' => 'Il motivo del rifiuto è obbligatorio.',
         'unverified' => 'Stato di erogazione non disponibile fino alla conferma del fornitore di pagamento.',

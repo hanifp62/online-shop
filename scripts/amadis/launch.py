@@ -48,7 +48,13 @@ def sanitized(text):
     pattern = re.compile(r'"(?:[^"\\]|\\.)*"\s*:\s*')
     replacements = []
     for match in pattern.finditer(text):
-        key = decoder.raw_decode(match.group())[0]
+        try:
+            key = decoder.raw_decode(match.group())[0]
+        except json.JSONDecodeError:
+            # A malformed key makes the entire remainder untrustworthy. raw_decode
+            # can accept a value prefix (1, true, "x") while leaving a leaking suffix.
+            replacements.append((match.start(), len(text)))
+            break
         if not sensitive(key):
             continue
         try:
@@ -60,6 +66,9 @@ def sanitized(text):
     chunks = []
     for start, stop in replacements:
         if start < end:
+            # Nested spans keep the existing marker; extended spans must still
+            # withhold their full suffix instead of discarding the overlap.
+            end = max(end, stop)
             continue
         chunks.extend((text[end:start], '"[REDACTED]"'))
         end = stop

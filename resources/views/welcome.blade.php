@@ -1,5 +1,6 @@
 @php
     $products = $products ?? [];
+    $storefrontAppCopy = array_merge(__('shop_ui.app_js'), ['stock_rejection' => __('customer_messages.cart.stock'), 'adjust_stock_rejection' => __('customer_messages.cart.adjust_stock')]);
     $purchaseIds = \App\Models\Product::whereIn('product_slug', collect($products)->pluck('id'))->pluck('product_id', 'product_slug');
     $localAssets = [
         'sac-seraphine' => asset('prototype/assets/minaudiere_saphir.jpg'),
@@ -35,7 +36,8 @@
     <link rel="preload" as="image" href="{{ asset('prototype/assets/hero_couture-600.webp') }}" imagesrcset="{{ asset('prototype/assets/hero_couture-600.webp') }} 600w, {{ asset('prototype/assets/hero_couture.webp') }} 1200w" fetchpriority="high">
     <link href="https://fonts.bunny.net/css?family=bodoni-moda:400,400i,500,500i,600,700&family=manrope:300,400,500,600,700&family=jetbrains-mono:400,500,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('prototype/app.css') }}?v=4.0.0">
-    <script type="application/json" id="zafira-app-copy">@json(__('shop_ui.app_js'))</script>
+
+    <script type="application/json" id="zafira-app-copy">@json($storefrontAppCopy)</script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         (function() {
@@ -105,7 +107,7 @@
         }
     </style>
 </head>
-<body class="storefront" lang="{{ app()->getLocale() }}">
+<body class="storefront" data-catalog-url="{{ route('catalog.index') }}" lang="{{ app()->getLocale() }}" @auth data-favorites-url="{{ route('favorites.index') }}" data-favorites-page="{{ route('shop.index') }}#favorit" @endauth>
     <div class="film-grain-overlay" aria-hidden="true"></div>
     <a class="skip-link" href="#main-content">{{ __('shop_ui.pdp.skip') }}</a>
 
@@ -279,17 +281,17 @@
                 <p data-i18n="category_desc">{{ __('shop_ui.welcome.category_desc') }}</p>
             </div>
             <div class="category-grid">
-                <a class="category-card category-card-tall reveal" href="#new-arrivals" data-category-link="Warisan Nusantara">
+                <a class="category-card category-card-tall reveal" href="{{ route('catalog.index', ['kategori' => 'warisan-nusantara']) }}">
                     <img src="{{ asset('prototype/assets/chemise_riviere.jpg') }}" srcset="{{ asset('prototype/assets/chemise_riviere-600.webp') }} 600w, {{ asset('prototype/assets/chemise_riviere.webp') }} 896w" sizes="(max-width: 900px) 100vw, 40vw" decoding="async" alt="{{ __('shop_ui.welcome.heritage_alt') }}" loading="lazy" width="1200" height="1500">
                     <span class="category-number">01</span>
                     <div><span data-i18n="cat_nusantara">{{ __('shop_ui.welcome.cat_nusantara') }}</span><h3>Indonesia</h3><span class="discover"><span data-i18n="hero_scroll">{{ __('shop_ui.welcome.hero_scroll') }}</span> <svg aria-hidden="true"><use href="#icon-arrow"/></svg></span></div>
                 </a>
-                <a class="category-card reveal" href="#new-arrivals" data-category-link="Tas Tangan">
+                <a class="category-card reveal" href="{{ route('catalog.index', ['kategori' => 'tas-tangan']) }}">
                     <img src="{{ asset('prototype/assets/minaudiere_saphir.jpg') }}" srcset="{{ asset('prototype/assets/minaudiere_saphir-600.webp') }} 600w, {{ asset('prototype/assets/minaudiere_saphir.webp') }} 896w" sizes="(max-width: 900px) 100vw, 30vw" decoding="async" alt="{{ __('shop_ui.welcome.bags_alt') }}" loading="lazy" width="1200" height="1500">
                     <span class="category-number">02</span>
                     <div><span lang="fr">Les Icônes</span><h3 data-i18n="cat_bags">{{ __('shop_ui.welcome.cat_bags') }}</h3><span class="discover"><span data-i18n="hero_scroll">{{ __('shop_ui.welcome.hero_scroll') }}</span> <svg aria-hidden="true"><use href="#icon-arrow"/></svg></span></div>
                 </a>
-                <a class="category-card reveal" href="#new-arrivals" data-category-link="Koleksi Kapsul">
+                <a class="category-card reveal" href="{{ route('catalog.index', ['kategori' => 'koleksi-kapsul']) }}">
                     <img src="{{ asset('prototype/assets/robe_elan.jpg') }}" srcset="{{ asset('prototype/assets/robe_elan-600.webp') }} 600w, {{ asset('prototype/assets/robe_elan.webp') }} 896w" sizes="(max-width: 900px) 100vw, 30vw" decoding="async" alt="{{ __('shop_ui.welcome.capsule_alt') }}" loading="lazy" width="1200" height="1500">
                     <span class="category-number">03</span>
                     <div><span lang="fr">Deux Rives</span><h3 data-i18n="cat_capsule">{{ __('shop_ui.welcome.cat_capsule') }}</h3><span class="discover"><span data-i18n="hero_scroll">{{ __('shop_ui.welcome.hero_scroll') }}</span> <svg aria-hidden="true"><use href="#icon-arrow"/></svg></span></div>
@@ -304,21 +306,23 @@
                     <p class="result-count" role="status" aria-live="polite"><span data-product-count>{{ count($products) }}</span> <span data-i18n="products_count_suffix">{{ __('shop_ui.welcome.products_count_suffix') }}</span></p>
                 </div>
 
-                <!-- Live Catalog Control Bar (Shneiderman / Nielsen) -->
+                <p>{{ __('shop_ui.welcome.featured_note') }} <a class="text-link" href="{{ route('catalog.index') }}" data-view-all>{{ __('shop_ui.welcome.view_all') }}</a></p>
+                <!-- Category and search controls query the full catalog, not featured cards. -->
                 <div style="margin: 20px 0 24px; display:flex; flex-direction:column; gap:12px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
                         <div class="filter-bar" role="group" aria-label="{{ __('shop_ui.welcome.filter_label') }}">
-                            <button type="button" class="filter-pill active" data-filter="Semua" aria-pressed="true" data-i18n="filter_all">{{ __('shop_ui.welcome.filter_all') }}</button>
+                            <a class="filter-pill" href="{{ route('catalog.index') }}">{{ __('shop_ui.welcome.filter_all') }}</a>
                             @foreach (($categories ?? collect()) as $category)
-                                <button type="button" class="filter-pill" data-filter="{{ $category->cat_title }}" aria-pressed="false">{{ $category->cat_title }}</button>
+                                <a class="filter-pill" href="{{ route('catalog.index', ['category' => $category->cat_id]) }}">{{ $category->cat_title }}</a>
                             @endforeach
                         </div>
-                        <form style="position:relative; min-width:260px; flex:1; max-width:340px;" role="search" aria-label="{{ __('shop_ui.welcome.catalog_search') }}" onsubmit="event.preventDefault()">
-                            <label for="live-catalog-search-input" class="sr-only">{{ __('shop_ui.welcome.catalog_search') }}</label>
-                            <input type="search" id="live-catalog-search-input" placeholder="{{ __('shop_ui.welcome.catalog_placeholder') }}" data-i18n-placeholder="search_placeholder"
+                        <form id="home-catalog-search" style="position:relative; min-width:260px; flex:1; max-width:340px;" role="search" aria-label="{{ __('shop_ui.welcome.catalog_search') }}" method="get" action="{{ route('catalog.index') }}">
+                            <label for="home-catalog-query" class="sr-only">{{ __('shop_ui.welcome.catalog_search') }}</label>
+                            <input type="search" id="home-catalog-query" name="q" maxlength="100" placeholder="{{ __('shop_ui.welcome.catalog_placeholder') }}" data-i18n-placeholder="search_placeholder"
                                    style="width:100%; padding:9px 16px 9px 36px; border:1px solid rgba(32,32,29,0.18); border-radius:100px; font-size:12.5px; background:rgba(255,255,255,0.85); outline:none;"
-                                   autocomplete="off" spellcheck="false" name="cari-katalog">
-                            <svg aria-hidden="true" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); width:14px; height:14px; stroke:var(--taupe); fill:none;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                   autocomplete="off" spellcheck="false">
+                                                               <button type="submit" class="text-link">{{ __('shop_ui.footer.search_submit') }}</button>
+                            <svg aria-hidden="true" style="position:absolute; left:12px; top:20px; transform:translateY(-50%); width:14px; height:14px; stroke:var(--taupe); fill:none;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </form>
                     </div>
                     <div id="welcome-feedback-strip" role="status" aria-live="polite" hidden style="font-size:11.5px; color:var(--muted); background:rgba(182,154,100,0.1); border-left:3px solid var(--gold); padding:6px 14px; border-radius:4px;">
@@ -368,7 +372,7 @@
                         </article>
                     @endforeach
                 </div>
-                <p class="empty-products" hidden role="status" aria-live="polite">{{ __('shop_ui.welcome.empty_start') }} <button type="button" data-clear-catalog-search>{{ __('shop_ui.welcome.empty_clear') }}</button> {{ __('shop_ui.welcome.empty_end') }}</p>
+                <p class="empty-products" @if(count($products) > 0) hidden @endif role="status" aria-live="polite">{{ __('shop_ui.welcome.featured_empty') }} <a class="text-link" href="{{ route('catalog.index') }}">{{ __('shop_ui.welcome.view_all') }}</a></p>
             </div>
         </section>
 
@@ -685,7 +689,7 @@
 
     <section class="search-panel" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="search-title" tabindex="-1">
         <div class="search-top"><a class="brand brand-horizontal" href="{{ route('home') }}"><x-brand-mark /></a><button class="icon-button" type="button" data-close-search aria-label="{{ __('shop_ui.footer.search_close') }}"><svg aria-hidden="true"><use href="#icon-close"/></svg></button></div>
-        <div class="search-inner"><span class="eyebrow">{{ __('shop_ui.footer.search_eyebrow') }}</span><h2 id="search-title">{{ __('shop_ui.footer.search_title') }}</h2><form class="search-field" role="search" aria-label="{{ __('shop_ui.footer.search_label') }}" onsubmit="event.preventDefault()"><svg aria-hidden="true"><use href="#icon-search"/></svg><label class="sr-only" for="search-input">{{ __('shop_ui.footer.search_label') }}</label><input id="search-input" type="search" data-search-input placeholder="{{ __('shop_ui.footer.search_placeholder') }}" data-i18n-placeholder="search_placeholder" autocomplete="off" spellcheck="false" name="q"><button type="button" data-clear-search>{{ __('shop_ui.footer.search_clear') }}</button></form><div class="search-suggestions"><span>{{ __('shop_ui.footer.search_popular') }}</span><button type="button" data-search-term="Tas Tangan">{{ __('shop_ui.footer.term_bag') }}</button><button type="button" data-search-term="Saphir">Saphir</button><button type="button" data-search-term="Baru">{{ __('shop_ui.footer.term_new') }}</button></div><p class="search-status" role="status" aria-live="polite" data-search-status></p><div class="search-results" data-search-results></div></div>
+        <div class="search-inner"><span class="eyebrow">{{ __('shop_ui.footer.search_eyebrow') }}</span><h2 id="search-title">{{ __('shop_ui.footer.search_title') }}</h2><form id="catalog-header-search" class="search-field" role="search" aria-label="{{ __('shop_ui.footer.search_label') }}" method="get" action="{{ route('catalog.index') }}"><svg aria-hidden="true"><use href="#icon-search"/></svg><label class="sr-only" for="search-input">{{ __('shop_ui.footer.search_label') }}</label><input id="search-input" type="search" data-search-input placeholder="{{ __('shop_ui.footer.search_placeholder') }}" data-i18n-placeholder="search_placeholder" autocomplete="off" spellcheck="false" name="q" maxlength="100"><button type="button" data-clear-search>{{ __('shop_ui.footer.search_clear') }}</button></form><div class="search-suggestions"><span>{{ __('shop_ui.footer.search_popular') }}</span><a href="{{ route('catalog.index', ['kategori' => 'tas-tangan']) }}" data-search-term="Tas Tangan">{{ __('shop_ui.footer.term_bag') }}</a><a href="{{ route('catalog.index', ['q' => 'Saphir']) }}" data-search-term="Saphir">Saphir</a><a href="{{ route('catalog.index', ['urut' => 'terbaru']) }}" data-search-term="Baru">{{ __('shop_ui.footer.term_new') }}</a></div><button class="button button-dark" type="submit" form="catalog-header-search">{{ __('shop_ui.footer.search_submit') }}</button></div>
     </section>
 
     <section class="quick-view-modal modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="quick-view-title" tabindex="-1">

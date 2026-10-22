@@ -164,7 +164,12 @@ if (storefront) {
     const catalogSearch = select("#live-catalog-search-input");
     let activeCategory = "Semua";
     let activeWishlistOnly = false;
-    let wishlist = storage.get("zafira-wishlist", []);
+    const favoritesUrl = storefront.dataset.favoritesUrl;
+    let favoritesReady = !favoritesUrl;
+    let favoritesRequests = Promise.resolve();
+    const savedWishlist = favoritesUrl ? [] : storage.get("zafira-wishlist", []);
+    let wishlist = Array.isArray(savedWishlist) ? savedWishlist : [];
+    const wishlistKey = (card) => favoritesUrl ? String(card.dataset.productId) : card.dataset.id;
     // js-set-map-lookups: O(1) untuk includes() yang dipanggil di loop render/filter.
     let wishlistSet = new Set(wishlist);
     let currentQuickProduct = null;
@@ -392,7 +397,7 @@ if (storefront) {
     function syncWishlistButtons() {
         for (const button of selectAll("[data-toggle-wishlist]")) {
             const active = wishlistSet.has(
-                button.closest("[data-product-card]").dataset.id,
+                wishlistKey(button.closest("[data-product-card]")),
             );
             button.classList.toggle("active", active);
             button.setAttribute("aria-pressed", String(active));
@@ -400,8 +405,82 @@ if (storefront) {
         updateCounts();
     }
 
+    async function favoriteRequest(url, method = "GET", payload) {
+        const controller = new AbortController();
+        const buttons = selectAll("[data-toggle-wishlist]");
+        buttons.forEach((button) => button.setAttribute("aria-busy", "true"));
+        const timeout = setTimeout(() => controller.abort(), 10000);
+        try {
+            const response = await fetch(url, {
+                method, credentials: "same-origin", signal: controller.signal,
+                headers: {
+                    Accept: "application/json", "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": select('meta[name="csrf-token"]')?.content || "",
+                },
+                ...(payload ? { body: JSON.stringify(payload) } : {}),
+            });
+            if (!response.ok) throw Object.assign(new Error(), { status: response.status });
+            return await response.json();
+        } finally {
+            clearTimeout(timeout);
+            buttons.forEach((button) => button.removeAttribute("aria-busy"));
+        }
+    }
+
+    function favoriteFailure(error) {
+        showToast([401, 419].includes(error?.status)
+            ? getAppCopy("wish_session", "Sesi berakhir. Silakan masuk kembali untuk menyimpan favorit.")
+            : getAppCopy("wish_failed", "Favorit belum dapat diperbarui. Silakan coba lagi."));
+    }
+
+    function refreshFavorites() {
+        favoritesRequests = favoritesRequests.catch(() => null).then(async () => {
+            try {
+                const data = await favoriteRequest(favoritesUrl);
+                if (!Array.isArray(data.favorites)) throw new Error();
+                wishlist = data.favorites.map((favorite) => String(favorite.product_id));
+                wishlistSet = new Set(wishlist);
+                favoritesReady = true;
+                syncWishlistButtons();
+                if (activeWishlistOnly) applyFilter();
+            } catch (error) {
+                favoritesReady = false;
+                favoriteFailure(error);
+            }
+        });
+    }
+
     function toggleWishlist(card) {
         const product = readProduct(card);
+        if (favoritesUrl) {
+            favoritesRequests = favoritesRequests.catch(() => null).then(async () => {
+                try {
+                    if (!favoritesReady) {
+                        const data = await favoriteRequest(favoritesUrl);
+                        if (!Array.isArray(data.favorites)) throw new Error();
+                        wishlist = data.favorites.map((favorite) => String(favorite.product_id));
+                        wishlistSet = new Set(wishlist);
+                        favoritesReady = true;
+                    }
+                    const key = wishlistKey(card);
+                    const removing = wishlistSet.has(key);
+                    await favoriteRequest(removing ? `${favoritesUrl}/${product.productId}` : favoritesUrl,
+                        removing ? "DELETE" : "POST", removing ? undefined : { product_id: product.productId });
+                    if (removing) wishlistSet.delete(key);
+                    else wishlistSet.add(key);
+                    wishlist = [...wishlistSet];
+                    syncWishlistButtons();
+                    if (activeWishlistOnly) applyFilter();
+                    showToast(getAppCopy(removing ? "wish_removed" : "wish_saved",
+                        removing ? ":name dihapus dari favorit." : ":name disimpan dalam favorit.").replace(":name", product.name));
+                } catch (error) {
+                    // A failed/uncertain write must be reconciled before the next mutation.
+                    favoritesReady = false;
+                    favoriteFailure(error);
+                }
+            });
+            return;
+        }
         // js-early-exit: keluar cepat setelah ketemu cabang yang cocok.
         if (wishlistSet.has(product.id)) {
             wishlistSet.delete(product.id);
@@ -417,8 +496,8 @@ if (storefront) {
             wishlist.push(product.id);
             showToast(
                 getAppCopy(
-                    "wish_saved",
-                    ":name disimpan dalam favorit.",
+                    "wish_saved_local",
+                    ":name disimpan di perangkat ini saja. Masuk untuk menyimpan favorit di akun; daftar lokal tidak digabung otomatis.",
                 ).replace(":name", product.name),
             );
         }
@@ -541,10 +620,19 @@ if (storefront) {
                                 "err_service",
                                 "Layanan sedang bermasalah. Coba lagi sebentar lagi.",
                             );
-                        return (
-                            data.message ||
-                            copy("err_bag", "Tas belum dapat diperbarui.")
-                        );
+                        if (response.status === 429)
+                            return copy("err_rate", "Terlalu banyak permintaan. Tunggu sebentar lalu coba lagi.");
+                        const stockMessages = [
+                            copy("stock_rejection", "Stok produk tidak mencukupi atau produk tidak aktif."),
+                            copy("adjust_stock_rejection", "Stok produk tidak mencukupi, batas jumlah terlampaui, atau produk tidak aktif."),
+                        ];
+                        const stockRejected = response.status === 422 &&
+                            (stockMessages.includes(data?.message) ||
+                                (Array.isArray(data?.errors?.delta) &&
+                                    data.errors.delta.some((message) => stockMessages.includes(message))));
+                        return stockRejected
+                            ? copy("err_stock", "Stok tidak mencukupi atau kreasi tidak tersedia. Kurangi jumlah atau pilih kreasi lain.")
+                            : copy("err_bag", "Tas belum dapat diperbarui.");
                     };
                     if (typeof url === "function") {
                         const freshResponse = await fetchWithTimeout("/cart", {
@@ -618,6 +706,8 @@ if (storefront) {
                             "Layanan sedang bermasalah. Coba lagi sebentar lagi.",
                         ),
                         copy("err_bag", "Tas belum dapat diperbarui."),
+                        copy("err_stock", "Stok tidak mencukupi atau kreasi tidak tersedia. Kurangi jumlah atau pilih kreasi lain."),
+                        copy("err_rate", "Terlalu banyak permintaan. Tunggu sebentar lalu coba lagi."),
                     ]);
                     const message =
                         error?.name === "AbortError"
@@ -788,7 +878,7 @@ if (storefront) {
         const showAll = !activeWishlistOnly && activeCategory === "Semua";
         let scopedCards = productCards.filter((card) => {
             const inGroup = activeWishlistOnly
-                ? wishlistSet.has(card.dataset.id)
+                ? wishlistSet.has(wishlistKey(card))
                 : showAll || card.dataset.category === activeCategory;
             return inGroup;
         });
@@ -1185,6 +1275,10 @@ if (storefront) {
 
     selectAll("[data-show-wishlist]").forEach((button) =>
         button.addEventListener("click", () => {
+            if (favoritesUrl && storefront.dataset.favoritesPage) {
+                window.location.href = storefront.dataset.favoritesPage;
+                return;
+            }
             selectAll("[data-filter]").forEach((filter) =>
                 filter.classList.remove("active"),
             );
@@ -1227,6 +1321,7 @@ if (storefront) {
         });
     });
     selectAll("[data-search-term]").forEach((button) => {
+        if (button.getAttribute("href")) return;
         button.addEventListener("click", () => {
             selectAll("[data-search-input]").forEach((input) => {
                 input.value = button.dataset.searchTerm;
@@ -1375,6 +1470,11 @@ if (storefront) {
     scheduleIdleWork(() => {
         try {
             const params = new URLSearchParams(window.location.search);
+            // A bounded featured selection is not a category/search result set.
+            if (storefront.dataset.catalogUrl) {
+                if (params.get("tampilkan") === "favorit") applyFilter("", true, { syncUrl: false });
+                return;
+            }
             const initialCategory = params.get("kategori");
             const showFav = params.get("tampilkan") === "favorit";
             const initialSearch = params.get("cari");
@@ -1472,10 +1572,14 @@ if (storefront) {
 
     renderCart();
     syncWishlistButtons();
+    if (favoritesUrl) refreshFavorites();
     cartRequest("/cart");
     // Refresh on return to the tab so changes from other tabs/devices show up; no polling.
     document.addEventListener("visibilitychange", () => {
-        if (document.visibilityState === "visible") cartRequest("/cart");
+        if (document.visibilityState === "visible") {
+            cartRequest("/cart");
+            if (favoritesUrl) refreshFavorites();
+        }
     });
 
     // Flash Laravel (redirect with('success')) ke toast agar terasa di UI —
@@ -1503,9 +1607,20 @@ selectAll("[data-password-toggle]").forEach((button) => {
 });
 
 // Auth forms: spinner + focus first server error (progressive enhancement)
+let focusedErrorSummary = false;
 selectAll("[data-auth-form]").forEach((form) => {
-    const errBox = select(".auth-errors", form);
-    if (errBox) {
+    // Prefer an explicit association; legacy pages keep the summary beside their form.
+    const summaryId = form.getAttribute("data-error-summary");
+    const ownSummary = select('.auth-errors[role="alert"]', form);
+    const parentSummary = form.parentElement &&
+        select('.auth-errors[role="alert"]', form.parentElement);
+    const errBox = summaryId
+        ? document.getElementById(summaryId)
+        : ownSummary || (parentSummary &&
+            selectAll("[data-auth-form]", form.parentElement).length === 1
+                ? parentSummary : null);
+    if (errBox && !focusedErrorSummary) {
+        focusedErrorSummary = true;
         if (!errBox.hasAttribute("tabindex"))
             errBox.setAttribute("tabindex", "-1");
         errBox.focus({ preventScroll: false });

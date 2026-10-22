@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "scratch/ci-validation/venv/bin/python",
+    "scripts/ci/run_python_tests.py"
+  ],
+  "started_at": "2026-10-21T19:17:18.567368+00:00",
+  "finished_at": "2026-10-21T19:17:29.330600+00:00",
+  "exit_code": 0
+}

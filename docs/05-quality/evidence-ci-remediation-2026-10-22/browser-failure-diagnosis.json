@@ -1,0 +1,69 @@
+{
+  "observed_at": "2026-10-21T20:03:43.492201+00:00",
+  "overall": "FAIL",
+  "cause": "PermissionError EPERM in stop_owned(browser) while signalling owned group",
+  "browser_results": {
+    "AM-02": {
+      "status": "PASS",
+      "counts": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        4
+      ],
+      "uniqueProducts": 76
+    },
+    "AM-06-keyboard": {
+      "status": "PASS",
+      "enter": true,
+      "space": true,
+      "escape": true,
+      "closeButton": true,
+      "focusRestored": true,
+      "tabSteps": 12,
+      "focusToBrowserUi": 1,
+      "pageContentLeaks": []
+    },
+    "AM-10": {
+      "status": "PASS_HTTP",
+      "requests": [
+        {
+          "quantity": 20,
+          "start": "2026-10-21T20:03:02.110Z",
+          "finish": "2026-10-21T20:03:02.121Z",
+          "httpStatus": 201,
+          "orderId": 1
+        },
+        {
+          "quantity": 20,
+          "start": "2026-10-21T20:03:02.110Z",
+          "finish": "2026-10-21T20:03:02.144Z",
+          "httpStatus": 422,
+          "orderId": null
+        },
+        {
+          "quantity": 17,
+          "start": "2026-10-21T20:03:02.110Z",
+          "finish": "2026-10-21T20:03:02.127Z",
+          "httpStatus": 422,
+          "orderId": null
+        }
+      ]
+    }
+  },
+  "invariants": {
+    "AM-01_db_invariant": 1,
+    "AM-10_db_invariant": 1,
+    "browser_rc": 1,
+    "escape_rc": 0
+  },
+  "listener_probe_exit": 1,
+  "listener_pids": [],
+  "raw_evidence": "scratch/ci-validation/browser-r1 (private; not published)"
+}

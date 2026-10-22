@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderReturn;
 use App\Models\ReturnItem;
+use App\Models\User;
+use App\Services\ReturnAllocation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -42,7 +44,9 @@ class OrderReturnController extends Controller
         ]);
 
         $return = DB::transaction(function () use ($request, $id, $validated) {
-            // Lock the order row so two concurrent submissions cannot both claim the remaining quantity.
+            // Shared identity-before-order lock contract with account deletion.
+            User::whereKey($request->user()->id)->lockForUpdate()->firstOrFail();
+            // Recheck ownership and claims after acquiring both locks.
             $order = Order::where('user_id', $request->user()->id)->where('id', $id)->lockForUpdate()->firstOrFail();
             $eligibility = self::eligibilityFor($order);
             if (! $eligibility['eligible']) {
@@ -50,6 +54,8 @@ class OrderReturnController extends Controller
             }
 
             $returnable = collect($eligibility['items'])->keyBy('order_item_id');
+            $balances = ReturnAllocation::balances($order);
+            $allocations = ReturnAllocation::lines($order);
             $lines = [];
             foreach ($validated['items'] as $index => $line) {
                 $item = $returnable->get($line['order_item_id']);
@@ -59,12 +65,17 @@ class OrderReturnController extends Controller
                 if ($line['quantity'] > $item['returnable_quantity']) {
                     throw ValidationException::withMessages(["items.{$index}.quantity" => __('customer_messages.returns.quantity', ['product' => $item['product_title'], 'quantity' => $item['returnable_quantity']])]);
                 }
+                $balance = $balances[$item['order_item_id']];
+                $netAmount = ReturnAllocation::claimAmount($allocations[$item['order_item_id']], $item['ordered_quantity'], $balance, $line['quantity']);
                 $lines[] = [
                     'order_item_id' => $item['order_item_id'],
                     'product_id' => $item['product_id'],
                     'quantity' => $line['quantity'],
                     'unit_price' => $item['unit_price'],
-                    'subtotal' => $item['unit_price'] * $line['quantity'],
+                    'subtotal' => $netAmount,
+                    'allocation_version' => ReturnAllocation::VERSION,
+                    'allocation_quantity_before' => $balance['quantity'],
+                    'allocation_amount_before' => $balance['amount'],
                     'condition_note' => $line['condition_note'] ?? null,
                 ];
             }

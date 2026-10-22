@@ -95,6 +95,7 @@ return [
         ],
         'rejected_return' => 'Un retour refusé ne peut donner lieu à un remboursement.',
         'duplicate' => 'Un remboursement pour cette demande a déjà été enregistré.',
+        'number_unavailable' => 'La référence de remboursement ne peut pas encore être attribuée. Veuillez réessayer.',
         'transition' => 'La transition de remboursement de :from à :to n’est pas autorisée.',
         'rejection_required' => 'Le motif du refus est obligatoire.',
         'unverified' => 'Le versement est en attente de validation auprès du prestataire de paiement.',

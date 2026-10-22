@@ -1,0 +1,71 @@
+{
+  "started_at": "2026-10-21T17:06:39.600769+00:00",
+  "completed_at": "2026-10-21T17:06:41.588392+00:00",
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "39578450137",
+    "--repo",
+    "hanifp62/online-shop",
+    "--log"
+  ],
+  "exit_code": 0,
+  "scope": "Second extraction tolerates CLI step labels and TAP/spec reporters. Only numeric summaries/timestamps saved. Step names mapped to API intervals; raw logs/stderr never printed or stored.",
+  "raw_logs_retained": false,
+  "log_line_count": 4025,
+  "tab_column_histogram": {
+    "3": 4023,
+    "4": 2
+  },
+  "summaries": [
+    {
+      "step_by_timestamp": "unmapped",
+      "timestamp": "2026-10-21T09:40:10.1394331Z",
+      "metric": "tests",
+      "value": 325
+    },
+    {
+      "step_by_timestamp": "unmapped",
+      "timestamp": "2026-10-21T09:40:10.1394632Z",
+      "metric": "suites",
+      "value": 0
+    },
+    {
+      "step_by_timestamp": "unmapped",
+      "timestamp": "2026-10-21T09:40:10.1394832Z",
+      "metric": "pass",
+      "value": 325
+    },
+    {
+      "step_by_timestamp": "unmapped",
+      "timestamp": "2026-10-21T09:40:10.1395001Z",
+      "metric": "fail",
+      "value": 0
+    },
+    {
+      "step_by_timestamp": "unmapped",
+      "timestamp": "2026-10-21T09:40:10.1395172Z",
+      "metric": "cancelled",
+      "value": 0
+    },
+    {
+      "step_by_timestamp": "unmapped",
+      "timestamp": "2026-10-21T09:40:10.1395352Z",
+      "metric": "skipped",
+      "value": 0
+    },
+    {
+      "step_by_timestamp": "unmapped",
+      "timestamp": "2026-10-21T09:40:10.1395521Z",
+      "metric": "todo",
+      "value": 0
+    },
+    {
+      "step_by_timestamp": "unmapped",
+      "timestamp": "2026-10-21T09:40:10.1395709Z",
+      "metric": "duration_ms",
+      "value": 2173.129694
+    }
+  ]
+}

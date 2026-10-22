@@ -1,0 +1,40 @@
+{
+  "checked_at": "2026-10-22T04:23:19.014296+00:00",
+  "authorization": "User explicitly permitted commit and push to main; no force push, deployment or branch-protection mutation",
+  "base_commit": "041ed083a1be330d97d4f335cda8555670045cdd",
+  "target": "origin/main (hanifp62/online-shop)",
+  "staged_paths_before_this_record": 310,
+  "source_manifest": "source-manifest-closure.json (137 source/test paths unchanged)",
+  "additional_scope": "20 locale files, tracked nonsecret example-template additions, audit/remediation docs and safe evidence",
+  "dotenv_policy": "Operational dotenv not opened or staged; existing tracked example template included with prior remediation",
+  "staged_diff_check_exit": 0,
+  "documentation_format_only": [
+    {
+      "path": "docs/01-audit/COMPREHENSIVE_AUDIT_2026-10-21.md",
+      "before_sha256": "962d9993677d47ccbae868b4c57a9be56db353396a9960c5e49be1bc370223c3",
+      "after_sha256": "e561ce8b73db526f9c940fa85be74b0574da06dd325adcc45ce2a81dae83188b"
+    },
+    {
+      "path": "docs/04-implementation/CI_CD_RELEASE_RUNBOOK.md",
+      "before_sha256": "343922f220b9ef8ff81b8e8c8c563c69c38b723abf031a811129848d6bc58ea1",
+      "after_sha256": "f08d902da0812d26125f48fa0fb9bc8baad1bd67b7cbfc8fa708bc2ee5fce3f5"
+    },
+    {
+      "path": "docs/05-quality/CI_CD_END_TO_END_AUDIT_2026-10-22.md",
+      "before_sha256": "d8646fbcda0f3c4abbddb85f815f3dc845e062af91b09bf5a76b2730f386924a",
+      "after_sha256": "f5710dc0278892a92f304132a18c52627fd2532784bba2a6908ed2fa22297e45"
+    },
+    {
+      "path": "docs/05-quality/CI_CD_REMEDIATION_REPORT_2026-10-22.md",
+      "before_sha256": "8729aaa5681ec6b49701f3656a030002a2bf184c28680fed3f3360701c589a64",
+      "after_sha256": "c32d1455bfd49bde37c3c069db1fb5c1d80cee0d733abac9cb5434146c76c688"
+    },
+    {
+      "path": "docs/05-quality/REMEDIATION_REPORT_2026-10-21.md",
+      "before_sha256": "22e82ba9d785a204061c1b82a43d58f0c50fdef57a5630b25e5b092de07d5ae6",
+      "after_sha256": "6813bc96e758ce3ee746fd4e11a3d066e947df1e48be7fcf8c477d9a1a8dd649"
+    }
+  ],
+  "prior_closure": "closure-check.json remains historical; document hash changes above preserve Markdown hard breaks",
+  "local_tests": "PHP1200 passed3 engine-skips; Node485; Python338; browser R2 producer+gate PASS, not rerun for docs formatting"
+}

@@ -435,6 +435,8 @@ class AdminTotpTest extends TestCase
         $sid1 = $this->passwordLogin($admin);
         [, $sid2] = $this->http('POST', '/admin/totp', ['code' => $this->otp($secret)], $sid1);
         $oldRemember = $admin->fresh()->remember_token;
+        $watermark = $admin->fresh()->totp_last_used_at;
+        $this->assertNotNull($watermark);
         $new = 'New-only!Password456';
 
         [$res] = $this->http('PATCH', '/admin/password', [
@@ -443,7 +445,7 @@ class AdminTotpTest extends TestCase
         $res->assertRedirect('/admin/login');
 
         $fresh = $admin->fresh();
-        $this->assertNull($fresh->totp_last_used_at);
+        $this->assertSame($watermark, $fresh->totp_last_used_at);
         $this->assertSame(0, AdminTotpRecoveryCode::where('admin_id', $admin->id)->count());
         $this->assertNotSame($oldRemember, $fresh->remember_token);
         $this->assertTrue(Hash::check($new, $fresh->password));
@@ -507,7 +509,7 @@ class AdminTotpTest extends TestCase
 
     // ---- rate limit ----
 
-    public function test_verify_rate_limit_is_per_admin_and_ip(): void
+    public function test_verify_rate_limit_is_per_account_across_ips_and_per_ip(): void
     {
         [$a] = $this->totpAdmin('a@example.test');
         [$b] = $this->totpAdmin('b@example.test');
@@ -527,8 +529,9 @@ class AdminTotpTest extends TestCase
         $this->withServerVariables(['REMOTE_ADDR' => '10.0.0.9']);
         [$res] = $this->http('POST', '/admin/totp', ['code' => $bad], $sa);
         $res->assertSessionHasErrors('code');
-        $this->assertStringNotContainsString('detik', session('errors')->first('code'));
-        $this->assertSame(1, RateLimiter::attempts('admin-totp:'.$a->id.'|10.0.0.9'));
+        $this->assertStringContainsString('detik', session('errors')->first('code'));
+        $this->assertSame(0, RateLimiter::attempts('admin-totp:'.$a->id.'|10.0.0.9'));
+        $this->assertSame(5, RateLimiter::attempts('admin-totp:account:'.$a->id));
         $this->assertSame(5, RateLimiter::attempts($keyA));
         $this->withServerVariables(['REMOTE_ADDR' => '127.0.0.1']);
 
@@ -737,7 +740,10 @@ PHP;
         $svc = app(TotpService::class);
         $secret = $svc->generateSecret();
         $res = $this->actingAs($admin, 'admin')
-            ->withSession(['totp_enrol_secret' => Crypt::encryptString($secret)])
+            ->withSession([
+                'totp_enrol_secret' => Crypt::encryptString($secret),
+                'totp_enrol_state' => ['admin_id' => $admin->id, 'expires_at' => now()->addMinutes(5)->timestamp],
+            ])
             ->post('/admin/totp/enrol', ['code' => '000000']);
         $res->assertSessionHasErrors('code');
         $this->assertNull($admin->fresh()->totp_secret);
@@ -801,6 +807,7 @@ PHP;
         $existing = app(TotpService::class)->generateSecret();
         $this->actingAs($admin, 'admin')->withSession([
             'totp_enrol_secret' => Crypt::encryptString($pending),
+            'totp_enrol_state' => ['admin_id' => $admin->id, 'expires_at' => now()->addMinutes(5)->timestamp],
         ]);
 
         // Another enrolment wins after this request's authenticated model was loaded.
@@ -820,7 +827,10 @@ PHP;
     {
         $admin = Admin::create(['name' => 'CorruptEnrol', 'email' => 'corrupt-enrol@example.test', 'password' => self::PW]);
         $res = $this->actingAs($admin, 'admin')
-            ->withSession(['totp_enrol_secret' => 'not-valid-ciphertext'])
+            ->withSession([
+                'totp_enrol_secret' => 'not-valid-ciphertext',
+                'totp_enrol_state' => ['admin_id' => $admin->id, 'expires_at' => now()->addMinutes(5)->timestamp],
+            ])
             ->post('/admin/totp/enrol', ['code' => '123456']);
         $res->assertSessionHasErrors('code');
         $crit = array_values(array_filter($this->logs, fn ($l) => $l['level'] === 'critical'));
@@ -891,6 +901,7 @@ PHP;
         $res = $this->actingAs($admin, 'admin')
             ->withSession([
                 'totp_enrol_secret' => Crypt::encryptString(app(TotpService::class)->generateSecret()),
+                'totp_enrol_state' => ['admin_id' => $admin->id, 'expires_at' => now()->addMinutes(5)->timestamp],
             ])
             ->post('/admin/totp/enrol', ['code' => '123456']);
 

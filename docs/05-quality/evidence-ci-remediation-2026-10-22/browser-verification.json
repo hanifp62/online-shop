@@ -1,0 +1,26 @@
+{
+  "observed_at": "2026-10-21T21:23:27.975070+00:00",
+  "invariants": {
+    "AM-01_db_invariant": 1,
+    "AM-10_db_invariant": 1,
+    "browser_rc": 0,
+    "escape_rc": 0
+  },
+  "http_statuses": [
+    201,
+    422,
+    201
+  ],
+  "actual_created_quantities": [
+    20,
+    17
+  ],
+  "actors_distinct": true,
+  "listener_probe_exit": 1,
+  "listener_pids": [],
+  "producer_hashes": {
+    "invariants.json": "3d75dafbd3a751a054e34c094a8edac898e653a376d88a3c88c0176f6ecefd7d",
+    "commands.tsv": "02b9498e238b53071c0b906c09067c04da220f6e4ea677947cc06ecd2908065b",
+    "browser-results.json": "a0d06db2833ead13186930bb8797571a127c3de5322823700cbe98257f318541"
+  }
+}

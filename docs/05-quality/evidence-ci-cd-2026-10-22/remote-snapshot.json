@@ -1,0 +1,441 @@
+{
+  "started_at": "2026-10-21T17:05:50.084196+00:00",
+  "completed_at": "2026-10-21T17:05:53.476146+00:00",
+  "scope": "Read-only GitHub metadata; no tokens, secret values, raw logs or environment contents saved. Empty deployment list does not rule out external CD.",
+  "records": [
+    {
+      "id": "branch",
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/hanifp62/online-shop/branches/main",
+        "--jq",
+        "{name, protected, sha: .commit.sha}"
+      ],
+      "started_at": "2026-10-21T17:05:50.086541+00:00",
+      "completed_at": "2026-10-21T17:05:50.741429+00:00",
+      "exit_code": 0,
+      "expected_response": true,
+      "stderr_present": false,
+      "data": {
+        "name": "main",
+        "protected": false,
+        "sha": "041ed083a1be330d97d4f335cda8555670045cdd"
+      }
+    },
+    {
+      "id": "protection",
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/hanifp62/online-shop/branches/main/protection",
+        "--jq",
+        "{message, status, required_status_checks, enforce_admins, required_pull_request_reviews}"
+      ],
+      "started_at": "2026-10-21T17:05:50.086615+00:00",
+      "completed_at": "2026-10-21T17:05:50.750614+00:00",
+      "exit_code": 1,
+      "expected_response": true,
+      "stderr_present": true,
+      "data": {
+        "message": "Branch not protected",
+        "documentation_url": "https://docs.github.com/rest/branches/branch-protection#get-branch-protection",
+        "status": "404"
+      }
+    },
+    {
+      "id": "rulesets",
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/hanifp62/online-shop/rulesets?includes_parents=true",
+        "--jq",
+        "[.[] | {id, name, target, enforcement, source_type, source}]"
+      ],
+      "started_at": "2026-10-21T17:05:50.087796+00:00",
+      "completed_at": "2026-10-21T17:05:50.683743+00:00",
+      "exit_code": 0,
+      "expected_response": true,
+      "stderr_present": false,
+      "data": []
+    },
+    {
+      "id": "environments",
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/hanifp62/online-shop/environments",
+        "--jq",
+        "{total_count, environments: [.environments[] | {name, protection_rules, deployment_branch_policy}]}"
+      ],
+      "started_at": "2026-10-21T17:05:50.088847+00:00",
+      "completed_at": "2026-10-21T17:05:50.738956+00:00",
+      "exit_code": 0,
+      "expected_response": true,
+      "stderr_present": false,
+      "data": {
+        "environments": [],
+        "total_count": 0
+      }
+    },
+    {
+      "id": "deployments",
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/hanifp62/online-shop/deployments?per_page=20",
+        "--jq",
+        "[.[] | {id, sha, ref, task, environment, created_at, statuses_url}]"
+      ],
+      "started_at": "2026-10-21T17:05:50.683888+00:00",
+      "completed_at": "2026-10-21T17:05:51.175423+00:00",
+      "exit_code": 0,
+      "expected_response": true,
+      "stderr_present": false,
+      "data": []
+    },
+    {
+      "id": "workflows",
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/hanifp62/online-shop/actions/workflows",
+        "--jq",
+        "{total_count, workflows: [.workflows[] | {id, name, path, state}]}"
+      ],
+      "started_at": "2026-10-21T17:05:50.739044+00:00",
+      "completed_at": "2026-10-21T17:05:51.334354+00:00",
+      "exit_code": 0,
+      "expected_response": true,
+      "stderr_present": false,
+      "data": {
+        "total_count": 1,
+        "workflows": [
+          {
+            "id": 391532655,
+            "name": "CI",
+            "path": ".github/workflows/ci.yml",
+            "state": "active"
+          }
+        ]
+      }
+    },
+    {
+      "id": "runs",
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/hanifp62/online-shop/actions/runs?per_page=20",
+        "--jq",
+        "{total_count, runs: [.workflow_runs[] | {id, head_sha, event, status, conclusion, created_at, run_attempt, path, html_url}]}"
+      ],
+      "started_at": "2026-10-21T17:05:50.741463+00:00",
+      "completed_at": "2026-10-21T17:05:51.286444+00:00",
+      "exit_code": 0,
+      "expected_response": true,
+      "stderr_present": false,
+      "data": {
+        "runs": [
+          {
+            "conclusion": "success",
+            "created_at": "2026-10-21T09:37:52Z",
+            "event": "push",
+            "head_sha": "041ed083a1be330d97d4f335cda8555670045cdd",
+            "html_url": "https://github.com/hanifp62/online-shop/actions/runs/39578450137",
+            "id": 39578450137,
+            "path": ".github/workflows/ci.yml",
+            "run_attempt": 1,
+            "status": "completed"
+          }
+        ],
+        "total_count": 1
+      }
+    },
+    {
+      "id": "artifacts",
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/hanifp62/online-shop/actions/runs/39578450137/artifacts",
+        "--jq",
+        "{total_count, artifacts: [.artifacts[] | {id, name, expired, size_in_bytes}]}"
+      ],
+      "started_at": "2026-10-21T17:05:50.750664+00:00",
+      "completed_at": "2026-10-21T17:05:51.300599+00:00",
+      "exit_code": 0,
+      "expected_response": true,
+      "stderr_present": false,
+      "data": {
+        "artifacts": [],
+        "total_count": 0
+      }
+    },
+    {
+      "id": "checks",
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/hanifp62/online-shop/commits/041ed083a1be330d97d4f335cda8555670045cdd/check-runs",
+        "--jq",
+        "{total_count, checks: [.check_runs[] | {name, status, conclusion, app: {id: .app.id, slug: .app.slug}, details_url, head_sha}]}"
+      ],
+      "started_at": "2026-10-21T17:05:51.175650+00:00",
+      "completed_at": "2026-10-21T17:05:51.850067+00:00",
+      "exit_code": 0,
+      "expected_response": true,
+      "stderr_present": false,
+      "data": {
+        "checks": [
+          {
+            "app": {
+              "id": 15368,
+              "slug": "github-actions"
+            },
+            "conclusion": "success",
+            "details_url": "https://github.com/hanifp62/online-shop/actions/runs/39578450137/job/119149768863",
+            "head_sha": "041ed083a1be330d97d4f335cda8555670045cdd",
+            "name": "php",
+            "status": "completed"
+          }
+        ],
+        "total_count": 1
+      }
+    },
+    {
+      "id": "run_details",
+      "argv": [
+        "gh",
+        "run",
+        "view",
+        "39578450137",
+        "--repo",
+        "hanifp62/online-shop",
+        "--json",
+        "databaseId,headSha,event,status,conclusion,url,jobs,createdAt,startedAt,updatedAt"
+      ],
+      "started_at": "2026-10-21T17:05:51.850611+00:00",
+      "completed_at": "2026-10-21T17:05:53.475888+00:00",
+      "exit_code": 0,
+      "expected_response": true,
+      "stderr_present": false,
+      "data": {
+        "conclusion": "success",
+        "createdAt": "2026-10-21T09:37:52Z",
+        "databaseId": 39578450137,
+        "event": "push",
+        "headSha": "041ed083a1be330d97d4f335cda8555670045cdd",
+        "jobs": [
+          {
+            "completedAt": "2026-10-21T09:40:14Z",
+            "conclusion": "success",
+            "databaseId": 119149768863,
+            "name": "php",
+            "startedAt": "2026-10-21T09:37:55Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completedAt": "2026-10-21T09:37:57Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-10-21T09:37:56Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:38:34Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "startedAt": "2026-10-21T09:37:57Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:38:39Z",
+                "conclusion": "success",
+                "name": "Run shivammathur/setup-php@v2",
+                "number": 3,
+                "startedAt": "2026-10-21T09:38:34Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:38:41Z",
+                "conclusion": "success",
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "startedAt": "2026-10-21T09:38:39Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:38:50Z",
+                "conclusion": "success",
+                "name": "Run composer install --no-interaction --prefer-dist --no-progress",
+                "number": 5,
+                "startedAt": "2026-10-21T09:38:41Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:38:54Z",
+                "conclusion": "success",
+                "name": "Run npm ci",
+                "number": 6,
+                "startedAt": "2026-10-21T09:38:50Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:38:54Z",
+                "conclusion": "success",
+                "name": "Audit dependency Composer",
+                "number": 7,
+                "startedAt": "2026-10-21T09:38:54Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:38:55Z",
+                "conclusion": "success",
+                "name": "Audit dependency npm",
+                "number": 8,
+                "startedAt": "2026-10-21T09:38:54Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:38:55Z",
+                "conclusion": "success",
+                "name": "Pindai rahasia ter-hardcode",
+                "number": 9,
+                "startedAt": "2026-10-21T09:38:55Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:38:55Z",
+                "conclusion": "success",
+                "name": "Pindai log PII",
+                "number": 10,
+                "startedAt": "2026-10-21T09:38:55Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:38:56Z",
+                "conclusion": "success",
+                "name": "Run npm run build",
+                "number": 11,
+                "startedAt": "2026-10-21T09:38:55Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:39:05Z",
+                "conclusion": "success",
+                "name": "Lint (Pint)",
+                "number": 12,
+                "startedAt": "2026-10-21T09:38:56Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:39:06Z",
+                "conclusion": "success",
+                "name": "Validasi migrasi (fresh, SQLite sementara)",
+                "number": 13,
+                "startedAt": "2026-10-21T09:39:05Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:39:06Z",
+                "conclusion": "success",
+                "name": "Gerbang anti-drift skema (tidak ada migrasi tertunda)",
+                "number": 14,
+                "startedAt": "2026-10-21T09:39:06Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:39:07Z",
+                "conclusion": "success",
+                "name": "Uji Aksesibilitas & Skema",
+                "number": 15,
+                "startedAt": "2026-10-21T09:39:06Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:39:08Z",
+                "conclusion": "success",
+                "name": "Kunci nama brand",
+                "number": 16,
+                "startedAt": "2026-10-21T09:39:07Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:39:08Z",
+                "conclusion": "success",
+                "name": "Gerbang gaya bahasa",
+                "number": 17,
+                "startedAt": "2026-10-21T09:39:08Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:40:07Z",
+                "conclusion": "success",
+                "name": "Test PHP",
+                "number": 18,
+                "startedAt": "2026-10-21T09:39:08Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:40:10Z",
+                "conclusion": "success",
+                "name": "Test JS",
+                "number": 19,
+                "startedAt": "2026-10-21T09:40:07Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:40:11Z",
+                "conclusion": "success",
+                "name": "Post Run actions/setup-node@v4",
+                "number": 37,
+                "startedAt": "2026-10-21T09:40:10Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:40:12Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@v4",
+                "number": 38,
+                "startedAt": "2026-10-21T09:40:11Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-21T09:40:12Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 39,
+                "startedAt": "2026-10-21T09:40:12Z",
+                "status": "completed"
+              }
+            ],
+            "url": "https://github.com/hanifp62/online-shop/actions/runs/39578450137/job/119149768863"
+          }
+        ],
+        "startedAt": "2026-10-21T09:37:52Z",
+        "status": "completed",
+        "updatedAt": "2026-10-21T09:40:15Z",
+        "url": "https://github.com/hanifp62/online-shop/actions/runs/39578450137"
+      }
+    }
+  ]
+}

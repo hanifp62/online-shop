@@ -1,0 +1,10 @@
+{
+  "command": [
+    "node",
+    "scripts/amadis/browser-lifecycle.cjs"
+  ],
+  "started": "2026-10-21T10:58:25.559545+00:00",
+  "finished": "2026-10-21T10:58:26.911658+00:00",
+  "exit": 1,
+  "root": "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-2d564c3986aae9098dee3831"
+}

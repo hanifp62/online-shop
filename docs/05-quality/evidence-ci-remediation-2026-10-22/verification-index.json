@@ -1,0 +1,145 @@
+{
+  "generated_at": "2026-10-21T21:55:37.387081+00:00",
+  "source_manifest": "source-manifest-closure.json",
+  "source_manifest_sha256": "48d373bdcda3f1137f5c22578e92a0e87720a13c1b38ef390560b96f086b166e",
+  "php": {
+    "cases": [
+      {
+        "id": "testcase-826",
+        "reason": "ALLOWED_SKIP"
+      },
+      {
+        "id": "testcase-827",
+        "reason": "ALLOWED_SKIP"
+      },
+      {
+        "id": "testcase-828",
+        "reason": "ALLOWED_SKIP"
+      }
+    ],
+    "counts": {
+      "errors": 0,
+      "failures": 0,
+      "passed": 1200,
+      "skipped": 3,
+      "tests": 1203
+    },
+    "reasons": [],
+    "status": "PASS"
+  },
+  "php_assertions": 157683,
+  "node": {
+    "tests": 485,
+    "pass": 485,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "python": {
+    "cases": [],
+    "counts": {
+      "errors": 0,
+      "expected_failures": 0,
+      "failures": 0,
+      "import_errors": 0,
+      "skipped": 0,
+      "tests": 338,
+      "unexpected_successes": 0
+    },
+    "reasons": [],
+    "status": "PASS"
+  },
+  "browser": {
+    "counts": {
+      "checkout_requests": 3,
+      "commands": 7,
+      "created": 2,
+      "page_content_leaks": 0,
+      "pages": 10,
+      "products": 76,
+      "rejected": 1
+    },
+    "status": "PASS"
+  },
+  "checks": [
+    {
+      "metadata": "docs/05-quality/evidence-ci-remediation-2026-10-22/php-targeted-r2.json",
+      "sha256": "bfe413f6431be1cc1c469c4aacb96db8107d673b0ec09de371da33367d5f2618",
+      "exit_code": 0
+    },
+    {
+      "metadata": "docs/05-quality/evidence-ci-remediation-2026-10-22/php-closure.json",
+      "sha256": "6ba0e56180321f92c8c251cc53011e64355041b0ca596963dc2e8fdfc7cf614a",
+      "exit_code": 0
+    },
+    {
+      "metadata": "docs/05-quality/evidence-ci-remediation-2026-10-22/php-closure-report-gate.json",
+      "sha256": "43032c265c329bec3b2168e75ebf1fba7623a327ea4150f785515a66d6bee653",
+      "exit_code": 0
+    },
+    {
+      "metadata": "docs/05-quality/evidence-ci-remediation-2026-10-22/node-closure.json",
+      "sha256": "bcf918b12c0a57bc8c482cff2019457cfbe0058729b2cf5a634830998c89f746",
+      "exit_code": 0
+    },
+    {
+      "metadata": "docs/05-quality/evidence-ci-remediation-2026-10-22/python-closure.json",
+      "sha256": "eb62f13a128cc18b22301dc7850b252962845859d64cedc3ae71bd9036e98337",
+      "exit_code": 0
+    },
+    {
+      "metadata": "docs/05-quality/evidence-ci-remediation-2026-10-22/pint-full.json",
+      "sha256": "a4d57a2e60dcbe99f53026a9fd1608026592fc7b05e52d5ab91ad91e72a74a7f",
+      "exit_code": 0
+    },
+    {
+      "metadata": "docs/05-quality/evidence-ci-remediation-2026-10-22/build.json",
+      "sha256": "e68ae346d238aa992d9b060cea1b798601a243e6d2ed2e20f0affb8bda148450",
+      "exit_code": 0
+    },
+    {
+      "metadata": "docs/05-quality/evidence-ci-remediation-2026-10-22/actionlint.json",
+      "sha256": "2638fb065464e07ea600e39b49603e7939db93609c31fbd2064f884cd078534b",
+      "exit_code": 0
+    },
+    {
+      "metadata": "docs/05-quality/evidence-ci-remediation-2026-10-22/npm-audit.json",
+      "sha256": "a5ba9530def68f3e05fd3ecf96684d6ccf56d299d69df174fcca3f3b6e4fd9ea",
+      "exit_code": 0
+    },
+    {
+      "metadata": "docs/05-quality/evidence-ci-remediation-2026-10-22/composer-audit.json",
+      "sha256": "3559b722d9c1a8141064038c152c1187a140fe8a673d5cca063d0ba158e5ba21",
+      "exit_code": 0
+    },
+    {
+      "metadata": "docs/05-quality/evidence-ci-remediation-2026-10-22/browser-acceptance-r2.json",
+      "sha256": "36460f8cfbb380a5155af23328d1908f9fe7df9304dcadbd143f60f659f2440f",
+      "exit_code": 0
+    },
+    {
+      "metadata": "docs/05-quality/evidence-ci-remediation-2026-10-22/browser-gate-closure.json",
+      "sha256": "1b1ebb7ae6a45a2145acb6d4d521135b85787fdba9b52e9b7c96a61e18cd916e",
+      "exit_code": 0
+    },
+    {
+      "metadata": "docs/05-quality/evidence-ci-remediation-2026-10-22/scanner-closure-secrets.json",
+      "sha256": "771dc3c4d5d97b4b092222fd797ab1212cc2eb22acda3aade0dacf2855c5abff",
+      "exit_code": 0
+    },
+    {
+      "metadata": "docs/05-quality/evidence-ci-remediation-2026-10-22/scanner-closure-pii.json",
+      "sha256": "24a50422406ebfbba70d6007cde2049b94ff3d1545bbc8a34fcf578a6652017d",
+      "exit_code": 0
+    }
+  ],
+  "limits": [
+    "local macOS only",
+    "three MySQL tests skipped on SQLite",
+    "real Linux MySQL restore and release-candidate build not run",
+    "no remote mutation or deployment",
+    "editor diagnostics not globally clean"
+  ],
+  "closure_updated_at": "2026-10-21T21:57:36.852117+00:00"
+}

@@ -1,0 +1,12 @@
+{
+  "command": [
+    "composer",
+    "--no-plugins",
+    "--no-scripts",
+    "check-platform-reqs",
+    "--lock"
+  ],
+  "started": "2026-10-21T10:40:41.302965+00:00",
+  "finished": "2026-10-21T10:40:41.420558+00:00",
+  "exit": 0
+}

@@ -577,19 +577,27 @@ function showToast(message, type = 'info', actionText = null, actionCallback = n
       <circle cx="12" cy="16" r="0.75" fill="#dfcaa0"></circle>
     </svg>
     <span style="flex-grow:1;">${escapeHtml(message)}</span>
-    ${actionText ? `<button class="toast-action-btn" type="button">${escapeHtml(actionText)}</button>` : ''}
+
   `;
   container.appendChild(toast);
+  const removeToast = () => {
+    if (toast.contains(document.activeElement)) {
+      (activeOverlay?.querySelector(drawerFocusable) || activeOverlay)?.focus();
+    }
+    toast.remove();
+  };
 
   if (actionText && typeof actionCallback === 'function') {
-    const actionBtn = toast.querySelector('.toast-action-btn');
-    if (actionBtn) {
-      actionBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        actionCallback();
-        toast.remove();
-      });
-    }
+    const actionBtn = document.createElement('button');
+    actionBtn.classList.add('toast-action-btn');
+    actionBtn.setAttribute('type', 'button');
+    actionBtn.textContent = actionText;
+    toast.appendChild(actionBtn);
+    actionBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      actionCallback();
+      removeToast();
+    });
   }
 
   const duration = actionText ? 6500 : 4000;
@@ -597,7 +605,7 @@ function showToast(message, type = 'info', actionText = null, actionCallback = n
     if (!toast.parentNode) return;
     toast.style.opacity = '0';
     toast.style.transform = 'translateY(10px)';
-    setTimeout(() => toast.remove(), 300);
+    setTimeout(removeToast, 300);
   }, duration);
 }
 
@@ -1076,26 +1084,82 @@ function quickAddToCart(productId) {
 // ==========================================================================
 
 let drawerOpener = null;
+let activeOverlay = null;
+let toastHome = null;
+
+function restoreOverlayToasts() {
+  const container = document.getElementById('toast-container');
+  if (!toastHome || !container) return;
+  const { parent, next } = toastHome;
+  if (next?.parentNode === parent) parent.insertBefore(container, next);
+  else parent.appendChild(container);
+  toastHome = null;
+}
+const overlayInert = new Map();
+
+function releaseOverlayBackground() {
+  overlayInert.forEach((inert, node) => { node.inert = inert; });
+  overlayInert.clear();
+}
+
+function openOverlay(el, opener = document.activeElement) {
+  if (!el || activeOverlay === el) return;
+  opener = drawerOpener || opener;
+  releaseOverlayBackground();
+  restoreOverlayToasts();
+  if (activeOverlay) activeOverlay.classList.remove('open');
+  activeOverlay = el;
+  drawerOpener = opener && opener !== document.body ? opener : null;
+  el.classList.add('open');
+  // Keep toast actions inside the modal's inert boundary and keyboard cycle.
+  const toasts = document.getElementById('toast-container');
+  if (toasts && !el.contains(toasts)) {
+    toastHome = { parent: toasts.parentNode, next: toasts.nextSibling };
+    el.appendChild(toasts);
+  }
+  const backdrop = document.getElementById('drawer-backdrop');
+  backdrop?.classList.add('open');
+  // Inert siblings at every ancestor, without disabling the dialog's own ancestor.
+  let branch = el;
+  while (branch && branch !== document.body) {
+    const parent = branch.parentNode;
+    if (!parent) break;
+    Array.from(parent.children).forEach(node => {
+      if (node !== branch && node !== backdrop) {
+        overlayInert.set(node, node.inert);
+        node.inert = true;
+      }
+    });
+    branch = parent;
+  }
+  if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1');
+  (el.querySelector(drawerFocusable) || el).focus();
+}
+
+function closeOverlay() {
+  if (!activeOverlay) return;
+  const closing = activeOverlay;
+  const opener = drawerOpener;
+  activeOverlay = null;
+  drawerOpener = null;
+  closing.classList.remove('open');
+  document.getElementById('drawer-backdrop')?.classList.remove('open');
+  releaseOverlayBackground();
+  const focusWasInside = closing.contains(document.activeElement);
+  restoreOverlayToasts();
+  if (opener?.isConnected && !opener.inert) opener.focus();
+  else if (focusWasInside) document.activeElement?.blur();
+}
 const drawerFocusable = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 function openDrawer(el, opener = document.activeElement) {
   if (!el) return;
-  const currentDrawer = document.querySelector('#cart-drawer.open, #profile-drawer.open, #mobile-nav-drawer.open');
-  if (currentDrawer) opener = drawerOpener || opener;
-  closeAllModals();
-  drawerOpener = opener;
-  el.classList.add('open');
-  document.getElementById('drawer-backdrop')?.classList.add('open');
-  (el.querySelector(drawerFocusable) || el).focus();
+  openOverlay(el, opener);
   playAtelierSound('swoosh');
 }
 
 function closeDrawer() {
-  document.querySelectorAll('#cart-drawer, #profile-drawer, #mobile-nav-drawer').forEach(el => el.classList.remove('open'));
-  document.getElementById('drawer-backdrop')?.classList.remove('open');
-  const opener = drawerOpener;
-  drawerOpener = null;
-  if (opener?.isConnected) opener.focus();
+  if (activeOverlay?.matches('#cart-drawer, #profile-drawer, #mobile-nav-drawer')) closeOverlay();
 }
 
 function openCartDrawer() { openDrawer(document.getElementById('cart-drawer')); }
@@ -1233,8 +1297,7 @@ function selectTimeSlot(slot) {
 
 function openRendezvousModal() {
   const modal = document.getElementById('rendezvous-modal');
-  modal?.classList.add('open');
-  document.getElementById('drawer-backdrop')?.classList.add('open');
+  openOverlay(modal);
 }
 
 function submitRendezvousBooking(e) {
@@ -1664,8 +1727,7 @@ function openAuthenticityModal(orderId) {
     `;
   }
 
-  document.getElementById('authenticity-modal')?.classList.add('open');
-  document.getElementById('drawer-backdrop')?.classList.add('open');
+  openOverlay(document.getElementById('authenticity-modal'));
 }
 
 // ==========================================================================
@@ -1715,8 +1777,7 @@ function filterCategory(catId) {
 }
 
 function closeAllModals() {
-  document.querySelectorAll('.modal-window').forEach(m => m.classList.remove('open'));
-  closeDrawer();
+  closeOverlay();
 }
 
 function toggleDockCollapse() {
@@ -1845,8 +1906,7 @@ function openWorkOrderModal(orderId) {
       </div>
     `;
   }
-  document.getElementById('work-order-modal')?.classList.add('open');
-  document.getElementById('drawer-backdrop')?.classList.add('open');
+  openOverlay(document.getElementById('work-order-modal'));
 }
 
 // ==========================================================================
@@ -1871,11 +1931,9 @@ window.addEventListener('scroll', (e) => {
 }, { passive: true, capture: true });
 
 function openKeyboardShortcutsModal() {
-  closeAllModals();
   const modal = document.getElementById('keyboard-shortcuts-modal');
   if (modal) {
-    modal.classList.add('open');
-    document.getElementById('drawer-backdrop')?.classList.add('open');
+    openOverlay(modal);
     playAtelierSound('click');
   }
 }
@@ -1959,7 +2017,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     if (e.key === 'Tab') {
-      const drawer = document.querySelector('#cart-drawer.open, #profile-drawer.open, #mobile-nav-drawer.open');
+      const drawer = activeOverlay;
       if (drawer) {
         const items = [...drawer.querySelectorAll(drawerFocusable)];
         if (!items.length) { e.preventDefault(); drawer.focus(); return; }
@@ -1974,13 +2032,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Do not trigger hotkeys if user is currently typing in an input, textarea, or select
     const activeEl = document.activeElement;
     const tagName = activeEl ? activeEl.tagName.toLowerCase() : '';
-    if (tagName === 'input' || tagName === 'textarea' || tagName === 'select') {
+    if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || activeEl?.isContentEditable || tagName === 'input' || tagName === 'textarea' || tagName === 'select') {
       return;
     }
 
     // Drawer shortcuts C/U may reopen or switch drawers; suppress all background actions while a drawer is open.
-    const drawerOpen = document.querySelector('#cart-drawer.open, #profile-drawer.open, #mobile-nav-drawer.open');
-    if (drawerOpen && !['c', 'C', 'u', 'U'].includes(e.key)) return;
+    const helpKey = e.key === '?' || (e.shiftKey && e.key === '/');
+    if (activeOverlay && !helpKey) return;
 
     if (e.key === '?' || (e.shiftKey && e.key === '/')) {
       e.preventDefault();

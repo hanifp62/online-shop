@@ -26,8 +26,12 @@ class ResidualLiteralLocaleTest extends TestCase
                 $this->assertTrue(Lang::has("shop_ui.{$key}", $locale, false), "{$locale}: {$key}");
             }
             $html = $this->get(route('home', ['locale' => $locale]))->assertOk();
-            $html->assertSee('class="storefront" lang="'.$locale.'"', false)
-                ->assertDontSee("msg.textContent = 'Segel lilin khas Maison ZAFIRA telah disematkan.'", false);
+            $bodies = $this->xpath($html->getContent())->query('//body');
+            $this->assertSame(1, $bodies->length, "{$locale}: body element");
+            $body = $bodies->item(0);
+            $this->assertContains('storefront', preg_split('/\s+/', trim($body->getAttribute('class'))), "{$locale}: storefront class");
+            $this->assertSame($locale, $body->getAttribute('lang'), "{$locale}: body language");
+            $html->assertDontSee("msg.textContent = 'Segel lilin khas Maison ZAFIRA telah disematkan.'", false);
             $html->assertSee(e(trans('shop_ui.header.language_selector', [], $locale)), false)
                 ->assertSee(e(trans('shop_ui.footer.search_eyebrow', [], $locale)), false)
                 ->assertSee(e(trans('shop_ui.welcome.wax_success', [], $locale)), false)

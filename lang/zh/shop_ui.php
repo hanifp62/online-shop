@@ -2,6 +2,11 @@
 
 return [
     'app_js' => [
+        'wish_saved_local' => ':name 仅保存在此设备上。登录后可将收藏保存至账户；本地列表不会自动合并。',
+        'wish_failed' => '收藏暂时无法更新，请重试。',
+        'wish_session' => '会话已结束，请重新登录以保存收藏。',
+        'err_stock' => '库存不足或此作品暂不可用。请减少数量或选择其他作品。',
+        'err_rate' => '请求过多，请稍候再试。',
         'sold_out' => '已售罄',
         'add_to_bag' => '加入购物袋',
         'available' => '有货',
@@ -125,6 +130,7 @@ return [
         'auth_greeting' => ':name，您好',
     ],
     'footer' => [
+        'search_submit' => '搜索全部系列',
         'collection' => '系列',
         'women' => '女士',
         'men' => '男士',
@@ -193,6 +199,9 @@ return [
         'continue' => '继续购物',
     ],
     'welcome' => [
+        'featured_note' => '首页最多展示 24 件精选作品，并非全部系列。分类和搜索将打开完整目录。',
+        'view_all' => '查看全部系列',
+        'featured_empty' => '当前首页精选中没有展示作品。这并非完整目录的搜索结果。',
         'returns_policy' => '系统接受账户订单的退货申请，期限为记录完成状态起 7 天。已申请的数量不可重复申请，除非申请被拒绝。申请需要审核，退款不是自动进行。网站尚未提供客户退货表单，请联系礼宾寻求帮助。运费以结账摘要为准；不承诺免费配送、国际配送或终身保修。',
         'region_badge' => '中国 / ZH',
         'profile_close' => '关闭个人资料',
@@ -364,6 +373,9 @@ return [
         'wax_hint' => '轻触印章以预览火漆印',
     ],
     'shop' => [
+        'paid_cancel_unavailable' => '已付款或处理中的订单无法在此取消。请联系礼宾服务讨论后续步骤；退款不会自动进行。',
+        'contact_concierge' => '联系礼宾服务',
+        'checkout_pending' => '上次结账结果尚不确定。下次尝试将使用原订单信息；创建新订单前请先查看订单。',
         'title' => '购物 — ZAFIRA La Maison de Lumière', 'skip' => '跳至主要内容', 'nav_label' => '购物导航', 'nav_collection' => '系列', 'nav_bag' => '购物袋', 'nav_address' => '地址', 'nav_orders' => '订单', 'nav_favorites' => '收藏', 'nav_account' => '账户', 'nav_login' => '登录', 'heading' => '在 Maison 购物', 'lead' => '查看并管理您的 ZAFIRA 系列订单。', 'notice' => '首页、商品页和系列页现在都会加入下方同一个购物袋。浏览器中保存的旧购物袋[[未连接]]，不会自动合并；请在首页购物袋抽屉中查看，需要时重新添加。此订单暂[[不支持]]尺寸、所选颜色和字母刺绣；商品将按照目录规格发货。如需这些选项，请提交 concierge 请求，不要继续结账。', 'loading' => '正在加载购物内容…', 'bag_title' => '购物袋', 'clear_bag' => '清空购物袋', 'address_title' => '配送地址', 'add_address' => '添加地址', 'label' => '标签', 'label_placeholder' => '家', 'label_default' => '主要', 'recipient' => '收件人姓名', 'phone' => '电话', 'recipient_phone' => '收件人电话', 'street' => '街道地址', 'detail' => '补充信息', 'city' => '城市', 'province' => '省份', 'postal' => '邮政编码', 'make_default' => '设为主要地址', 'checkout' => '结账', 'checkout_notice' => '订单状态记录为[[待付款]]。在线付款暂不可用。不会自动确认付款。订单创建时会重新计算总额；重试前请检查摘要。', 'summary_heading' => '订单摘要', 'summary_loading' => '正在加载订单摘要…', 'summary_note' => '优惠和最终总额将在订单创建时确认。', 'form_label' => '结账表单', 'saved_address' => '已保存地址', 'voucher' => '优惠码（可选）', 'confirm_order' => '确认订单', 'guest_intro' => '已有账户？[[登录]]。也可以填写联系方式和地址，以访客身份下单。', 'step_contact' => '第 1/2 步 · 联系方式', 'full_name' => '姓名', 'email' => '电子邮箱', 'step_address' => '第 2/2 步 · 配送地址', 'guest_button' => '以访客身份下单', 'orders_title' => '订单', 'clear_token' => '从表单清除代码', 'track_label' => '订单追踪代码', 'track_button' => '追踪订单', 'favorites_title' => '收藏', 'favorites_intro' => '从[[目录]]添加收藏。', 'js' => [
             'processing' => '正在处理…', 'retry' => '重试', 'cart_reloaded' => '购物袋已加载。', 'cart_failed' => '无法加载购物袋。', 'cart_empty' => '购物袋为空。请从目录添加作品。', 'unavailable' => '库存不足。请在结账前移除或重新检查。', 'qty_aria' => ':title 数量', 'update' => '修改数量', 'remove' => '移除', 'qty_updated' => '购物袋数量已更新。', 'removed' => '作品已从购物袋移除。', 'subtotal' => '小计：:amount', 'estimate_unavailable' => '小计暂不可用', 'summary_unavailable' => '摘要暂不可用。请重新加载后结账。', 'summary_note' => '优惠和最终总额将在订单创建时确认。', 'estimate' => ':count 件 · 小计：:amount', 'shipping' => '配送费：:amount', 'discount_voucher' => '优惠码 :code：−:amount', 'discount_hint' => '优惠：:amount（输入优惠码查看优惠）', 'tax' => '税费：:amount', 'estimate_total' => '预计总额：:amount', 'quote_pending' => '优惠和配送费将在订单创建时确认', 'status_pending_line' => '状态：待付款', 'final_total' => '最终总额将在订单创建时确认。', 'no_address' => '暂无地址。请在下方添加。', 'default_suffix' => '主要', 'remove_address' => '删除地址', 'confirm_remove_address' => '删除此地址？历史订单仍会保留副本。', 'address_removed' => '地址已删除。', 'address_count' => '（:count 个地址）', 'no_orders' => '暂无订单。', 'order_title' => '订单 #:id', 'order_line' => '状态：:status · 总额 :amount', 'rating' => '评分', 'rating_pick' => '选择 1–5', 'review' => '评价', 'send_review' => '提交评价', 'review_sent' => '评价已提交。谢谢。', 'review_saved' => '评价已保存。', 'cancel_order' => '取消订单', 'confirm_cancel' => '取消订单 #:id？', 'order_cancelled' => '订单已取消。', 'prev' => '上一页', 'next' => '下一页', 'page' => '第 :page / :total 页', 'order_count' => '（:count 个订单）', 'no_favorites' => '暂无收藏。', 'item_unavailable' => '作品不可用', 'remove_favorite' => '取消收藏', 'favorite_removed' => '已取消收藏。', 'favorite_count' => '（:count 个收藏）', 'confirm_clear' => '清空整个购物袋？', 'cart_cleared' => '购物袋已清空。', 'address_saved' => '地址已保存。', 'pick_address' => '请先选择配送地址。', 'check_cart' => '结账前请检查购物袋和库存。', 'order_created' => '订单 #:id 已创建：待付款。总额 :amount。在线付款暂不可用，也不会自动确认付款。', 'token_note' => '追踪代码（仅显示一次，请立即保存）：', 'token_cleared' => '追踪代码已从页面删除。请确认已保存。', 'order_found' => '已找到订单。', 'login_address' => '登录后保存地址。', 'login_orders' => '登录后查看订单。', 'login_favorites' => '登录后查看收藏。', 'ready' => '购物袋已准备好。',
         ],
@@ -378,6 +390,7 @@ return [
         'unknown' => '暂无状态',
     ],
     'request' => [
+        'timeout' => '请求超时，操作结果尚不确定。再次结账前请先查看订单。',
         'network' => '网络已断开。请检查连接后重试。',
         '401' => '请先登录，然后返回购物页面。',
         '403' => '无权执行此操作。',

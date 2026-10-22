@@ -1,0 +1,13 @@
+{
+  "command": [
+    "composer",
+    "--no-plugins",
+    "--no-scripts",
+    "validate",
+    "--strict",
+    "--no-check-publish"
+  ],
+  "started": "2026-10-21T10:40:41.118096+00:00",
+  "finished": "2026-10-21T10:40:41.302844+00:00",
+  "exit": 1
+}

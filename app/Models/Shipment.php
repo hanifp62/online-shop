@@ -77,9 +77,11 @@ class Shipment extends Model
             'tracking_number' => $this->tracking_number,
             'awb_assigned' => $hasAwb,
             'status' => $this->status,
-            'status_label' => $hasAwb
-                ? __('customer_messages.shipment.in_transit', ['tracking_number' => $this->tracking_number])
-                : __('customer_messages.shipment.awb_unavailable'),
+            'status_label' => $this->status === self::STATUS_DELIVERED
+                ? __('customer_messages.shipment.delivered')
+                : ($hasAwb
+                    ? __('customer_messages.shipment.in_transit', ['tracking_number' => $this->tracking_number])
+                    : __('customer_messages.shipment.awb_unavailable')),
             'explanation' => $hasAwb ? null : __('customer_messages.shipment.awb_pending'),
             'shipped_at' => $this->shipped_at?->toISOString(),
             'delivered_at' => $this->delivered_at?->toISOString(),

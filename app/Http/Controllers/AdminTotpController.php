@@ -46,10 +46,24 @@ class AdminTotpController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        // Per account AND per IP: one attacker IP cannot lock out other admins (K7).
         $key = 'admin-totp:'.$admin->id.'|'.$request->ip();
-        if (RateLimiter::tooManyAttempts($key, self::MAX_ATTEMPTS)) {
-            $seconds = RateLimiter::availableIn($key);
+        $accountKey = 'admin-totp:account:'.$admin->id;
+        $ipKey = 'admin-totp:ip:'.$request->ip();
+        if (RateLimiter::tooManyAttempts($key, self::MAX_ATTEMPTS)
+            || RateLimiter::tooManyAttempts($accountKey, self::MAX_ATTEMPTS)
+            || RateLimiter::tooManyAttempts($ipKey, 25)) {
+            $seconds = max(RateLimiter::availableIn($key), RateLimiter::availableIn($accountKey), RateLimiter::availableIn($ipKey));
+
+            return back()->withErrors([$field => trans('admin_ui.flash.rate_limited', ['seconds' => $seconds])]);
+        }
+
+        // Reserve atomically before any verifier work. A racing request may pass the
+        // fast checks above, but only reservations within every budget may proceed.
+        $accountAttempt = RateLimiter::increment($accountKey, 60);
+        $ipAttempt = RateLimiter::increment($ipKey, 60);
+        $pairAttempt = RateLimiter::increment($key, 60);
+        if ($accountAttempt > self::MAX_ATTEMPTS || $ipAttempt > 25 || $pairAttempt > self::MAX_ATTEMPTS) {
+            $seconds = max(RateLimiter::availableIn($key), RateLimiter::availableIn($accountKey), RateLimiter::availableIn($ipKey));
 
             return back()->withErrors([$field => trans('admin_ui.flash.rate_limited', ['seconds' => $seconds])]);
         }
@@ -58,8 +72,9 @@ class AdminTotpController extends Controller
 
         if (! $result['ok']) {
             $this->events->recordTotpFailure($admin->id, $request->ip(), (string) ($result['reason'] ?? 'invalid_code'));
-            RateLimiter::hit($key, 60);
-            if (RateLimiter::tooManyAttempts($key, self::MAX_ATTEMPTS)) {
+
+            if (RateLimiter::tooManyAttempts($key, self::MAX_ATTEMPTS)
+                || RateLimiter::tooManyAttempts($accountKey, self::MAX_ATTEMPTS)) {
                 $this->events->recordLockout('admin', $admin->id, $request->ip(), 'totp');
             }
             $message = in_array($result['reason'] ?? null, ['broken_secret', 'operational_error'], true)
@@ -69,7 +84,7 @@ class AdminTotpController extends Controller
             return back()->withErrors([$field => $message]);
         }
 
-        RateLimiter::clear($key);
+        // Keep reservations until expiry; success must not erase another in-flight attempt's budget.
         if ($field === 'recovery_code') {
             $this->events->recordRecoveryUsed($admin->id, $request->ip());
         }

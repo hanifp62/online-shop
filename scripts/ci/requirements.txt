@@ -1,0 +1,5 @@
+# NFR-CICD-004: versi pembuat font, bukan upgrade dependency.
+# Provenance: resources/fonts/NotoSansSC-Regular.provenance.json -> tool.fonttools_version
+# Verifikasi historis: docs/execution/evidence/2026-10-13/final-gate-closeout/REPORT.md
+# Report gate sendiri hanya memakai Python stdlib.
+fonttools==4.66.1

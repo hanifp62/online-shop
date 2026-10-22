@@ -195,6 +195,7 @@ class CheckoutService
 
     private function attempt(callable $place, callable $lookup, callable $replay): array
     {
+        $nested = DB::transactionLevel() > 0;
         for ($attempt = 0; $attempt <= self::MAX_LOCK_RETRIES; $attempt++) {
             try {
                 $order = DB::transaction($place);
@@ -202,6 +203,10 @@ class CheckoutService
                 return [$order, $order->wasRecentlyCreated];
             } catch (QueryException|DeadlockException $e) {
                 // Laravel membungkus kegagalan kunci di dalam transaksi bersarang sebagai DeadlockException.
+                // A wrapper is propagated, not classified as retryable: it may wrap timeout 1205.
+                if ($nested && ($e instanceof DeadlockException || $this->isTransientLock($e))) {
+                    throw $e;
+                }
                 $transient = $this->isTransientLock($e);
                 if (! $transient && ! $this->isUniqueViolation($e)) {
                     throw $e;
@@ -238,13 +243,7 @@ class CheckoutService
     /** Retry seluruh transaksi: SQLite BUSY/LOCKED atau MariaDB deadlock. Timeout 1205 tidak termasuk. */
     private function isTransientLock(\Throwable $e): bool
     {
-        $info = $this->errorInfo($e);
-
-        return match (DB::getDriverName()) {
-            'sqlite' => in_array((int) ($info[1] ?? 0), [5, 6], true),
-            'mysql' => ($info[0] ?? null) === '40001' && (int) ($info[1] ?? 0) === 1213,
-            default => false,
-        };
+        return TransactionLockRetry::retryable($e, DB::getDriverName());
     }
 
     private function isUniqueViolation(\Throwable $e): bool
@@ -277,7 +276,7 @@ class CheckoutService
     private function place(User $user, Address $address, array $cart, string $key, string $hash, ?string $voucherCode): Order
     {
         // Serialisasi checkout per pengguna untuk batas voucher per pengguna.
-        User::whereKey($user->id)->lockForUpdate()->first();
+        User::whereKey($user->id)->lockForUpdate()->firstOrFail();
 
         // Recheck di dalam lock: worker kedua yang lolos lookup awal harus replay sebelum mutasi stok/voucher.
         $existing = Order::where('user_id', $user->id)->where('idempotency_key', $key)->lockForUpdate()->first();

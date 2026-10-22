@@ -1,0 +1,11 @@
+{
+  "command": [
+    "vendor/bin/pint",
+    "--test",
+    "app/Http/Controllers/ProfileController.php",
+    "tests/Feature/ProfileExportStreamingTest.php"
+  ],
+  "started": "2026-10-21T16:35:51.288874+00:00",
+  "finished": "2026-10-21T16:35:51.576830+00:00",
+  "exit": 1
+}

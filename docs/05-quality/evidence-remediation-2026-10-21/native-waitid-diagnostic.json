@@ -1,0 +1,38 @@
+{
+  "started": "2026-10-21T15:40:24.842798+00:00",
+  "finished": "2026-10-21T15:40:24.869331+00:00",
+  "records": [
+    {
+      "operation": "first_waitid",
+      "result": [
+        90122,
+        0,
+        20,
+        0,
+        1
+      ]
+    },
+    {
+      "operation": "getpgid",
+      "error": "ProcessLookupError",
+      "errno": 3
+    },
+    {
+      "operation": "waitid_again",
+      "result": [
+        90122,
+        0,
+        20,
+        0,
+        1
+      ]
+    },
+    {
+      "operation": "group_probe",
+      "error": "PermissionError",
+      "errno": 1
+    }
+  ],
+  "child_exit": 0,
+  "scope": "one child that exits immediately; no browser/server/network/DB; permission mode not established"
+}

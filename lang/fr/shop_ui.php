@@ -2,6 +2,11 @@
 
 return [
     'app_js' => [
+        'wish_saved_local' => ':name est enregistré sur cet appareil uniquement. Connectez-vous pour enregistrer vos favoris dans votre compte ; la liste locale n’est pas fusionnée automatiquement.',
+        'wish_failed' => 'Les favoris n’ont pas pu être mis à jour. Réessayez.',
+        'wish_session' => 'Votre session est terminée. Reconnectez-vous pour enregistrer vos favoris.',
+        'err_stock' => 'Stock insuffisant ou création indisponible. Réduisez la quantité ou choisissez une autre création.',
+        'err_rate' => 'Trop de demandes. Patientez un instant puis réessayez.',
         'sold_out' => 'Épuisé',
         'add_to_bag' => 'Ajouter au sac',
         'available' => 'Disponible',
@@ -125,6 +130,7 @@ return [
         'auth_greeting' => 'Bonjour, :name',
     ],
     'footer' => [
+        'search_submit' => 'Rechercher dans toute la collection',
         'collection' => 'Collection',
         'women' => 'Femme',
         'men' => 'Homme',
@@ -193,6 +199,9 @@ return [
         'continue' => 'Continuer vers les achats',
     ],
     'welcome' => [
+        'featured_note' => 'L’accueil présente jusqu’à 24 créations, pas toute la collection. Les catégories et la recherche ouvrent le catalogue complet.',
+        'view_all' => 'Voir toute la collection',
+        'featured_empty' => 'Aucune création dans cette sélection de l’accueil. Ce résultat ne couvre pas tout le catalogue.',
         'returns_policy' => 'Le système accepte les demandes de retour des commandes de compte terminées, sous 7 jours après cet enregistrement. Les quantités déjà réclamées ne peuvent être réclamées à nouveau sauf rejet. Les demandes sont examinées ; le remboursement n’est pas automatique. Le formulaire client de retour n’est pas encore disponible sur le site. Contactez le concierge pour assistance. Les frais suivent le récapitulatif de commande ; livraison gratuite, internationale et garantie à vie ne sont pas promises.',
         'region_badge' => 'France / FR',
         'profile_close' => 'Fermer le profil',
@@ -364,6 +373,9 @@ return [
         'wax_hint' => 'Touchez le cachet pour prévisualiser le sceau de cire',
     ],
     'shop' => [
+        'paid_cancel_unavailable' => 'Les commandes payées ou en préparation ne peuvent pas être annulées ici. Contactez la conciergerie pour discuter des prochaines étapes ; aucun remboursement n’est automatique.',
+        'contact_concierge' => 'Contacter la conciergerie',
+        'checkout_pending' => 'Le résultat du paiement précédent est incertain. La prochaine tentative utilisera les détails initiaux ; vérifiez vos commandes avant de créer une nouvelle commande.',
         'title' => 'Achats — ZAFIRA La Maison de Lumière',
         'skip' => 'Aller au contenu principal',
         'nav_label' => 'Navigation des achats',
@@ -492,6 +504,7 @@ return [
         'unknown' => 'Statut indisponible',
     ],
     'request' => [
+        'timeout' => 'La demande a pris trop de temps. Son résultat est incertain ; vérifiez vos commandes avant de retenter le paiement.',
         'network' => 'Connexion perdue. Vérifiez votre réseau puis réessayez.',
         '401' => 'Veuillez vous connecter, puis revenir au Panier.',
         '403' => 'Action non autorisée.',

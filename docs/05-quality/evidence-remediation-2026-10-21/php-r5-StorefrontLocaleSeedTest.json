@@ -1,0 +1,10 @@
+{
+  "command": [
+    "./scripts/amadis/launch.sh",
+    "test",
+    "--filter=StorefrontLocaleSeedTest"
+  ],
+  "started": "2026-10-21T15:31:24.041483+00:00",
+  "finished": "2026-10-21T15:31:27.737477+00:00",
+  "exit": 1
+}

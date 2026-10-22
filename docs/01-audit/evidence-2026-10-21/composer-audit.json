@@ -1,0 +1,14 @@
+{
+  "command": [
+    "composer",
+    "--no-plugins",
+    "--no-scripts",
+    "audit",
+    "--locked",
+    "--format=json",
+    "--no-interaction"
+  ],
+  "started": "2026-10-21T11:01:34.929882+00:00",
+  "finished": "2026-10-21T11:01:35.981258+00:00",
+  "exit": 0
+}

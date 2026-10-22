@@ -361,9 +361,10 @@ test('deep-link renders drawer through existing search without any URL writes', 
     }
 });
 
-test('drawer announces count, fuzzy and empty feedback separately from interactive results', () => {
-    assert.match(welcome, /<p\b[^>]*role="status"[^>]*aria-live="polite"[^>]*data-search-status[^>]*><\/p>/);
-    assert.doesNotMatch(welcome.match(/<div\b[^>]*data-search-results[^>]*>/)[0], /role="status"|aria-live/);
+test('legacy local matcher keeps status separate; shipped header now submits full-catalog search', () => {
+    // REM-20261021 UI-04: the home card list is bounded, so it cannot claim global results.
+    assert.doesNotMatch(welcome, /data-search-status|data-search-results/);
+    assert.match(welcome, /id="catalog-header-search"[^>]*method="get"[^>]*action="\{\{ route\('catalog.index'\) \}\}"/);
     const h = storefront();
     const status = h.get('[data-search-status]');
     h.drawerInput.value = 'sutra'; h.drawerInput.fire('input');

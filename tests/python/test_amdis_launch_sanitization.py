@@ -1,6 +1,7 @@
 import contextlib
 import importlib.util
 import io
+import json
 import os
 from pathlib import Path
 import re
@@ -8,6 +9,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 MODULE_PATH = Path(__file__).resolve().parents[2] / 'scripts/amadis/launch.py'
 spec = importlib.util.spec_from_file_location('amadis_launch', MODULE_PATH)
@@ -26,6 +28,127 @@ class SanitizationTests(unittest.TestCase):
         self.assert_redacted(
             '{"sentinel":{"APP_KEY":"key-secret"},"access_token":"tok-secret",'
             '"safe":"visible"}', 'key-secret', 'tok-secret')
+
+    def test_malformed_quoted_keys_controls_ansi_html_are_redacted_without_crash(self):
+        keys = ['"bad' + chr(control) + 'key"' for control in range(32)]
+        keys += ['"bad\\qkey"', '"bad\\u00G0key"', '"bad\\uD80key"',
+                 '"\x1b[31mkey\x1b[0m"', '"<span>trace\nrow</span>"']
+        for index, key in enumerate(keys):
+            with self.subTest(index=index):
+                value = json.dumps(['malformed-value-sentinel', {'nested': 'nested-value-sentinel'}])
+                source = 'status=visible\n' + key + ': ' + value + '\n{"\\u0074oken":"valid-token-sentinel"}'
+                result = launch.sanitized(source)
+                for secret in ('malformed-value-sentinel', 'nested-value-sentinel', 'valid-token-sentinel'):
+                    self.assertNotIn(secret, result)
+                self.assertIn('[REDACTED]', result)
+                self.assertIn('status=visible', result)
+
+    def test_valid_escaped_sensitive_key_still_redacts_without_discarding_tail(self):
+        source = '{"\\u0074oken":"escaped-token-sentinel"}\nstatus=visible'
+        result = launch.sanitized(source)
+        self.assertNotIn('escaped-token-sentinel', result)
+        self.assertIn('[REDACTED]', result)
+        self.assertIn('status=visible', result)
+
+    def test_malformed_key_with_unparseable_value_never_falls_back_to_raw_output(self):
+        source = 'status=failed\n"bad\\qkey": unparseable-value-sentinel\nmultiline-tail-sentinel'
+        result = launch.sanitized(source)
+        self.assertIn('status=failed', result)
+        self.assertIn('[REDACTED]', result)
+        self.assertNotIn('unparseable-value-sentinel', result)
+        self.assertNotIn('multiline-tail-sentinel', result)
+
+    def test_malformed_key_valid_prefix_suffix_is_withheld_direct(self):
+        for value in ('1', '-2.5e3', 'true', 'false', 'null', '"valid string"'):
+            with self.subTest(value=value):
+                source = 'status=visible\n"\\q":' + value + 'LEAK_SENTINEL\nTAIL_SENTINEL'
+                result = launch.sanitized(source)
+                self.assertNotIn('LEAK_SENTINEL', result)
+                self.assertNotIn('TAIL_SENTINEL', result)
+                self.assertEqual(result, 'status=visible\n"[REDACTED]"')
+
+    def test_malformed_key_valid_prefix_suffix_is_withheld_mocked_capture(self):
+        for value in ('1', '-2.5e3', 'true', 'false', 'null', '"valid string"'):
+            with self.subTest(value=value):
+                stdout = '"\\q":' + value + 'STDOUT_LEAK_SENTINEL'
+                stderr = '"\\q":' + value + 'STDERR_LEAK_SENTINEL'
+                argument = '"\\q":' + value + 'ARGV_LEAK_SENTINEL'
+                fake = subprocess.CompletedProcess([], 7, stdout, stderr)
+                with patch.object(launch.subprocess, 'run', return_value=fake) as run, \
+                     patch.object(launch, 'write_new') as write, patch.object(launch, 'lock') as lock:
+                    lock.fileno.return_value = 42
+                    out, err = io.StringIO(), io.StringIO()
+                    with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                        status = launch.capture(Path('/unused-synthetic-root'), 'mock', ['tool', argument], {})
+                self.assertEqual(status, 7)
+                run.assert_called_once()
+                self.assertEqual(write.call_count, 3)
+                sinks = [call.args[2] for call in write.call_args_list] + [out.getvalue(), err.getvalue()]
+                for sink in sinks:
+                    for sentinel in ('STDOUT_LEAK_SENTINEL', 'STDERR_LEAK_SENTINEL', 'ARGV_LEAK_SENTINEL'):
+                        self.assertNotIn(sentinel, sink)
+                    self.assertIn('[REDACTED]', sink)
+
+    def test_overlapping_remainder_extends_existing_redaction_direct(self):
+        # Rework cycle 3: a token interval overlaps a later malformed-key remainder.
+        for token in ('x', 'TOKEN_VALUE_SENTINEL'):
+            with self.subTest(token=token):
+                source = '{"token":[' + json.dumps(token) + ',\n":"]}\n"\\q":1LEAK_SENTINEL'
+                result = launch.sanitized(source)
+                self.assertNotIn('LEAK_SENTINEL', result)
+                self.assertNotIn(token, result)
+                self.assertEqual(result, '{"token":"[REDACTED]"')
+
+    def test_overlapping_remainder_extends_existing_redaction_mocked_capture(self):
+        def payload(token, suffix):
+            return '{"token":[' + json.dumps(token) + ',\n":"]}\n"\\q":1' + suffix
+        stdout = payload('STDOUT_TOKEN_SENTINEL', 'STDOUT_LEAK_SENTINEL')
+        stderr = payload('STDERR_TOKEN_SENTINEL', 'STDERR_LEAK_SENTINEL')
+        argument = payload('ARGV_TOKEN_SENTINEL', 'ARGV_LEAK_SENTINEL')
+        fake = subprocess.CompletedProcess([], 7, stdout, stderr)
+        with patch.object(launch.subprocess, 'run', return_value=fake) as run, \
+             patch.object(launch, 'write_new') as write, patch.object(launch, 'lock') as lock:
+            lock.fileno.return_value = 42
+            out, err = io.StringIO(), io.StringIO()
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                status = launch.capture(Path('/unused-synthetic-root'), 'mock', ['tool', argument], {})
+        self.assertEqual(status, 7)
+        run.assert_called_once()
+        self.assertEqual(write.call_count, 3)
+        sinks = [call.args[2] for call in write.call_args_list] + [out.getvalue(), err.getvalue()]
+        for sink in sinks:
+            for sentinel in ('STDOUT_TOKEN_SENTINEL', 'STDOUT_LEAK_SENTINEL',
+                             'STDERR_TOKEN_SENTINEL', 'STDERR_LEAK_SENTINEL',
+                             'ARGV_TOKEN_SENTINEL', 'ARGV_LEAK_SENTINEL'):
+                self.assertNotIn(sentinel, sink)
+            self.assertIn('[REDACTED]', sink)
+
+    def test_benign_ansi_html_diagnostics_and_valid_secret_redaction_remain(self):
+        visible = '\x1b[31mFAIL\x1b[0m <span title="failure">message</span> {"safe":"kept"}'
+        result = launch.sanitized(visible + ' password=diagnostic-secret-sentinel')
+        self.assertIn(visible, result)
+        self.assertNotIn('diagnostic-secret-sentinel', result)
+        self.assertIn('[REDACTED]', result)
+
+    def test_mocked_capture_malformed_keys_sanitizes_every_sink_and_keeps_exit(self):
+        stdout = '"trace\nkey": ["stdout-malformed-sentinel"]\nTOKEN=stdout-token-sentinel'
+        stderr = '<span>"\x1b[31mkey": {"nested":"stderr-malformed-sentinel"}</span>'
+        fake = subprocess.CompletedProcess([], 7, stdout, stderr)
+        with patch.object(launch.subprocess, 'run', return_value=fake) as run, \
+             patch.object(launch, 'write_new') as write, patch.object(launch, 'lock') as lock:
+            lock.fileno.return_value = 42
+            out, err = io.StringIO(), io.StringIO()
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                status = launch.capture(Path('/unused-synthetic-root'), 'mock',
+                                        ['tool', '"bad\\qkey": "argv-malformed-sentinel"'], {})
+        self.assertEqual(status, 7)
+        run.assert_called_once()
+        self.assertEqual(write.call_count, 3)
+        sinks = ''.join(call.args[2] for call in write.call_args_list) + out.getvalue() + err.getvalue()
+        for secret in ('stdout-malformed-sentinel', 'stdout-token-sentinel',
+                       'stderr-malformed-sentinel', 'argv-malformed-sentinel'):
+            self.assertNotIn(secret, sinks)
+        self.assertIn('[REDACTED]', sinks)
 
     def test_bearer_and_multiline_cookie_headers(self):
         self.assert_redacted(

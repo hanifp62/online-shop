@@ -1,0 +1,10 @@
+{
+  "command": [
+    "./scripts/amadis/launch.sh",
+    "test",
+    "--filter=RemediationTest"
+  ],
+  "started": "2026-10-21T15:14:08.552480+00:00",
+  "finished": "2026-10-21T15:14:36.917183+00:00",
+  "exit": 0
+}

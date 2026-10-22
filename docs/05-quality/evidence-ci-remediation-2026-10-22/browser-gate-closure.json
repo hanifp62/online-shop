@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "python3",
+    "scripts/ci/check_browser_report.py",
+    "/Users/hanifpriyambodo/Documents/online-shop/scratch/ci-validation/browser-r2"
+  ],
+  "started_at": "2026-10-21T21:48:37.930539+00:00",
+  "finished_at": "2026-10-21T21:48:37.954513+00:00",
+  "duration_seconds": 0.024,
+  "timeout_seconds": 30,
+  "status": "COMPLETE",
+  "exit_code": 0,
+  "cleanup": "not_required",
+  "sanitized_log": "docs/05-quality/evidence-ci-remediation-2026-10-22/browser-gate-closure.log",
+  "sanitized_log_sha256": "54d49551415f542327b5849233777fcb9e099d61ce5f36284c86c5b404efcd1f"
+}

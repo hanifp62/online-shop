@@ -95,6 +95,7 @@ return [
         ],
         'rejected_return' => 'Retur yang ditolak tidak dapat diajukan pengembalian dana.',
         'duplicate' => 'Pengembalian dana untuk retur ini sudah diajukan.',
+        'number_unavailable' => 'Nomor pengembalian dana belum dapat diterbitkan. Silakan coba lagi.',
         'transition' => 'Transisi pengembalian dana dari :from ke :to tidak diizinkan.',
         'rejection_required' => 'Alasan penolakan wajib diisi.',
         'unverified' => 'Status pencairan belum tersedia sampai bukti refund diverifikasi langsung dari penyedia pembayaran.',

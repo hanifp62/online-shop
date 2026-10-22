@@ -16,7 +16,7 @@ AUDIT = ['composer', 'audit', '--locked', '--format=json', '--no-interaction', '
 
 class ComposerAuditTests(unittest.TestCase):
     def setUp(self):
-        self.root = BASE / ('amadis-audittest-' + secrets.token_hex(8))
+        self.root = BASE / ('amadis-' + secrets.token_hex(12))
         self.root.mkdir(mode=0o700)
         self.addCleanup(shutil.rmtree, self.root, True)
         (self.root / 'identity.json').write_text(json.dumps({'root': str(self.root.resolve()),
@@ -101,10 +101,19 @@ class ComposerAuditTests(unittest.TestCase):
             self.run_main('composer-audit', '--locked', '--format=json', mutate=mutate)
         self.assertIn('composer audit changed', str(cm.exception))
 
+
+class RawCommandTests(unittest.TestCase):
     def test_raw_run_still_blocks_composer(self):
-        with self.assertRaises(SystemExit) as cm:
-            self.run_main('run', 'composer', 'audit')
-        self.assertIn('raw git, database, shell and interpreter commands prohibited', str(cm.exception))
+        spec = importlib.util.spec_from_file_location('amadis_launch_raw_denied', LAUNCH)
+        launch = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(launch)
+        with patch.object(sys, 'argv', ['launch.py', 'run', 'composer', 'audit']), \
+             patch.object(launch, 'capture') as capture, \
+             patch.object(launch, 'prepare') as prepare:
+            with self.assertRaises(SystemExit):
+                launch.main()
+            capture.assert_not_called()
+            prepare.assert_not_called()
 
 
 if __name__ == '__main__':

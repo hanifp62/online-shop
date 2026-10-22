@@ -2,6 +2,11 @@
 
 return [
     'app_js' => [
+        'wish_saved_local' => ':name is saved on this device only. Sign in to save favorites to your account; the local list is not merged automatically.',
+        'wish_failed' => 'Favorites could not be updated. Please try again.',
+        'wish_session' => 'Your session ended. Please sign in again to save favorites.',
+        'err_stock' => 'Stock is insufficient or this creation is unavailable. Reduce the quantity or choose another creation.',
+        'err_rate' => 'Too many requests. Wait a moment and try again.',
         'sold_out' => 'Sold out',
         'add_to_bag' => 'Add to bag',
         'available' => 'Available',
@@ -125,6 +130,7 @@ return [
         'auth_greeting' => 'Hello, :name',
     ],
     'footer' => [
+        'search_submit' => 'Search the full collection',
         'collection' => 'Collection',
         'women' => 'Women',
         'men' => 'Men',
@@ -193,6 +199,9 @@ return [
         'continue' => 'Continue to shop',
     ],
     'welcome' => [
+        'featured_note' => 'The homepage features up to 24 creations, not the full collection. Categories and search open the complete catalog.',
+        'view_all' => 'View the full collection',
+        'featured_empty' => 'No creations are shown in this homepage selection. This is not a full-catalog result.',
         'returns_policy' => 'The system accepts return requests for account orders marked completed, within 7 days of that status being recorded. Quantities already claimed cannot be claimed again unless rejected. Requests are reviewed; refunds are not automatic. A customer return form is not yet available on the storefront. Contact the concierge for help. Shipping follows the checkout summary; free shipping, international delivery and lifetime warranties are not promised.',
         'region_badge' => 'International / EN',
         'profile_close' => 'Close profile',
@@ -364,6 +373,9 @@ return [
         'wax_hint' => 'Tap the stamp to preview the wax seal',
     ],
     'shop' => [
+        'paid_cancel_unavailable' => 'Paid or processing orders cannot be cancelled here. Contact the concierge to discuss next steps; refunds are not automatic.',
+        'contact_concierge' => 'Contact the concierge',
+        'checkout_pending' => 'The previous checkout outcome is uncertain. The next attempt will use the original order details; check Orders before creating a new order.',
         'title' => 'Shopping — ZAFIRA La Maison de Lumière',
         'skip' => 'Skip to main content',
         'nav_label' => 'Shopping navigation',
@@ -492,6 +504,7 @@ return [
         'unknown' => 'Status unavailable',
     ],
     'request' => [
+        'timeout' => 'The request took too long. The outcome is uncertain; check Orders before trying checkout again.',
         'network' => 'Network disconnected. Check your connection, then try again.',
         '401' => 'Please sign in, then return to Shopping.',
         '403' => 'Access denied for this action.',

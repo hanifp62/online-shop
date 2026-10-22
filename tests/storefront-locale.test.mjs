@@ -20,7 +20,7 @@ function boot(locale = 'fr', fetcher = async () => ({ ok: true }), blocked = fal
         addEventListener: (type, fn) => { listeners[type] = fn; },
     };
     const calls = [];
-    const window = { dispatchEvent() {}, location: { href: 'https://shop.test/?locale=fr#collection' }, history: { replaceState(_s, _t, url) { window.location.href = String(url); } } };
+    const window = { dispatchEvent() {}, location: { href: 'https://shop.test/?locale=fr#collection', reload() {} }, history: { replaceState(_s, _t, url) { window.location.href = String(url); } } };
     runInNewContext(source, { document, window, URL, fetch: (...args) => { calls.push(args); return fetcher(...args); }, localStorage: { getItem: key => { if (blocked) throw Error('blocked'); return store[key] ?? null; }, setItem: (key, value) => { if (blocked) throw Error('blocked'); store[key] = value; } }, CustomEvent: function () {}, setTimeout, clearTimeout });
     listeners.DOMContentLoaded();
     return { api: window.Zafira, attrs, calls, status, store, listeners, window, body: document.body };

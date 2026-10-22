@@ -2,6 +2,11 @@
 
 return [
     'app_js' => [
+        'wish_saved_local' => ':name è salvato solo su questo dispositivo. Accedi per salvare i preferiti nel tuo account; la lista locale non viene unita automaticamente.',
+        'wish_failed' => 'Impossibile aggiornare i preferiti. Riprova.',
+        'wish_session' => 'La sessione è terminata. Accedi di nuovo per salvare i preferiti.',
+        'err_stock' => 'Scorte insufficienti o creazione non disponibile. Riduci la quantità o scegli un’altra creazione.',
+        'err_rate' => 'Troppe richieste. Attendi un momento e riprova.',
         'sold_out' => 'Esaurito',
         'add_to_bag' => 'Aggiungi alla borsa',
         'available' => 'Disponibile',
@@ -125,6 +130,7 @@ return [
         'auth_greeting' => 'Buongiorno, :name',
     ],
     'footer' => [
+        'search_submit' => 'Cerca in tutta la collezione',
         'collection' => 'Collezione',
         'women' => 'Donna',
         'men' => 'Uomo',
@@ -193,6 +199,9 @@ return [
         'continue' => 'Continua agli acquisti',
     ],
     'welcome' => [
+        'featured_note' => 'La home presenta fino a 24 creazioni, non tutta la collezione. Categorie e ricerca aprono il catalogo completo.',
+        'view_all' => 'Vedi tutta la collezione',
+        'featured_empty' => 'Nessuna creazione in questa selezione della home. Non è un risultato dell’intero catalogo.',
         'returns_policy' => 'Il sistema accetta richieste di reso per ordini di account completati entro 7 giorni dalla registrazione di tale stato. Le quantità già richieste non possono essere richieste nuovamente salvo rifiuto. Le richieste sono esaminate; il rimborso non è automatico. Il modulo resi cliente non è ancora disponibile sul sito. Contattate il concierge per assistenza. Le spese seguono il riepilogo checkout; spedizione gratuita, internazionale e garanzia a vita non sono promesse.',
         'region_badge' => 'Italia / IT',
         'profile_close' => 'Chiudi profilo',
@@ -364,6 +373,9 @@ return [
         'wax_hint' => 'Tocca il timbro per vedere l’anteprima del sigillo',
     ],
     'shop' => [
+        'paid_cancel_unavailable' => 'Gli ordini pagati o in lavorazione non possono essere annullati qui. Contatta il concierge per discutere i prossimi passi; i rimborsi non sono automatici.',
+        'contact_concierge' => 'Contatta il concierge',
+        'checkout_pending' => 'L’esito del checkout precedente è incerto. Il prossimo tentativo userà i dettagli originali; controlla gli Ordini prima di creare un nuovo ordine.',
         'title' => 'Shopping — ZAFIRA La Maison de Lumière',
         'skip' => 'Vai al contenuto principale',
         'nav_label' => 'Navigazione acquisti',
@@ -492,6 +504,7 @@ return [
         'unknown' => 'Stato non disponibile',
     ],
     'request' => [
+        'timeout' => 'La richiesta ha impiegato troppo tempo. L’esito è incerto; controlla gli Ordini prima di riprovare il checkout.',
         'network' => 'Rete disconnessa. Controlla la connessione e riprova.',
         '401' => 'Accedi, quindi torna allo Shopping.',
         '403' => 'Azione non consentita.',

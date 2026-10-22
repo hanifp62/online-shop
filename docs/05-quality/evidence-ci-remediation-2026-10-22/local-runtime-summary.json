@@ -1,0 +1,59 @@
+{
+  "observed_at": "2026-10-21T21:24:08.188037+00:00",
+  "node": {
+    "tests": 485,
+    "pass": 485,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "python": {
+    "cases": [],
+    "counts": {
+      "errors": 0,
+      "expected_failures": 0,
+      "failures": 0,
+      "import_errors": 0,
+      "skipped": 0,
+      "tests": 337,
+      "unexpected_successes": 0
+    },
+    "reasons": [],
+    "status": "PASS"
+  },
+  "versions": [
+    {
+      "argv": [
+        "php",
+        "-v"
+      ],
+      "exit_code": 0,
+      "version": "PHP 8.5.11 (cli) (built: Sep 22 2026 13:32:06) (NTS)"
+    },
+    {
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "exit_code": 0,
+      "version": "v24.21.0"
+    },
+    {
+      "argv": [
+        "npm",
+        "--version"
+      ],
+      "exit_code": 0,
+      "version": "11.19.0"
+    },
+    {
+      "argv": [
+        "scratch/ci-validation/venv/bin/python",
+        "--version"
+      ],
+      "exit_code": 0,
+      "version": "Python 3.14.8"
+    }
+  ]
+}

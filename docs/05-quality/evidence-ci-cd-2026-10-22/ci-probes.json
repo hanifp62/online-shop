@@ -1,0 +1,68 @@
+{
+  "created_at": "2026-10-21T17:05:50.105477+00:00",
+  "scope": "Synthetic shell semantics only: grep replaced by return-code stub, no app files scanned and no database/server/real PII used. EXIT=0 of probe means defect reproduced, not CI scanner fixed.",
+  "workflow_sha256": "9b77b816d8e093e3d28d1bb3927f1b5b91e05a39c01bf2d80c8e640436918fc6",
+  "cases": [
+    {
+      "case": "no_match",
+      "injected_grep_exit": 1,
+      "argv": [
+        "bash",
+        "--noprofile",
+        "--norc",
+        "-e",
+        "-o",
+        "pipefail",
+        "-c",
+        "grep() { return 1; }\nif grep -RInE 'Log::(info|warning|error|debug)\\(.*(email|password|phone|address|token)' app; then\n  echo \"Pola PII potensial pada log aplikasi\"; exit 1\nfi\n"
+      ],
+      "started_at": "2026-10-21T17:05:50.084665+00:00",
+      "completed_at": "2026-10-21T17:05:50.087234+00:00",
+      "shell_exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "match",
+      "injected_grep_exit": 0,
+      "argv": [
+        "bash",
+        "--noprofile",
+        "--norc",
+        "-e",
+        "-o",
+        "pipefail",
+        "-c",
+        "grep() { return 0; }\nif grep -RInE 'Log::(info|warning|error|debug)\\(.*(email|password|phone|address|token)' app; then\n  echo \"Pola PII potensial pada log aplikasi\"; exit 1\nfi\n"
+      ],
+      "started_at": "2026-10-21T17:05:50.087251+00:00",
+      "completed_at": "2026-10-21T17:05:50.089753+00:00",
+      "shell_exit": 1,
+      "stdout": "Pola PII potensial pada log aplikasi\n",
+      "stderr": ""
+    },
+    {
+      "case": "read_error",
+      "injected_grep_exit": 2,
+      "argv": [
+        "bash",
+        "--noprofile",
+        "--norc",
+        "-e",
+        "-o",
+        "pipefail",
+        "-c",
+        "grep() { return 2; }\nif grep -RInE 'Log::(info|warning|error|debug)\\(.*(email|password|phone|address|token)' app; then\n  echo \"Pola PII potensial pada log aplikasi\"; exit 1\nfi\n"
+      ],
+      "started_at": "2026-10-21T17:05:50.089774+00:00",
+      "completed_at": "2026-10-21T17:05:50.092118+00:00",
+      "shell_exit": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "defect_reproduced": true,
+  "source_manifest": "docs/05-quality/evidence-remediation-2026-10-21/source-manifest-export-final.json",
+  "source_file_count": 132,
+  "source_mismatches": []
+}

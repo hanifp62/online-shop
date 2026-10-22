@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\OrderReturn;
 use App\Models\Payment;
 use App\Models\Refund;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -24,6 +25,9 @@ class RefundService
     public function request(OrderReturn $return, string $reason): Refund
     {
         return DB::transaction(function () use ($return, $reason) {
+            if ($return->user_id !== null) {
+                User::whereKey($return->user_id)->lockForUpdate()->firstOrFail();
+            }
             $order = Order::whereKey($return->order_id)->lockForUpdate()->firstOrFail();
             $return = OrderReturn::whereKey($return->id)->lockForUpdate()->firstOrFail();
             if ($return->status === OrderReturn::STATUS_REJECTED) {
@@ -32,13 +36,30 @@ class RefundService
             if (Refund::where('return_id', $return->id)->where('status', '!=', Refund::STATUS_DITOLAK)->exists()) {
                 throw ValidationException::withMessages(['return' => __('customer_messages.refund.duplicate')]);
             }
+            ReturnAllocation::balances($order);
             $this->assertWithinPaidAmount($order, $return->requested_refund_amount);
+
+            $refundNumber = null;
+            // All request writers hold this order lock; generated namespaces are disjoint across orders.
+            // Use a current locking read, not a potentially older transaction snapshot.
+            for ($candidateAttempt = 0; $candidateAttempt < 3; $candidateAttempt++) {
+                $candidate = Refund::generateRefundNumber($order->id);
+                if (! Refund::where('refund_number', $candidate)->lockForUpdate()->first(['id'])) {
+                    $refundNumber = $candidate;
+                    break;
+                }
+            }
+            if ($refundNumber === null) {
+                throw ValidationException::withMessages([
+                    'refund_number' => __('customer_messages.refund.number_unavailable'),
+                ]);
+            }
 
             return Refund::create([
                 'order_id' => $order->id,
                 'return_id' => $return->id,
                 'user_id' => $return->user_id,
-                'refund_number' => Refund::generateRefundNumber($order->id),
+                'refund_number' => $refundNumber,
                 'amount' => $return->requested_refund_amount,
                 'status' => Refund::STATUS_DIAJUKAN,
                 'reason' => $reason,

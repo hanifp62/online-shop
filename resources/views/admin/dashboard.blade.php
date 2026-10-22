@@ -8,6 +8,9 @@
         <a href="#panel-kategori">{{ __('admin_ui.common.category') }}</a>
         <a href="#panel-produk">{{ __('admin_ui.common.product') }}</a>
         <a href="#panel-pesanan">{{ __('admin_ui.dashboard.orders_reports') }}</a>
+        @if (auth('admin')->user()->isAdmin() && app(\App\Support\FeatureFlags::class)->enabled('admin_ops_summary', (string) auth('admin')->id()))
+            <a href="{{ route('admin.reports.operations-summary') }}">Ringkasan operasional</a>
+        @endif
         <a href="#panel-user">{{ __('admin_ui.common.user') }}</a>
         <a href="#panel-audit">{{ __('admin_ui.common.audit') }}</a>
         <a href="#panel-concierge">{{ __('admin_ui.common.concierge') }}</a>

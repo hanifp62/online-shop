@@ -1,0 +1,10 @@
+{
+  "command": [
+    "./scripts/amadis/launch.sh",
+    "test",
+    "--filter=StorefrontTextInventoryIntegrityTest"
+  ],
+  "started": "2026-10-21T15:31:27.737660+00:00",
+  "finished": "2026-10-21T15:31:30.846122+00:00",
+  "exit": 1
+}

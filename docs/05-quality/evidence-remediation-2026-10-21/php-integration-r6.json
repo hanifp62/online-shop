@@ -1,0 +1,18 @@
+{
+  "command": [
+    "./scripts/amadis/launch.sh",
+    "test",
+    "tests/Feature/EmailVerificationTest.php",
+    "tests/Feature/RescueBackendAuditTest.php",
+    "tests/Feature/ResidualLiteralLocaleTest.php",
+    "tests/Feature/ScheduledTasksAndEnvParityTest.php",
+    "tests/Feature/SecurityScanIntegrityTest.php",
+    "tests/Feature/StorefrontLocaleSeedTest.php",
+    "tests/Feature/StorefrontTextInventoryIntegrityTest.php",
+    "tests/Feature/ValidationLocaleTest.php",
+    "tests/Feature/CustomerMessagesLocaleTest.php"
+  ],
+  "started": "2026-10-21T15:42:31.105765+00:00",
+  "finished": "2026-10-21T15:42:44.305128+00:00",
+  "exit": 0
+}

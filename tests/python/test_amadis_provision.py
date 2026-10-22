@@ -16,7 +16,7 @@ BASE = Path('/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode')
 
 class ProvisionTests(unittest.TestCase):
     def setUp(self):
-        self.root = BASE / ('amadis-provtest-' + secrets.token_hex(8))
+        self.root = BASE / ('amadis-' + secrets.token_hex(12))
         self.root.mkdir(mode=0o700)
         self.addCleanup(shutil.rmtree, self.root, True)
         (self.root / 'identity.json').write_text(json.dumps({'root': str(self.root.resolve()),

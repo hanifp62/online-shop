@@ -1,0 +1,17 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests/python",
+    "-p",
+    "test_amdis_launch_sanitization.py",
+    "-v"
+  ],
+  "started": "2026-10-21T10:47:18.680375+00:00",
+  "finished": "2026-10-21T10:47:18.790619+00:00",
+  "exit": 0
+}

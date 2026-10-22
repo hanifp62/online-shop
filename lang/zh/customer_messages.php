@@ -95,6 +95,7 @@ return [
         ],
         'rejected_return' => '已拒绝的退货申请无法发起退款。',
         'duplicate' => '该退货申请已发起过退款。',
+        'number_unavailable' => '暂时无法生成退款编号，请重试。',
         'transition' => '不允许将退款状态由 :from 变更为 :to。',
         'rejection_required' => '必须填写拒绝原因。',
         'unverified' => '在通过支付机构核实退款凭证之前，不可设置为已出款状态。',

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Support\StorefrontCacheReclaimer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class AdminCategoryController extends Controller
 {
@@ -46,6 +48,20 @@ class AdminCategoryController extends Controller
         return back()->with('success', __('admin_ui.flash.category_deleted', ['title' => $category->cat_title]));
     }
 
+    public static function storefrontRevision(): string
+    {
+        $key = 'storefront:revision:v1';
+        $revision = Cache::get($key);
+        if (! is_string($revision)) {
+            // Atomic add must not overwrite an invalidation racing with a cold reader.
+            Cache::add($key, (string) Str::uuid(), 86400);
+            $revision = Cache::get($key);
+        }
+
+        // If the revision was evicted again, use a new uncached namespace, not an old one.
+        return is_string($revision) ? $revision : (string) Str::uuid();
+    }
+
     /**
      * Hapus hanya key katalog storefront; jangan Cache::flush(), karena store
      * yang sama menyimpan penghitung rate limiter.
@@ -54,10 +70,13 @@ class AdminCategoryController extends Controller
      */
     public static function flushStorefrontCache(iterable $stale = []): void
     {
+        // Change the namespace instead of enumerating every product and related key.
+        // Readers already in flight may finish writing only to their old namespace.
+        Cache::forever('storefront:revision:v1', (string) Str::uuid());
+        StorefrontCacheReclaimer::pruneExpired(50);
         $keys = ['storefront:products:v3', 'storefront:categories:v2'];
 
-        $products = Product::get(['product_id', 'product_cat', 'product_slug']);
-        foreach ([...$products, ...$stale] as $product) {
+        foreach ($stale as $product) {
             $keys[] = "storefront:product:{$product->product_slug}:v2";
             $keys[] = "storefront:related:{$product->product_cat}:{$product->product_id}:v3";
         }

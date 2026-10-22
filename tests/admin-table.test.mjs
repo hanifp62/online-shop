@@ -541,7 +541,7 @@ test("FR-R44-status: status-form submit intercepts, POSTs with JSON headers, and
     await submitPromise;
     assert.equal(
         orderForm.resetCalled,
-        true,
-        "form reset called after successful status update",
+        false,
+        "successful status update must not reset unrelated drafts",
     );
 });

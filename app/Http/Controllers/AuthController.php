@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\AuthenticateGuardSession;
 use App\Models\User;
 use App\Services\CartStore;
 use App\Services\CheckoutService;
@@ -50,8 +51,7 @@ class AuthController extends Controller
             report($e);
         }
 
-        Auth::login($user);
-        $request->session()->regenerate();
+        AuthenticateGuardSession::rotate($request, 'web', fn () => Auth::guard('web')->login($user));
         $request->attributes->set('cart_allow_merge', true);
         CheckoutService::cart($request);
 
@@ -95,6 +95,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::guard('web')->logout();
+        AuthenticateGuardSession::clear($request, 'web');
 
         // Pertahankan keranjang akun (lintas perangkat); lepaskan tautan browser saja.
         CartStore::detach($request);
@@ -105,7 +106,7 @@ class AuthController extends Controller
             $request->session()->invalidate();
         } else {
             $request->session()->forget('cart');
-            $request->session()->migrate(true);
+            AuthenticateGuardSession::rotate($request, 'web');
         }
         $request->session()->regenerateToken();
 

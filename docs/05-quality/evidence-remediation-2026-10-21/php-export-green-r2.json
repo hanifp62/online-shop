@@ -1,0 +1,13 @@
+{
+  "command": [
+    "./scripts/amadis/launch.sh",
+    "test",
+    "tests/Feature/ProfileExportStreamingTest.php",
+    "tests/Feature/AccountPrivacyTest.php",
+    "tests/Feature/LocalePersistenceTest.php",
+    "tests/Feature/SecurityRemediationTest.php"
+  ],
+  "started": "2026-10-21T16:41:09.817482+00:00",
+  "finished": "2026-10-21T16:41:36.757743+00:00",
+  "exit": 0
+}

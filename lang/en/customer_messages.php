@@ -95,6 +95,7 @@ return [
         ],
         'rejected_return' => 'Rejected returns cannot request a refund.',
         'duplicate' => 'A refund for this return has already been requested.',
+        'number_unavailable' => 'A refund reference cannot be issued yet. Please try again.',
         'transition' => 'Refund status transition from :from to :to is not permitted.',
         'rejection_required' => 'Rejection reason is required.',
         'unverified' => 'Disbursement status unavailable until refund proof is verified with payment provider.',

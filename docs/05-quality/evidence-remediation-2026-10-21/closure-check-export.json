@@ -1,0 +1,10 @@
+{
+  "time": "2026-10-21T16:50:02.399967+00:00",
+  "source_files_checked": 132,
+  "source_drift": [],
+  "manifest_binding_valid": true,
+  "markdown_links_checked": 68,
+  "missing_links": [],
+  "diff_check_exit": 0,
+  "scope": "target existence only; anchors/external URLs not validated; environment/runtime data not read"
+}

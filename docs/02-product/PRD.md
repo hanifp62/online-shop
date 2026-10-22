@@ -1,11 +1,21 @@
 # Product Requirements Document (PRD): ZAFIRA
 
 **Proyek:** ZAFIRA (La Maison de Lumière — `online-shop`)  
-**Versi:** 1.0 (MVP Formal Specification)  
-**Status:** Approved for Implementation & Prototype Verification  
-**Catatan audit 2026-10-11:** status "Approved" adalah klaim dokumen; bukti persetujuan formal tidak ditemukan dalam cakupan audit. Target <100ms tidak diukur. Bukti terkini untuk FR-201–204/NFR-201–203 ada di [rantai bukti](REQUIREMENTS_TRACEABILITY.md#rantai-bukti-keputusan-prioritas).
+**Versi:** 1.1 — rekonsiliasi kontrak REM-20261021 DOC
+
+**Status:** Spesifikasi; implementasi terlihat pada source, runtime dan review independen tertunda. Bukan persetujuan produksi.
+
 **Bahasa:** Bahasa Indonesia  
-**Tanggal:** 2026-10-10  
+**Tanggal dasar:** 2026-10-10; **revisi:** 2026-10-21
+
+## Acuan aktif dan batas bukti
+
+Revisi ini menindaklanjuti DOC-01/02/05 pada [audit 21 Oktober](../01-audit/COMPREHENSIVE_AUDIT_2026-10-21.md#10-dokumentasi-requirement-dan-klaim-produk). [Kontrak REM](../04-implementation/REMEDIATION_REAL_WORLD_2026-10-21.md) mendefinisikan FR-REM-001–007 dan NFR-REM-001–006; [crosswalk aktif](../04-implementation/REQUIREMENT_TRACEABILITY.md) menghubungkannya ke [acceptance](../04-implementation/ACCEPTANCE_CRITERIA.md), kode, tes, hasil, dan reviewer. Dokumen ini tidak mengubah status plan server.
+
+- **Fakta source:** route/controller cart, checkout, inquiry, akun, pembayaran, retur/refund, shipment, dan ringkasan operasi tersedia. Keberadaan endpoint bukan bukti seluruh layanan end-to-end atau UI operasional siap. Ringkasan operasi dibatasi feature flag dan otorisasi admin.
+- **Target/prototype:** personalisasi bukan varian pembelian yang dijamin terpenuhi; layar prototype bukan transaksi produksi. Klaim asal bahan, autentikasi karya, kapasitas atelier, AOV/margin/retensi, dan kepatuhan memerlukan bukti bisnis eksternal; data tampilan bukan sertifikasi.
+- **Bukti tertunda:** eksekusi regresi source terbaru, pengiriman mail/provider nyata, engine/deploy/restore, performa dan aksesibilitas menyeluruh. Angka target di bawah bukan hasil ukur. Model volume pada [TPS real-world](../03-architecture/TPS_REAL_WORLD_TESTING_2026-10-21.md) adalah proyeksi dengan delta historis, bukan throughput terukur.
+- **Riwayat:** label v1.0 “Approved” tidak memiliki bukti persetujuan formal dalam audit 2026-10-11. [Matriks produk 10–12 Oktober](REQUIREMENTS_TRACEABILITY.md) tetap arsip bukti bertanggal, bukan pengganti kontrak aktif ini; khususnya email-match, monogram dalam cart, dan pernyataan verifikasi email belum ada telah tersupersesi.
 
 ---
 
@@ -16,7 +26,7 @@ ZAFIRA adalah platform e-commerce dan butik digital adibusana mewah yang mengint
 ### Measurable Objectives
 1. Menyediakan penjelajahan katalog mewah dengan response time < 100ms (didukung LRU cache).
 2. Menyediakan transparansi kriya (provenance, material, keahlian tangan) pada seluruh kreasi.
-3. Menyediakan alur belanja yang mulus: pemilihan produk → personalisasi monogram → tas belanja → checkout concierge dalam < 4 langkah.
+3. Memisahkan pembelian katalog (pilih produk → tas → checkout order) dari konsultasi/personalisasi melalui concierge. Sasaran pengalaman < 4 langkah tetap target desain, belum hasil uji pengguna.
 4. Menyediakan antarmuka administrasi atelier terpadu bagi tim pengelola untuk memantau metrik, mengelola katalog, dan memperbarui status pesanan klien secara real-time.
 
 ---
@@ -24,7 +34,7 @@ ZAFIRA adalah platform e-commerce dan butik digital adibusana mewah yang mengint
 ## 2. Target Users & Roles
 
 1. **Role `Guest` (Pengunjung Publik):**
-   - Menjelajahi beranda editorial, melihat koleksi dan detail produk, mencari kreasi, mencoba simulasi monogram di tas belanja, mendaftar buletin *La Lettre*, atau membuat janji temu concierge.
+   - Menjelajahi katalog, membeli produk standar melalui cart/guest checkout, mencoba personalisasi sebagai inquiry concierge terpisah, mendaftar buletin *La Lettre*, atau membuat janji temu.
 2. **Role `Customer` (Pelanggan Terdaftar — Guard `web`):**
    - Melakukan registrasi dengan verifikasi password kuat, login, mengelola profil (/akun), melihat riwayat janji temu dan pesanan, serta pre-fill otomatis formulir checkout.
 3. **Role `Admin` (Atelier Director / Client Advisor — Guard `admin`):**
@@ -36,12 +46,12 @@ ZAFIRA adalah platform e-commerce dan butik digital adibusana mewah yang mengint
 
 - **US-001 (Customer Catalog):** Sebagai pelanggan, saya ingin menelusuri kreasi busana berdasarkan kategori dan filter dinamis sehingga saya dapat menemukan busana yang sesuai dengan preferensi gaya saya.
 - **US-002 (Product Craftsmanship):** Sebagai pelanggan, saya ingin melihat asal bahan (*provenance*), teknik pembuatan (*craft*), dan panduan perawatan (*care*) agar saya yakin akan kualitas dan keaslian karya yang saya beli.
-- **US-003 (Bespoke Cart & Monogram):** Sebagai pelanggan, saya ingin menambahkan produk ke tas belanja dan menambahkan inisial monogram personal agar karya yang saya beli memiliki sentuhan eksklusif.
-- **US-004 (Concierge Checkout):** Sebagai pelanggan, saya ingin mengirimkan permintaan pesanan langsung kepada Client Advisor beserta rincian produk agar pesanan saya dikonfirmasi secara personal.
+- **US-003 (Tas Pembelian Katalog):** Sebagai pelanggan, saya ingin menyimpan produk dan kuantitas di tas lalu checkout dengan harga server, tanpa mengira ukuran/monogram sudah menjadi varian yang dibeli.
+- **US-004 (Inquiry Concierge):** Sebagai pelanggan, saya ingin mengirimkan konsultasi atau permintaan personalisasi kepada Client Advisor dan mengetahui bahwa penerimaan inquiry bukan konfirmasi order atau pembayaran.
 - **US-005 (Customer Account):** Sebagai pelanggan, saya ingin memiliki halaman akun pribadi untuk memantau status pesanan dan konsultasi saya secara transparan.
 - **US-006 (Admin KPI Overview):** Sebagai admin atelier, saya ingin melihat ringkasan metrik (jumlah produk, kategori, pengguna terdaftar, pesanan concierge, subscriber) di satu dashboard yang tertata rapi.
 - **US-007 (Admin Catalog Management):** Sebagai admin atelier, saya ingin menambah dan memperbarui data produk (termasuk harga, foto, kategori, dan narasi kriya) dengan antarmuka formulir yang jelas dan intuitif.
-- **US-008 (Admin Order Processing):** Sebagai admin atelier, saya ingin memperbarui status pesanan klien (`new` → `contacted` → `confirmed` → `completed` → `cancelled`) dan status tersebut langsung terlihat di akun klien.
+- **US-008 (Pemrosesan Inquiry dan Order):** Sebagai admin atelier, saya ingin mengelola status inquiry concierge terpisah dari lifecycle order, dengan transisi yang diizinkan dan riwayat milik pelanggan terkait.
 
 ---
 
@@ -54,16 +64,19 @@ ZAFIRA adalah platform e-commerce dan butik digital adibusana mewah yang mengint
   - *Acceptance Criteria:* Mengklik pill kategori memfilter tampilan produk secara instan; pill aktif diberi penanda visual kontras.
 - **FR-003 (Product Detail Page):** Sistem harus menyediakan halaman khusus `/produk/{slug}` yang menampilkan foto resolusi tinggi, harga terformat rupiah, badge kreasi, detail material, provenance, craft, care, dan 3 related products dari kategori yang sama.
   - *Acceptance Criteria:* Slug valid merender `products/show.blade.php`; slug tidak terdaftar menghasilkan HTTP 404; JSON-LD Product valid tersisip di `<head>`.
-- **FR-004 (Interactive Cart Drawer):** Sistem harus menyediakan tas belanja interaktif yang dapat dibuka/tutup, menampilkan daftar item, tombol ubah qty, tombol hapus, input monogram opsional (hanya huruf A-Z, maks 3 karakter), dan subtotal harga.
-  - *Acceptance Criteria:* Data tas belanja tersimpan di database (`carts` & `cart_items` via migrasi 2026_10_19_000002_create_carts_tables.php), dengan localStorage `v1` dipertahankan untuk rekonsiliasi legacy; perubahan kuantitas langsung memperbarui subtotal secara real-time; nama produk di-escape anti-XSS.
-- **FR-005 (Bespoke Concierge & Checkout Flow):** Sistem harus menyediakan modal concierge yang memiliki dua mode: konsultasi janji temu (*rendez-vous*) dan mode checkout pesanan (menampilkan ringkasan produk di tas belanja).
-  - *Acceptance Criteria:* Pengiriman form checkout memvalidasi nama, email (dinormalisasi ke lowercase), nomor HP, dan catatan; data disimpan ke `concierge_requests`; setelah sukses tas belanja dikosongkan dan modal kembali ke mode awal.
+- **FR-004 (Tas Pembelian Katalog):** Tas menyimpan `product_id` dan kuantitas pada `carts`/`cart_items`; harga dihitung ulang oleh server. Ukuran dan monogram tidak menjadi atribut pembelian.
+  - *Acceptance Criteria:* Drawer dapat dibuka/tutup, kuantitas/hapus memperbarui subtotal, dan nama produk di-escape anti-XSS. `GET /cart`, `POST /cart/items`, endpoint delta/hapus memperbarui tas persisten; batas server menolak `size`/`monogram`. Data localStorage legacy hanya bahan pemulihan, bukan sumber harga/order. Lihat **AC-REM-CART** dan FR-REM-005.
+- **FR-005 (Inquiry Concierge):** `POST /concierge` menerima janji temu atau inquiry personalisasi dengan validasi kontak/catatan dan membuat `concierge_requests`, kemudian mengantrekan email. Inquiry tidak menciptakan order atau pembayaran dan tidak mengosongkan tas pembelian.
+  - *Acceptance Criteria:* Ukuran/monogram di UI diarahkan ke catatan inquiry terpisah. Payload kompatibilitas `order_items` hanya diringkas ke catatan, bukan baris `order_items` transaksi. Respons diterima/queued tidak boleh disebut email terkirim. Lihat **AC-REM-INQUIRY**; FR-203 tetap merujuk penerimaan inquiry.
+- **Kontrak checkout order — FR-REM-002 (terkait FR-004, US-003):** `POST /checkout` melalui `OrderController`/`GuestCheckoutController` dan `CheckoutService` membuat `orders`, snapshot `order_items`, reservasi stok, serta riwayat status dalam batas transaksi. `GET /checkout` hanya redirect ke `/belanja`.
+  - *Acceptance Criteria:* Alamat milik pengguna atau data guest tervalidasi; nominal berasal dari server; idempotency key/payload mencegah order ganda; cart dibersihkan saat order baru berhasil dibuat, bukan saat inquiry sukses. `pending` bukan bukti pembayaran. Lihat **AC-REM-ORDER** dan **AC-REM-F02**.
 - **FR-006 (Newsletter Subscription):** Sistem harus menyediakan formulir pendaftaran buletin *La Lettre* di footer.
   - *Acceptance Criteria:* Pendaftaran bersifat idempoten; email baru memicu pengiriman email selamat datang via antrean; email yang sudah ada menerima konfirmasi tanpa error duplikasi.
 - **FR-007 (Customer Authentication):** Sistem harus menyediakan halaman `/login` dan `/register` dengan penegakan kebijakan password ketat (min 8 karakter, huruf besar & kecil, angka, simbol).
   - *Acceptance Criteria:* Registrasi otomatis mencatat snapshot profil ke `user_info_backups` via `UserObserver`; sesi customer diisolasi dari guard admin.
-- **FR-008 (Customer Portal `/akun`):** Sistem harus menampilkan data profil pelanggan dan riwayat janji temu/pesanan concierge berdasarkan relasi user ID atau kecocokan email.
-  - *Acceptance Criteria:* Rute `/akun` dilindungi middleware `auth`; pelanggan dapat memperbarui nama, nomor HP, dan alamat; daftar riwayat menampilkan status aktual secara real-time.
+- **FR-008 (Portal Pelanggan dan Kepemilikan):** `/akun` menampilkan profil dan riwayat concierge hanya dengan `concierge_requests.user_id = pengguna terautentikasi`. Riwayat order terpisah di `/orders` juga dibatasi `orders.user_id`; kesamaan email tidak memberi hak baca atau klaim kepemilikan.
+  - *Acceptance Criteria:* Middleware `auth` wajib; pelanggan dapat memperbarui nama, nomor HP, dan alamat. Inquiry guest (`user_id = NULL`) dan milik akun lain tidak tampil walaupun email sama. Keterikatan `user_id` tetap berlaku bila email berbeda. Status yang tersimpan tampil saat dimuat ulang; bukan janji push real-time. Lihat **AC-REM-OWN**, FR-204, FR-REM-001/004.
+  - *Klaim guest terpisah:* Bila kelak disediakan, klaim harus membuktikan kepemilikan record melalui alur verifikasi khusus sebelum menautkan `user_id`; email-match maupun verifikasi email akun saja tidak cukup. Guest tracking dengan token bukan penautan kepemilikan akun. Alur klaim tidak dinyatakan tersedia atau selesai dalam revisi ini.
 
 ### Administrasi Atelier (Admin System)
 - **FR-009 (Admin Authentication):** Sistem harus menyediakan login khusus di `/admin/login` menggunakan guard `admin` dengan proteksi rate limit (10 percobaan/menit). *[Audit 2026-10-11: `routes/web.php` mendefinisikan limiter `login` 10/menit per IP, dipakai bersama login pelanggan dan admin; perilaku runtime belum diuji di audit ini.]*
@@ -74,8 +87,8 @@ ZAFIRA adalah platform e-commerce dan butik digital adibusana mewah yang mengint
   - *Acceptance Criteria:* Penambahan produk otomatis menghasilkan slug unik jika tidak diisi manual; perubahan produk otomatis me-flush cache storefront (`Cache::flush()`). *[Audit 2026-10-11: kode memakai `Cache::forget` per kunci, bukan `Cache::flush()`; acceptance perlu dibaca sebagai invalidasi cache terkait.]*
 - **FR-012 (Admin Category Management):** Sistem harus memungkinkan pembuatan, penggantian nama, dan penghapusan kategori.
   - *Acceptance Criteria:* Kategori yang sedang digunakan oleh minimal 1 produk dilarang dihapus (menampilkan pesan error pencegahan referential integrity).
-- **FR-013 (Admin Order & Concierge Status Update):** Admin harus dapat memfilter daftar permintaan berdasarkan status (`new`, `contacted`, `confirmed`, `completed`, `cancelled`) atau pencarian nama/email/HP, serta memperbarui statusnya.
-  - *Acceptance Criteria:* Pembaruan status concierge berhasil tersimpan dan memunculkan toast konfirmasi; status baru langsung tercermin di `/akun` pelanggan.
+- **FR-013 (Status Inquiry Concierge):** Admin dapat memfilter inquiry menurut status (`new`, `contacted`, `confirmed`, `completed`, `cancelled`) atau nama/email/HP dan memperbaruinya melalui transisi yang diizinkan. Ini bukan state machine order pembelian.
+  - *Acceptance Criteria:* `PATCH /admin/concierge/{concierge}` menyimpan status; `/akun` milik owner menampilkan nilai tersimpan saat dimuat. UI membedakan simpan berhasil dari refresh gagal/tertunda (**AC-REM-F05**). Order ditangani terpisah oleh `/admin/orders` dan FR-REM-002.
 - **FR-014 (Admin Password Change):** Admin harus dapat mengganti kata sandi dengan memvalidasi kata sandi saat ini (`current_password:admin`) dan konfirmasi kata sandi baru.
   - *Acceptance Criteria:* Kata sandi lama yang salah ditolak; kata sandi baru yang valid diperbarui dan di-hash Bcrypt round 12. *[Audit 2026-10-11: konfigurasi round eksplisit tidak ditemukan; angka 12 belum diverifikasi.]*
 - **FR-015 (Sort Tabel Admin):** Tabel dashboard admin mendukung pengurutan server-side berdasarkan kolom dan arah yang diizinkan untuk tabel terkait.
@@ -105,5 +118,16 @@ ZAFIRA adalah platform e-commerce dan butik digital adibusana mewah yang mengint
 
 - **BR-001 (Integritas Kategori):** Kategori tidak boleh dihapus jika masih terdapat produk yang terasosiasi dengannya. Produk harus dipindahkan ke kategori lain terlebih dahulu.
 - **BR-002 (Normalisasi Email):** Seluruh input email (registrasi, login, newsletter, checkout) harus dinormalisasi menjadi huruf kecil (*lowercase*) sebelum disimpan atau dicocokkan.
-- **BR-003 (Siklus Status Pesanan):** Status pesanan concierge bergerak melalui alur: `new` → `contacted` → `confirmed` → `completed`, atau beralih ke `cancelled`. Setiap transisi dapat diakses oleh admin.
+- **BR-003 (Pemisahan Status):** Status inquiry concierge adalah `new`, `contacted`, `confirmed`, `completed`, `cancelled`, mengikuti transisi yang diizinkan controller. Order pembelian mengikuti `pending → paid → processing → shipped → completed`; hanya `pending` boleh beralih ke `cancelled`. Pembayaran tepercaya, bukan pilihan manual admin, mengotorisasi `paid`. Pembatalan paid/processing ditolak; kewajiban finansial harus melalui rekonsiliasi/retur/refund, bukan dihapus.
 - **BR-004 (Sitemap Public Exclusivity):** Sitemap XML hanya memuat URL halaman publik yang diizinkan untuk mesin pencari (`/` dan `/produk/{slug}`). Rute administratif, login, dan akun pribadi dilarang muncul di sitemap.
+
+## 7. Riwayat klausul yang disupersesi — bukan acceptance aktif
+
+| Klausul lama | Pengganti dan alasan |
+|---|---|
+| FR-008 v1.0: “relasi user ID atau kecocokan email” | **Dicabut sebagai kontrak keamanan.** Owner `user_id` wajib; klaim guest memerlukan verifikasi terpisah, bukan fallback email. |
+| US-003/FR-004/FR-201: monogram melekat pada item tas | Cart katalog hanya produk/kuantitas; personalisasi menjadi inquiry. FR-201 lama pada matriks produk dibaca sebagai riwayat, bukan kewajiban mengembalikan perilaku cart lama. |
+| US-004/FR-005: “checkout concierge” mengosongkan tas | Inquiry dan order dipisah pada FR-005 vs FR-REM-002. Dukungan payload legacy tidak menyamakan kedua domain. |
+| US-008/FR-013/BR-003: status concierge disebut status pesanan | Status inquiry tidak mengotorisasi pembayaran atau transisi order. |
+
+Target latensi objective `<100ms`, NFR-001 `<150ms`, serta AC-001 historis `<50ms` belum memiliki protokol ukur bersama. Angka dipertahankan sebagai target yang perlu direkonsiliasi pemilik produk (**AC-REM-N01**), bukan dilonggarkan atau dinyatakan tercapai. Batas penerimaan dan hasil terbaru mengikuti crosswalk REM; bukti historis tetap bertanggal.

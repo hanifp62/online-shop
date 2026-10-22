@@ -475,6 +475,10 @@ class AuthEventFlowsTest extends TestCase
         $session->start();
         if ($flow === 'enrol') {
             $session->put(AdminTotpEnrolController::PENDING_SECRET, Crypt::encryptString($secret));
+            $session->put('totp_enrol_state', [
+                'admin_id' => $admin->id,
+                'expires_at' => now()->addMinutes(5)->timestamp,
+            ]);
         }
         $field = $flow === 'recovery' ? 'recovery_code' : 'code';
         $value = $flow === 'recovery' ? $codes[0] : (new Google2FA)->getCurrentOtp($secret);

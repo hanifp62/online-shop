@@ -14,8 +14,8 @@ use Tests\TestCase;
 
 /**
  * Cadangan & pemulihan: cadangan terjadwal menghasilkan berkas terkompresi +
- * checksum, retensi membatasi jumlah berkas, dan uji pulih membandingkan
- * jumlah baris tiap tabel dengan sumber.
+ * checksum, retensi membatasi jumlah berkas, dan uji pulih memvalidasi
+ * integritas snapshot tanpa membandingkannya dengan sumber hidup.
  */
 class DatabaseBackupTest extends TestCase
 {
@@ -96,14 +96,17 @@ class DatabaseBackupTest extends TestCase
         $service->verify($path);
     }
 
-    public function test_verify_fails_when_source_drifts_after_backup(): void
+    public function test_verify_preserves_snapshot_counts_when_live_source_drifts(): void
     {
+        // FR-REM-003 / DATA-05: validitas snapshot tidak bergantung pada waktu verify.
         $service = $this->service();
         $path = $service->backup();
+        $snapshot = $service->verify($path);
         Category::on('backup_test')->create(['cat_title' => 'Tenun', 'cat_slug' => 'tenun-'.uniqid()]);
 
-        $this->expectException(RuntimeException::class);
-        $service->verify($path);
+        $this->assertSame(0, $snapshot['categories']);
+        $this->assertSame(1, Category::on('backup_test')->count());
+        $this->assertSame($snapshot, $service->verify($path));
     }
 
     public function test_prune_keeps_only_the_newest_backups(): void

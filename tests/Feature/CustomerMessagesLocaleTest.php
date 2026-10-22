@@ -101,6 +101,9 @@ class CustomerMessagesLocaleTest extends TestCase
                     continue;
                 }
                 $literal = $token[0] === T_CONSTANT_ENCAPSED_STRING ? substr($token[1], 1, -1) : $token[1];
+                if ($this->isSitemapProtocolMarkup($file, $literal)) {
+                    continue;
+                }
                 // Two adjacent words = prose; identifiers, keys, and rules never contain a space between words.
                 if (! preg_match('/\p{L}+\s+\p{L}+/u', $literal) || in_array($literal, $allowed, true)) {
                     continue;
@@ -114,6 +117,33 @@ class CustomerMessagesLocaleTest extends TestCase
         }
 
         $this->assertSame([], $found, 'Move customer-facing prose to lang/*/customer_messages.php');
+    }
+
+    private function isSitemapProtocolMarkup(string $file, string $literal): bool
+    {
+        // Exact protocol tokens only; do not exempt arbitrary XML/HTML or embedded customer copy.
+        return $file === app_path('Http/Controllers/StorefrontController.php')
+            && in_array($literal, [
+                '<?xml version="1.0" encoding="UTF-8"?>',
+                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+            ], true);
+    }
+
+    public function test_protocol_markup_exclusion_does_not_hide_customer_prose(): void
+    {
+        $storefront = app_path('Http/Controllers/StorefrontController.php');
+        foreach ([
+            '<?xml version="1.0" encoding="UTF-8"?>',
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        ] as $markup) {
+            $this->assertTrue($this->isSitemapProtocolMarkup($storefront, $markup));
+            $this->assertFalse($this->isSitemapProtocolMarkup($storefront, $markup.' Pesanan tidak ditemukan.'));
+            $this->assertFalse($this->isSitemapProtocolMarkup(app_path('Http/Controllers/OrderController.php'), $markup));
+        }
+        foreach (['Pesanan tidak ditemukan.', '<message>Pesanan tidak ditemukan.</message>', '<urlset title="Pesanan tidak ditemukan.">'] as $prose) {
+            $this->assertMatchesRegularExpression('/\p{L}+\s+\p{L}+/u', $prose);
+            $this->assertFalse($this->isSitemapProtocolMarkup($storefront, $prose));
+        }
     }
 
     public function test_shipment_tracking_descriptions_use_order_owner_locale(): void
