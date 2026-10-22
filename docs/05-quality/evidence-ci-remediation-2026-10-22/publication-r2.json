@@ -1,0 +1,15 @@
+{
+  "base_commit": "8ce0b849ceb7a3728464b03ce4c2d1cb7b7fe797",
+  "recorded_at": "2026-10-22T06:11:32.286467+00:00",
+  "source_sha256": {
+    "scripts/ci/mysql_integration.py": "2cd40ffaa1b9bf2b8a44f4804d77294123ef930e96e586a5866a45c2284052fa",
+    "scripts/ci/check_test_report.py": "c1e1116b1baa0fe9d127e6650b553a5cfc31be6314fee1ffb6cffaa60f02b97a",
+    "tests/python/test_ci_mysql_integration.py": "ee83fa45120927a5da4465ad2b1d9e692385639e2867fef45de0edd8335470fa",
+    "tests/Feature/MysqlCheckoutRetryTest.php": "fb64ad9f96acb3625d90fe1751341d376940ff0ad2e810308780f30d1f8f4857"
+  },
+  "reviewers": {
+    "PHP": "56dbeb98-c4f6-4d61-8edc-a85e4a04af4e",
+    "Python": "5e073663-8519-4d5e-a988-551b5d0e589a"
+  },
+  "status": "source reviewed, new Linux engine run pending"
+}

@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "scratch/ci-validation/venv312/bin/python",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests/python",
+    "-p",
+    "test_ci_mysql_integration.py",
+    "-k",
+    "diagnostics",
+    "-v"
+  ],
+  "started_at": "2026-10-22T05:44:42.947546+00:00",
+  "finished_at": "2026-10-22T05:44:43.178027+00:00",
+  "duration_seconds": 0.23,
+  "timeout_seconds": 60,
+  "status": "COMPLETE",
+  "exit_code": 1,
+  "cleanup": "not_required",
+  "sanitized_log": "docs/05-quality/evidence-ci-remediation-2026-10-22/mysql-diagnostics-red.log",
+  "sanitized_log_sha256": "d5eae1e886350c99db00cafc2eb924000f8cf5f618d0638c53886652399dd654"
+}

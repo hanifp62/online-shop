@@ -276,6 +276,70 @@ class MysqlIsolationTests(unittest.TestCase):
             self.assertFalse(ci.check_report(self.report(wrong_identity=True), ci.REPO))
         self.assertEqual(stdout.getvalue(), '')
 
+    def test_report_diagnostics_include_safe_counts_and_exact_test_line_only(self):
+        path = self.report('failure')
+        root = ET.fromstring(path.read_bytes())
+        failure = root.find('testcase/failure')
+        if failure is None:
+            self.fail('Synthetic report must contain a failure element.')
+        failure.text = '\n'.join([SECRET, str(ci.REPO / ci.TEST_FILE) + ':72',
+                                  '/untrusted/' + ci.TEST_FILE + ':73',
+                                  str(ci.REPO / ci.TEST_FILE) + ':74' + SECRET])
+        path.write_bytes(ET.tostring(root))
+        diagnostics = {}
+        self.assertFalse(ci.check_report(path, ci.REPO, diagnostics))
+        self.assertEqual(diagnostics['counts'], {'tests': 3, 'passed': 2, 'failures': 1, 'errors': 0, 'skipped': 0})
+        self.assertEqual(diagnostics['cases'], [{'id': 'testcase-1', 'reason': 'FAILURE'}])
+        self.assertEqual(diagnostics['locations'], [{'id': 'testcase-1', 'test_lines': [72]}])
+        encoded = json.dumps(diagnostics)
+        self.assertNotIn(SECRET, encoded)
+        self.assertNotIn(str(ci.REPO), encoded)
+        self.assertNotIn(ci.TEST_FILE, encoded)
+        self.assertNotIn('test_deadlock', encoded)
+
+    def test_report_diagnostics_missing_invalid_and_wrong_identity_stay_failed(self):
+        diagnostics = {}
+        self.assertFalse(ci.check_report(self.lane.runtime / 'absent.xml', ci.REPO, diagnostics))
+        self.assertEqual(diagnostics['reasons'], ['REPORT_UNAVAILABLE'])
+        path = self.report(wrong_identity=True)
+        self.assertFalse(ci.check_report(path, ci.REPO, diagnostics))
+        self.assertEqual(diagnostics['status'], 'FAIL')
+        self.assertIn('EXPECTED_TEST_SET_MISMATCH', diagnostics['reasons'])
+        path.write_text('<invalid')
+        self.assertFalse(ci.check_report(path, ci.REPO, diagnostics))
+        self.assertEqual(diagnostics['counts'], None)
+        self.assertEqual(diagnostics['locations'], [])
+        self.assertEqual(diagnostics['reasons'], ['INVALID_XML'])
+
+    def test_report_diagnostics_use_one_snapshot_for_counts_identity_and_outcome(self):
+        path = self.report()
+        passed = path.read_bytes()
+        original_open = Path.open
+        for outcome in ('failure', 'error', 'skipped'):
+            rejected = self.report(outcome).read_bytes()
+            for first, second, expected in ((passed, rejected, True), (rejected, passed, False)):
+                with self.subTest(outcome=outcome, accepted=expected):
+                    reads = []
+                    def changing_open(target, *args, **kwargs):
+                        if target == path:
+                            reads.append(target)
+                            return io.BytesIO(first if len(reads) == 1 else second)
+                        return original_open(target, *args, **kwargs)
+                    diagnostics = {}
+                    with patch.object(Path, 'open', changing_open):
+                        self.assertEqual(ci.check_report(path, ci.REPO, diagnostics), expected)
+                    self.assertEqual(len(reads), 1, 'Every decision must use the same parsed snapshot.')
+                    self.assertEqual(diagnostics['status'], 'PASS' if expected else 'FAIL')
+                    self.assertEqual(diagnostics['counts']['passed'], 3 if expected else 2)
+
+    def test_report_diagnostics_success_requires_the_exact_three_passes(self):
+        diagnostics = {}
+        self.assertTrue(ci.check_report(self.report(), ci.REPO, diagnostics))
+        self.assertEqual(diagnostics['status'], 'PASS')
+        self.assertEqual(diagnostics['counts']['passed'], 3)
+        self.assertEqual(diagnostics['cases'], [])
+        self.assertEqual(diagnostics['locations'], [])
+
     def test_report_missing_public_or_symlink_is_not_accepted(self):
         self.assertFalse(ci.check_report(self.lane.runtime / 'absent.xml', ci.REPO))
         report = self.report()
@@ -529,7 +593,7 @@ class MysqlIsolationTests(unittest.TestCase):
         self.process.side_effect = process
         output = io.StringIO()
         with patch.object(ci.sys, 'platform', 'linux'), patch.object(ci, 'Lane', return_value=self.lane), \
-             patch.object(ci, 'check_report', side_effect=lambda report, _: report_gate(report, ci.REPO)), \
+             patch.object(ci, 'check_report', side_effect=lambda report, _, diagnostics: report_gate(report, ci.REPO, diagnostics)), \
              contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):
             self.assertEqual(ci.main(['--output', str(self.output)]), 0)
         summary = json.loads(output.getvalue())
@@ -538,6 +602,8 @@ class MysqlIsolationTests(unittest.TestCase):
         self.assertEqual(summary['restore'], 'PASS')
         self.assertEqual(summary['tests'], 3)
         self.assertEqual(summary['skipped'], 0)
+        self.assertEqual(summary['junit_report']['counts']['passed'], 3)
+        self.assertEqual(summary['junit_report']['status'], 'PASS')
         self.assertEqual(summary['snapshot']['marker_rows'], 2)
         self.assertEqual(removed, ['2' * 64, '1' * 64])
         self.assertNotIn('synthetic-dump', output.getvalue())

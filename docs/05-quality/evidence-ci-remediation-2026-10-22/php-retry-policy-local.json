@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "scripts/amadis/launch.sh",
+    "test",
+    "--filter=TransactionRemediationTest"
+  ],
+  "started_at": "2026-10-22T06:11:32.279586+00:00",
+  "finished_at": "2026-10-22T06:11:40.129265+00:00",
+  "duration_seconds": 7.849,
+  "timeout_seconds": 180,
+  "status": "COMPLETE",
+  "exit_code": 0,
+  "cleanup": "not_required",
+  "sanitized_log": "docs/05-quality/evidence-ci-remediation-2026-10-22/php-retry-policy-local.log",
+  "sanitized_log_sha256": "535fcd6751c12263b54f8c9c2f195f51a42117133739f5453ac12f0d5f62546c"
+}

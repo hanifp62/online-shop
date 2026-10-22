@@ -1,0 +1,76 @@
+{
+  "recorded_at": "2026-10-22T06:11:32.286467+00:00",
+  "run_id": 39727304603,
+  "url": "https://github.com/hanifp62/online-shop/actions/runs/39727304603",
+  "commit": "8ce0b849ceb7a3728464b03ce4c2d1cb7b7fe797",
+  "artifacts": {
+    "quality-summary-8ce0b849ceb7a3728464b03ce4c2d1cb7b7fe797/phpunit-summary.json": {
+      "cases": [
+        {
+          "id": "testcase-826",
+          "reason": "ALLOWED_SKIP"
+        },
+        {
+          "id": "testcase-827",
+          "reason": "ALLOWED_SKIP"
+        },
+        {
+          "id": "testcase-828",
+          "reason": "ALLOWED_SKIP"
+        }
+      ],
+      "counts": {
+        "errors": 0,
+        "failures": 0,
+        "passed": 1200,
+        "skipped": 3,
+        "tests": 1203
+      },
+      "reasons": [],
+      "status": "PASS"
+    },
+    "quality-summary-8ce0b849ceb7a3728464b03ce4c2d1cb7b7fe797/python-summary.json": {
+      "cases": [],
+      "counts": {
+        "errors": 0,
+        "expected_failures": 0,
+        "failures": 0,
+        "import_errors": 0,
+        "skipped": 0,
+        "tests": 347,
+        "unexpected_successes": 0
+      },
+      "reasons": [],
+      "status": "PASS"
+    },
+    "browser-summary-8ce0b849ceb7a3728464b03ce4c2d1cb7b7fe797/browser-summary.json": {
+      "counts": {
+        "checkout_requests": 3,
+        "commands": 7,
+        "created": 2,
+        "page_content_leaks": 0,
+        "pages": 10,
+        "products": 76,
+        "rejected": 1
+      },
+      "status": "PASS"
+    },
+    "mysql-summary-8ce0b849ceb7a3728464b03ce4c2d1cb7b7fe797/mysql-integration-40abebf8cedb67b6b080d7dfb460e825/summary.json": {
+      "cleanup": "PASS",
+      "cleanup_failures": 0,
+      "commit": "8ce0b849ceb7a3728464b03ce4c2d1cb7b7fe797",
+      "container_ids": [
+        "f93c576d9b935b769403adec76b303614aa6bff041260a39b3e29bfb059f8bab",
+        "1db242aa49c2028e0006435e159a51439b82c93b7c391298e55268e49db7c747"
+      ],
+      "exit": 1,
+      "image_id": "sha256:b35575a03e5327131916eb8d39222c4c89590881fb44ed69b5814910e5fefa34",
+      "junit_gate": false,
+      "migration_exit": 0,
+      "mysql_version": "8.4.13",
+      "producer_exit": 1,
+      "reason": "PHPUNIT_FAILED",
+      "status": "FAIL"
+    }
+  }
+}

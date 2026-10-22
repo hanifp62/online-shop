@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "scripts/amadis/launch.sh",
+    "test",
+    "--filter=MysqlCheckoutRetryTest"
+  ],
+  "started_at": "2026-10-22T06:11:40.237278+00:00",
+  "finished_at": "2026-10-22T06:11:45.682448+00:00",
+  "duration_seconds": 5.445,
+  "timeout_seconds": 90,
+  "status": "COMPLETE",
+  "exit_code": 0,
+  "cleanup": "not_required",
+  "sanitized_log": "docs/05-quality/evidence-ci-remediation-2026-10-22/php-mysql-skip-boundary.log",
+  "sanitized_log_sha256": "43e0f5f56924a98bb57ae3c940d999942bd4573b87715c26400e45b6b7987425"
+}

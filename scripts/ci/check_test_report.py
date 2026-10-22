@@ -153,6 +153,15 @@ def read_suite(element, cases, seen, depth=0):
 def report_summary(path, allowed):
     try:
         root = read_xml(path)
+    except ReportError as error:
+        reason = str(error) if str(error) in REPORT_REASONS else 'INVALID_REPORT'
+        return {'status': 'FAIL', 'counts': None, 'reasons': [reason], 'cases': []}
+    return summary_from_root(root, allowed)
+
+
+def summary_from_root(root, allowed):
+    """Summarize one parsed snapshot shared by specialized identity/location gates."""
+    try:
         if root.tag not in ('testsuites', 'testsuite'):
             raise ReportError('UNSUPPORTED_ROOT')
         cases = []

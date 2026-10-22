@@ -355,7 +355,9 @@ class Lane:
         rc = self.php(source, ['vendor/bin/phpunit', '--configuration', 'phpunit.xml',
                               '--do-not-cache-result', '--log-junit', str(report), TEST_FILE], env)
         self.summary['producer_exit'] = exit_code(rc)
-        self.summary['junit_gate'] = check_report(report, self.repo)
+        diagnostics = {}
+        self.summary['junit_gate'] = check_report(report, self.repo, diagnostics)
+        self.summary['junit_report'] = diagnostics
         if rc:
             raise LaneError('PHPUNIT_FAILED', exit_code(rc))
         require(self.summary['junit_gate'], 'JUNIT_REJECTED')
@@ -397,7 +399,12 @@ def digest(text):
     return hashlib.sha256(text.encode()).hexdigest()
 
 
-def check_report(path, repo):
+def check_report(path, repo, diagnostics=None):
+    unavailable = {'status': 'FAIL', 'counts': None, 'reasons': ['REPORT_UNAVAILABLE'],
+                   'cases': [], 'locations': []}
+    if diagnostics is not None:
+        diagnostics.clear()
+        diagnostics.update(unavailable)
     try:
         info = path.lstat()
         require(stat.S_ISREG(info.st_mode) and info.st_nlink == 1 and info.st_uid == os.getuid()
@@ -408,12 +415,37 @@ def check_report(path, repo):
         gate = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(gate)
         with redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
-            if gate.main([str(path)]) != 0:  # no skip allowlist
+            try:
+                root = gate.read_xml(path)
+            except gate.ReportError as error:
+                reason = str(error) if str(error) in gate.REPORT_REASONS else 'INVALID_REPORT'
+                if diagnostics is not None:
+                    diagnostics['reasons'] = [reason]
                 return False
-        cases = []
-        counts = gate.read_suite(gate.read_xml(path), cases, set())
-        return (counts['tests'] == 3 and counts['skipped'] == 0
-                and {name for name, outcome in cases if outcome == 'passed'} == TEST_IDS)
+            safe = gate.summary_from_root(root, set())  # no skip allowlist; same snapshot for all checks
+        safe['locations'] = []
+        accepted = False
+        if safe['counts'] is not None:
+            cases = []
+            counts = gate.read_suite(root, cases, set())
+            exact = counts['tests'] == 3 and {name for name, _ in cases} == TEST_IDS
+            if not exact:
+                safe['status'] = 'FAIL'
+                safe['reasons'].append('EXPECTED_TEST_SET_MISMATCH')
+            # Publish only line numbers from the fixed test file, never arbitrary stack frames.
+            location = re.compile(r'(?m)^' + re.escape(str(repo / TEST_FILE)) + r':([1-9][0-9]{0,5})$')
+            for index, case in enumerate(root.iter('testcase'), 1):
+                if case.get('classname', '') + '::' + case.get('name', '') not in TEST_IDS:
+                    continue
+                lines = sorted({int(match) for child in case if child.tag in ('failure', 'error')
+                                for match in location.findall(child.text or '')})
+                if lines:
+                    safe['locations'].append({'id': f'testcase-{index}', 'test_lines': lines})
+            accepted = (exact and safe['status'] == 'PASS'
+                        and all(outcome == 'passed' for _, outcome in cases))
+        if diagnostics is not None:
+            diagnostics.update(safe)
+        return accepted
     except Exception:
         return False
 
