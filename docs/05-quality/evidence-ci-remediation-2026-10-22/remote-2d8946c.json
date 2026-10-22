@@ -1,0 +1,643 @@
+{
+  "recorded_at": "2026-10-22T07:21:05.323480+00:00",
+  "run_id": 39738767585,
+  "commit": "2d8946c29ff1fca1ecceec06828e0ae20632f4b5",
+  "url": "https://github.com/hanifp62/online-shop/actions/runs/39738767585",
+  "artifacts": {
+    "browser-summary-2d8946c29ff1fca1ecceec06828e0ae20632f4b5/browser-summary.json": {
+      "counts": {
+        "checkout_requests": 3,
+        "commands": 7,
+        "created": 2,
+        "page_content_leaks": 0,
+        "pages": 10,
+        "products": 76,
+        "rejected": 1
+      },
+      "status": "PASS"
+    },
+    "quality-summary-2d8946c29ff1fca1ecceec06828e0ae20632f4b5/phpunit-summary.json": {
+      "cases": [
+        {
+          "id": "testcase-826",
+          "reason": "ALLOWED_SKIP"
+        },
+        {
+          "id": "testcase-827",
+          "reason": "ALLOWED_SKIP"
+        },
+        {
+          "id": "testcase-828",
+          "reason": "ALLOWED_SKIP"
+        }
+      ],
+      "counts": {
+        "errors": 0,
+        "failures": 0,
+        "passed": 1200,
+        "skipped": 3,
+        "tests": 1203
+      },
+      "reasons": [],
+      "status": "PASS"
+    },
+    "quality-summary-2d8946c29ff1fca1ecceec06828e0ae20632f4b5/python-summary.json": {
+      "cases": [],
+      "counts": {
+        "errors": 0,
+        "expected_failures": 0,
+        "failures": 0,
+        "import_errors": 0,
+        "skipped": 0,
+        "tests": 355,
+        "unexpected_successes": 0
+      },
+      "reasons": [],
+      "status": "PASS"
+    },
+    "mysql-summary-2d8946c29ff1fca1ecceec06828e0ae20632f4b5/mysql-integration-1cdf9af8d1edcb122d3685c08112f60b/summary.json": {
+      "cleanup": "PASS",
+      "cleanup_failures": 0,
+      "commit": "2d8946c29ff1fca1ecceec06828e0ae20632f4b5",
+      "container_ids": [
+        "fedb52bf8870694013deb03523bfc68c6bf2a97ce48dadf7738e829a6d1afb88",
+        "48e6f389058c59dbcb33dd6a565c4bc9d0d705a500f97d23e10fbf7f58488c6d"
+      ],
+      "dump_sha256": "c11bb4f4ddf2f5cc48414925168c1255f0482b6072c6c00ceba69c4a41b41b51",
+      "exit": 1,
+      "image_id": "sha256:b35575a03e5327131916eb8d39222c4c89590881fb44ed69b5814910e5fefa34",
+      "junit_gate": true,
+      "junit_report": {
+        "cases": [],
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "passed": 3,
+          "skipped": 0,
+          "tests": 3
+        },
+        "locations": [],
+        "reasons": [],
+        "status": "PASS"
+      },
+      "migration_exit": 0,
+      "mysql_version": "8.4.13",
+      "producer_exit": 0,
+      "reason": "RESTORE_COMPARISON_FAILED",
+      "restore_comparison": {
+        "foreign_key_violations": true,
+        "foreign_keys": true,
+        "marker_rows": true,
+        "marker_sha256": true,
+        "migration_count": true,
+        "migrations_sha256": true,
+        "row_counts": true,
+        "schema_sha256": false
+      },
+      "schema_change_shapes": [
+        {
+          "line": 4,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "table": 1
+        },
+        {
+          "line": 5,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "table": 1
+        },
+        {
+          "line": 6,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "table": 1
+        },
+        {
+          "line": 7,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "table": 1
+        },
+        {
+          "line": 8,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "default",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "default",
+            "null"
+          ],
+          "table": 1
+        },
+        {
+          "line": 9,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "table": 1
+        },
+        {
+          "line": 10,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "table": 1
+        },
+        {
+          "line": 11,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "table": 1
+        },
+        {
+          "line": 4,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "table": 2
+        },
+        {
+          "line": 3,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "table": 3
+        },
+        {
+          "line": 4,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "table": 3
+        },
+        {
+          "line": 5,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "table": 3
+        },
+        {
+          "line": 6,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "default",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "default",
+            "null"
+          ],
+          "table": 3
+        },
+        {
+          "line": 9,
+          "restored_shape": [
+            "opaque",
+            "text",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci"
+          ],
+          "source_shape": [
+            "opaque",
+            "text",
+            "collate",
+            "utf8mb4_unicode_ci"
+          ],
+          "table": 3
+        },
+        {
+          "line": 12,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null",
+            "default",
+            "opaque"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null",
+            "default",
+            "opaque"
+          ],
+          "table": 3
+        },
+        {
+          "line": 4,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "default",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "default",
+            "null"
+          ],
+          "table": 4
+        },
+        {
+          "line": 6,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "table": 4
+        },
+        {
+          "line": 7,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "not",
+            "null"
+          ],
+          "table": 4
+        },
+        {
+          "line": 8,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "default",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "default",
+            "null"
+          ],
+          "table": 4
+        },
+        {
+          "line": 9,
+          "restored_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "character",
+            "set",
+            "utf8mb4",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "default",
+            "null"
+          ],
+          "source_shape": [
+            "opaque",
+            "varchar",
+            "opaque",
+            "collate",
+            "utf8mb4_unicode_ci",
+            "default",
+            "null"
+          ],
+          "table": 4
+        }
+      ],
+      "schema_change_shapes_truncated": true,
+      "schema_comparison": {
+        "columns_equal_in_order": false,
+        "ddl_equal": false,
+        "ddl_equal_without_auto_increment": false,
+        "ddl_lines_equal_unordered": false,
+        "defaults_equal": true,
+        "restored_auto_increment": [
+          4,
+          4,
+          13,
+          4,
+          3,
+          53,
+          3,
+          2,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4
+        ],
+        "source_auto_increment": [
+          4,
+          4,
+          13,
+          4,
+          3,
+          53,
+          3,
+          2,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4
+        ],
+        "table_lines_equal_without_separators": false
+      },
+      "skipped": 0,
+      "status": "FAIL",
+      "tests": 3
+    }
+  }
+}

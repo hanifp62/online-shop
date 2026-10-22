@@ -282,6 +282,18 @@ class Lane:
         require(len(defaults.splitlines()) == 1 and len(defaults.strip().split('\t')) == 2, 'SCHEMA_MISSING')
         ddl = self.sql(source, '\n'.join('SHOW CREATE TABLE ' + identifier(name) + ';' for name in names))
         require(bool(ddl.strip()), 'SCHEMA_MISSING')
+        column_metadata = self.sql(source, 'SELECT JSON_ARRAY(TABLE_NAME, COLUMN_NAME, ORDINAL_POSITION, COLUMN_TYPE, '
+                                   'IS_NULLABLE, COLUMN_DEFAULT, CHARACTER_SET_NAME, COLLATION_NAME, EXTRA, '
+                                   'GENERATION_EXPRESSION, COLUMN_COMMENT) FROM information_schema.columns '
+                                   'WHERE TABLE_SCHEMA=DATABASE() ORDER BY CAST(TABLE_NAME AS BINARY), ORDINAL_POSITION;')
+        try:
+            metadata_rows = [json.loads(row) for row in column_metadata.removesuffix('\n').split('\n')]
+        except ValueError:
+            raise LaneError('INVALID_COLUMN_METADATA') from None
+        require(metadata_rows and all(isinstance(row, list) and len(row) == 11
+                                      and row[0] in names and isinstance(row[1], str)
+                                      and type(row[2]) is int and row[2] > 0 for row in metadata_rows)
+                and {row[0] for row in metadata_rows} == set(names), 'INVALID_COLUMN_METADATA')
         counts = self.sql(source, ' UNION ALL '.join(
             f"SELECT '{name}', COUNT(*) FROM {identifier(name)}" for name in names) + ';')
         rows = [row.split('\t') for row in counts.splitlines()]
@@ -313,7 +325,8 @@ class Lane:
         violations = self.sql(source, ' UNION ALL '.join(checks) + ';').splitlines()
         require(violations == ['0'] * len(checks), 'FOREIGN_KEY_VIOLATION')
         self._schema_snapshots[source['role']] = (defaults, ddl)
-        return dict(self.migrations(source), schema_sha256=digest(defaults + ddl),
+        return dict(self.migrations(source), schema_sha256=digest(defaults + canonical_ddl(ddl)),
+                    column_count=len(metadata_rows), columns_sha256=digest(column_metadata),
                     row_counts={row[0]: int(row[1]) for row in rows}, foreign_keys=len(groups),
                     foreign_key_violations=0, marker_rows=2, marker_sha256=digest(marker))
 
@@ -435,6 +448,84 @@ class Lane:
         return failures == 0
 
 
+def sql_quote_end(text, start):
+    """Scan one SQL quote without regex backtracking; keep its original bytes private."""
+    quote, position = text[start], start + 1
+    while position < len(text):
+        if text[position] == '\\' and quote != '`':
+            position += 2
+        elif text[position] == quote:
+            position += 1
+            if position < len(text) and text[position] == quote:
+                position += 1
+                continue
+            break
+        else:
+            position += 1
+    return min(position, len(text))
+
+
+def canonical_ddl(ddl):
+    """Remove only the known redundant charset in SHOW CREATE column heads."""
+    redundant = re.compile(r'CHARACTER[ \t\r\n]+SET[ \t\r\n]+utf8mb4[ \t\r\n]+'
+                           r'(?=COLLATE[ \t\r\n]+utf8mb4_unicode_ci(?![\w$]))')
+    boundaries = {'DEFAULT', 'GENERATED', 'COMMENT', 'AS', 'REFERENCES', 'CHECK'}
+    pieces = []
+    position = copied = depth = 0
+    table = column_start = head = False
+    while position < len(ddl):
+        char = ddl[position]
+        if char.isspace():
+            position += 1
+            continue
+        if char in "'\"`":
+            if column_start:
+                head = char == '`' and depth == 1
+            column_start = False
+            position = sql_quote_end(ddl, position)
+            continue
+        if ddl.startswith('/*', position) or char == '#' or (
+                ddl.startswith('--', position) and (position + 2 == len(ddl) or ddl[position + 2].isspace())):
+            block = ddl.startswith('/*', position)
+            end = ddl.find('*/' if block else '\n', position + (2 if block else 1))
+            position = len(ddl) if end < 0 else end + (2 if block else 1)
+            head = column_start = False
+            continue
+        if char.isalnum() or char in '_$':
+            start = position
+            while position < len(ddl) and (ddl[position].isalnum() or ddl[position] in '_$'):
+                position += 1
+            word = ddl[start:position].upper()
+            if not table and word == 'CREATE' and ddl.startswith(' TABLE ', position):
+                table = True
+            if head and depth == 1:
+                if word in boundaries:
+                    head = False
+                elif word == 'CHARACTER':
+                    match = redundant.match(ddl, start)
+                    if match:
+                        pieces.append(ddl[copied:start])
+                        copied = position = match.end()
+            column_start = False
+            continue
+        if table and char == '(':
+            depth += 1
+            if depth == 1:
+                column_start = True
+        elif table and char == ')':
+            depth -= 1
+            column_start = False
+            if depth == 0:
+                table = head = False
+        elif table and char == ',' and depth == 1:
+            column_start, head = True, False
+        else:
+            column_start = False
+        position += 1
+    pieces.append(ddl[copied:])
+    return ''.join(pieces)
+
+
 def ddl_shape(line):
     """Diagnostic vocabulary only: never emit a literal, identifier, number or unknown token."""
     if len(line) > 4096:
@@ -447,18 +538,7 @@ def ddl_shape(line):
             visible.append(quote)
             position += 1
             continue
-        position += 1
-        while position < len(line):
-            if line[position] == '\\':
-                position += 2
-            elif line[position] == quote:
-                position += 1
-                if position < len(line) and line[position] == quote:
-                    position += 1
-                    continue
-                break
-            else:
-                position += 1
+        position = sql_quote_end(line, position)
         visible.append(' opaque ')
     line = ''.join(visible)
     allowed = set(('opaque bigint int tinyint smallint mediumint varchar char text longtext mediumtext tinytext '

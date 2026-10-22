@@ -510,6 +510,145 @@ class MysqlIsolationTests(unittest.TestCase):
                     self.assertEqual(error.exception.code, {'empty': 1, 'dump': 11, 'import': 12}[failure])
                 self.assertNotIn('dump_sha256', self.lane.summary)
 
+    def column_rows(self):
+        return [
+            ['ci_restore_probe', 'id', 1, 'int', 'NO', None, None, None, 'auto_increment', '', ''],
+            ['ci_restore_probe', 'marker', 2, 'varchar(64)', 'NO', None,
+             'utf8mb4', 'utf8mb4_unicode_ci', '', '', SECRET],
+            ['ci_restore_probe', 'parent_id', 3, 'int', 'YES', None, None, None, '', '', ''],
+            ['migrations', 'id', 1, 'int', 'NO', None, None, None, '', '', ''],
+            ['migrations', 'migration', 2, 'varchar(255)', 'NO', None,
+             'utf8mb4', 'utf8mb4_unicode_ci', '', '', ''],
+            ['migrations', 'batch', 3, 'int', 'NO', None, None, None, '', '', ''],
+        ]
+
+    def schema_snapshot(self, *, ddl=None, columns=None, role='source'):
+        def query(_, sql):
+            if ddl is not None and sql.startswith('SHOW CREATE TABLE'):
+                return ddl
+            if columns is not None and 'FROM information_schema.columns ' in sql:
+                return columns
+            return self.snapshot_sql(sql)
+        with patch.object(self.lane, 'sql', side_effect=query), \
+             patch.object(self.lane, 'migrations', return_value={'migration_count': 1}):
+            return self.lane.snapshot(dict(self.container, role=role))
+
+    def test_snapshot_redundant_charset_equivalence_keeps_all_other_ddl_strict(self):
+        ddl = self.snapshot_sql('SHOW CREATE TABLE')
+        explicit = ddl.replace('COLLATE utf8mb4_unicode_ci', 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci')
+        before = self.schema_snapshot(ddl=ddl)
+        self.assertEqual(before, self.schema_snapshot(ddl=explicit, role='restore'))
+        changes = [
+            explicit.replace('SET utf8mb4 COLLATE utf8mb4_unicode_ci', 'SET latin1 COLLATE latin1_swedish_ci', 1),
+            explicit.replace('COLLATE utf8mb4_unicode_ci', 'COLLATE utf8mb4_bin', 1),
+            explicit.replace('COLLATE utf8mb4_unicode_ci', 'COLLATE utf8mb4_unicode_ci_unknown', 1),
+            explicit.replace('COLLATE utf8mb4_unicode_ci', 'COLLATE utf8mb4_unicode_ci$unknown', 1),
+            explicit.replace('varchar(64)', 'varchar(65)', 1),
+            explicit.replace('varchar(64)', 'char(64)', 1),
+            explicit.replace('`marker` varchar', '`renamed` varchar', 1),
+            explicit.replace('  `parent_id` int DEFAULT NULL,\n', ''),
+            explicit.replace('  PRIMARY KEY', '  `added` int,\n  PRIMARY KEY', 1),
+            explicit.replace('  `parent_id` int DEFAULT NULL,\n', '').replace(
+                '  `id` int NOT NULL AUTO_INCREMENT,\n',
+                '  `parent_id` int DEFAULT NULL,\n  `id` int NOT NULL AUTO_INCREMENT,\n', 1),
+            explicit.replace('DEFAULT NULL', 'DEFAULT 0', 1),
+            explicit.replace('REFERENCES `ci_restore_probe` (`id`)', 'REFERENCES `ci_restore_probe` (`parent_id`)'),
+            explicit.replace('  PRIMARY KEY (`id`),\n  KEY `parent` (`parent_id`),',
+                             '  KEY `parent` (`parent_id`),\n  PRIMARY KEY (`id`),'),
+            explicit.replace('KEY `parent`', 'UNIQUE KEY `parent`', 1),
+            explicit.replace('AUTO_INCREMENT=3', 'AUTO_INCREMENT=4', 1),
+            explicit.replace('ENGINE=InnoDB', 'ENGINE=MyISAM', 1),
+            explicit.replace('COLLATE=utf8mb4_0900_ai_ci', 'COLLATE=utf8mb4_unicode_ci', 1),
+        ]
+        for index, changed in enumerate(changes):
+            with self.subTest(change=index):
+                self.assertNotEqual(before['schema_sha256'], self.schema_snapshot(ddl=changed)['schema_sha256'])
+
+    def test_column_charset_canonicalization_preserves_quoted_bytes_and_expression_tails(self):
+        clause = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'
+        for name in ('`' + clause + '`', '`a``' + clause + '`', '`a\\`', '`DEFAULT`'):
+            head = 'probe\tCREATE TABLE `probe` (\n  ' + name + ' varchar(64) '
+            self.assertEqual(ci.canonical_ddl(head + clause + '\n)\n'),
+                             head + 'COLLATE utf8mb4_unicode_ci\n)\n')
+        for datatype in ('varchar(64)', 'text', "enum('CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci', 'a,b')"):
+            for boundary in ('DEFAULT', 'GENERATED', 'COMMENT', 'AS', 'REFERENCES', 'CHECK'):
+                head = 'probe\tCREATE TABLE `probe` (\n  `a``b` ' + datatype + ' '
+                tail = ' ' + boundary + " ('" + clause + "') " + clause + '\n) ENGINE=InnoDB\n'
+                self.assertEqual(ci.canonical_ddl(head + clause + tail),
+                                 head + 'COLLATE utf8mb4_unicode_ci' + tail)
+        for quoted in ('`a``' + clause + '`', "'a\\'" + clause + "'", "'a''" + clause + "'",
+                       '"a""' + clause + '"', "'line\n  `fake` varchar(64) " + clause + "'"):
+            ddl = 'probe\tCREATE TABLE `probe` (\n  `value` varchar(64) DEFAULT ' + quoted + '\n)\n'
+            self.assertEqual(ci.canonical_ddl(ddl), ddl)
+        for quote in ("'", '"', '`'):
+            ddl = 'probe\tCREATE TABLE `probe` (\n  ' + quote + '\\' * 10000 + clause
+            self.assertEqual(ci.canonical_ddl(ddl), ddl)
+
+    def test_column_charset_canonicalization_leaves_comments_constraints_and_options_exact(self):
+        clause = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'
+        for fragment in ('/* ' + clause + ' */', '-- ' + clause + '\n', '# ' + clause + '\n',
+                         'CHECK (`a` ' + clause + ')', 'KEY `key` (`a` ' + clause + ')'):
+            ddl = 'probe\tCREATE TABLE `probe` (\n  ' + fragment + '\n) ' + clause + '\n'
+            self.assertEqual(ci.canonical_ddl(ddl), ddl)
+        ddl = 'probe\tCREATE TABLE `probe` (\n  `a` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci\n)\n'
+        self.assertEqual(ci.canonical_ddl(ddl), ddl)
+
+    def test_snapshot_column_metadata_is_private_ordered_and_independent(self):
+        before = self.schema_snapshot()
+        rows = self.column_rows()
+        encoded = ''.join(json.dumps(row) + '\n' for row in rows)
+        self.assertEqual(before['columns_sha256'], ci.digest(encoded))
+        self.assertEqual(before['column_count'], 6)
+        for index, value in enumerate(('migrations', 'renamed', 3, 'char(64)', 'YES', SECRET + '\n\t',
+                                       'latin1', 'utf8mb4_bin', 'INVISIBLE', 'lower(marker)', SECRET + '-changed')):
+            changed = self.column_rows()
+            changed[1][index] = value
+            with self.subTest(field=index):
+                after = self.schema_snapshot(columns=''.join(json.dumps(row) + '\n' for row in changed))
+                self.assertNotEqual(before['columns_sha256'], after['columns_sha256'])
+                self.assertEqual(before['schema_sha256'], after['schema_sha256'])
+                self.assertEqual(after['column_count'], 6)
+                self.assertNotIn(SECRET, json.dumps(after))
+        for changed in (rows[::-1], rows[:-1]):
+            after = self.schema_snapshot(columns=''.join(json.dumps(row) + '\n' for row in changed))
+            self.assertNotEqual(before['columns_sha256'], after['columns_sha256'])
+            self.assertEqual(after['column_count'], len(changed))
+        for invalid in ('', SECRET, '[]\n', json.dumps([None] * 11) + '\n'):
+            with self.assertRaisesRegex(ci.LaneError, 'INVALID_COLUMN_METADATA'):
+                self.schema_snapshot(columns=invalid)
+
+    def test_column_metadata_unicode_line_separators_are_not_record_delimiters(self):
+        for separator in ('\u0085', '\u2028', '\u2029'):
+            for field in (5, 10):
+                with self.subTest(codepoint=ord(separator), field=field):
+                    rows = self.column_rows()
+                    rows[1][field] = 'before' + separator + 'after'
+                    encoded = ''.join(json.dumps(row, ensure_ascii=False) + '\n' for row in rows)
+                    snapshot = self.schema_snapshot(columns=encoded)
+                    self.assertEqual(snapshot['column_count'], 6)
+                    self.assertEqual(snapshot['columns_sha256'], ci.digest(encoded))
+                    self.assertEqual(snapshot, self.schema_snapshot(columns=encoded, role='restore'))
+                    with self.assertRaisesRegex(ci.LaneError, 'INVALID_COLUMN_METADATA'):
+                        self.schema_snapshot(columns=encoded + '\n')
+
+    def test_restore_rejects_column_metadata_mismatch_even_with_equivalent_ddl(self):
+        ddl = self.snapshot_sql('SHOW CREATE TABLE')
+        before = self.schema_snapshot(ddl=ddl)
+        rows = self.column_rows()
+        rows[1][6] = 'latin1'
+        after = self.schema_snapshot(
+            ddl=ddl.replace('COLLATE utf8mb4_unicode_ci', 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'),
+            columns=''.join(json.dumps(row) + '\n' for row in rows), role='restore')
+        self.assertEqual(before['schema_sha256'], after['schema_sha256'])
+        self.orchestration()
+        self.lane.snapshot.side_effect = [before, after]
+        with self.assertRaisesRegex(ci.LaneError, 'RESTORE_COMPARISON_FAILED'):
+            self.lane.run()
+        self.assertFalse(self.lane.summary['restore_comparison']['columns_sha256'])
+        self.assertTrue(self.lane.summary['restore_comparison']['schema_sha256'])
+        self.assertNotIn('restore', self.lane.summary)
+        self.assertNotIn(SECRET, json.dumps(self.lane.summary))
+
     def snapshot_sql(self, query):
         if query.startswith('SELECT TABLE_NAME, ENGINE'):
             return 'ci_restore_probe\tInnoDB\tBASE TABLE\nmigrations\tInnoDB\tBASE TABLE\n'
@@ -518,7 +657,22 @@ class MysqlIsolationTests(unittest.TestCase):
         if query.startswith('SELECT DEFAULT_CHARACTER_SET_NAME'):
             return 'utf8mb4\tutf8mb4_0900_ai_ci\n'
         if query.startswith('SHOW CREATE TABLE'):
-            return 'ci_restore_probe\tCREATE TABLE ci_restore_probe;\nmigrations\tCREATE TABLE migrations;\n'
+            return ('ci_restore_probe\tCREATE TABLE `ci_restore_probe` (\n'
+                    '  `id` int NOT NULL AUTO_INCREMENT,\n'
+                    '  `marker` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT \'' + SECRET + '\',\n'
+                    '  `parent_id` int DEFAULT NULL,\n'
+                    '  PRIMARY KEY (`id`),\n  KEY `parent` (`parent_id`),\n'
+                    '  CONSTRAINT `parent` FOREIGN KEY (`parent_id`) REFERENCES `ci_restore_probe` (`id`)\n'
+                    ') ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci\n'
+                    'migrations\tCREATE TABLE `migrations` (\n  `id` int NOT NULL,\n'
+                    '  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,\n'
+                    '  `batch` int NOT NULL\n) ENGINE=InnoDB\n')
+        if query.startswith('SELECT JSON_ARRAY(TABLE_NAME, COLUMN_NAME'):
+            self.assertEqual(query, 'SELECT JSON_ARRAY(TABLE_NAME, COLUMN_NAME, ORDINAL_POSITION, COLUMN_TYPE, '
+                             'IS_NULLABLE, COLUMN_DEFAULT, CHARACTER_SET_NAME, COLLATION_NAME, EXTRA, '
+                             'GENERATION_EXPRESSION, COLUMN_COMMENT) FROM information_schema.columns '
+                             'WHERE TABLE_SCHEMA=DATABASE() ORDER BY CAST(TABLE_NAME AS BINARY), ORDINAL_POSITION;')
+            return ''.join(json.dumps(row) + '\n' for row in self.column_rows())
         if query.startswith("SELECT 'ci_restore_probe'"):
             return 'ci_restore_probe\t2\nmigrations\t1\n'
         if query.startswith('SELECT id, marker'):
@@ -544,6 +698,9 @@ class MysqlIsolationTests(unittest.TestCase):
         self.assertEqual(snap['foreign_keys'], 1)
         self.assertEqual(snap['foreign_key_violations'], 0)
         self.assertEqual(snap['migration_count'], 1)
+        self.assertEqual(snap['column_count'], 6)
+        self.assertEqual(len(snap['columns_sha256']), 64)
+        self.assertNotIn(SECRET, json.dumps(snap))
         self.assertEqual(len(snap['marker_sha256']), 64)
         self.assertNotIn(self.lane.token, json.dumps(snap))
 

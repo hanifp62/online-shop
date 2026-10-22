@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "scratch/ci-validation/venv/bin/python",
+    "-B",
+    "scripts/ci/run_python_tests.py"
+  ],
+  "started_at": "2026-10-22T07:44:27.450125+00:00",
+  "finished_at": "2026-10-22T07:44:46.894783+00:00",
+  "duration_seconds": 19.445,
+  "timeout_seconds": 180,
+  "status": "COMPLETE",
+  "exit_code": 0,
+  "cleanup": "not_required",
+  "sanitized_log": "docs/05-quality/evidence-ci-remediation-2026-10-22/python314-schema-fingerprint.log",
+  "sanitized_log_sha256": "52b7ed37a97907ca5bd8087e88009fbad6ab6380a6cfbc522f5a6fb248b6e397"
+}
