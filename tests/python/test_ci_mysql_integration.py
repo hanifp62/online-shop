@@ -411,6 +411,23 @@ class MysqlIsolationTests(unittest.TestCase):
         with self.assertRaisesRegex(ci.LaneError, 'RESTORE_COMPARISON_FAILED'):
             self.lane.run()
         self.assertNotIn('restore', self.lane.summary)
+        self.assertEqual(self.lane.summary['restore_comparison'], {'row_counts': True, 'schema_sha256': False})
+
+    def test_restore_mismatch_diagnostics_never_publish_ddl_or_weaken_comparison(self):
+        self.orchestration(changed_restore=True)
+        self.lane._schema_snapshots = {
+            'source': ('utf8mb4\tutf8mb4_unicode_ci\n', SECRET + ' AUTO_INCREMENT=4\n'),
+            'restore': ('utf8mb4\tutf8mb4_unicode_ci\n', SECRET + ' AUTO_INCREMENT=1\n'),
+        }
+        with self.assertRaisesRegex(ci.LaneError, 'RESTORE_COMPARISON_FAILED'):
+            self.lane.run()
+        self.assertEqual(self.lane.summary['schema_comparison'], {
+            'defaults_equal': True, 'ddl_equal': False,
+            'ddl_equal_without_auto_increment': True, 'ddl_lines_equal_unordered': False,
+            'source_auto_increment': [4], 'restored_auto_increment': [1],
+        })
+        self.assertNotIn(SECRET, json.dumps(self.lane.summary))
+        self.assertNotIn('restore', self.lane.summary)
 
     def test_restore_streams_unlinked_dump_and_records_only_digest(self):
         payload = b'synthetic SQL bytes never published'

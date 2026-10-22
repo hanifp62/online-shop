@@ -1,0 +1,92 @@
+{
+  "recorded_at": "2026-10-22T06:21:47.632782+00:00",
+  "run_id": 39732497987,
+  "commit": "26aa2c805fba86d1b5cf9202edb859bafd2f24fa",
+  "url": "https://github.com/hanifp62/online-shop/actions/runs/39732497987",
+  "artifacts": {
+    "quality-summary-26aa2c805fba86d1b5cf9202edb859bafd2f24fa/phpunit-summary.json": {
+      "cases": [
+        {
+          "id": "testcase-826",
+          "reason": "ALLOWED_SKIP"
+        },
+        {
+          "id": "testcase-827",
+          "reason": "ALLOWED_SKIP"
+        },
+        {
+          "id": "testcase-828",
+          "reason": "ALLOWED_SKIP"
+        }
+      ],
+      "counts": {
+        "errors": 0,
+        "failures": 0,
+        "passed": 1200,
+        "skipped": 3,
+        "tests": 1203
+      },
+      "reasons": [],
+      "status": "PASS"
+    },
+    "quality-summary-26aa2c805fba86d1b5cf9202edb859bafd2f24fa/python-summary.json": {
+      "cases": [],
+      "counts": {
+        "errors": 0,
+        "expected_failures": 0,
+        "failures": 0,
+        "import_errors": 0,
+        "skipped": 0,
+        "tests": 351,
+        "unexpected_successes": 0
+      },
+      "reasons": [],
+      "status": "PASS"
+    },
+    "browser-summary-26aa2c805fba86d1b5cf9202edb859bafd2f24fa/browser-summary.json": {
+      "counts": {
+        "checkout_requests": 3,
+        "commands": 7,
+        "created": 2,
+        "page_content_leaks": 0,
+        "pages": 10,
+        "products": 76,
+        "rejected": 1
+      },
+      "status": "PASS"
+    },
+    "mysql-summary-26aa2c805fba86d1b5cf9202edb859bafd2f24fa/mysql-integration-30ffb802c448e770707c51f54e5f2dad/summary.json": {
+      "cleanup": "PASS",
+      "cleanup_failures": 0,
+      "commit": "26aa2c805fba86d1b5cf9202edb859bafd2f24fa",
+      "container_ids": [
+        "cb01b35d25f65f20dd93860ff7b4e8762c4842e2e15f486194ea36eb6e6d4871",
+        "53469d08cffd0872b8391ca3b9cb336df52398eb0fba6c0d54164f23e8eff417"
+      ],
+      "dump_sha256": "1d3ae2e0933ded0465064c4eb9166e4524f3a9632571d3583b672ae4950ced1e",
+      "exit": 1,
+      "image_id": "sha256:b35575a03e5327131916eb8d39222c4c89590881fb44ed69b5814910e5fefa34",
+      "junit_gate": true,
+      "junit_report": {
+        "cases": [],
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "passed": 3,
+          "skipped": 0,
+          "tests": 3
+        },
+        "locations": [],
+        "reasons": [],
+        "status": "PASS"
+      },
+      "migration_exit": 0,
+      "mysql_version": "8.4.13",
+      "producer_exit": 0,
+      "reason": "RESTORE_COMPARISON_FAILED",
+      "skipped": 0,
+      "status": "FAIL",
+      "tests": 3
+    }
+  }
+}

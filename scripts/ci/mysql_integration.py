@@ -137,6 +137,7 @@ class Lane:
         self.containers = []
         self.image = None
         self.commit = None
+        self._schema_snapshots = {}
         self.summary: dict[str, object] = {'status': 'FAIL', 'cleanup': 'NOT_STARTED'}
 
     def docker_run(self, args, **kwargs):
@@ -310,6 +311,7 @@ class Lane:
                           f'AND NOT EXISTS (SELECT 1 FROM {identifier(parent)} p WHERE {matches})')
         violations = self.sql(source, ' UNION ALL '.join(checks) + ';').splitlines()
         require(violations == ['0'] * len(checks), 'FOREIGN_KEY_VIOLATION')
+        self._schema_snapshots[source['role']] = (defaults, ddl)
         return dict(self.migrations(source), schema_sha256=digest(defaults + ddl),
                     row_counts={row[0]: int(row[1]) for row in rows}, foreign_keys=len(groups),
                     foreign_key_violations=0, marker_rows=2, marker_sha256=digest(marker))
@@ -370,7 +372,24 @@ class Lane:
         before = self.snapshot(source)
         self.restore(source, target)
         after = self.snapshot(target)
-        require(before == after, 'RESTORE_COMPARISON_FAILED')
+        if before != after:
+            self.summary['restore_comparison'] = {
+                key: before.get(key) == after.get(key) for key in sorted(before.keys() | after.keys())
+            }
+            if set(self._schema_snapshots) == {'source', 'restore'}:
+                source_defaults, source_ddl = self._schema_snapshots['source']
+                restored_defaults, restored_ddl = self._schema_snapshots['restore']
+                # Diagnostic hints only: acceptance still requires the exact full snapshot.
+                without_counter = lambda ddl: re.sub(r' AUTO_INCREMENT=[0-9]+\b', '', ddl)
+                self.summary['schema_comparison'] = {
+                    'defaults_equal': source_defaults == restored_defaults,
+                    'ddl_equal': source_ddl == restored_ddl,
+                    'ddl_equal_without_auto_increment': without_counter(source_ddl) == without_counter(restored_ddl),
+                    'ddl_lines_equal_unordered': sorted(source_ddl.splitlines()) == sorted(restored_ddl.splitlines()),
+                    'source_auto_increment': [int(value) for value in re.findall(r' AUTO_INCREMENT=([0-9]+)\b', source_ddl)],
+                    'restored_auto_increment': [int(value) for value in re.findall(r' AUTO_INCREMENT=([0-9]+)\b', restored_ddl)],
+                }
+            raise LaneError('RESTORE_COMPARISON_FAILED')
         clean_checkout(self.repo, self.env, self.commit)
         self.summary['snapshot'] = after
         self.summary['restore'] = 'PASS'
