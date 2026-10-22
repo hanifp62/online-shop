@@ -18,6 +18,7 @@ import base64
 import hashlib
 import importlib.util
 import io
+from itertools import zip_longest
 import json
 import os
 
@@ -400,6 +401,20 @@ class Lane:
                     'source_auto_increment': [int(value) for value in re.findall(r' AUTO_INCREMENT=([0-9]+)\b', source_ddl)],
                     'restored_auto_increment': [int(value) for value in re.findall(r' AUTO_INCREMENT=([0-9]+)\b', restored_ddl)],
                 }
+                changes = []
+                truncated = False
+                for table_index, (left, right) in enumerate(zip_longest(source_parts, restored_parts, fillvalue=[]), 1):
+                    for line_index, (old, new) in enumerate(zip_longest(left, right, fillvalue=''), 1):
+                        if old != new:
+                            if len(changes) == 20:
+                                truncated = True
+                                break
+                            changes.append({'table': table_index, 'line': line_index,
+                                            'source_shape': ddl_shape(old), 'restored_shape': ddl_shape(new)})
+                    if truncated:
+                        break
+                self.summary['schema_change_shapes'] = changes
+                self.summary['schema_change_shapes_truncated'] = truncated
             raise LaneError('RESTORE_COMPARISON_FAILED')
         clean_checkout(self.repo, self.env, self.commit)
         self.summary['snapshot'] = after
@@ -418,6 +433,43 @@ class Lane:
         self.summary['cleanup_failures'] = failures
         self.summary['container_ids'] = [c['id'] for c in self.containers if c['id']]
         return failures == 0
+
+
+def ddl_shape(line):
+    """Diagnostic vocabulary only: never emit a literal, identifier, number or unknown token."""
+    if len(line) > 4096:
+        return ['TRUNCATED_INPUT']
+    visible = []
+    position = 0
+    while position < len(line):
+        quote = line[position]
+        if quote not in "'\"`":
+            visible.append(quote)
+            position += 1
+            continue
+        position += 1
+        while position < len(line):
+            if line[position] == '\\':
+                position += 2
+            elif line[position] == quote:
+                position += 1
+                if position < len(line) and line[position] == quote:
+                    position += 1
+                    continue
+                break
+            else:
+                position += 1
+        visible.append(' opaque ')
+    line = ''.join(visible)
+    allowed = set(('opaque bigint int tinyint smallint mediumint varchar char text longtext mediumtext tinytext '
+                   'decimal float double numeric binary varbinary blob longblob json date datetime timestamp time '
+                   'enum set not null default current_timestamp on update auto_increment unsigned signed '
+                   'character collate utf8mb4 utf8mb4_unicode_ci utf8mb4_0900_ai_ci utf8mb4_bin '
+                   'latin1 latin1_swedish_ci generated always as stored virtual invisible visible comment '
+                   'key primary unique constraint references foreign check engine innodb').split())
+    tokens = re.findall(r'[A-Za-z_][A-Za-z0-9_]*|[0-9]+', line)
+    shape = [token.lower() if token.lower() in allowed else 'opaque' for token in tokens[:64]]
+    return shape + (['TRUNCATED_TOKENS'] if len(tokens) > 64 else [])
 
 
 def identifier(value):

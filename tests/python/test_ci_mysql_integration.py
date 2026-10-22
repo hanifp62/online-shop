@@ -444,6 +444,33 @@ class MysqlIsolationTests(unittest.TestCase):
         self.assertFalse(comparison['ddl_lines_equal_unordered'])
         self.assertNotIn('restore', self.lane.summary)
 
+    def test_schema_shapes_are_fixed_vocabulary_not_sql_or_literal_content(self):
+        self.assertEqual(ci.ddl_shape("  `collate` varchar(100) DEFAULT 'not null' COLLATE utf8mb4_unicode_ci"),
+                         ['opaque', 'varchar', 'opaque', 'default', 'opaque', 'collate', 'utf8mb4_unicode_ci'])
+        self.assertNotIn(SECRET, json.dumps(ci.ddl_shape(SECRET)))
+        for text in ("'" + SECRET + "'", '`' + SECRET + '`', '123456789',
+                     "'not \\' null'", '"not null"', "'not '' null'"):
+            self.assertEqual(ci.ddl_shape(text), ['opaque'])
+
+    def test_schema_shapes_bound_input_tokens_and_total_tokenizer_calls(self):
+        self.assertEqual(ci.ddl_shape("'" + 'int ' * 1024), ['TRUNCATED_INPUT'])
+        with patch.object(ci.re, 'sub', side_effect=AssertionError('Quoted fragments require the linear scanner.')):
+            for quote in ("'", '"', '`'):
+                self.assertEqual(ci.ddl_shape(quote + '\\' * 40), ['opaque'])
+                self.assertEqual(ci.ddl_shape(quote + 'not null'), ['opaque'])
+        self.assertEqual(ci.ddl_shape('int ' * 64), ['int'] * 64)
+        self.assertEqual(ci.ddl_shape('int ' * 65), ['int'] * 64 + ['TRUNCATED_TOKENS'])
+        self.orchestration(changed_restore=True)
+        self.lane._schema_snapshots = {'source': ('same', 'int\n' * 21),
+                                       'restore': ('same', 'bigint\n' * 21)}
+        with patch.object(ci, 'ddl_shape', wraps=ci.ddl_shape) as shape, \
+             self.assertRaisesRegex(ci.LaneError, 'RESTORE_COMPARISON_FAILED'):
+            self.lane.run()
+        self.assertEqual(shape.call_count, 40)
+        self.assertEqual(len(self.lane.summary['schema_change_shapes']), 20)
+        self.assertTrue(self.lane.summary['schema_change_shapes_truncated'])
+        self.assertNotIn('restore', self.lane.summary)
+
     def test_restore_streams_unlinked_dump_and_records_only_digest(self):
         payload = b'synthetic SQL bytes never published'
         target = dict(self.container, role='restore', id='d' * 64)

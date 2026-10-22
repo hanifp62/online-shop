@@ -1,0 +1,142 @@
+{
+  "recorded_at": "2026-10-22T06:53:56.748454+00:00",
+  "run_id": 39735798693,
+  "commit": "86803a2b05fb40c8c0628824e12546bf5ceb37cf",
+  "url": "https://github.com/hanifp62/online-shop/actions/runs/39735798693",
+  "artifacts": {
+    "quality-summary-86803a2b05fb40c8c0628824e12546bf5ceb37cf/phpunit-summary.json": {
+      "cases": [
+        {
+          "id": "testcase-826",
+          "reason": "ALLOWED_SKIP"
+        },
+        {
+          "id": "testcase-827",
+          "reason": "ALLOWED_SKIP"
+        },
+        {
+          "id": "testcase-828",
+          "reason": "ALLOWED_SKIP"
+        }
+      ],
+      "counts": {
+        "errors": 0,
+        "failures": 0,
+        "passed": 1200,
+        "skipped": 3,
+        "tests": 1203
+      },
+      "reasons": [],
+      "status": "PASS"
+    },
+    "quality-summary-86803a2b05fb40c8c0628824e12546bf5ceb37cf/python-summary.json": {
+      "cases": [],
+      "counts": {
+        "errors": 0,
+        "expected_failures": 0,
+        "failures": 0,
+        "import_errors": 0,
+        "skipped": 0,
+        "tests": 353,
+        "unexpected_successes": 0
+      },
+      "reasons": [],
+      "status": "PASS"
+    },
+    "browser-summary-86803a2b05fb40c8c0628824e12546bf5ceb37cf/browser-summary.json": {
+      "counts": {
+        "checkout_requests": 3,
+        "commands": 7,
+        "created": 2,
+        "page_content_leaks": 0,
+        "pages": 10,
+        "products": 76,
+        "rejected": 1
+      },
+      "status": "PASS"
+    },
+    "mysql-summary-86803a2b05fb40c8c0628824e12546bf5ceb37cf/mysql-integration-e346f02e913d35aa53d1c581372675d1/summary.json": {
+      "cleanup": "PASS",
+      "cleanup_failures": 0,
+      "commit": "86803a2b05fb40c8c0628824e12546bf5ceb37cf",
+      "container_ids": [
+        "de39a19bd50b1640e7a6de2c8c679e0232d22fb35cd453ee73a6da1fd2de4e69",
+        "6075dd04b32495d1c58e1df786866c77009792e284bc4a7ed3b0f881150beb46"
+      ],
+      "dump_sha256": "7b2bf01c2d357abe400e40fabee2c807927ae16f4855ac48dff217f60b213c4e",
+      "exit": 1,
+      "image_id": "sha256:b35575a03e5327131916eb8d39222c4c89590881fb44ed69b5814910e5fefa34",
+      "junit_gate": true,
+      "junit_report": {
+        "cases": [],
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "passed": 3,
+          "skipped": 0,
+          "tests": 3
+        },
+        "locations": [],
+        "reasons": [],
+        "status": "PASS"
+      },
+      "migration_exit": 0,
+      "mysql_version": "8.4.13",
+      "producer_exit": 0,
+      "reason": "RESTORE_COMPARISON_FAILED",
+      "restore_comparison": {
+        "foreign_key_violations": true,
+        "foreign_keys": true,
+        "marker_rows": true,
+        "marker_sha256": true,
+        "migration_count": true,
+        "migrations_sha256": true,
+        "row_counts": true,
+        "schema_sha256": false
+      },
+      "schema_comparison": {
+        "columns_equal_in_order": false,
+        "ddl_equal": false,
+        "ddl_equal_without_auto_increment": false,
+        "ddl_lines_equal_unordered": false,
+        "defaults_equal": true,
+        "restored_auto_increment": [
+          4,
+          4,
+          13,
+          4,
+          3,
+          53,
+          3,
+          2,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4
+        ],
+        "source_auto_increment": [
+          4,
+          4,
+          13,
+          4,
+          3,
+          53,
+          3,
+          2,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4
+        ],
+        "table_lines_equal_without_separators": false
+      },
+      "skipped": 0,
+      "status": "FAIL",
+      "tests": 3
+    }
+  }
+}
