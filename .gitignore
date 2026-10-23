@@ -36,3 +36,4 @@ __pycache__/
 # Local audit locks and generated bundles
 .amadis-pdf-dependency.lock
 /scratch/react-migration/
+/scratch/verify-close-20261023/
