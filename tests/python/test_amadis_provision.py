@@ -1,4 +1,5 @@
 """provision: private credentials, no leakage, refuses used roots. No PHP needed."""
+from contextlib import closing
 import importlib.util
 import json
 from pathlib import Path
@@ -23,7 +24,7 @@ class ProvisionTests(unittest.TestCase):
             'database': str(self.root.resolve() / 'database.sqlite')}))
 
     def db(self, orders):
-        with sqlite3.connect(self.root / 'database.sqlite') as db:
+        with closing(sqlite3.connect(self.root / 'database.sqlite')) as db, db:
             if orders is not None:
                 db.execute('create table orders (id integer)')
                 for i in range(orders):
@@ -51,7 +52,8 @@ class ProvisionTests(unittest.TestCase):
                 launch.os.environ.pop('AMADIS_ROOT')
             else:
                 launch.os.environ['AMADIS_ROOT'] = old[1]
-            launch.lock.close()
+            if launch.lock:
+                launch.lock.close()
 
     def child(self, stdout, code=0):
         return subprocess.CompletedProcess([], code, stdout, 'SECRET-LEAK-IN-STDERR')
@@ -98,6 +100,23 @@ class ProvisionTests(unittest.TestCase):
                     self.assertEqual(status, 1)
                     self.assertEqual(calls, [])
                     self.assertFalse((self.root / 'private-runtime').exists())
+
+    def test_react_provision_is_explicit_and_uses_the_server_origin(self):
+        self.db(0)
+        out = self.child('{"status":"provisioned","admin_id":1,"customer_id":2}\n')
+        import io, contextlib
+        with contextlib.redirect_stdout(io.StringIO()):
+            status, calls = self.run_main('provision-react', '8043', child=out)
+        self.assertEqual(status, 0)
+        self.assertEqual(calls[0][0], ['php', 'scripts/amadis/artisan.php', 'amadis:provision-react'])
+        self.assertEqual(calls[0][1]['env']['APP_URL'], 'http://127.0.0.1:8043')
+        self.assertEqual(calls[0][1]['env']['DB_DATABASE'], str(self.root / 'database.sqlite'))
+
+    def test_react_provision_refuses_missing_reserved_or_ambiguous_port_before_bootstrap(self):
+        for args in ((), ('8000',), ('8001',), ('80',), ('65536',), ('08043',), ('8043/evil',), ('8043', 'extra')):
+            with self.subTest(args=args), self.assertRaises(SystemExit):
+                self.run_main('provision-react', *args, child=self.child(''))
+        self.assertFalse((self.root / 'private-runtime').exists())
 
     def test_provision_refuses_arguments(self):
         with self.assertRaises(SystemExit):

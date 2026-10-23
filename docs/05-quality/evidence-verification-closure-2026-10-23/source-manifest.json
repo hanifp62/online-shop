@@ -1,0 +1,70 @@
+{
+  "base_commit": "a650b12f03e59396ce12e37a9e84b08e00adfc84",
+  "generated_at": "2026-10-23T06:55:15.620724+00:00",
+  "files": [
+    {
+      "path": "scripts/amadis/acceptance_react.cjs",
+      "sha256": "a852dfdcf4b324ac596b3c528b4ddf0a2f5f817d2544c08340238c13319b4fa0"
+    },
+    {
+      "path": "scripts/amadis/acceptance_react.sh",
+      "sha256": "13e5d324821d275abf36cee082d65db86ebecbe8fe358e4d0e7b1697141ee833"
+    },
+    {
+      "path": "scripts/amadis/acceptance_react_complete.cjs",
+      "sha256": "d0b02e045081ed2983d5c5e1da21c72c7feba9f813c7a993251e161391b8dec9"
+    },
+    {
+      "path": "scripts/amadis/acceptance_react_fixture.cjs",
+      "sha256": "95a886c584d899c70409a4508b74f5c17ebd19d49ec89059252b3dc0ab17d93d"
+    },
+    {
+      "path": "scripts/amadis/acceptance_react_fixture.py",
+      "sha256": "dc75eda6a3a53b2b9658bd1edd71138fda618d4d7ce6ddd760120c1910582ae0"
+    },
+    {
+      "path": "scripts/amadis/acceptance_react_security.cjs",
+      "sha256": "74381de91c795d75225c8443c9eb1949b71a5a46b62f344f73ac9cc22a400948"
+    },
+    {
+      "path": "scripts/amadis/artisan.php",
+      "sha256": "86cb8297896c128100bc4bdfc68089c46a7f13b95a0b8a81ef38a4f8fb4f0196"
+    },
+    {
+      "path": "scripts/amadis/launch.py",
+      "sha256": "d26db6719820f5f63944ab87e0a703e5c29a3712cbc131e5dc82ddd09e2ecae3"
+    },
+    {
+      "path": "scripts/ci/check_react_browser_report.py",
+      "sha256": "2c7d8cf9a3dc765505eb083267a452eb64afcb72e4e2dd8836edfc48a71f73a5"
+    },
+    {
+      "path": "scripts/ci/collect_publication.py",
+      "sha256": "dd3b2d19a945b2b1b64d725f3e24907e0ffa54166aa6969b902886d7d75fd86e"
+    },
+    {
+      "path": "tests/ci-react-gate.test.mjs",
+      "sha256": "df0488eaae2733ef23785a88160624ac0af57b905f1c1670091391ea11c7474f"
+    },
+    {
+      "path": "tests/python/test_amadis_provision.py",
+      "sha256": "a787466d70b0a0587ce07145d7f73453af87b7670d75ff43efb3ae0d83163614"
+    },
+    {
+      "path": "tests/python/test_ci_collect_publication.py",
+      "sha256": "eca4e0bc67fdafc4b94f3d5305bca31111f0d348720beb50c80d2d4df0bc3389"
+    },
+    {
+      "path": "tests/python/test_react_browser_fixture.py",
+      "sha256": "6d35ec40491ecf649dc2e686f98527e8997f8d69a975ac4e852107240f95c8c9"
+    },
+    {
+      "path": "tests/python/test_react_browser_report.py",
+      "sha256": "5cde65bcbb5538892e46cba4575b0f52e01f72395582dbd38edbf7619f2785ae"
+    },
+    {
+      "path": "tests/react-browser-fixture.test.mjs",
+      "sha256": "7ab3bf2f6396be0b756f717cfe46dd431a4ebbdf98ef6f4eb1886fd1daec52f5"
+    }
+  ]
+}

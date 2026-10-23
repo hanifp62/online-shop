@@ -5,11 +5,12 @@ const TIMEOUT = 15000;
 const STAGES = Object.freeze([
     'home-native-mobile-keyboard-theme-reflow', 'home-native-search-category-locale',
     'pdp-native-inquiry-draft-cart-delta-undo', 'shop-guest-frozen-idempotent-replay',
-    'shop-account-address-voucher-orders-favorites', 'dashboard-native-seven-regions-atomic-drafts',
+    'shop-account-address-voucher-orders-favorites', 'shop-account-completed-order-review',
+    'dashboard-native-seven-regions-atomic-drafts',
     'dashboard-native-inline-consent-late-edit', 'dashboard-native-back-failure-recovery',
     'dashboard-native-order-json-once-refresh', 'dashboard-native-private-history',
 ]);
-const OPTIONAL_STAGES = Object.freeze(['shop-account-completed-order-review']);
+const OPTIONAL_STAGES = Object.freeze([]);
 // Parent monitor calls expectedNetworkFailure with correlated request metadata, never just console text.
 const EXPECTED_FAULTS = Object.freeze([
     Object.freeze({ id: 'checkout-abort-requestfailed', stage: STAGES[3], event: 'requestfailed', method: 'POST', pathname: '/checkout', errorPattern: '^net::ERR_FAILED$', min: 1, max: 1 }),
@@ -71,7 +72,36 @@ async function snapshot(page, origin) {
     return data;
 }
 
-module.exports = async function completeFlows({ pageFor, native, origin, credentials, start, done, monitor, diagnose = () => {} }) {
+async function completedOrderReview({ customer, native, origin, fixture }) {
+    fixture.verify('review-before');
+    await native(customer, '/belanja');
+    const review = customer.locator('#order-list form:has([name="rating"])');
+    await review.waitFor({ timeout: TIMEOUT });
+    assert.equal(await review.count(), 1);
+    await review.locator('[name="rating"]').selectOption('5');
+    await review.locator('[name="body"]').fill('Synthetic acceptance review');
+    let writes = 0;
+    const count = request => { if (request.url() === origin + '/reviews' && request.method() === 'POST') writes += 1; };
+    customer.on('request', count);
+    try {
+        const posted = customer.waitForResponse(response => response.url() === origin + '/reviews'
+            && response.request().method() === 'POST', { timeout: TIMEOUT });
+        await review.locator('button').click();
+        const response = await posted;
+        assert.equal(response.status(), 201);
+        const payload = response.request().postDataJSON();
+        assert(payload.order_id === fixture.order_id && payload.product_id === fixture.product_id
+            && payload.rating === 5 && payload.body === 'Synthetic acceptance review');
+        const saved = (await response.json()).review;
+        assert(saved?.user_id === fixture.customer_id && saved.order_id === fixture.order_id
+            && saved.product_id === fixture.product_id && saved.rating === 5 && saved.body === payload.body);
+        await review.waitFor({ state: 'detached', timeout: TIMEOUT });
+        assert.equal(writes, 1);
+        fixture.verify('review-after');
+    } finally { customer.off('request', count); }
+}
+
+module.exports = async function completeFlows({ pageFor, native, origin, credentials, fixture, start, done, monitor, diagnose = () => {} }) {
     const unavailable = [];
     const faults = faultMonitor(origin);
     async function login(page, role) {
@@ -246,20 +276,13 @@ module.exports = async function completeFlows({ pageFor, native, origin, credent
     await customer.locator('#favorite-list .item button').click();
     assert((await removedFavorite).ok());
     await customer.locator('#favorite-list .item').waitFor({ state: 'detached' });
-    const review = customer.locator('#order-list form:has([name="rating"])').first();
-    if (await review.count()) {
-        start(OPTIONAL_STAGES[0]);
-        await review.locator('[name="rating"]').selectOption('5');
-        await review.locator('[name="body"]').fill('Synthetic acceptance review');
-        const reviewed = customer.waitForResponse(response => pathOf(response.url()) === '/reviews' && response.request().method() === 'POST', { timeout: TIMEOUT });
-        await review.locator('button').click();
-        assert((await reviewed).ok());
-        done();
-        start(STAGES[4]);
-    } else unavailable.push(OPTIONAL_STAGES[0]);
     done();
 
     start(STAGES[5]);
+    await completedOrderReview({ customer, native, origin, fixture });
+    done();
+
+    start(STAGES[6]);
     await native(admin, '/admin');
     assert.equal(await admin.locator('[data-admin-table]').count(), 7);
     await admin.evaluate(() => { window.__completeDashboardDocument = true; });
@@ -296,7 +319,7 @@ module.exports = async function completeFlows({ pageFor, native, origin, credent
     await filter(admin, 'produk', '');
     done();
 
-    start(STAGES[6]);
+    start(STAGES[7]);
     const inline = admin.locator('[data-admin-table="kategori"] [name="cat_title"]').first();
     const original = await inline.inputValue();
     await inline.fill('Inline unsent draft');
@@ -329,7 +352,7 @@ module.exports = async function completeFlows({ pageFor, native, origin, credent
     await inline.fill(original);
     done();
 
-    start(STAGES[7]);
+    start(STAGES[8]);
     await filter(admin, 'produk', 'amadis-no-match');
     const committed = await fingerprints(admin);
     await admin.evaluate(() => {
@@ -393,7 +416,7 @@ module.exports = async function completeFlows({ pageFor, native, origin, credent
     await filter(admin, 'produk', '');
     done();
 
-    start(STAGES[8]);
+    start(STAGES[9]);
     const orderForm = admin.locator('[data-admin-table="pesanan"] form:has(select[name="status"])').first();
     assert(await orderForm.count() === 1);
     const action = await orderForm.getAttribute('action');
@@ -431,7 +454,7 @@ module.exports = async function completeFlows({ pageFor, native, origin, credent
     } finally { admin.off('request', countWrite); }
     done();
 
-    start(STAGES[9]);
+    start(STAGES[10]);
     await admin.waitForFunction(() => history.state?.page instanceof ArrayBuffer, null, { timeout: TIMEOUT });
     await documentSubmit(admin, 'form[action$="/admin/logout"] button');
     await admin.goBack({ waitUntil: 'domcontentloaded', timeout: TIMEOUT });
@@ -441,6 +464,7 @@ module.exports = async function completeFlows({ pageFor, native, origin, credent
     faults.verify();
     return { unavailable, expectedFaultCounts: faults.counts() };
 };
+module.exports.completedOrderReview = completedOrderReview;
 module.exports.STAGES = STAGES;
 module.exports.OPTIONAL_STAGES = OPTIONAL_STAGES;
 module.exports.EXPECTED_FAULTS = EXPECTED_FAULTS;

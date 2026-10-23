@@ -1,0 +1,201 @@
+{
+  "base_commit": "a650b12f03e59396ce12e37a9e84b08e00adfc84",
+  "started_at": "2026-10-23T06:40:13.175790+00:00",
+  "commands": [
+    {
+      "name": "pint",
+      "command": [
+        "vendor/bin/pint",
+        "--test"
+      ],
+      "started_at": "2026-10-23T06:40:13.176183+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T06:40:13.991786+00:00"
+    },
+    {
+      "name": "node",
+      "command": [
+        "node",
+        "--test"
+      ],
+      "started_at": "2026-10-23T06:40:13.992326+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T06:40:18.358986+00:00",
+      "counts": {
+        "tests": 592,
+        "pass": 592,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "name": "react",
+      "command": [
+        "npm",
+        "run",
+        "test:react"
+      ],
+      "started_at": "2026-10-23T06:40:18.360817+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T06:40:21.527240+00:00",
+      "numeric_result_lines": [
+        "Test Files  15 passed (15)",
+        "Tests  232 passed (232)",
+        "Duration  2.70s (tests 47%, environment 45%, import 5%, transform 3%, worker 1%)"
+      ]
+    },
+    {
+      "name": "python",
+      "command": [
+        "scratch/ci-validation/venv/bin/python",
+        "scripts/ci/run_python_tests.py"
+      ],
+      "started_at": "2026-10-23T06:40:21.528392+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T06:40:44.079388+00:00",
+      "summary": {
+        "cases": [],
+        "counts": {
+          "errors": 0,
+          "expected_failures": 0,
+          "failures": 0,
+          "import_errors": 0,
+          "skipped": 0,
+          "tests": 434,
+          "unexpected_successes": 0
+        },
+        "reasons": [],
+        "status": "PASS"
+      }
+    },
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "started_at": "2026-10-23T06:40:44.080359+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T06:40:45.312340+00:00",
+      "manifest_sha256": "e13a60d6bd92a30a881a6b40322f38c54cb09dde0184ae8a6e45778cf2f33f80"
+    },
+    {
+      "name": "composer_validate",
+      "command": [
+        "composer",
+        "validate",
+        "--no-check-publish"
+      ],
+      "started_at": "2026-10-23T06:40:45.312976+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T06:40:45.578796+00:00",
+      "exact_pin_warning": true
+    },
+    {
+      "name": "composer_audit",
+      "command": [
+        "composer",
+        "audit",
+        "--locked",
+        "--no-interaction"
+      ],
+      "started_at": "2026-10-23T06:40:45.579476+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T06:40:48.926840+00:00"
+    },
+    {
+      "name": "npm_audit",
+      "command": [
+        "npm",
+        "audit",
+        "--audit-level=low"
+      ],
+      "started_at": "2026-10-23T06:40:48.928300+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T06:40:49.927304+00:00"
+    },
+    {
+      "name": "actionlint",
+      "command": [
+        "scratch/ci-validation/actionlint"
+      ],
+      "started_at": "2026-10-23T06:40:49.928477+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T06:40:49.952329+00:00"
+    },
+    {
+      "name": "secrets",
+      "command": [
+        "python3",
+        "scripts/ci/security_scan.py",
+        "--mode",
+        "secrets"
+      ],
+      "started_at": "2026-10-23T06:40:49.953191+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T06:40:52.587363+00:00"
+    },
+    {
+      "name": "pii",
+      "command": [
+        "python3",
+        "scripts/ci/security_scan.py",
+        "--mode",
+        "pii"
+      ],
+      "started_at": "2026-10-23T06:40:52.588152+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T06:40:52.711545+00:00"
+    },
+    {
+      "name": "php",
+      "command": [
+        "scripts/amadis/launch.sh",
+        "test",
+        "--log-junit=/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-55021e48c1b5a75ee18394c4/evidence/verify-close-php.xml"
+      ],
+      "started_at": "2026-10-23T06:40:52.712552+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T06:49:13.013799+00:00",
+      "numeric_result_lines": [
+        "Tests:    3 skipped, 1286 passed (160073 assertions)",
+        "Duration: 499.47s"
+      ]
+    },
+    {
+      "name": "php_gate",
+      "command": [
+        "python3",
+        "scripts/ci/check_test_report.py",
+        "/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-55021e48c1b5a75ee18394c4/evidence/verify-close-php.xml",
+        "--allow-skipped-test",
+        "Tests.Feature.MysqlCheckoutRetryTest::test_deadlock_retry_succeeds_replays_and_cancel_restores_stock_only_once",
+        "--allow-skipped-test",
+        "Tests.Feature.MysqlCheckoutRetryTest::test_deadlock_exhaustion_returns_503_without_partial_writes_and_key_is_reusable",
+        "--allow-skipped-test",
+        "Tests.Feature.MysqlCheckoutRetryTest::test_lock_wait_timeout_is_not_classified_as_deadlock",
+        "--summary-json",
+        "scratch/verify-close-20261023/php-summary.json"
+      ],
+      "started_at": "2026-10-23T06:49:13.017724+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T06:49:13.091437+00:00"
+    },
+    {
+      "name": "whitespace",
+      "command": [
+        "git",
+        "--no-pager",
+        "diff",
+        "--check"
+      ],
+      "started_at": "2026-10-23T06:49:13.092184+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T06:49:13.120716+00:00"
+    }
+  ],
+  "ended_at": "2026-10-23T06:49:13.120996+00:00"
+}

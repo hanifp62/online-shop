@@ -1,6 +1,8 @@
 <?php
 
+use App\Mail\CartReminder;
 use App\Models\Admin;
+use App\Models\Order;
 use App\Models\User;
 use App\Support\ComposerHooks;
 use Illuminate\Contracts\Console\Kernel;
@@ -14,6 +16,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 const AMADIS_EXACT_VECTORS = [
     ['amadis:cache-config'],
     ['amadis:provision'],
+    ['amadis:provision-react'],
     ['amadis:lifecycle-snapshot'],
     ['migrate', '--force', '--database=sqlite'],
     ['db:seed', '--class=Database\\Seeders\\AmadisDemoSeeder', '--force', '--database=sqlite'],
@@ -110,12 +113,15 @@ if (($argv[1] ?? '') === 'amadis:cache-config') {
     exit(0);
 }
 
-if (($argv[1] ?? '') === 'amadis:provision') {
+if (in_array($argv[1] ?? '', ['amadis:provision', 'amadis:provision-react'], true)) {
     if (count($argv) !== 2) {
         throw new RuntimeException('Provision accepts no arguments.');
     }
-    $file = $root.'/private-runtime/credentials.json';
-    if (is_link($file) || ! is_file($file) || (fileperms($file) & 0077)) {
+    $react = $argv[1] === 'amadis:provision-react';
+    $private = $root.'/private-runtime';
+    $file = $private.'/credentials.json';
+    if (realpath($private) !== $private || ! is_dir($private) || (fileperms($private) & 0077)
+        || is_link($file) || ! is_file($file) || lstat($file)['nlink'] !== 1 || (fileperms($file) & 0077)) {
         throw new RuntimeException('Private credential file invalid.');
     }
     $kernel->bootstrap();
@@ -136,7 +142,14 @@ if (($argv[1] ?? '') === 'amadis:provision') {
             throw new RuntimeException('Invalid credentials.');
         }
     }
-    $ids = $db->transaction(function () use ($credentials): array {
+    $origin = (string) config('app.url');
+    if ($react && ($origin !== getenv('APP_URL') || ! preg_match('~^http://127\.0\.0\.1:([1-9][0-9]{3,4})$~D', $origin, $port)
+        || (int) $port[1] < 1024 || (int) $port[1] > 65535 || in_array((int) $port[1], [8000, 8001], true)
+        || file_exists($private.'/react-fixture.json') || is_link($private.'/react-fixture.json')
+        || $db->table('reviews')->exists())) {
+        throw new RuntimeException('React provision requires a fresh private fixture and explicit loopback origin.');
+    }
+    $ids = $db->transaction(function () use ($credentials, $react, $db, $private, $origin): array {
         $admin = Admin::firstOrNew(['email' => $credentials['admin']['email']]);
         $admin->name = 'Amadis Admin';
         $admin->password = $credentials['admin']['password'];
@@ -144,7 +157,52 @@ if (($argv[1] ?? '') === 'amadis:provision') {
         $customer = User::firstOrNew(['email' => $credentials['customer']['email']]);
         $customer->name = 'Amadis Client';
         $customer->password = $credentials['customer']['password'];
+        if ($react) {
+            $customer->cart_reminder_opt_in = true;
+        }
         $customer->save();
+
+        if ($react) {
+            $product = $db->table('products')->where('product_slug', 'amadis-demo-stock-37')->sole();
+            if (! $product->is_active || (int) $product->stock !== 37) {
+                throw new RuntimeException('React stock fixture invalid.');
+            }
+            // A synthetic historical purchase, not a checkout or inventory reservation.
+            $order = Order::create([
+                'user_id' => $customer->id, 'status' => 'completed',
+                'subtotal' => $product->product_price, 'total' => $product->product_price,
+                'discount' => 0, 'tax' => 0, 'shipping_fee' => 0,
+                'idempotency_key' => 'amadis-react-completed-order-v1',
+                'payload_hash' => hash('sha256', 'amadis-react-completed-order-v1'),
+            ]);
+            $order->items()->create([
+                'product_id' => $product->product_id, 'product_title' => $product->product_title,
+                'quantity' => 1, 'unit_price' => $product->product_price, 'subtotal' => $product->product_price,
+            ]);
+            $fixture = [
+                'schema' => 1, 'origin' => $origin, 'customer_id' => $customer->id,
+                'product_id' => $product->product_id, 'order_id' => $order->id,
+                'unsubscribe_url' => (new CartReminder($customer, []))->unsubscribeUrl(),
+            ];
+            // Private handoff only. stdout remains the existing non-secret ID schema.
+            $previousMask = umask(0077);
+            try {
+                $handle = fopen($private.'/react-fixture.json', 'x');
+                if ($handle === false) {
+                    throw new RuntimeException('React fixture channel unavailable.');
+                }
+                try {
+                    $json = json_encode($fixture, JSON_THROW_ON_ERROR).PHP_EOL;
+                    if (fwrite($handle, $json) !== strlen($json)) {
+                        throw new RuntimeException('React fixture channel incomplete.');
+                    }
+                } finally {
+                    fclose($handle);
+                }
+            } finally {
+                umask($previousMask);
+            }
+        }
 
         return ['status' => 'provisioned', 'admin_id' => $admin->id, 'customer_id' => $customer->id];
     });

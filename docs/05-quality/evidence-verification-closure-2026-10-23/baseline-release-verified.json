@@ -1,0 +1,120 @@
+{
+  "artifacts": {
+    "browser": {
+      "created_at": "2026-10-23T04:41:01Z",
+      "digest": "sha256:6cb58f22c47b3d065ad7e8ddba3d4ebf8139b31b97f664a465be89bb6c5def45",
+      "expired": false,
+      "expires_at": "2026-11-06T04:41:00Z",
+      "id": 12479047655,
+      "name": "browser-summary-a650b12f03e59396ce12e37a9e84b08e00adfc84",
+      "size_in_bytes": 1021
+    },
+    "mysql": {
+      "created_at": "2026-10-23T04:39:37Z",
+      "digest": "sha256:9942eaa9efb376265e6259b20ece00e678276b894b002fd0de41e8fb0dd0cc78",
+      "expired": false,
+      "expires_at": "2026-11-06T04:39:36Z",
+      "id": 12479032699,
+      "name": "mysql-summary-a650b12f03e59396ce12e37a9e84b08e00adfc84",
+      "size_in_bytes": 1249
+    },
+    "quality": {
+      "created_at": "2026-10-23T04:38:18Z",
+      "digest": "sha256:102cd86093cfee9b35784e9617e30093f7ba0de40b105b11ebc16ff611f730ec",
+      "expired": false,
+      "expires_at": "2026-11-06T04:38:17Z",
+      "id": 12479151411,
+      "name": "quality-summary-a650b12f03e59396ce12e37a9e84b08e00adfc84",
+      "size_in_bytes": 575
+    },
+    "release": {
+      "created_at": "2026-10-23T04:42:12Z",
+      "digest": "sha256:374878f9c0c29afee061949d5080ba0ba6566b3f4238f6b3e70e45c24beb8bf6",
+      "expired": false,
+      "expires_at": "2026-11-06T04:42:10Z",
+      "id": 12479245823,
+      "name": "release-candidate-a650b12f03e59396ce12e37a9e84b08e00adfc84",
+      "size_in_bytes": 35717864
+    }
+  },
+  "attempt": 1,
+  "auth_exit": 0,
+  "auth_method": "gh auth token, captured in memory only",
+  "candidate": {
+    "archive": "scratch/react-migration/final-publication-a650b12/release/release.tar.gz",
+    "archive_bytes": 35418622,
+    "archive_sha256": "fc73e06bc6b603e022f3397dd6d22b0c83dad9b6d7e3742c8034d4ad2b315b75",
+    "file_count": 8054,
+    "manifest": "scratch/react-migration/final-publication-a650b12/release/release-manifest.json",
+    "manifest_sha256": "5279d9526057d1f60124db581951f053076408be6afe8ba14d05c0292ed05a62",
+    "release_id": "a650b12f03e59396ce12e37a9e84b08e00adfc84-fc73e06bc6b603e022f3397dd6d22b0c83dad9b6d7e3742c8034d4ad2b315b75"
+  },
+  "collector_source_sha256": "3cefcddfc6e1935d701e87d30c9ae2458441b761938d320639772a62b9a83f23",
+  "download_wait_seconds": 900,
+  "elapsed_seconds": 45.675,
+  "ended_at": "2026-10-23T05:56:37.436716+00:00",
+  "event": "push",
+  "exit": 0,
+  "jobs": [
+    "browser",
+    "mysql",
+    "php",
+    "quality",
+    "release"
+  ],
+  "lane": "RELEASE",
+  "method": "original collect_publication.Github urllib + collect",
+  "outer_terminal_timeout_seconds": 1000,
+  "output": "scratch/react-migration/final-publication-a650b12",
+  "publication_summary": {
+    "archive_sha256": "fc73e06bc6b603e022f3397dd6d22b0c83dad9b6d7e3742c8034d4ad2b315b75",
+    "artifacts": [
+      "browser",
+      "mysql",
+      "quality",
+      "release"
+    ],
+    "attempt": 1,
+    "event": "push",
+    "jobs": [
+      "browser",
+      "mysql",
+      "php",
+      "quality",
+      "release"
+    ],
+    "release_id": "a650b12f03e59396ce12e37a9e84b08e00adfc84-fc73e06bc6b603e022f3397dd6d22b0c83dad9b6d7e3742c8034d4ad2b315b75",
+    "repo": "hanifp62/online-shop",
+    "run_id": 39900693030,
+    "sha": "a650b12f03e59396ce12e37a9e84b08e00adfc84",
+    "status": "ok"
+  },
+  "receive_timeout_seconds": 15,
+  "repo": "hanifp62/online-shop",
+  "run_id": 39900693030,
+  "sha": "a650b12f03e59396ce12e37a9e84b08e00adfc84",
+  "stages": [
+    {
+      "ended_at": "2026-10-23T05:55:54.661428+00:00",
+      "exit": 0,
+      "name": "preflight",
+      "started_at": "2026-10-23T05:55:51.762897+00:00"
+    },
+    {
+      "ended_at": "2026-10-23T05:56:35.962563+00:00",
+      "exit": 0,
+      "name": "original_collect",
+      "started_at": "2026-10-23T05:55:54.662829+00:00"
+    },
+    {
+      "ended_at": "2026-10-23T05:56:37.436696+00:00",
+      "exit": 0,
+      "name": "fresh_metadata_and_offline_recheck",
+      "started_at": "2026-10-23T05:56:35.962576+00:00"
+    }
+  ],
+  "started_at": "2026-10-23T05:55:51.761435+00:00",
+  "status": "PASS",
+  "summary_path": "scratch/react-migration/final-publication-a650b12/publication-summary.json",
+  "task": "VERIFY-CLOSE-20261023"
+}

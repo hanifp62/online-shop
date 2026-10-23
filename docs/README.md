@@ -2,6 +2,8 @@
 
 Selamat datang di indeks dokumentasi teknis dan produk untuk proyek e-commerce **ZAFIRA** (`online-shop`). Seluruh dokumen disusun secara sistematis, berbasis bukti (*evidence-driven*), dan saling terhubung (*traceable*).
 
+**Penutupan celah verifikasi, 23 Oktober 2026:** unduhan kandidat baseline selesai dan diverifikasi offline; dua alur browser optional kini menjadi wajib. Native browser **31/31**, unavailable0, unexpected console0, cleanupPASS; PHP1.286pass+3exactMySQLskip, Node592, React232, Python434. Native Artisan8001 lulus ulang dengan8halamanReact/16asetidentik. [Laporan penutupan dan batas bukti](05-quality/VERIFICATION_CLOSURE_2026-10-23.md), [evidence](05-quality/evidence-verification-closure-2026-10-23/). Snapshot ini adalah gate lokal sebelum push increment; CI finalSHA wajib diperiksa pada run baru. Riwayat29mandatory/2optional di dokumen sebelumnya tetap historis, bukan status gate terbaru. Belum deployment/approval produksi.
+
 **Paritas localhost, 23 Oktober 2026:** `php artisan serve` pada checkout pengguna benar-benar diuji dan memilih8001saat8000terpakai. Cache discovery lama penyebab500diperbaiki melalui hook Composer;8halamanReact/16asetidentik, fallback/no-JS dan console0lulus pada profildefault, porteksplisit dan canonical-origin8001. [Cara menjalankan](04-implementation/LOCALHOST_TESTING.md), [laporan dan batas bukti](05-quality/LOCALHOST_PARITY_2026-10-23.md). Dokumen menyimpan hasil lokal sebelum push; status CI wajib terikat SHA/run terbaru, bukan run baseline. Belum deployment/approval produksi.
 
 **Integrasi frontend, snapshot penutupan lokal sebelum publikasi, 23 Oktober 2026 WIB:** seluruh **20 komponen halaman interaktif** memakai JSX native React19 + Inertia3 dengan fallback Blade. Gate final: **PHP1.286pass+3exactengineskip/160.073assertion, Node556, React232, Python402, Pint406**, build/scanner/audit lulus; **browser native29mandatory, unexpected console0, cleanupPASS** serta regresi browser lama lulus. Collector bukti CI juga teruji live pada baseline yang sudah dipublikasikan, bukan pada diff baru. [Laporan cakupan, perbaikan, review dan batas penerimaan](05-quality/REACT_INERTIA_COMPLETION_2026-10-23.md), [indeks bukti](05-quality/evidence-react-completion-2026-10-23/verification-index.json). **Pada snapshot penutupan tersebut increment belum commit/push atau CI remote baru; bukan approval produksi.** Dua flow browser optional dan gate lingkungan/operasi tetap tercatat. Paragraf berikut adalah riwayat publikasi/milestone sebelumnya, bukan status seluruh integrasi lokal terkini.
@@ -98,6 +100,7 @@ docs/
 │   ├── REACT_INERTIA_INTEGRATION_2026-10-22.md # Milestone frontend lokal; seluruh migrasi masih partial
 │   ├── REACT_INERTIA_PUBLICATION_2026-10-23.md # Push main, lima job hijau, engine/restore dan kandidat terverifikasi
 │   ├── REACT_INERTIA_COMPLETION_2026-10-23.md # 20 komponen native, gate lokal final, collector live baseline dan batas produksi
+│   ├── VERIFICATION_CLOSURE_2026-10-23.md      # Unduhan terverifikasi, 31 browser wajib, regresi dan paritas8001
 │   ├── QUALITY_REVIEW.md                     # Evaluasi kualitas lintas lapisan & verifikasi hasil
 │   ├── PROJECT_READINESS_REPORT.md           # Laporan kesiapan proyek & status deliverable
 │   ├── COUNCIL_AUDIT_REPORT.md                # Evaluasi silang dewan, koreksi fase, dan backlog remediasi

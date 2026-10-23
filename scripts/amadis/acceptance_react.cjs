@@ -6,6 +6,7 @@ const { chromium } = require(process.env.AM_PLAYWRIGHT);
 const securityFlows = require('./acceptance_react_security.cjs');
 const completeFlows = require('./acceptance_react_complete.cjs');
 const networkMonitor = require('./acceptance_react_monitor.cjs');
+const fixtureChannel = require('./acceptance_react_fixture.cjs');
 const origin = process.env.AM_ACCEPTANCE_URL;
 assert.match(origin, /^http:\/\/127\.0\.0\.1:\d+$/);
 const output = process.env.AM_ACCEPTANCE_OUTPUT;
@@ -28,9 +29,11 @@ async function pageFor(options = {}) {
     return page;
 }
 async function native(page, url) {
-    assert.equal((await page.goto(origin + url, { waitUntil: 'domcontentloaded' })).status(), 200);
+    const response = await page.goto(origin + url, { waitUntil: 'domcontentloaded' });
+    assert.equal(response.status(), 200);
     await page.locator('#app[data-react-boot="ready"]').waitFor();
     assert.equal(await page.locator('script[data-page="app"]').count(), 0);
+    return response;
 }
 async function modal(page) {
     const button = page.locator('[data-quick-view]').first();
@@ -45,6 +48,8 @@ async function modal(page) {
 (async () => {
     let outcome;
     try {
+        stage = 'fixture-preflight';
+        const fixture = fixtureChannel(origin);
         browser = await chromium.launch({ headless: true, executablePath: process.env.AM_CHROMIUM });
         const page = await pageFor({ viewport: { width: 1440, height: 1000 } });
         page.on('pageerror', () => { consoleErrors += 1; });
@@ -204,15 +209,14 @@ async function modal(page) {
         assert.equal(await admin.locator('.auth-events-table-wrap').count(), 0);
         assert.equal(await admin.locator('.admin-work-operator').count(), 0);
         checks.push(stage);
-        const flowOptions = { pageFor, native, origin, credentials: fixtureCredentials,
+        const flowOptions = { pageFor, native, origin, credentials: fixtureCredentials, fixture,
             start: name => { stage = name; }, done: () => checks.push(stage), monitor,
             diagnose: values => { diagnostic = { ...diagnostic, ...values }; } };
         const complete = await completeFlows(flowOptions);
         const security = await securityFlows(flowOptions);
         const unavailable = [...complete.unavailable, ...security.unavailable];
-        const optional = [...completeFlows.OPTIONAL_STAGES, ...securityFlows.OPTIONAL_STAGES];
-        assert.deepEqual(checks.filter(name => !optional.includes(name)), completeFlows.MANDATORY_ORDER.slice(0, -1));
-        assert(optional.every(name => checks.includes(name) !== unavailable.includes(name)));
+        assert.deepEqual(checks, completeFlows.MANDATORY_ORDER.slice(0, -1));
+        assert.deepEqual(unavailable, []);
         stage = 'console-clean';
         outcome = { status: 'PASS', checks, consoleErrors, unavailable, expectedFaultCounts: { ...complete.expectedFaultCounts, ...security.expectedFaultCounts } };
     } catch (error) {

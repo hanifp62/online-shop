@@ -25,6 +25,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit
 
+import check_react_browser_report
 import release_artifact
 
 JOBS = frozenset({'quality', 'mysql', 'browser', 'release', 'php'})
@@ -40,6 +41,7 @@ POLL_SECONDS = 5
 WAIT_SECONDS = 60
 REQUEST_SECONDS = 15
 DOWNLOAD_SECONDS = 90
+MAX_DOWNLOAD_SECONDS = 900
 SUMMARY_LIMIT = 2 * 1024 * 1024
 RELEASE_LIMIT = 512 * 1024 * 1024
 
@@ -418,7 +420,7 @@ def extract_expected(zip_path, output, names, limit, kind=None):
 
 def collect(client, repo, run_id, sha, attempt, event, output, *, clock=time.monotonic,
             now=lambda: datetime.now(UTC), sleep=time.sleep, wait=WAIT_SECONDS,
-            download_wait=DOWNLOAD_SECONDS):
+            download_wait: float = DOWNLOAD_SECONDS):
     require(re.fullmatch(r'[A-Za-z0-9_-]+/[A-Za-z0-9_.-]+', repo) is not None
             and re.fullmatch(r'[0-9a-f]{40}', sha) is not None
             and run_id > 0 and attempt > 0 and event in ('push', 'pull_request'),
@@ -458,8 +460,15 @@ def collect(client, repo, run_id, sha, attempt, event, output, *, clock=time.mon
             extract_expected(zip_path, folder, ARTIFACTS[kind], limit, kind=kind)
             if kind != 'release':
                 for name in ARTIFACTS[kind]:
+                    raw = (folder / name).read_bytes()
+                    if kind == 'browser' and name == 'react-browser-evidence/summary.json':
+                        try:
+                            check_react_browser_report.parse_report(raw)
+                        except (ValueError, RecursionError):
+                            raise Rejected('Invalid native browser summary.') from None
+                        continue
                     try:
-                        report = json.loads((folder / name).read_bytes())
+                        report = json.loads(raw)
                     except (ValueError, UnicodeDecodeError):
                         raise Rejected('Invalid artifact summary JSON.') from None
                     require(isinstance(report, dict) and report.get('status') == 'PASS',
@@ -483,6 +492,17 @@ def collect(client, repo, run_id, sha, attempt, event, output, *, clock=time.mon
     return summary
 
 
+def download_seconds(value):
+    message = f'must be an integer in 1..{MAX_DOWNLOAD_SECONDS}'
+    try:
+        seconds = int(value)
+    except ValueError:
+        raise argparse.ArgumentTypeError(message) from None
+    if not 1 <= seconds <= MAX_DOWNLOAD_SECONDS:
+        raise argparse.ArgumentTypeError(message)
+    return seconds
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--repo', required=True)
@@ -491,11 +511,14 @@ def main(argv=None):
     parser.add_argument('--attempt', required=True, type=int)
     parser.add_argument('--event', required=True, choices=('push', 'pull_request'))
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--download-seconds', type=download_seconds, default=DOWNLOAD_SECONDS,
+                        metavar=f'1..{MAX_DOWNLOAD_SECONDS}',
+                        help='Per-artifact download budget; retries share it (default: %(default)s seconds).')
     args = parser.parse_args(argv)
     try:
         client = Github(os.environ.get('GH_TOKEN'))
         summary = collect(client, args.repo, args.run_id, args.sha, args.attempt,
-                          args.event, args.output)
+                          args.event, args.output, download_wait=args.download_seconds)
         print(json.dumps(summary, sort_keys=True))
         return 0
     except (Rejected, OSError, ValueError, KeyError, TypeError, EOFError, http.client.HTTPException,

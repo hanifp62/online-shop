@@ -223,6 +223,16 @@ python3 scripts/ci/check_browser_report.py "$RUNNER_TEMP/browser-evidence" | tee
 - Jika rerun dan seluruh gate lulus, cakupan AM-10 tetap terbatas pada irisan interval HTTP sisi klien dan invarians fixture yang dilaporkan, **bukan** bukti konkurensi transaksi InnoDB, integrasi pembayaran eksternal, seluruh browser, seluruh alur admin, atau sertifikasi WCAG. Pengujian pembaca layar dan alur staging tetap gate tersendiri.
 - Publish hanya `browser-summary.json`; jangan upload keseluruhan directory browser yang memuat log, identitas fixture, dan data diagnostik.
 
+### 5.3 Native React: 31 tahap wajib
+
+Setelah lane legacy selesai, gunakan fixture baru melalui `bash scripts/amadis/acceptance_react.sh` dengan argument directory evidence baru; port default8043, bukan8000/8001. Environment Playwright/Chromium sama dengan bagian5.2. Wrapper memanggil mode guarded `provision-react PORT`, browser, lalu `check_react_browser_report.py publish DIRECTORY` hanya sesudah supervisor sukses.
+
+- Tepat31checks berurutan, `unavailable=[]`, unexpected console0, expected-fault counts terbatas, supervisor0 dan cleanupPASS. Dua tahap ulasan completed order dan signed unsubscribe tidak lagi optional.
+- Order historis sintetis dan signed URL hanya berada pada fixture/channel privat. Mode legacy tetap tidak menambah order. Jangan menambahkan link pengujian ke UI produksi atau menunjuk helper ke DB operasional.
+- Ulasan membutuhkan HTTP201, satu POST dan oracle owner/order/product/rating/body read-only. Unsubscribe membutuhkan GET tanpa mutasi, POST yang mematikan opt-in, replay idempoten serta no-store; setiap batas diperiksa oracle.
+- Verifikasi offline: `python3 scripts/ci/check_react_browser_report.py verify SUMMARY`. Collector memakai parser yang sama terhadap raw bytes untuk menolak duplicate keys, laporan29tahap, field tambahan atau schema tidak lengkap. Report lama tidak boleh diedit agar menyerupai report baru.
+- Upload hanya `react-browser-evidence/summary.json`. Jangan upload channel privat, URL bertandatangan, credentials, raw log atau database. [Bukti lokal dan batas](../05-quality/VERIFICATION_CLOSURE_2026-10-23.md).
+
 ## 6. Gate E/F — kandidat artefak dan aggregate `php`
 
 ### Koleksi bukti satu run attempt, tambahan 23 Oktober 2026
@@ -239,10 +249,20 @@ Kontrak collector:
 
 - Run identity dan setiap job harus cocok; tepat lima nama wajib `quality`, `mysql`, `browser`, `release`, `php`, semuanya completed/success. Bounded wait60detik hanya untuk konsistensi snapshot, bukan menunggu build panjang.
 - Empat artifact terikat nama/SHA/run, window waktu attempt, expiry, digest dan ukuran. Metadata GitHub tidak mempunyai attempt ID artifact; window yang ambigu ditolak, tidak diklaim sebagai attestation kriptografis attempt.
-- Download per-artifact maksimal90detik budget, read timeout maksimal15detik per receive. Socket timeout sebelum deadline boleh retry GET satu kali dengan deadline semula. HTTP errors tidak diretry. DNS/TLS setup masih mempunyai batas platform, bukan hard wall-clock universal.
+- Budget download per-artifact default **90 detik**, bukan dinaikkan otomatis. Opsi CLI `--download-seconds` menerima integer **1..900**; nilai invalid ditolak dengan exit2 sebelum token dibaca atau jaringan diakses. Read timeout tetap maksimal **15 detik per receive**. Socket timeout sebelum deadline boleh retry GET satu kali dengan deadline semula, bukan budget baru. HTTP errors tidak diretry. DNS/TLS setup masih mempunyai batas platform, bukan hard wall-clock universal.
 - Redirect HTTPS maksimal3hop; Host dibentuk ulang dan credential/header API tidak dibawa lintas origin. Body redirect ditutup tanpa drain. Chunked, Content-Length dan close-delimited mempunyai byte/deadline guard.
 - Struktur ZIP exact, termasuk nested path MySQL producer; path traversal/symlink/duplikasi ditolak. Kandidat release wajib lolos verifier offline dan SHA sumber sebelum output final diterbitkan.
 - Output berisi `publication-summary.json` dan kandidat terverifikasi dalam `release/`; raw report fields/metadata/ZIP/log tidak dipublikasikan. Jika CLI nonzero, tidak ada approval; jangan menggunakan output dari run lain atau meningkatkan timeout tanpa diagnosis.
+
+**Retry unduhan lambat (NFR-CICD-002/004/005):**
+
+1. Simpan kegagalan dan diagnosis sebelumnya. Bedakan deadline transfer habis dari kegagalan CI, HTTP, ukuran/digest, ZIP atau verifier offline. Jangan memakai unduhan parsial sebagai kandidat.
+2. Setelah diagnosis dan izin perpanjangan, tambahkan `--download-seconds 900` pada argumen identitas run yang sama, dengan `--output` baru. Nilai yang lebih kecil dalam rentang1..900 juga valid. Ini tetap transport `urllib` asli; tidak mengganti transport atau menonaktifkan guard.
+3. Batasi juga proses pemanggil secara eksplisit. Contoh budget luar1000detik dipakai untuk percobaan satu kandidat besar dengan tiga artifact ringkasan kecil; **900detik adalah budget setiap artifact**, bukan seluruh proses. Pertimbangkan metadata, jumlah artifact dan verifikasi offline saat menetapkan budget luar. Jika budget luar habis, laporkan timeout dan jangan menganggap output sebagai sukses tanpa hasil collector yang lengkap.
+4. Catat metode, budget, start/end UTC, exit, identitas run/attempt/SHA, metadata artifact segar yang di-allowlist dan hasil `publication-summary.json`. Ukuran dan SHA-256 ZIP tetap harus cocok metadata GitHub; expiry, struktur ZIP, SHA sumber dan verifier offline tetap wajib lulus. Token dan signed URL tidak boleh masuk log; ambil credential melalui kanal yang disetujui hanya di memori/environment proses.
+5. CLI nonzero atau timeout tetap gagal. Simpan bukti bertipe/tersanitasi tanpa raw exception/response/URL. Hentikan setelah dua kegagalan submasalah yang sama untuk diagnosis dan persetujuan resumption; jangan memperluas default atau menurunkan guard agar lolos.
+
+Batas1..900 adalah validasi **CLI saja**. API `collect(..., download_wait=...)` tetap menerima budget pendek/fractional untuk pengujian deterministik; timeout receive dan budget konsistensi job tidak ikut diperpanjang.
 
 **Bukti eksekusi:** collector source increment ini lulus live untuk baseline `016fb944c4d1d0dc380a014b9f99570167b106f0`, run39825513680/attempt1/push, pada22OktoberUTC21:40:22–21:40:47. [Evidence pertama](../05-quality/evidence-react-completion-2026-10-23/baseline-collector-live.json). Rerun source final22:02:10–22:03:13UTC juga lulus: [evidence final](../05-quality/evidence-react-completion-2026-10-23/baseline-collector-final.json). Itu bukan CI remote untuk increment integrasi yang belum dipush. [Laporan lengkap](../05-quality/REACT_INERTIA_COMPLETION_2026-10-23.md).
 

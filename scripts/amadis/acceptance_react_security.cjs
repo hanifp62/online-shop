@@ -75,9 +75,54 @@ async function privateMaterialAbsent(page, material) {
     assert.equal(await page.locator('script[data-page="app"]').count(), 0);
 }
 
-module.exports = async function securityFlows({ pageFor, native, origin, credentials, start, done, monitor }) {
-    const unavailable = ['signed-unsubscribe-native-confirm-complete'];
-    const customer = await pageFor();
+async function signedUnsubscribe({ customer, native, origin, fixture, credentials }) {
+    fixture.verify('unsubscribe-before');
+    const target = new URL(fixture.unsubscribe_url);
+    assert(target.origin === origin);
+    let gets = 0, posts = 0;
+    const count = request => {
+        if (request.url() !== fixture.unsubscribe_url) return;
+        if (request.method() === 'GET') gets += 1;
+        if (request.method() === 'POST') posts += 1;
+    };
+    customer.on('request', count);
+    try {
+        // Repeat the real GET + native form POST to prove idempotent completion.
+        for (let attempt = 0; attempt < 2; attempt += 1) {
+            const confirmation = await native(customer, target.pathname + target.search);
+            assert(confirmation.request().method() === 'GET' && confirmation.request().isNavigationRequest());
+            assert(!confirmation.fromServiceWorker() && confirmation.headers()['cache-control']?.includes('no-store'));
+            const form = customer.locator('form[data-auth-form]');
+            assert.equal(await form.count(), 1);
+            assert((await form.getAttribute('action')) === fixture.unsubscribe_url);
+            assert.equal((await form.getAttribute('method')).toUpperCase(), 'POST');
+            assert.equal(await form.locator('[name="_token"]').count(), 1);
+            fixture.verify(attempt === 0 ? 'unsubscribe-get' : 'unsubscribe-after');
+            await privateMaterialAbsent(customer, [credentials.customer.password, credentials.admin.password]);
+            const [, response] = await Promise.all([
+                customer.waitForEvent('domcontentloaded', { timeout: 15000 }),
+                customer.waitForResponse(response => response.request().url() === fixture.unsubscribe_url
+                    && response.request().method() === 'POST' && response.request().isNavigationRequest()
+                    && response.request().frame() === customer.mainFrame(), { timeout: 15000 }),
+                form.locator('button[type="submit"]').click(),
+            ]);
+            assert.equal(response.status(), 200);
+            assert(!response.fromServiceWorker() && response.headers()['cache-control']?.includes('no-store'));
+            assert(response.request().headers()['x-inertia'] !== 'true');
+            await customer.locator('#app[data-react-boot="ready"]').waitFor();
+            assert.equal(await customer.locator('main form').count(), 0);
+            await customer.locator('main [role="status"]').waitFor();
+            fixture.verify('unsubscribe-after');
+            await privateMaterialAbsent(customer, [credentials.customer.password, credentials.admin.password]);
+        }
+        assert.equal(gets, 2);
+        assert.equal(posts, 2);
+    } finally { customer.off('request', count); }
+}
+
+module.exports = async function securityFlows({ pageFor, native, origin, credentials, fixture, start, done, monitor }) {
+    const unavailable = [];
+    const customer = await pageFor({ serviceWorkers: 'block' });
     let exporting = false, exportAbortCount = 0;
     monitor(customer, { expectedNetworkFailure: failure => {
         // Chromium reports a navigation handed to its download manager as ERR_ABORTED.
@@ -100,28 +145,14 @@ module.exports = async function securityFlows({ pageFor, native, origin, credent
         await submit(customer, 'form[action$="/logout"] button');
     }
 
+    start('signed-unsubscribe-native-confirm-complete');
+    await signedUnsubscribe({ customer, native, origin, fixture, credentials });
+    done();
+
     start('account-native-update-export-logout');
     await login(customer, 'customer');
     await native(customer, '/akun');
-    const unsubscribe = customer.locator('a[href*="/pengingat-keranjang/berhenti/"]').first();
-    if (await unsubscribe.count()) {
-        const target = new URL(await unsubscribe.getAttribute('href'), origin);
-        assert(target.origin === origin && target.searchParams.has('signature'));
-        start('signed-unsubscribe-native-confirm-complete');
-        await native(customer, target.pathname + target.search);
-        await customer.locator('form[data-auth-form] button[type="submit"]').waitFor();
-        await Promise.all([
-            customer.waitForEvent('domcontentloaded', { timeout: 15000 }),
-            customer.locator('form[data-auth-form] button[type="submit"]').click(),
-        ]);
-        await ready(customer);
-        assert.equal(await customer.locator('main form').count(), 0);
-        await customer.locator('main [role="status"]').waitFor();
-        done();
-        unavailable.splice(unavailable.indexOf('signed-unsubscribe-native-confirm-complete'), 1);
-        start('account-native-update-export-logout');
-        await native(customer, '/akun');
-    }
+    await privateMaterialAbsent(customer, [new URL(fixture.unsubscribe_url).searchParams.get('signature')]);
     await customer.locator('#first_name').fill('Native fixture');
     await submit(customer, 'form[data-auth-form] button[type="submit"]');
     await ready(customer);
@@ -257,9 +288,10 @@ module.exports = async function securityFlows({ pageFor, native, origin, credent
     done();
     return { unavailable, expectedFaultCounts: { 'account-export-download': exportAbortCount } };
 };
+module.exports.signedUnsubscribe = signedUnsubscribe;
 module.exports.STAGES = Object.freeze([
-    'account-native-update-export-logout', 'reset-native-flash-validation',
+    'signed-unsubscribe-native-confirm-complete', 'account-native-update-export-logout', 'reset-native-flash-validation',
     'customer-totp-native-enrol-recovery', 'customer-totp-native-challenge',
     'admin-totp-native-enrol-recovery', 'admin-totp-native-challenge',
 ]);
-module.exports.OPTIONAL_STAGES = Object.freeze(['signed-unsubscribe-native-confirm-complete']);
+module.exports.OPTIONAL_STAGES = Object.freeze([]);

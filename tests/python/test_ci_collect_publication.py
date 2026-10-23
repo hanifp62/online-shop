@@ -28,6 +28,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'scripts/ci'))
 from scripts.ci import collect_publication as publication
 
+react_report = publication.check_react_browser_report
 SHA = 'a' * 40
 REPO = 'hanifp62/online-shop'
 STAMP = '2026-10-22T17:20:00Z'
@@ -104,7 +105,13 @@ def jobs():
             for name in ('quality', 'mysql', 'browser', 'release', 'php')]
 
 
-def fixtures():
+def native_summary():
+    return {'status': 'PASS', 'checks': list(react_report.MANDATORY), 'consoleErrors': 0,
+            'unavailable': [], 'expectedFaultCounts': {key: bounds[0] for key, bounds in react_report.FAULTS.items()},
+            'supervisorExit': 0, 'cleanup': 'PASS'}
+
+
+def fixtures(native_report=None):
     payloads = {}
     artifacts = []
     expected = {'quality': ('phpunit-summary.json', 'python-summary.json'),
@@ -113,6 +120,9 @@ def fixtures():
                 'release': ('release.tar.gz', 'release-manifest.json')}
     for index, (kind, names) in enumerate(expected.items(), start=1):
         contents = {name: b'fixture' if kind == 'release' else b'{"status":"PASS"}' for name in names}
+        if kind == 'browser':
+            contents['react-browser-evidence/summary.json'] = (json.dumps(native_summary()).encode()
+                                                              if native_report is None else native_report)
         data = zip_bytes(contents)
         payloads[f'repos/{REPO}/actions/artifacts/{index}/zip'] = data
         artifacts.append({'name': f'{"release-candidate" if kind == "release" else kind + "-summary"}-{SHA}',
@@ -247,7 +257,7 @@ class PublicationTests(unittest.TestCase):
 
     def test_browser_artifact_nested_contract_and_unknown_path(self):
         payload = zip_bytes({'browser-summary.json': b'{"status":"PASS"}',
-                             'react-browser-evidence/summary.json': b'{"status":"PASS"}'})
+                             'react-browser-evidence/summary.json': json.dumps(native_summary()).encode()})
         with tempfile.TemporaryDirectory() as directory:
             folder = Path(directory)
 
@@ -256,11 +266,122 @@ class PublicationTests(unittest.TestCase):
             output = folder / 'extracted'
             output.mkdir()
             publication.extract_expected(archive, output,
-                frozenset({'browser-summary.json', 'react-browser-evidence/summary.json'}), 500)
+                frozenset({'browser-summary.json', 'react-browser-evidence/summary.json'}), len(payload))
             self.assertTrue((output / 'react-browser-evidence/summary.json').is_file())
             with self.assertRaisesRegex(publication.Rejected, 'entries mismatch'):
                 publication.extract_expected(archive, output,
-                    frozenset({'browser-summary.json', 'summary.json'}), 500)
+                    frozenset({'browser-summary.json', 'summary.json'}), len(payload))
+
+    def test_native_browser_summary_uses_strict_parser_on_raw_bytes(self):
+        report = native_summary()
+        self.assertEqual(len(report['checks']), 31)
+        self.assertIn('shop-account-completed-order-review', report['checks'])
+        self.assertIn('signed-unsubscribe-native-confirm-complete', report['checks'])
+        raw = json.dumps(report).encode()
+        artifacts, payloads = fixtures(raw)
+        manifest = {'source': {'commit': SHA}, 'release_id': 'fixture-release',
+                    'archive': {'sha256': 'b' * 64}}
+        with patch.object(react_report, 'parse_report', wraps=react_report.parse_report) as parse, \
+             patch.object(publication.release_artifact, 'verify', return_value=manifest):
+            summary = self.collect(FakeClient([jobs()], artifacts, payloads))
+        parse.assert_called_once_with(raw)
+        self.assertEqual(summary['status'], 'ok')
+        self.assertFalse((self.output / 'browser').exists())
+
+    def assert_native_report_rejected(self, raw):
+        artifacts, payloads = fixtures(raw)
+        manifest = {'source': {'commit': SHA}, 'release_id': 'fixture-release',
+                    'archive': {'sha256': 'b' * 64}}
+        with patch.object(publication.release_artifact, 'verify', return_value=manifest) as verify, \
+             self.assertRaisesRegex(publication.Rejected, '^Invalid native browser summary\\.$'):
+            self.collect(FakeClient([jobs()], artifacts, payloads))
+        verify.assert_not_called()
+        self.assertFalse(self.output.exists())
+        self.assertEqual(list(Path(self.temp.name).iterdir()), [])
+
+    def test_native_browser_summary_rejects_29_and_missing_flows(self):
+        formerly_optional = ['shop-account-completed-order-review', 'signed-unsubscribe-native-confirm-complete']
+        for missing in (formerly_optional, [formerly_optional[0]], [formerly_optional[1]]):
+            for unavailable in ([], missing):
+                report = native_summary()
+                report['checks'] = [name for name in report['checks'] if name not in missing]
+                report['unavailable'] = unavailable
+                with self.subTest(missing=missing, unavailable=unavailable):
+                    self.assert_native_report_rejected(json.dumps(report).encode())
+        for mutation in ('duplicate', 'reordered', 'unknown'):
+            report = native_summary()
+            if mutation == 'duplicate':
+                report['checks'][1] = report['checks'][0]
+            elif mutation == 'reordered':
+                report['checks'][0], report['checks'][1] = report['checks'][1], report['checks'][0]
+            else:
+                report['checks'][0] = 'unknown'
+            with self.subTest(mutation=mutation):
+                self.assert_native_report_rejected(json.dumps(report).encode())
+
+    def test_native_browser_summary_rejects_fake_pass_and_fault_schema(self):
+        self.assert_native_report_rejected(b'{"status":"PASS"}')
+        for key in native_summary():
+            report = native_summary()
+            del report[key]
+            with self.subTest(missing=key):
+                self.assert_native_report_rejected(json.dumps(report).encode())
+        for key, value in (('status', 'FAIL'), ('consoleErrors', True), ('consoleErrors', 1),
+                           ('supervisorExit', False), ('supervisorExit', 1), ('cleanup', 'PENDING'),
+                           ('unavailable', None), ('unavailable', ['missing-flow']),
+                           ('expectedFaultCounts', None), ('extra', 'private-value')):
+            with self.subTest(key=key, value=value):
+                self.assert_native_report_rejected(json.dumps({**native_summary(), key: value}).encode())
+        for key, bounds in react_report.FAULTS.items():
+            for value in (bounds[0] - 1, bounds[1] + 1, True, '1', None):
+                report = native_summary()
+                report['expectedFaultCounts'][key] = value
+                with self.subTest(fault=key, value=value):
+                    self.assert_native_report_rejected(json.dumps(report).encode())
+        for key in (*react_report.FAULTS, 'unknown-fault'):
+            report = native_summary()
+            if key in report['expectedFaultCounts']:
+                del report['expectedFaultCounts'][key]
+            else:
+                report['expectedFaultCounts'][key] = 0
+            with self.subTest(fault_key=key):
+                self.assert_native_report_rejected(json.dumps(report).encode())
+
+    def test_native_browser_summary_rejects_duplicate_keys_and_malformed_json(self):
+        raw = json.dumps(native_summary()).encode()
+        variants = (
+            raw.replace(b'"status": "PASS"', b'"status": "FAIL", "status": "PASS"', 1),
+            raw.replace(b'"checks": [', b'"checks": [], "checks": [', 1),
+            raw.replace(b'"checkout-abort-requestfailed": 1',
+                        b'"checkout-abort-requestfailed": 0, "checkout-abort-requestfailed": 1', 1),
+            raw.replace(b'"consoleErrors": 0', b'"consoleErrors": NaN'),
+            raw + b' ' * 32768,
+            b'{"status":"PASS",}', b'{"status":"PASS","extra":"\xff"}', b'null',
+            b'{"status":"PASS","extra":' + b'[' * 2000 + b'0' + b']' * 2000 + b'}',
+        )
+        for index, value in enumerate(variants):
+            with self.subTest(case=index):
+                self.assert_native_report_rejected(value)
+
+    def test_native_browser_cli_rejection_is_sanitized(self):
+        raw = json.dumps({**native_summary(), 'private': 'https://example.test/?signature=synthetic-secret'}).encode()
+        artifacts, payloads = fixtures(raw)
+        client = FakeClient([jobs()], artifacts, payloads)
+        manifest = {'source': {'commit': SHA}, 'release_id': 'fixture-release',
+                    'archive': {'sha256': 'b' * 64}}
+        with patch.object(publication, 'Github', return_value=client), \
+             patch.object(publication.release_artifact, 'verify', return_value=manifest) as verify, \
+             patch.dict(publication.os.environ, {'GH_TOKEN': 'synthetic'}), \
+             patch('sys.stderr', new_callable=io.StringIO) as errors, \
+             patch('sys.stdout', new_callable=io.StringIO) as output:
+            status = publication.main(['--repo', REPO, '--run-id', '42', '--sha', SHA,
+                                       '--attempt', '2', '--event', 'push', '--output', str(self.output)])
+        self.assertEqual(status, 1)
+        self.assertEqual(output.getvalue(), '')
+        self.assertEqual(errors.getvalue(),
+                         'Publication collection rejected; inspect run identity, jobs and artifacts privately.\n')
+        verify.assert_not_called()
+        self.assertFalse(self.output.exists())
 
     def test_mysql_producer_glob_and_zip_mapping(self):
         workflow = (ROOT / '.github/workflows/ci.yml').read_text()
@@ -798,6 +919,70 @@ class PublicationTests(unittest.TestCase):
                     producer.join(timeout=1)
                     self.assertFalse(producer.is_alive())
                     self.output.unlink(missing_ok=True)
+
+    def test_cli_download_budget_default_and_valid_overrides(self):
+        for value in (None, '1', '90', '91', '899', '900'):
+            args = ['--repo', REPO, '--run-id', '42', '--sha', SHA,
+                    '--attempt', '2', '--event', 'push', '--output', str(self.output)]
+            if value is not None:
+                args += ['--download-seconds', value]
+            with self.subTest(value=value), \
+                 patch.dict(publication.os.environ, {'GH_TOKEN': 'synthetic'}), \
+                 patch.object(publication, 'Github') as github, \
+                 patch.object(publication, 'collect', return_value={'status': 'ok'}) as collect, \
+                 patch('sys.stdout', new_callable=io.StringIO) as output:
+                self.assertEqual(publication.main(args), 0)
+                github.assert_called_once_with('synthetic')
+                collect.assert_called_once_with(github.return_value, REPO, 42, SHA, 2, 'push',
+                                                self.output, download_wait=90 if value is None else int(value))
+                self.assertEqual(json.loads(output.getvalue()), {'status': 'ok'})
+
+    def test_cli_invalid_download_budget_never_reads_token_or_uses_network(self):
+        for value in ('0', '-1', '901', '100000', '1.5', '1e2', 'nan', 'inf', 'abc', '', None):
+            args = ['--repo', REPO, '--run-id', '42', '--sha', SHA,
+                    '--attempt', '2', '--event', 'push', '--output', str(self.output),
+                    '--download-seconds']
+            if value is not None:
+                args.append(value)
+            with self.subTest(value=value), \
+                 patch.object(publication.os.environ, 'get', return_value=None) as environment, \
+                 patch.object(publication, 'Github') as github, \
+                 patch.object(publication.urllib.request, 'build_opener') as opener, \
+                 patch.object(publication, 'collect') as collect, \
+                 patch('sys.stderr', new_callable=io.StringIO) as errors, \
+                 patch('sys.stdout', new_callable=io.StringIO) as output:
+                with self.assertRaises(SystemExit) as raised:
+                    publication.main(args)
+                self.assertEqual(raised.exception.code, 2)
+                self.assertNotIn('GH_TOKEN', [call.args[0] for call in environment.call_args_list])
+                github.assert_not_called()
+                opener.assert_not_called()
+                collect.assert_not_called()
+                self.assertIn('--download-seconds', errors.getvalue())
+                self.assertIn('1..900', errors.getvalue())
+                self.assertEqual(output.getvalue(), '')
+                self.assertFalse(self.output.exists())
+
+    def test_api_default_and_custom_short_download_budgets_remain_available(self):
+        artifacts, payloads = fixtures()
+        manifest = {'source': {'commit': SHA}, 'release_id': 'fixture-release',
+                    'archive': {'sha256': 'b' * 64}}
+        class Recorded(FakeClient):
+            def __init__(self):
+                super().__init__([jobs()], artifacts, payloads)
+                self.deadlines = []
+            def download(self, endpoint, target, limit, deadline):
+                self.deadlines.append(deadline)
+                return super().download(endpoint, target, limit, deadline)
+        for name, options, expected in (('default', {}, 90), ('short', {'download_wait': 0.25}, 0.25)):
+            client = Recorded()
+            with self.subTest(name=name), \
+                 patch.object(publication.release_artifact, 'verify', return_value=manifest):
+                publication.collect(client, REPO, 42, SHA, 2, 'push', self.output.with_name(name),
+                                    clock=self.clock.now, now=lambda: self.utc,
+                                    sleep=self.clock.sleep, wait=10, **options)
+            self.assertEqual(client.deadlines, [expected] * 4)
+        self.assertEqual(publication.REQUEST_SECONDS, 15)
 
     def test_null_list_string_repository_fail_sanitized_via_cli(self):
         for bad in (None, [], 'not-an-object'):

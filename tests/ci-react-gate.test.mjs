@@ -2,8 +2,25 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 
 const workflow = readFileSync(new URL('../.github/workflows/ci.yml', import.meta.url), 'utf8');
+const complete = (await import('../scripts/amadis/acceptance_react_complete.cjs')).default;
+const security = (await import('../scripts/amadis/acceptance_react_security.cjs')).default;
+
+test('VERIFY-CLOSE: exactly 31 ordered mandatory stages and no optional escape hatch', () => {
+    assert.equal(complete.MANDATORY_ORDER.length, 31);
+    assert.equal(new Set(complete.MANDATORY_ORDER).size, 31);
+    assert.deepEqual(complete.OPTIONAL_STAGES, []);
+    assert.deepEqual(security.OPTIONAL_STAGES, []);
+    const checks = complete.MANDATORY_ORDER;
+    assert.equal(checks.indexOf('shop-account-completed-order-review'), 17);
+    assert.equal(checks.indexOf('signed-unsubscribe-native-confirm-complete'), 23);
+    assert.equal(checks[30], 'console-clean');
+    const source = readFileSync(new URL('../scripts/amadis/acceptance_react_complete.cjs', import.meta.url), 'utf8');
+    assert.deepEqual([...source.matchAll(/start\(STAGES\[(\d+)\]\)/g)].map(match => Number(match[1])),
+        Array.from({ length: 11 }, (_, index) => index));
+});
 
 function assertReactGate(source) {
     const quality = source.match(/^  quality:\n([\s\S]*?)(?=^  [\w-]+:|$(?![\s\S]))/m)?.[1];
@@ -33,8 +50,27 @@ test('NFR-FE-003: native browser proof runs serially under the existing owned-se
     const wrapper = readFileSync(new URL('../scripts/amadis/acceptance_react.sh', import.meta.url), 'utf8');
     assert.match(wrapper, /set -euo pipefail/);
     assert.match(wrapper, /step browser python3 scripts\/amadis\/acceptance_server\.py/);
-    assert.ok(wrapper.indexOf('step browser python3') < wrapper.indexOf("(root / 'summary.json').open('x')"));
+    const publication = 'python3 scripts/ci/check_react_browser_report.py publish "$OUT"';
+    assert.ok(wrapper.includes(publication));
+    assert.ok(wrapper.indexOf('step browser python3') < wrapper.indexOf(publication));
+    assert.match(wrapper, /step provision scripts\/amadis\/launch\.sh provision-react "\$PORT"/);
+    const checker = readFileSync(new URL('../scripts/ci/check_react_browser_report.py', import.meta.url), 'utf8');
+    assert.ok(checker.includes("(directory / 'summary.json').open('x')"));
     assert.doesNotMatch(wrapper, /\|\|\s*true|continue-on-error/);
+});
+
+test('VERIFY-CLOSE: Python report verifier and browser parent share the exact ordered contract', () => {
+    const result = spawnSync('python3', ['-B', '-c',
+        'import json,sys; sys.path.insert(0,"scripts/ci"); from check_react_browser_report import MANDATORY; print(json.dumps(MANDATORY))'],
+    { cwd: new URL('../', import.meta.url), encoding: 'utf8', timeout: 10000 });
+    assert.equal(result.status, 0);
+    assert.equal(result.stderr, '');
+    assert.deepEqual(JSON.parse(result.stdout), complete.MANDATORY_ORDER);
+    const parent = readFileSync(new URL('../scripts/amadis/acceptance_react.cjs', import.meta.url), 'utf8');
+    assert.ok(parent.indexOf('fixtureChannel(origin)') < parent.indexOf('await chromium.launch'));
+    assert.match(parent, /assert\.deepEqual\(checks, completeFlows\.MANDATORY_ORDER\.slice\(0, -1\)\)/);
+    assert.match(parent, /assert\.deepEqual\(unavailable, \[\]\)/);
+    assert.doesNotMatch(parent, /checks\.filter|optional\.every/);
 });
 
 test('NFR-FE-003: contract rejects optional or failure-suppressed React gates', () => {

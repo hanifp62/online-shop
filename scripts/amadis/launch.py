@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Isolated Amadis demo runner. Never bootstraps the production app directly."""
+from contextlib import closing
 import fcntl
 import hashlib
 import json
@@ -31,7 +32,7 @@ def fail(message):
 def timestamp():
     return datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
 
-SECRET_NAME = r'[\w.-]*(?:app[_-]?(?:key|previous[_-]?keys)|[_-]key|password|passwd|pass|token|secret|cookie|session|authorization|auth(?!or)|credentials?|api[_-]?key|db[_-]?url|redis[_-]?url|csrf|xsrf|private[_-]?key|privatekey)[\w.-]*'
+SECRET_NAME = r'[\w.-]*(?:app[_-]?(?:key|previous[_-]?keys)|[_-]key|password|passwd|pass|token|secret|cookie|session|authorization|auth(?!or)|credentials?|signature|unsubscribe[_-]?url|api[_-]?key|db[_-]?url|redis[_-]?url|csrf|xsrf|private[_-]?key|privatekey)[\w.-]*'
 
 
 # Short or generic CLI options that carry secrets (curl -u user:pass, --key, --auth).
@@ -43,6 +44,9 @@ def sensitive(name):
 
 
 def sanitized(text):
+    # Signed email capabilities must never reach server/evidence logs, even on failure.
+    text = re.sub(r'''(?:https?://|/)[^\s<>"']+''',
+                  lambda match: '[SIGNED_URL_REDACTED]' if re.search(r'[?&]signature=', match[0]) else match[0], text)
     # Decode JSON values, not whitespace tokens: escaped quotes and nested values matter.
     decoder = json.JSONDecoder()
     pattern = re.compile(r'"(?:[^"\\]|\\.)*"\s*:\s*')
@@ -249,10 +253,10 @@ def capture(root, label, argv, env, input_data=None):
     print(stderr, end='', file=sys.stderr)
     return result.returncode
 
-def provision(root, env):
+def provision(root, env, *, react=False):
     """One-shot credentials for a fresh fixture; never capture raw child output."""
     import sqlite3
-    with sqlite3.connect(f'file:{root / "database.sqlite"}?mode=ro', uri=True) as db:
+    with closing(sqlite3.connect(f'file:{root / "database.sqlite"}?mode=ro', uri=True)) as db:
         try:
             used = db.execute('select count(*) from orders').fetchone()[0]
         except sqlite3.Error:
@@ -264,7 +268,7 @@ def provision(root, env):
                           'password': secrets.token_urlsafe(32)}
                    for role in ('admin', 'customer')}
     write_new(root, 'private-runtime/credentials.json', json.dumps(credentials) + '\n')
-    argv = ['php', 'scripts/amadis/artisan.php', 'amadis:provision']
+    argv = ['php', 'scripts/amadis/artisan.php', 'amadis:provision-react' if react else 'amadis:provision']
     result = subprocess.run(argv, cwd=REPO, env=env, stdin=subprocess.DEVNULL,
                             capture_output=True, text=True, pass_fds=(lock.fileno(),))
     # Framework exceptions can quote SQL bindings. Discard everything except the success schema.
@@ -680,8 +684,11 @@ def manifest(root):
 
 def main():
     args = sys.argv[1:]
-    if not args or args[0] not in {'init', 'guard-test', 'artisan', 'snapshot', 'provision', 'test', 'migrate', 'seed', 'seed-r44', 'serve', 'pdf-dependency', 'composer-audit'}:
-        fail('usage: launch.sh {init|guard-test|artisan COMMAND|snapshot|provision|test [ARGS]|migrate|seed|seed-r44|serve [PORT]|pdf-dependency dry-run|install|composer-audit --locked --format=json}')
+    if not args or args[0] not in {'init', 'guard-test', 'artisan', 'snapshot', 'provision', 'provision-react', 'test', 'migrate', 'seed', 'seed-r44', 'serve', 'pdf-dependency', 'composer-audit'}:
+        fail('usage: launch.sh {init|guard-test|artisan COMMAND|snapshot|provision|provision-react PORT|test [ARGS]|migrate|seed|seed-r44|serve [PORT]|pdf-dependency dry-run|install|composer-audit --locked --format=json}')
+    if args[0] == 'provision-react' and (len(args) != 2 or not re.fullmatch(r'[1-9][0-9]{3,4}', args[1])
+            or not 1024 <= int(args[1]) <= 65535 or int(args[1]) in {8000, 8001}):
+        fail('provision-react requires a non-reserved loopback port')
     if args[0] == 'composer-audit' and args != ['composer-audit', '--locked', '--format=json']:
         fail('usage: launch.sh composer-audit --locked --format=json')
     if args[0] == 'pdf-dependency' and (len(args) != 2 or args[1] not in {'dry-run', 'install'}):
@@ -739,7 +746,7 @@ def main():
     # Stable root-local demo key preserves encrypted cookies across launcher restarts.
     if not os.path.lexists(root / 'demo-key'):
         write_new(root, 'demo-key', 'base64:' + __import__('base64').b64encode(secrets.token_bytes(32)).decode())
-    port = args[1] if args[0] == 'serve' and len(args) > 1 else '8016'
+    port = args[1] if args[0] in {'serve', 'provision-react'} and len(args) > 1 else '8016'
     if args[0] == 'serve' and (not port.isdecimal() or int(port) not in range(1024, 65536) or int(port) in {8000, 8001}):
         fail('invalid or reserved port')
     env = {'PATH': os.environ.get('PATH', '/usr/bin:/bin'), 'HOME': str(root), 'TMPDIR': str(root),
@@ -800,10 +807,10 @@ def main():
         if len(args) != 1:
             fail('snapshot accepts no arguments')
         return capture(root, command, artisan + ['amadis:lifecycle-snapshot'], env)
-    if command == 'provision':
-        if len(args) != 1:
+    if command in {'provision', 'provision-react'}:
+        if command == 'provision' and len(args) != 1:
             fail('provision accepts no arguments')
-        return provision(root, env)
+        return provision(root, env, react=command == 'provision-react')
     if command == 'seed':
         return capture(root, command, artisan + ['db:seed', '--class=' + SEEDER, '--force', '--database=sqlite'], env)
     if command == 'seed-r44':
