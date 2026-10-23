@@ -5,10 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ __('admin_ui.recovery.title') }}</title>
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    @isset($page)
+        @viteReactRefresh
+        @vite(['resources/css/app.css', 'resources/js/inertia.jsx'])
+    @else
     <script type="application/json" id="zafira-app-copy">@json(__('shop_ui.app_js'))</script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @endisset
 </head>
 <body>
+<x-react-root :page="$page ?? null">
 <main class="auth-page">
     <section class="auth-content">
         <div class="auth-card">
@@ -24,5 +30,7 @@
         </div>
     </section>
 </main>
+</x-react-root>
+<x-private-page-lifecycle />
 </body>
 </html>

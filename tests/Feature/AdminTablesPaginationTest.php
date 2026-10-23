@@ -10,6 +10,8 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\UserInfoBackup;
+use DOMDocument;
+use DOMXPath;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -210,8 +212,15 @@ class AdminTablesPaginationTest extends TestCase
         $response = $this->from(route('admin.dashboard', ['spage' => 2]))
             ->delete(route('admin.subscribers.destroy', $subscribers[10]))
             ->assertRedirect();
-        $this->followRedirects($response)->assertOk()
-            ->assertViewHas('latestSubscribers', fn ($rows) => $rows->currentPage() === 1 && $rows->count() === 10)
-            ->assertDontSee('Belum ada subscriber');
+        $page = $this->followRedirects($response)->assertOk()
+            ->assertViewHas('latestSubscribers', fn ($rows) => $rows->currentPage() === 1 && $rows->count() === 10);
+        $dom = new DOMDocument;
+        $previous = libxml_use_internal_errors(true);
+        $dom->loadHTML('<?xml encoding="UTF-8">'.$page->getContent());
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
+        $panels = (new DOMXPath($dom))->query('//*[@data-admin-table="subscriber"]');
+        $this->assertSame(1, $panels->length);
+        $this->assertStringNotContainsString('Belum ada subscriber', $panels->item(0)->textContent);
     }
 }

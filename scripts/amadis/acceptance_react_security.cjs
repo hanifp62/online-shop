@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const { createHmac } = require('node:crypto');
 
 function otp(secret) {
-    assert.match(secret, /^[A-Z2-7]+$/);
+    assert(/^[A-Z2-7]+$/.test(secret));
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
     const bits = [...secret].map(char => alphabet.indexOf(char).toString(2).padStart(5, '0')).join('');
     const key = Buffer.from((bits.match(/.{8}/g) ?? []).map(byte => parseInt(byte, 2)));
@@ -53,9 +53,41 @@ async function submit(page, selector) {
     }
 }
 
+async function privateMaterialAbsent(page, material) {
+    await page.waitForFunction(() => history.state?.page instanceof ArrayBuffer, null, { timeout: 15000 });
+    // Installed core format: JSON raw-key bytes in historyKey; 12-byte IV prefix, then AES-GCM ciphertext.
+    // Only a boolean crosses back to Node; neither key nor decrypted page is exported or logged.
+    assert(await page.evaluate(async values => {
+        try {
+            const bytes = JSON.parse(sessionStorage.getItem('historyKey') || 'null');
+            if (!Array.isArray(bytes) || bytes.length !== 32 || !values.length || values.some(value => !value)) return false;
+            const entry = new Uint8Array(history.state.page);
+            if (entry.length <= 28) return false;
+            const key = await crypto.subtle.importKey('raw', new Uint8Array(bytes), { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+            const clear = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: entry.subarray(0, 12) }, key, entry.subarray(12));
+            const text = new TextDecoder().decode(clear);
+            const restored = JSON.parse(text);
+            if (typeof restored.component !== 'string' || !restored.props || restored.encryptHistory !== true) return false;
+            const stored = text + Object.values(localStorage).join('') + Object.values(sessionStorage).join('');
+            return !text.includes('totpMaterial') && values.every(value => !stored.includes(value));
+        } catch { return false; }
+    }, material));
+    assert.equal(await page.locator('script[data-page="app"]').count(), 0);
+}
+
 module.exports = async function securityFlows({ pageFor, native, origin, credentials, start, done, monitor }) {
+    const unavailable = ['signed-unsubscribe-native-confirm-complete'];
     const customer = await pageFor();
-    monitor(customer);
+    let exporting = false, exportAbortCount = 0;
+    monitor(customer, { expectedNetworkFailure: failure => {
+        // Chromium reports a navigation handed to its download manager as ERR_ABORTED.
+        // This allowance exists only around the verified account-export download below.
+        if (!exporting || exportAbortCount !== 0 || failure.stage !== 'account-native-update-export-logout'
+            || failure.event !== 'requestfailed' || failure.method !== 'GET'
+            || failure.requestURL !== origin + '/akun/ekspor' || failure.errorText !== 'net::ERR_ABORTED') return false;
+        exportAbortCount += 1;
+        return true;
+    } });
     async function login(page, role) {
         await native(page, role === 'admin' ? '/admin/login' : '/login');
         await page.locator('#email').fill(credentials[role].email);
@@ -71,6 +103,25 @@ module.exports = async function securityFlows({ pageFor, native, origin, credent
     start('account-native-update-export-logout');
     await login(customer, 'customer');
     await native(customer, '/akun');
+    const unsubscribe = customer.locator('a[href*="/pengingat-keranjang/berhenti/"]').first();
+    if (await unsubscribe.count()) {
+        const target = new URL(await unsubscribe.getAttribute('href'), origin);
+        assert(target.origin === origin && target.searchParams.has('signature'));
+        start('signed-unsubscribe-native-confirm-complete');
+        await native(customer, target.pathname + target.search);
+        await customer.locator('form[data-auth-form] button[type="submit"]').waitFor();
+        await Promise.all([
+            customer.waitForEvent('domcontentloaded', { timeout: 15000 }),
+            customer.locator('form[data-auth-form] button[type="submit"]').click(),
+        ]);
+        await ready(customer);
+        assert.equal(await customer.locator('main form').count(), 0);
+        await customer.locator('main [role="status"]').waitFor();
+        done();
+        unavailable.splice(unavailable.indexOf('signed-unsubscribe-native-confirm-complete'), 1);
+        start('account-native-update-export-logout');
+        await native(customer, '/akun');
+    }
     await customer.locator('#first_name').fill('Native fixture');
     await submit(customer, 'form[data-auth-form] button[type="submit"]');
     await ready(customer);
@@ -78,11 +129,13 @@ module.exports = async function securityFlows({ pageFor, native, origin, credent
     // A fresh GET must agree; old input after a rejected write is not persistence evidence.
     await native(customer, '/akun');
     assert.equal(await customer.locator('#first_name').inputValue(), 'Native fixture');
+    exporting = true;
     const downloadEvent = customer.waitForEvent('download');
     await customer.locator('a[href$="/akun/ekspor"]').click();
     const download = await downloadEvent;
     assert.equal(download.suggestedFilename(), 'zafira-data-pribadi.json');
     await download.delete();
+    exporting = false;
     await customer.locator('details:has(#delete_password) summary').click();
     await customer.locator('#delete_password').fill(credentials.customer.password);
     let deletedRequests = 0;
@@ -118,16 +171,31 @@ module.exports = async function securityFlows({ pageFor, native, origin, credent
     await reset.waitForFunction(() => history.state?.page instanceof ArrayBuffer);
     done();
 
-    start('customer-totp-native-challenge');
+    start('customer-totp-native-enrol-recovery');
     await login(customer, 'customer');
-    await customer.goto(origin + '/akun/verifikasi-dua-langkah');
-    // Enrol/recovery remain the established Blade flow in this slice, not claimed as native.
+    await native(customer, '/akun/verifikasi-dua-langkah');
     const secret = (await customer.locator('.auth-card code').first().textContent()).trim();
+    await privateMaterialAbsent(customer, [secret]);
     await customer.locator('#code').fill(otp(secret));
     await submit(customer, 'form[data-auth-form] button[type="submit"]');
     await customer.waitForURL(url => url.pathname.endsWith('/kode-cadangan'));
-    const recovery = (await customer.locator('.auth-card ul li').first().textContent()).trim();
-    assert(recovery.length > 0);
+    await ready(customer);
+    const recoveryCodes = (await customer.locator('.auth-card ul li').allTextContents()).map(value => value.trim());
+    assert(recoveryCodes.length > 0 && recoveryCodes.every(Boolean));
+    const recovery = recoveryCodes[0];
+    await privateMaterialAbsent(customer, [secret, ...recoveryCodes]);
+    await Promise.all([customer.waitForEvent('domcontentloaded', { timeout: 15000 }), customer.locator('.auth-card a[href$="/akun"]').click()]);
+    await ready(customer);
+    await customer.goBack({ waitUntil: 'domcontentloaded', timeout: 15000 });
+    await ready(customer);
+    await privateMaterialAbsent(customer, [secret, ...recoveryCodes]);
+    assert(await customer.locator('body').evaluate((element, values) => values.every(value => !element.textContent.includes(value)), [secret, ...recoveryCodes]));
+    await customer.reload({ waitUntil: 'domcontentloaded', timeout: 15000 });
+    await customer.waitForURL(url => url.pathname === '/akun', { timeout: 15000 });
+    await ready(customer);
+    assert(await customer.locator('body').evaluate((element, material) => !material.some(value => element.textContent.includes(value)), [secret, ...recoveryCodes]));
+    done();
+    start('customer-totp-native-challenge');
     await customerLogout();
     await login(customer, 'customer');
     await customer.waitForURL(url => url.pathname === '/login/verifikasi');
@@ -150,18 +218,33 @@ module.exports = async function securityFlows({ pageFor, native, origin, credent
     assert.equal(new URL(customer.url()).pathname, '/login/verifikasi');
     done();
 
-    start('admin-totp-native-challenge');
+    start('admin-totp-native-enrol-recovery');
     const admin = await pageFor();
     monitor(admin);
     await login(admin, 'admin');
-    await admin.goto(origin + '/admin/totp/enrol');
+    await native(admin, '/admin/totp/enrol');
     const adminSecret = await admin.locator('#setup_key').inputValue();
+    await privateMaterialAbsent(admin, [adminSecret]);
     await admin.locator('#code').fill(otp(adminSecret));
     await submit(admin, 'form[action$="/admin/totp/enrol"] button[type="submit"]');
     await admin.waitForURL(url => url.pathname === '/admin/totp/enrol/recovery');
-    const adminRecovery = (await admin.locator('.auth-card li code').first().textContent()).trim();
-    assert(adminRecovery.length > 0);
-    await admin.goto(origin + '/admin');
+    await ready(admin);
+    const adminRecoveryCodes = (await admin.locator('.auth-card li code').allTextContents()).map(value => value.trim());
+    assert(adminRecoveryCodes.length > 0 && adminRecoveryCodes.every(Boolean));
+    const adminRecovery = adminRecoveryCodes[0];
+    await privateMaterialAbsent(admin, [adminSecret, ...adminRecoveryCodes]);
+    await Promise.all([admin.waitForEvent('domcontentloaded', { timeout: 15000 }), admin.locator('.auth-card a[href$="/admin"]').click()]);
+    await ready(admin);
+    await admin.goBack({ waitUntil: 'domcontentloaded', timeout: 15000 });
+    await ready(admin);
+    await privateMaterialAbsent(admin, [adminSecret, ...adminRecoveryCodes]);
+    assert(await admin.locator('body').evaluate((element, values) => values.every(value => !element.textContent.includes(value)), [adminSecret, ...adminRecoveryCodes]));
+    await admin.reload({ waitUntil: 'domcontentloaded', timeout: 15000 });
+    await admin.waitForURL(url => url.pathname === '/admin', { timeout: 15000 });
+    await ready(admin);
+    assert(await admin.locator('body').evaluate((element, material) => !material.some(value => element.textContent.includes(value)), [adminSecret, ...adminRecoveryCodes]));
+    done();
+    start('admin-totp-native-challenge');
     await submit(admin, 'form[action$="/admin/logout"] button');
     await login(admin, 'admin');
     await admin.waitForURL(url => url.pathname === '/admin/totp');
@@ -172,4 +255,11 @@ module.exports = async function securityFlows({ pageFor, native, origin, credent
     await submit(admin, 'form:has(#recovery_code) button[type="submit"]');
     assert.equal(new URL(admin.url()).pathname, '/admin');
     done();
+    return { unavailable, expectedFaultCounts: { 'account-export-download': exportAbortCount } };
 };
+module.exports.STAGES = Object.freeze([
+    'account-native-update-export-logout', 'reset-native-flash-validation',
+    'customer-totp-native-enrol-recovery', 'customer-totp-native-challenge',
+    'admin-totp-native-enrol-recovery', 'admin-totp-native-challenge',
+]);
+module.exports.OPTIONAL_STAGES = Object.freeze(['signed-unsubscribe-native-confirm-complete']);

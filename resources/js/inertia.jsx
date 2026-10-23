@@ -2,6 +2,9 @@ import { createInertiaApp, router } from '@inertiajs/react';
 import { createRoot } from 'react-dom/client';
 import { flushSync } from 'react-dom';
 import { Component, useEffect } from 'react';
+import { installTraversalDispatch } from './lib/frontend-traversal';
+
+installTraversalDispatch(window);
 
 class PageBoundary extends Component {
     state = { failed: false };

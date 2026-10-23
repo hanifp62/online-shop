@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Middleware\EnsureAdminTotp;
 use App\Services\AuthEventRecorder;
 use App\Services\TotpService;
+use App\Support\TotpEnrolPageProps;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use PragmaRX\Google2FA\Exceptions\Contracts\Google2FA as Google2FAException;
 use PragmaRX\Google2FA\Google2FA;
+use Symfony\Component\HttpFoundation\Response;
 
 /** Self-service TOTP enrolment. Pending secret lives encrypted in the session, never in the DB. */
 class AdminTotpEnrolController extends Controller
@@ -37,6 +38,9 @@ class AdminTotpEnrolController extends Controller
 
     public function show(Request $request): Response|RedirectResponse
     {
+        if (TotpEnrolPageProps::prefetch($request)) {
+            return response('', 204)->header('Cache-Control', 'no-store, private');
+        }
         $admin = $request->user('admin');
         // An admin who already holds a secret must not rotate it with a password-only session.
         if ($admin->getRawOriginal('totp_secret') !== null) {
@@ -52,9 +56,7 @@ class AdminTotpEnrolController extends Controller
         ]);
         $request->session()->forget([self::FRESH_CODES, 'totp_enrol_codes_state']);
 
-        return response()
-            ->view('admin.totp-enrol', ['secret' => $secret, 'uri' => $uri, 'qr' => $this->totp->qrDataUri($uri)])
-            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+        return TotpEnrolPageProps::render($request, true, false, ['secret' => $secret, 'uri' => $uri, 'qr' => $this->totp->qrDataUri($uri)]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -207,6 +209,12 @@ class AdminTotpEnrolController extends Controller
 
     public function recovery(Request $request): Response|RedirectResponse
     {
+        if (TotpEnrolPageProps::prefetch($request)) {
+            return response('', 204)->header('Cache-Control', 'no-store, private');
+        }
+        if ($documentVisit = TotpEnrolPageProps::recoveryDocumentVisit($request, true)) {
+            return $documentVisit;
+        }
         // pull(): the codes are rendered exactly once, so a refresh cannot reveal them again.
         $blob = $request->session()->pull(self::FRESH_CODES);
         $state = $request->session()->pull('totp_enrol_codes_state');
@@ -226,8 +234,6 @@ class AdminTotpEnrolController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        return response()
-            ->view('admin.totp-enrol-recovery', ['codes' => $codes])
-            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+        return TotpEnrolPageProps::render($request, true, true, ['codes' => $codes]);
     }
 }

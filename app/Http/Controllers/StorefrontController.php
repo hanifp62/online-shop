@@ -9,6 +9,8 @@ use App\Models\Category;
 use App\Models\ConciergeRequest;
 use App\Models\NewsletterSubscriber;
 use App\Models\Product;
+use App\Support\FrontendPage;
+use App\Support\StorefrontPageProps;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,13 +19,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Inertia\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class StorefrontController extends Controller
 {
     public const FEATURED_PRODUCT_LIMIT = 24;
 
-    public function index(): View
+    public function index(): View|Response
     {
         // server-cache-lru: katalog jarang berubah, cache lintas-request 5 menit.
         // server-serialization: select kolom yang dipakai view saja.
@@ -37,11 +40,12 @@ class StorefrontController extends Controller
 
         $categories = Cache::remember("storefront:categories:v3:{$revision}", 300, fn () => Category::orderBy('cat_id')->get(['cat_id', 'cat_title']));
 
-        return view('welcome', [
+        $data = [
             'categories' => $categories,
             'products' => $products->map(function (Product $product) {
                 return [
                     'id' => $product->product_slug ?? 'product-'.$product->product_id,
+                    'productId' => (int) $product->product_id,
                     'name' => $product->product_title,
                     'stock' => max(0, (int) $product->stock),
                     'category' => $product->category?->cat_title ?? trans('customer_messages.storefront.collection'),
@@ -66,10 +70,12 @@ class StorefrontController extends Controller
                 'logo' => asset('favicon.svg'),
                 'sameAs' => [],
             ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG),
-        ]);
+        ];
+
+        return FrontendPage::render('Storefront/Home', 'welcome', $data, StorefrontPageProps::home($data));
     }
 
-    public function show(string $slug): View
+    public function show(string $slug): View|Response
     {
         // server-cache-lru: produk per-PDP tidak di-cache — stok dan is_active
         // harus segar tiap request setelah checkout/cancel/admin, agar penanda
@@ -91,7 +97,7 @@ class StorefrontController extends Controller
                 ->get()
         );
 
-        return view('products.show', [
+        $data = [
             'product' => $product,
             'related' => $related,
             'jsonLd' => json_encode([
@@ -114,7 +120,9 @@ class StorefrontController extends Controller
                         : 'https://schema.org/OutOfStock',
                 ],
             ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG),
-        ]);
+        ];
+
+        return FrontendPage::render('Products/Show', 'products.show', $data, StorefrontPageProps::show($data));
     }
 
     public function sitemap(): StreamedResponse

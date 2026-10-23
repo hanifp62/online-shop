@@ -10,8 +10,14 @@
 .checkout-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,340px);grid-template-rows:auto minmax(0,1fr);gap:24px;align-items:start}.checkout-summary{position:sticky;top:16px;grid-column:2;grid-row:1;align-self:start;background:var(--linen);border:1px solid var(--line);padding:16px;min-width:0;overflow-wrap:anywhere}.checkout-summary p{margin:.35rem 0}.checkout-fields{grid-column:1;grid-row:1;min-width:0}.checkout-fields fieldset{margin:0;min-width:0;border:1px solid var(--line);padding:16px}.checkout-fields .field-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}.checkout-fields p{margin:0 0 12px}
 @media(max-width:760px){.checkout-layout{display:block}.checkout-summary{position:sticky;top:0;z-index:1;grid-column:1;grid-row:1;padding:8px 12px}.checkout-summary>:not(h3):not(#checkout-estimate){display:none}.checkout-summary h3{margin:0;font-size:1rem}.checkout-fields{grid-column:1;grid-row:2;min-width:0}.checkout-fields :is(input,select,button){scroll-margin-top:var(--checkout-summary-clearance,100px)}.checkout-fields .field-pair{grid-template-columns:1fr}.checkout-fields input,.checkout-fields select{font-size:16px}}
 </style>
+@isset($page)
+@viteReactRefresh
+@vite('resources/js/inertia.jsx')
+@endisset
 </head>
 <body>
+<x-private-page-lifecycle />
+<x-react-root :page="$page ?? null">
 <a class="skip" href="#main">{{ __('shop_ui.shop.skip') }}</a>
 <header><a class="brand" href="{{ route('home') }}">ZAFIRA</a><nav aria-label="{{ __('shop_ui.shop.nav_label') }}"><a href="{{ route('catalog.index') }}">{{ __('shop_ui.shop.nav_collection') }}</a><a href="#tas">{{ __('shop_ui.shop.nav_bag') }}</a><a href="#alamat">{{ __('shop_ui.shop.nav_address') }}</a><a href="#pesanan">{{ __('shop_ui.shop.nav_orders') }}</a><a href="#favorit">{{ __('shop_ui.shop.nav_favorites') }}</a>@auth<a href="{{ route('account.show') }}">{{ __('shop_ui.shop.nav_account') }}</a>@else<a href="{{ route('login') }}">{{ __('shop_ui.shop.nav_login') }}</a>@endauth</nav></header>
 <main id="main"><div class="intro"><span class="eyebrow">Le Salon Privé</span><h1>{{ __('shop_ui.shop.heading') }}</h1><p>{{ __('shop_ui.shop.lead') }}</p><p class="notice">{!! str_replace(['[[', ']]'], ['<strong>', '</strong>'], e(__('shop_ui.shop.notice'))) !!}</p></div>
@@ -30,11 +36,28 @@
 </div></div></section>
 <div class="grid"><section class="panel" id="pesanan"><h2>{{ __('shop_ui.shop.orders_title') }} <span id="order-count" data-list-count="orders" aria-live="polite"></span></h2>@guest<div id="guest-order-confirmation" aria-live="polite"></div><button id="guest-clear-token" type="button" class="secondary">{{ __('shop_ui.shop.clear_token') }}</button><form id="guest-track-form" class="stack" method="post"><label>{{ __('shop_ui.shop.track_label') }}<input name="token" required minlength="64" maxlength="64" autocomplete="off"></label><button type="submit">{{ __('shop_ui.shop.track_button') }}</button></form><div id="guest-track-result" aria-live="polite"></div>@endguest<div id="order-list"></div><div id="order-pages" class="row"></div></section><section class="panel" id="favorit"><h2>{{ __('shop_ui.shop.favorites_title') }} <span id="favorite-count" data-list-count="favorites" aria-live="polite"></span></h2><p>{!! str_replace(['[[', ']]'], ['<a href="' . route('catalog.index') . '">', '</a>'], e(__('shop_ui.shop.favorites_intro'))) !!}</p><div id="favorite-list"></div></section></div>
 </main><footer>© {{ date('Y') }} ZAFIRA Maison · La Maison de Lumière</footer>
+</x-react-root>
 @include('shop.request')
 <script type="application/json" id="shop-status-copy">@json(__('shop_ui.status'))</script>
 <script type="application/json" id="shop-copy">@json(__('shop_ui.shop'))</script>
 <script>
-(() => {
+(function shopFallback() {
+    const root = document.getElementById('app');
+    if (root?.dataset?.reactBoot === 'pending') {
+        const timer = setTimeout(() => {
+            if (root.dataset.reactBoot === 'pending') root.dataset.reactBoot = 'fallback';
+        }, 10000);
+        const observer = new MutationObserver(() => {
+            if (root.dataset.reactBoot === 'pending') return;
+            clearTimeout(timer);
+            observer.disconnect();
+            if (root.dataset.reactBoot === 'fallback') shopFallback();
+        });
+        root.addEventListener('zafira:react-claim', () => { clearTimeout(timer); observer.disconnect(); }, {once: true});
+        observer.observe(root, {attributes: true, attributeFilter: ['data-react-boot']});
+        return;
+    }
+    if (['ready', 'failed'].includes(root?.dataset?.reactBoot)) return;
     const api = window.shopRequest;
     const loggedIn = @json(auth()->check());
     const $ = id => document.getElementById(id);
@@ -238,6 +261,14 @@
     function pendingCheckoutMessage() {
         return shopText('checkout_pending', 'Hasil checkout sebelumnya belum pasti. Percobaan berikutnya memakai rincian pesanan semula; periksa Pesanan sebelum membuat pesanan baru.');
     }
+    function validateCheckoutResult(result) {
+        if (!result?.order || !Number.isInteger(result.order.id) || result.order.id <= 0 || !Number.isInteger(result.order.total)
+            || typeof result.order.status !== 'string' || !Array.isArray(result.order.items)
+            || !result.order.items.every(item => item !== null && typeof item === 'object'
+                && typeof item.product_title === 'string' && Number.isInteger(item.quantity) && item.quantity > 0 && Number.isInteger(item.subtotal))) {
+            throw new Error(pendingCheckoutMessage());
+        }
+    }
     function requireSettledCheckout() {
         if (pendingCheckout) throw new Error(pendingCheckoutMessage());
     }
@@ -258,7 +289,7 @@
                 const form = event.target;
                 pendingCheckout = {address_id:Number(form.address_id.value), voucher_code:form.voucher_code.value.trim() || null, idempotency_key:checkoutKey ||= crypto.randomUUID()};
             }
-            try { const result = await api(@json(route('checkout.store')), 'POST', pendingCheckout); checkoutKey = pendingCheckout = null; await loadCart(); await loadOrders(); message(shopText('order_created', 'Pesanan #:id dibuat: menunggu pembayaran. Total :amount. Pembayaran online belum tersedia dan tidak ada konfirmasi pembayaran otomatis.', {id: result.order.id, amount: money(result.order.total)})); }
+            try { const result = await api(@json(route('checkout.store')), 'POST', pendingCheckout); validateCheckoutResult(result); checkoutKey = pendingCheckout = null; await loadCart(); await loadOrders(); message(shopText('order_created', 'Pesanan #:id dibuat: menunggu pembayaran. Total :amount. Pembayaran online belum tersedia dan tidak ada konfirmasi pembayaran otomatis.', {id: result.order.id, amount: money(result.order.total)})); }
             catch (error) { if ([409, 422].includes(error.status)) checkoutKey = pendingCheckout = null; throw error; }
         }); };
     }
@@ -272,7 +303,7 @@
                 pendingCheckout = payload;
             }
             try {
-                const result = await api(@json(route('checkout.store')), 'POST', pendingCheckout); checkoutKey = pendingCheckout = null;
+                const result = await api(@json(route('checkout.store')), 'POST', pendingCheckout); validateCheckoutResult(result); checkoutKey = pendingCheckout = null;
                 const confirmation = $('guest-order-confirmation'); confirmation.replaceChildren();
                 confirmation.append(text('h3', shopText('order_title', 'Pesanan #:id', {id: result.order.id})), text('p', shopText('order_line', 'Status: :status · Total :amount', {status: statusLabel(result.order.status), amount: money(result.order.total)})));
                 for (const item of result.order.items) confirmation.append(text('p', `${item.product_title} × ${item.quantity} · ${money(item.subtotal)}`));
@@ -285,7 +316,7 @@
                 }
                 event.target.reset(); await loadCart();
                 message(shopText('order_created', 'Pesanan #:id dibuat: menunggu pembayaran. Total :amount. Pembayaran online belum tersedia dan tidak ada konfirmasi pembayaran otomatis.', {id: result.order.id, amount: money(result.order.total)}));
-            } catch (error) { if ([200, 201, 409, 422].includes(error.status)) checkoutKey = pendingCheckout = null; throw error; }
+            } catch (error) { if ([409, 422].includes(error.status)) checkoutKey = pendingCheckout = null; throw error; }
         }); };
         $('guest-clear-token').onclick = () => {
             document.querySelector('#guest-track-form [name=token]').value = '';

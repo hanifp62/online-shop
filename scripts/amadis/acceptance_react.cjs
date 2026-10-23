@@ -4,11 +4,21 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { chromium } = require(process.env.AM_PLAYWRIGHT);
 const securityFlows = require('./acceptance_react_security.cjs');
+const completeFlows = require('./acceptance_react_complete.cjs');
+const networkMonitor = require('./acceptance_react_monitor.cjs');
 const origin = process.env.AM_ACCEPTANCE_URL;
 assert.match(origin, /^http:\/\/127\.0\.0\.1:\d+$/);
 const output = process.env.AM_ACCEPTANCE_OUTPUT;
 const checks = [];
 let stage = 'launch', browser, consoleErrors = 0, diagnostic = null;
+const monitorFinalizers = [];
+const unexpectedEvents = [];
+function monitor(page, options = {}) {
+    monitorFinalizers.push(networkMonitor(page, { ...options, stage: () => stage, unexpected: detail => {
+        consoleErrors += 1;
+        if (unexpectedEvents.length < 20) unexpectedEvents.push(detail);
+    } }));
+}
 async function pageFor(options = {}) {
     const context = await browser.newContext(options);
     const page = await context.newPage();
@@ -194,22 +204,23 @@ async function modal(page) {
         assert.equal(await admin.locator('.auth-events-table-wrap').count(), 0);
         assert.equal(await admin.locator('.admin-work-operator').count(), 0);
         checks.push(stage);
-        await securityFlows({ pageFor, native, origin, credentials: fixtureCredentials,
-            start: name => { stage = name; }, done: () => checks.push(stage),
-            monitor: target => {
-                target.on('pageerror', () => { consoleErrors += 1; });
-                target.on('console', message => { if (message.type() === 'error') consoleErrors += 1; });
-            },
-        });
+        const flowOptions = { pageFor, native, origin, credentials: fixtureCredentials,
+            start: name => { stage = name; }, done: () => checks.push(stage), monitor,
+            diagnose: values => { diagnostic = { ...diagnostic, ...values }; } };
+        const complete = await completeFlows(flowOptions);
+        const security = await securityFlows(flowOptions);
+        const unavailable = [...complete.unavailable, ...security.unavailable];
+        const optional = [...completeFlows.OPTIONAL_STAGES, ...securityFlows.OPTIONAL_STAGES];
+        assert.deepEqual(checks.filter(name => !optional.includes(name)), completeFlows.MANDATORY_ORDER.slice(0, -1));
+        assert(optional.every(name => checks.includes(name) !== unavailable.includes(name)));
         stage = 'console-clean';
-        assert.equal(consoleErrors, 0);
-        checks.push(stage);
-        outcome = { status: 'PASS', checks, consoleErrors };
+        outcome = { status: 'PASS', checks, consoleErrors, unavailable, expectedFaultCounts: { ...complete.expectedFaultCounts, ...security.expectedFaultCounts } };
     } catch (error) {
-        const location = String(error?.stack ?? '').match(/acceptance_react(?:_security)?\.cjs:(\d+):/);
-        const frames = [...String(error?.stack ?? '').matchAll(/(acceptance_react(?:_security)?\.cjs):(\d+):/g)]
+        const location = String(error?.stack ?? '').match(/acceptance_react(?:_security|_complete)?\.cjs:(\d+):/);
+        const frames = [...String(error?.stack ?? '').matchAll(/(acceptance_react(?:_security|_complete)?\.cjs):(\d+):/g)]
             .slice(0, 5).map(match => ({ file: match[1], line: Number(match[2]) }));
         outcome = { status: 'FAIL', checks, failedStage: stage, sourceLine: location ? Number(location[1]) : null, consoleErrors, diagnostic,
+            timeout: error?.name === 'TimeoutError', bodyUnavailable: /No (?:resource|data found) (?:with|for).*identifier/.test(String(error?.message ?? '')),
             actualNumber: typeof error.actual === 'number' ? error.actual : null,
             expectedNumber: typeof error.expected === 'number' ? error.expected : null, frames,
                         navigation: error.migrationNavigation ?? [] };
@@ -217,6 +228,13 @@ async function modal(page) {
     } finally {
         try { await browser?.close(); }
         catch { outcome = { status: 'FAIL', checks, failedStage: 'browser-cleanup', consoleErrors }; process.exitCode = 1; }
+        monitorFinalizers.forEach(finish => finish());
+        if (outcome.status === 'PASS') {
+            if (consoleErrors === 0) checks.push('console-clean');
+            else { outcome = { status: 'FAIL', checks, failedStage: 'console-clean', consoleErrors }; process.exitCode = 1; }
+        }
+        outcome.consoleErrors = consoleErrors;
+        if (outcome.status === 'FAIL') outcome.unexpectedEvents = unexpectedEvents;
         fs.writeFileSync(output, JSON.stringify(outcome, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
         console.log(JSON.stringify(outcome));
     }

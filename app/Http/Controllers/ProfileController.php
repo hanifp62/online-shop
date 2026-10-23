@@ -15,6 +15,7 @@ use App\Models\SocialAccount;
 use App\Models\User;
 use App\Models\UserInfoBackup;
 use App\Support\AccountPageProps;
+use App\Support\CartReminderUnsubscribePageProps;
 use App\Support\FrontendPage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -167,15 +168,19 @@ class ProfileController extends Controller
     }
 
     /** Tautan bertanda tangan di email: GET hanya konfirmasi agar pemindai tautan tidak memberhentikan langganan. */
-    public function confirmCartReminderUnsubscribe(Request $request, User $user): View
+    public function confirmCartReminderUnsubscribe(Request $request, User $user): View|InertiaResponse
     {
-        return view('account.cart-reminder-unsubscribed', ['done' => false, 'action' => $request->fullUrl()]);
+        $action = $request->fullUrl();
+
+        return FrontendPage::render('Account/CartReminderUnsubscribe', 'account.cart-reminder-unsubscribed',
+            ['done' => false, 'action' => $action], CartReminderUnsubscribePageProps::from($action));
     }
 
-    public function unsubscribeCartReminder(User $user): View
+    public function unsubscribeCartReminder(User $user): View|InertiaResponse
     {
         $user->forceFill(['cart_reminder_opt_in' => false])->save();
 
-        return view('account.cart-reminder-unsubscribed', ['done' => true, 'action' => null]);
+        return FrontendPage::render('Account/CartReminderUnsubscribe', 'account.cart-reminder-unsubscribed',
+            ['done' => true, 'action' => null], CartReminderUnsubscribePageProps::from(null, true));
     }
 }

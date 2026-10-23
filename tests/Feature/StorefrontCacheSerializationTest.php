@@ -34,6 +34,34 @@ class StorefrontCacheSerializationTest extends TestCase
         return $exists ? $key : null;
     }
 
+    private function stockMarkup(string $html): string
+    {
+        $document = new \DOMDocument;
+        $document->loadHTML('<?xml encoding="UTF-8">'.$html, LIBXML_NONET | LIBXML_NOERROR | LIBXML_NOWARNING);
+        $xpath = new \DOMXPath($document);
+        // These two inert JSON payloads contain copy, not visible availability labels.
+        foreach ($xpath->query('//script[@type="application/json" and (@id="zafira-app-copy" or @data-page="app")]') as $script) {
+            $script->parentNode->removeChild($script);
+        }
+
+        return $document->saveHTML();
+    }
+
+    public function test_stock_markup_oracle_excludes_only_the_two_inert_copy_payloads(): void
+    {
+        $inert = '<script type="application/json" id="zafira-app-copy">{"label":"Stok habis"}</script>'
+            .'<script data-page="app" type="application/json">{"props":{"label":"Stok habis"}}</script>';
+        $this->assertStringNotContainsString('Stok habis', $this->stockMarkup($inert));
+        foreach ([
+            '<p>Stok habis</p>',
+            '<script type="application/ld+json">{"name":"Stok habis"}</script>',
+            '<script type="application/json" id="other-data">{"label":"Stok habis"}</script>',
+            '<script>const label = "Stok habis";</script>',
+        ] as $retained) {
+            $this->assertStringContainsString('Stok habis', $this->stockMarkup($inert.$retained));
+        }
+    }
+
     private function product(): Product
     {
         $category = Category::create(['cat_title' => 'Atelier']);
@@ -93,8 +121,7 @@ class StorefrontCacheSerializationTest extends TestCase
 
         $cold = $this->get('/produk/sac-lumiere')->assertOk()->getContent();
         $this->assertStringContainsString('Étole Saphir', $cold);
-        // The app-copy JSON blob carries the label for client-side use; only visible markup matters.
-        $this->assertStringNotContainsString('Stok habis', preg_replace('#<script type="application/json" id="zafira-app-copy">.*?</script>#s', '', $cold));
+        $this->assertStringNotContainsString('Stok habis', $this->stockMarkup($cold));
         $revision = AdminCategoryController::storefrontRevision();
         $relatedKey = $this->cacheKey("storefront:related:{$category->cat_id}:{$first->product_id}:v4:{$revision}");
         $this->assertNotNull($relatedKey);
@@ -120,7 +147,7 @@ class StorefrontCacheSerializationTest extends TestCase
         $this->assertStringContainsString('Étole Saphir', $warm);
         // PDP main product is not cached, fresh stock reflects the change.
         $this->assertSame(0, (int) $first->fresh()->stock);
-        $this->assertStringContainsString('Stok habis', $warm);
+        $this->assertStringContainsString('Stok habis', $this->stockMarkup($warm));
         $this->assertStringContainsString('data-stock="7"', $warm); // related card rendered from cache, not live DB (1)
         // Cached related items preserve their serialized stock and collection payload.
         $cached = Cache::get($relatedKey);

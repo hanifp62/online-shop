@@ -21,6 +21,7 @@ class HandleInertiaRequests extends Middleware
     {
         $response = parent::onVersionChange($request, $response);
         $response->headers->set('X-Inertia-Location', $request->getSchemeAndHttpHost().$request->getRequestUri());
+        $response->headers->set('Vary', 'X-Inertia', false);
 
         return $response;
     }

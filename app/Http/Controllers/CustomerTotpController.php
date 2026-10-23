@@ -8,15 +8,16 @@ use App\Services\CheckoutService;
 use App\Services\TotpService;
 use App\Support\AuthSecurityPageProps;
 use App\Support\FrontendPage;
+use App\Support\TotpEnrolPageProps;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Verifikasi dua langkah opsional untuk pelanggan: tidak pernah dipaksa.
@@ -123,6 +124,9 @@ class CustomerTotpController extends Controller
 
     public function showEnrol(Request $request): Response|RedirectResponse
     {
+        if (TotpEnrolPageProps::prefetch($request)) {
+            return response('', 204)->header('Cache-Control', 'no-store, private');
+        }
         $user = $request->user();
         if ($user->hasTotp()) {
             return redirect()->route('account.show');
@@ -136,9 +140,7 @@ class CustomerTotpController extends Controller
         ]);
         $request->session()->forget([self::FRESH_CODES, 'customer_totp_codes_state']);
 
-        return response()
-            ->view('account.totp-enrol', ['secret' => $secret, 'qr' => $this->totp->qrDataUri($uri)])
-            ->header('Cache-Control', 'no-store, private');
+        return TotpEnrolPageProps::render($request, false, false, ['secret' => $secret, 'qr' => $this->totp->qrDataUri($uri)]);
     }
 
     public function enrol(Request $request): RedirectResponse
@@ -211,6 +213,12 @@ class CustomerTotpController extends Controller
 
     public function recovery(Request $request): Response|RedirectResponse
     {
+        if (TotpEnrolPageProps::prefetch($request)) {
+            return response('', 204)->header('Cache-Control', 'no-store, private');
+        }
+        if ($documentVisit = TotpEnrolPageProps::recoveryDocumentVisit($request, false)) {
+            return $documentVisit;
+        }
         // pull(): kode cadangan hanya tampil sekali.
         $blob = $request->session()->pull(self::FRESH_CODES);
         $state = $request->session()->pull('customer_totp_codes_state');
@@ -227,9 +235,7 @@ class CustomerTotpController extends Controller
             return redirect()->route('account.show');
         }
 
-        return response()
-            ->view('account.totp-recovery', ['codes' => $codes])
-            ->header('Cache-Control', 'no-store, private');
+        return TotpEnrolPageProps::render($request, false, true, ['codes' => $codes]);
     }
 
     /** Matikan TOTP: wajib kode TOTP saat ini agar sesi curian tidak bisa melepas lapisan kedua. */

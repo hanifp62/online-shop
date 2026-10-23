@@ -12,6 +12,8 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\UserInfoBackup;
 use App\Services\AuthEventRecorder;
+use DOMDocument;
+use DOMXPath;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -321,16 +323,27 @@ class AdminListContextTest extends TestCase
         Category::create(['cat_title' => 'Couture']);
         $this->concierge(3, 'new', 'Anna');
 
-        $this->actingAs($this->admin(), 'admin')
+        $response = $this->actingAs($this->admin(), 'admin')
             ->get(route('admin.dashboard', ['uq' => '', 'status' => '', 'q' => '']))
             ->assertOk()
             ->assertDontSee('data-active-filter=', false)
-            ->assertDontSeeText('Filter aktif:')
             ->assertSee('data-panel-count="kategori"', false)
             ->assertSee('data-panel-count="produk"', false)
             ->assertSee('data-panel-count="pesanan"', false)
             ->assertSee('data-panel-count="audit"', false)
             ->assertSee('data-panel-count="subscriber"', false)
             ->assertSeeText('Menampilkan 3 dari 3 hasil');
+
+        $dom = new DOMDocument;
+        $previous = libxml_use_internal_errors(true);
+        $dom->loadHTML('<?xml encoding="UTF-8">'.$response->getContent());
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
+        $xpath = new DOMXPath($dom);
+        $visibleText = '';
+        foreach ($xpath->query('//body//text()[not(ancestor::script or ancestor::style)]') as $node) {
+            $visibleText .= $node->textContent;
+        }
+        $this->assertStringNotContainsString('Filter aktif:', $visibleText);
     }
 }

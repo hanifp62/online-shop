@@ -515,4 +515,95 @@
 @section('after-content')
 <div class="toast" role="status" aria-live="polite" @if(session('success')) data-flash="{{ session('success') }}" @endif><span><svg aria-hidden="true"><use href="#icon-check"/></svg></span><p data-toast-message></p></div>
 <svg class="icon-sprite" aria-hidden="true"><symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol></svg>
+@isset($page)
+<script type="module" data-admin-dashboard-fallback-loader>
+    (() => {
+        const root = document.getElementById('app');
+        if (!root) return;
+        let claimed = ['ready', 'failed'].includes(root.dataset.reactBoot) || !document.querySelector('script[data-page="app"]');
+        if (claimed) return;
+        let loading = false;
+        let ready = false;
+        let replay = null;
+        const toast = document.querySelector('.toast[data-flash]');
+        const cleanup = () => {
+            observer.disconnect();
+            clearTimeout(timer);
+            root.removeEventListener('submit', submit, true);
+            root.removeEventListener('click', click, true);
+        };
+        const replayOnce = () => {
+            const intent = replay;
+            replay = null;
+            if (claimed || !intent?.element.isConnected || !root.contains(intent.element)) return;
+            if (intent.kind === 'filter') {
+                const button = intent.submitter;
+                if (button?.isConnected && button.form === intent.element && !button.disabled) intent.element.requestSubmit(button);
+                else intent.element.requestSubmit();
+            } else intent.element.click();
+        };
+        const start = async () => {
+            if (loading || claimed || root.dataset.reactBoot !== 'fallback') return;
+            loading = true;
+            // Admin flash handling in app.js is inside its storefront guard.
+            if (toast?.dataset.flash) {
+                toast.querySelector('[data-toast-message]').textContent = toast.dataset.flash;
+                toast.classList.add('show');
+            }
+            try {
+                await Promise.resolve();
+                if (claimed) return;
+                await import(@json(\Illuminate\Support\Facades\Vite::asset('resources/js/app.js')));
+                if (claimed) return;
+                ready = true;
+                cleanup();
+                replayOnce();
+            } catch {
+                if (claimed) return;
+                cleanup();
+                const status = root.querySelector('[data-table-error]');
+                if (status) {
+                    status.hidden = false;
+                    status.textContent = @json(__('admin_ui.table_js.network_error'));
+                }
+                // If enhancement itself fails, release the captured GET natively.
+                // No mutation is ever captured or retried by this loader.
+                replayOnce();
+            }
+        };
+        const submit = event => {
+            const form = event.target.closest?.('form[data-admin-table-form]');
+            if (claimed || ready || event.defaultPrevented || !form || form.method.toLowerCase() !== 'get') return;
+            root.dataset.reactBoot = 'fallback';
+            replay ||= {kind: 'filter', element: form, submitter: event.submitter};
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            void start();
+        };
+        const click = event => {
+            const button = event.target.closest?.('button[data-table-density], button[data-table-copy-selection]');
+            if (claimed || ready || event.defaultPrevented || !button || button.type !== 'button') return;
+            root.dataset.reactBoot = 'fallback';
+            replay ||= {kind: 'click', element: button};
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            void start();
+        };
+        const observer = new MutationObserver(() => void start());
+        observer.observe(root, {attributes: true, attributeFilter: ['data-react-boot']});
+        const timer = setTimeout(() => {
+            if (!claimed && root.dataset.reactBoot === 'pending') root.dataset.reactBoot = 'fallback';
+        }, 10000);
+        root.addEventListener('submit', submit, true);
+        root.addEventListener('click', click, true);
+        root.addEventListener('zafira:react-claim', () => {
+            claimed = true;
+            replay = null;
+            cleanup();
+            toast?.classList.remove('show');
+        }, {once: true});
+        void start();
+    })();
+</script>
+@endisset
 @endsection

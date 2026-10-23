@@ -26,12 +26,19 @@
         $storefrontAppCopy = array_merge(__('shop_ui.app_js'), ['stock_rejection' => __('customer_messages.cart.stock'), 'adjust_stock_rejection' => __('customer_messages.cart.adjust_stock')]);
     @endphp
     <script type="application/json" id="zafira-app-copy">@json($storefrontAppCopy)</script>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css'])
+    @isset($page)
+        @viteReactRefresh
+        @vite('resources/js/inertia.jsx')
+    @else
+        @vite('resources/js/app.js')
+    @endisset
     <style>
         [data-product-add]:disabled { cursor: not-allowed; }
     </style>
 </head>
 <body class="storefront product-page" @auth data-favorites-url="{{ route('favorites.index') }}" data-favorites-page="{{ route('shop.index') }}#favorit" @endauth>
+<x-react-root :page="$page ?? null">
     <a class="skip-link" href="#main-content">{{ __('shop_ui.pdp.skip') }}</a>
     @include('partials.product-header')
 
@@ -189,7 +196,47 @@
     </main>
 
     @include('partials.product-footer')
+</x-react-root>
 
 
+@isset($page)
+<script type="module" data-storefront-fallback-loader>
+    const root = document.getElementById('app');
+    let loading = false;
+    let ready = false;
+    let claimed = root.dataset.reactBoot === 'ready' || root.dataset.reactBoot === 'failed' || !document.querySelector('script[data-page="app"]');
+    let replay = null;
+    const start = async () => {
+        if (loading || claimed || root.dataset.reactBoot !== 'fallback') return;
+        loading = true;
+        try {
+            await import(@json(\Illuminate\Support\Facades\Vite::asset('resources/js/app.js')));
+            root.querySelectorAll('#pdp-monogram-input').forEach(input => input.dispatchEvent(new Event('input', {bubbles: true})));
+            ready = true;
+            observer.disconnect(); clearTimeout(timer); root.removeEventListener('click', click, true);
+            const intent = replay; replay = null;
+            if (intent?.isConnected) intent.click();
+        } catch {
+            const status = root.querySelector('[data-cart-status]');
+            if (status) status.textContent = @json(__('shop_ui.app_js.err_service'));
+        }
+        replay = null;
+    };
+    const click = event => {
+        const button = event.target.closest('button[type="button"]');
+        if (!claimed && !ready && root.dataset.reactBoot === 'fallback' && button && !button.hasAttribute('onclick')) {
+            replay ||= button;
+            event.preventDefault(); event.stopPropagation();
+        }
+        void start();
+    };
+    root.addEventListener('click', click, true);
+    const observer = new MutationObserver(() => void start());
+    observer.observe(root, {attributes: true, attributeFilter: ['data-react-boot']});
+    const timer = setTimeout(() => { if (!claimed && root.dataset.reactBoot === 'pending') root.dataset.reactBoot = 'fallback'; }, 10000);
+    root.addEventListener('zafira:react-claim', () => { claimed = true; clearTimeout(timer); observer.disconnect(); root.removeEventListener('click', click, true); }, {once: true});
+    void start();
+</script>
+@endisset
 </body>
 </html>

@@ -137,7 +137,9 @@ class AdminFilterBadgeCopyTest extends TestCase
             $this->assertStringNotContainsString((string) $seededText, $filteredPanel->textContent);
         }
         if ($view === 'latestSubscribers') {
-            $response->assertDontSeeText($query === [] ? 'Tidak ada subscriber yang cocok.' : 'Belum ada subscriber.');
+            $panel = $this->xpath($response->getContent())->query('//*[@data-admin-table="subscriber"]')->item(0);
+            $this->assertNotNull($panel);
+            $this->assertStringNotContainsString($query === [] ? 'Tidak ada subscriber yang cocok.' : 'Belum ada subscriber.', $panel->textContent);
         }
     }
 
@@ -160,8 +162,9 @@ class AdminFilterBadgeCopyTest extends TestCase
         }
         $response = $this->get(route('admin.dashboard', ['kq' => $search]))
             ->assertOk()
-            ->assertViewHas('categories', fn ($rows) => $rows->total() === 0)
-            ->assertDontSeeText($otherMessage);
+            ->assertViewHas('categories', fn ($rows) => $rows->total() === 0);
+
+        $this->assertStringNotContainsString($otherMessage, $this->xpath($response->getContent())->evaluate('string(//*[@data-admin-table="kategori"])'));
 
         $this->assertScopedEmptyState($response->getContent(), 'kategori', $message);
     }
@@ -185,8 +188,9 @@ class AdminFilterBadgeCopyTest extends TestCase
         }
         $response = $this->get(route('admin.dashboard', ['pq' => $search]))
             ->assertOk()
-            ->assertViewHas('latestProducts', fn ($rows) => $rows->total() === 0)
-            ->assertDontSeeText($otherMessage);
+            ->assertViewHas('latestProducts', fn ($rows) => $rows->total() === 0);
+
+        $this->assertStringNotContainsString($otherMessage, $this->xpath($response->getContent())->evaluate('string(//*[@data-admin-table="produk"])'));
 
         $this->assertScopedEmptyState($response->getContent(), 'produk', $message);
     }

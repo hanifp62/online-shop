@@ -27,6 +27,7 @@
     <meta property="og:url" content="{{ url('/') }}">
     <meta name="twitter:card" content="summary_large_image">
     <title>{{ __('shop_ui.welcome.page_title') }}</title>
+    <link rel="canonical" href="{{ route('home') }}">
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     <link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
     <script type="application/ld+json">
@@ -38,7 +39,13 @@
     <link rel="stylesheet" href="{{ asset('prototype/app.css') }}?v=4.0.0">
 
     <script type="application/json" id="zafira-app-copy">@json($storefrontAppCopy)</script>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css'])
+    @isset($page)
+        @viteReactRefresh
+        @vite('resources/js/inertia.jsx')
+    @else
+        @vite('resources/js/app.js')
+    @endisset
     <script>
         (function() {
             var theme = 'system', lang = document.documentElement.getAttribute('data-server-locale') || 'id';
@@ -64,7 +71,9 @@
             document.documentElement.setAttribute('lang', lang);
         })();
     </script>
-    <script src="{{ asset('js/zafira-core.js') }}"></script>
+    @empty($page)
+        <script src="{{ asset('js/zafira-core.js') }}"></script>
+    @endempty
     <style>
         /* Bespoke Luxury Overrides & Film Grain Texture */
         .film-grain-overlay {
@@ -108,6 +117,7 @@
     </style>
 </head>
 <body class="storefront" data-catalog-url="{{ route('catalog.index') }}" lang="{{ app()->getLocale() }}" @auth data-favorites-url="{{ route('favorites.index') }}" data-favorites-page="{{ route('shop.index') }}#favorit" @endauth>
+<x-react-root :page="$page ?? null">
     <div class="film-grain-overlay" aria-hidden="true"></div>
     <a class="skip-link" href="#main-content">{{ __('shop_ui.pdp.skip') }}</a>
 
@@ -667,17 +677,7 @@
                     </select>
                 </div>
 
-                <!-- Suara Ambient Atelier (Acoustics) -->
-                <div class="profile-setting-row">
-                    <div class="setting-info">
-                        <span class="setting-name" data-i18n="profile_sound_label">{{ __('shop_ui.welcome.profile_sound_label') }}</span>
-                        <span class="setting-desc" data-i18n="profile_sound_desc">{{ __('shop_ui.welcome.profile_sound_desc') }}</span>
-                    </div>
-                    <button type="button" class="sound-toggle-pill" id="profile-sound-btn" onclick="if(window.zafiraCore) window.zafiraCore.toggleSound()">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-                        <span id="profile-sound-label">{{ __('shop_ui.welcome.sound_on') }}</span>
-                    </button>
-                </div>
+                {{-- Removed sound control: the loaded core exports no toggleSound API. --}}
             </div>
 
             <!-- 5. Navigation Links & Portal Bridge -->
@@ -750,6 +750,7 @@
 
     <div class="toast" role="status" aria-live="polite" @if(session('success')) data-flash="{{ session('success') }}" @endif><span><svg aria-hidden="true"><use href="#icon-check"/></svg></span><p data-toast-message></p></div>
 
+</x-react-root>
     <script>
         // Enhanced Client-Side Interactions (Live Search, Monogram, Keyboard Shortcuts)
         // L'Art d'Offrir Interactive Unboxing Handlers (Norman & Shneiderman)
@@ -793,7 +794,7 @@
         }
 
         // Live Monogram Real-Time Interaction (Norman Constraints & Signifiers)
-        document.addEventListener('DOMContentLoaded', function() {
+        function initWelcomeFallback() {
             var monogramInput = document.getElementById('monogram-input');
             var previewDisplay = document.getElementById('monogram-preview-display');
             var counterDisplay = document.getElementById('welcome-monogram-counter');
@@ -830,7 +831,7 @@
                 });
             });
 
-            var searchInput = document.getElementById('live-catalog-search-input');
+            var searchInput = document.getElementById('home-catalog-query');
 
             // Keyboard Shortcuts Listener
             document.addEventListener('keydown', function(e) {
@@ -859,7 +860,58 @@
                     if (at) { at.scrollIntoView({ behavior: 'smooth' }); }
                 }
             });
-        });
+        }
+        @isset($page)
+            document.addEventListener('zafira:storefront-fallback-ready', initWelcomeFallback, {once: true});
+        @else
+            document.addEventListener('DOMContentLoaded', initWelcomeFallback, {once: true});
+        @endisset
     </script>
+@isset($page)
+<script type="module" data-storefront-fallback-loader>
+    const root = document.getElementById('app');
+    let loading = false;
+    let ready = false;
+    let claimed = root.dataset.reactBoot === 'ready' || root.dataset.reactBoot === 'failed' || !document.querySelector('script[data-page="app"]');
+    let replay = null;
+    const start = async () => {
+        if (loading || claimed || root.dataset.reactBoot !== 'fallback') return;
+        loading = true;
+        try {
+            await new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = @json(asset('js/zafira-core.js'));
+                script.onload = resolve; script.onerror = reject;
+                document.head.appendChild(script);
+            }).catch(() => {});
+            await import(@json(\Illuminate\Support\Facades\Vite::asset('resources/js/app.js')));
+            document.dispatchEvent(new Event('zafira:storefront-fallback-ready'));
+            root.querySelectorAll('#monogram-input, #pdp-monogram-input').forEach(input => input.dispatchEvent(new Event('input', {bubbles: true})));
+            ready = true;
+            observer.disconnect(); clearTimeout(timer); root.removeEventListener('click', click, true);
+            const intent = replay; replay = null;
+            if (intent?.isConnected) intent.click();
+        } catch {
+            const status = root.querySelector('[data-cart-status]');
+            if (status) status.textContent = @json(__('shop_ui.app_js.err_service'));
+        }
+        replay = null;
+    };
+    const click = event => {
+        const button = event.target.closest('button[type="button"]');
+        if (!claimed && !ready && root.dataset.reactBoot === 'fallback' && button && !button.hasAttribute('onclick')) {
+            replay ||= button;
+            event.preventDefault(); event.stopPropagation();
+        }
+        void start();
+    };
+    root.addEventListener('click', click, true);
+    const observer = new MutationObserver(() => void start());
+    observer.observe(root, {attributes: true, attributeFilter: ['data-react-boot']});
+    const timer = setTimeout(() => { if (!claimed && root.dataset.reactBoot === 'pending') root.dataset.reactBoot = 'fallback'; }, 10000);
+    root.addEventListener('zafira:react-claim', () => { claimed = true; clearTimeout(timer); observer.disconnect(); root.removeEventListener('click', click, true); }, {once: true});
+    void start();
+</script>
+@endisset
 </body>
 </html>

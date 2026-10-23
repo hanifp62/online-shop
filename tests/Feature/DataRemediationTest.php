@@ -7,6 +7,7 @@ use App\Http\Controllers\StorefrontController;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Product;
+use App\Support\StorefrontPageProps;
 use Database\Seeders\AdminSeeder;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,6 +15,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Inertia\Testing\AssertableInertia as Assert;
 use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
@@ -251,6 +253,31 @@ class DataRemediationTest extends TestCase
         }
     }
 
+    public function test_data08_home_dto_reuses_projected_numeric_ids_without_product_queries(): void
+    {
+        $queries = [];
+        DB::listen(function ($query) use (&$queries): void {
+            if (preg_match('/\bfrom\s+["`]?products["`]?\b/i', $query->sql)) {
+                $queries[] = $query->sql;
+            }
+        });
+        // Prove the listener observes product reads before checking a query-free projection.
+        Product::query()->limit(1)->get();
+        $this->assertCount(1, $queries);
+        $queries = [];
+        $props = StorefrontPageProps::home([
+            'products' => collect([
+                ['id' => 'already-projected', 'productId' => '481', 'price_label' => 'Rp100', 'image' => '/favicon.svg'],
+                ['id' => 'product-482', 'productId' => 482, 'price_label' => 'Rp200', 'image' => '/favicon.svg'],
+            ]),
+            'categories' => collect(),
+        ]);
+        $this->assertSame([], $queries, 'The DTO must not requery products to resolve purchase IDs.');
+        $this->assertSame(481, $props['products'][0]['productId']);
+        $this->assertSame(482, $props['products'][1]['productId']);
+        $this->assertSame('already-projected', $props['products'][0]['id']);
+    }
+
     public function test_data08_sitemap_streams_instead_of_building_the_whole_document(): void
     {
         // Streaming is the selected no-view-edit contract, not a latency benchmark.
@@ -278,18 +305,25 @@ class DataRemediationTest extends TestCase
     public function test_data08_homepage_is_limited_but_product_details_remain_accessible(): void
     {
         $category = Category::create(['cat_title' => 'REM featured bound']);
+        $firstProductId = null;
         for ($index = 1; $index <= StorefrontController::FEATURED_PRODUCT_LIMIT + 1; $index++) {
-            Product::create([
+            $product = Product::create([
                 'product_cat' => $category->cat_id, 'product_brand' => 'ZAFIRA',
                 'product_title' => "Featured {$index}", 'product_slug' => "featured-{$index}",
                 'product_price' => 100, 'is_active' => true,
             ]);
+            $firstProductId ??= (int) $product->product_id;
         }
-        $view = app(StorefrontController::class)->index();
-        $this->assertCount(StorefrontController::FEATURED_PRODUCT_LIMIT, $view->getData()['products']);
-        $this->assertSame('featured-1', $view->getData()['products']->first()['id']);
+        $response = $this->get('/')->assertOk();
+        $products = $response->viewData('products');
+        $this->assertCount(StorefrontController::FEATURED_PRODUCT_LIMIT, $products);
+        $this->assertSame('featured-1', $products->first()['id']);
+        $this->assertSame($firstProductId, $products->first()['productId']);
+        $response->assertInertia(fn (Assert $page) => $page->component('Storefront/Home')
+            ->has('products', StorefrontController::FEATURED_PRODUCT_LIMIT)
+            ->where('products.0.id', 'featured-1')->where('products.0.productId', $firstProductId));
         $last = StorefrontController::FEATURED_PRODUCT_LIMIT + 1;
-        $this->assertSame("featured-{$last}", app(StorefrontController::class)->show("featured-{$last}")->getData()['product']->product_slug);
+        $this->assertSame("featured-{$last}", $this->get(route('products.show', "featured-{$last}"))->assertOk()->viewData('product')->product_slug);
     }
 
     public function test_data08_streamed_sitemap_preserves_all_active_urls_and_xml_fields_across_batches(): void
@@ -343,15 +377,14 @@ class DataRemediationTest extends TestCase
         $other = Product::create(array_replace($payload, [
             'product_slug' => 'rem-related', 'product_brand' => 'ZAFIRA', 'is_active' => true,
         ]));
-        $controller = app(StorefrontController::class);
-        $this->assertSame('REM product validation', $controller->index()->getData()['products']->first()['category']);
-        $this->assertSame('REM product validation', $controller->show($product->product_slug)->getData()['related']->first()->category->cat_title);
+        $this->assertSame('REM product validation', $this->get('/')->assertOk()->viewData('products')->first()['category']);
+        $this->assertSame('REM product validation', $this->get(route('products.show', $product->product_slug))->assertOk()->viewData('related')->first()->category->cat_title);
         $revision = AdminCategoryController::storefrontRevision();
         Cache::put('rem:unrelated:rate-limit', 7, 300);
         $this->patchJson(route('admin.categories.update', $payload['product_cat']), ['cat_title' => 'Renamed REM category'])->assertRedirect();
         $this->assertNotSame($revision, AdminCategoryController::storefrontRevision());
-        $this->assertSame('Renamed REM category', $controller->index()->getData()['products']->first()['category']);
-        $related = $controller->show($product->product_slug)->getData()['related']->first();
+        $this->assertSame('Renamed REM category', $this->get('/')->assertOk()->viewData('products')->first()['category']);
+        $related = $this->get(route('products.show', $product->product_slug))->assertOk()->viewData('related')->first();
         $this->assertSame($other->product_id, $related->product_id);
         $this->assertSame('Renamed REM category', $related->category->cat_title);
         $this->assertSame(7, Cache::get('rem:unrelated:rate-limit'));

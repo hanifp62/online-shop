@@ -11,7 +11,10 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\UserInfoBackup;
 use App\Services\AuthEventRecorder;
+use App\Support\AdminDashboardPageProps;
+use App\Support\FrontendPage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,10 +23,11 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
+use Inertia\Response;
 
 class AdminDashboardController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request): View|Response|JsonResponse
     {
         // Nomor halaman malformed (mis. kpage=abc) hanya diabaikan: satu tabel rusak
         // tidak boleh mematikan dashboard, dan nilainya tak boleh diulang ke tautan/form.
@@ -143,7 +147,7 @@ class AdminDashboardController extends Controller
             ->when(($filters['sq'] ?? '') !== '', fn ($query) => $this->containsAny($query, ['email'], $filters['sq']));
         $categoryOptions = Category::orderBy('cat_id')->get(['cat_id', 'cat_title']);
 
-        return view('admin.dashboard', [
+        $viewData = [
             'tableState' => $tableState,
             'categoryOptions' => $categoryOptions,
             'stats' => [
@@ -173,7 +177,16 @@ class AdminDashboardController extends Controller
             'latestProducts' => $this->paginateClamped($productQuery->orderBy($filters['psort'], $filters['pdir'])->orderBy('product_id', 'desc'), $validated, 'ppage', 10)->withQueryString()->fragment('panel-produk'),
             'latestSubscribers' => $this->paginateClamped($subscriberQuery->orderBy($filters['ssort'], $filters['sdir'])->orderBy('id', 'desc'), $validated, 'spage', 10)->withQueryString()->fragment('panel-subscriber'),
             'latestOrders' => $this->paginateClamped($orderQuery->orderBy($filters['osort'], $filters['odir'])->orderBy('id', 'desc'), $validated, 'opage', 15)->withQueryString()->fragment('panel-pesanan'),
-        ]);
+        ];
+
+        $props = AdminDashboardPageProps::make($viewData);
+        if ($request->expectsJson() && $request->header('X-Zafira-Dashboard') === 'snapshot') {
+            return response()->json($props['dashboardSnapshot'])->header('Cache-Control', 'private, no-store');
+        }
+
+        return FrontendPage::render(
+            'Admin/Dashboard', 'admin.dashboard', $viewData, $props, $props['dashboardSnapshot']['url']
+        );
     }
 
     // paginate() tidak pernah menjepit nomor halaman, jadi halaman di luar jangkauan

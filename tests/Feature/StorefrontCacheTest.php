@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Http\Controllers\AdminCategoryController;
-use App\Http\Controllers\StorefrontController;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Product;
@@ -107,9 +106,8 @@ class StorefrontCacheTest extends TestCase
         $anchor = $make('anchor-one', $first);
         $otherAnchor = $make('anchor-two', $second);
         $target = $make('mutable-product', $first);
-        $controller = app(StorefrontController::class);
-        $home = fn () => $controller->index()->getData()['products']->keyBy('id');
-        $related = fn (Product $product) => $controller->show($product->product_slug)->getData()['related']->keyBy('product_id');
+        $home = fn () => $this->get('/')->assertOk()->viewData('products')->keyBy('id');
+        $related = fn (Product $product) => $this->get(route('products.show', $product->product_slug))->assertOk()->viewData('related')->keyBy('product_id');
         $this->assertSame(4, $home()[$target->product_slug]['stock']);
         $this->assertTrue($related($anchor)->has($target->product_id));
         $this->assertFalse($related($otherAnchor)->has($target->product_id));
