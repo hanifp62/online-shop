@@ -1,0 +1,8 @@
+{
+  "command": "AMADIS_ROOT=<guarded root> scripts/amadis/launch.sh test --log-junit=<guarded root>/evidence/php-complete-r2.xml",
+  "started_at": "2026-10-22T21:20:34.426981+00:00",
+  "ended_at": "2026-10-22T21:24:51.557028+00:00",
+  "exit": 0,
+  "assertions": 160073,
+  "summary": "phpunit-summary.json"
+}

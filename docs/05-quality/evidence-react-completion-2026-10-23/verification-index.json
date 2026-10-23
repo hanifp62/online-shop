@@ -1,0 +1,67 @@
+{
+  "task": "FE-COMP-20261023",
+  "base_commit": "016fb944c4d1d0dc380a014b9f99570167b106f0",
+  "scope": "Working tree lokal; bukan CI remote untuk diff ini atau approval produksi",
+  "php": {
+    "producer_exit": 0,
+    "tests": 1289,
+    "passed": 1286,
+    "skipped": 3,
+    "failures": 0,
+    "errors": 0,
+    "assertions": 160073,
+    "summary": "phpunit-summary.json",
+    "execution": "php-execution.json",
+    "skip_policy": "Tiga ID MysqlCheckoutRetryTest exact, bukan skip baru"
+  },
+  "node": {
+    "command": "node --test",
+    "started_at": "2026-10-22T21:11:42.482525+00:00",
+    "ended_at": "2026-10-22T21:11:45.413900+00:00",
+    "exit": 0,
+    "tests": 556,
+    "passed": 556,
+    "skipped": 0,
+    "basis": "Transkrip eksekusi integrator dan scratch/react-migration/node-complete-r1.log; raw log tidak dipublikasikan"
+  },
+  "react": {
+    "command": "npm run test:react",
+    "started_at_utc_second_precision": "2026-10-22T20:55:55Z",
+    "duration_ms": 1200,
+    "exit": 0,
+    "files": 15,
+    "passed": 232,
+    "basis": "Transkrip Vitest integrator; raw log tidak dipublikasikan"
+  },
+  "python": { "summary": "python-typed-final.json", "prior_success": "python-final.json", "resolved_import_failure": "python-import-failure.json" },
+  "browser": {
+    "native": "native-browser-final.json",
+    "native_commands": "native-browser-final-commands.tsv",
+    "legacy": "legacy-browser-summary.json",
+    "legacy_commands": "legacy-browser-commands.tsv",
+    "prior_failures": ["native-browser-r1-failure.json", "native-browser-r2-failure.json", "native-browser-r3-failure.json", "native-browser-r4-failure.json", "native-browser-r5-failure.json", "native-browser-r6-failure.json"]
+  },
+  "static": {
+    "basis": "Perintah dieksekusi integrator pada 22 Oktober UTC / 23 Oktober WIB; waktu presisi tidak direkam terpisah untuk semua perintah",
+    "pint": { "command": "vendor/bin/pint --test", "files": 406, "exit": 0 },
+    "build": { "command": "npm run build", "exit": 0, "modules": 669, "entry_kb": 353.43, "entry_gzip_kb": 110.82 },
+    "composer_validate": { "command": "composer validate --no-check-publish", "exit": 0, "warnings": ["exact pin dompdf/dompdf 3.1.6", "exact pin inertiajs/inertia-laravel 3.5.2"] },
+    "composer_audit": { "command": "composer audit --no-interaction", "exit": 0, "advisories": 0 },
+    "npm_audit": { "command": "npm audit --audit-level=low", "exit": 0, "advisories": 0 },
+    "actionlint": { "command": "scratch/ci-validation/actionlint", "exit": 0 },
+    "secret_scan": { "command": "python3 scripts/ci/security_scan.py --mode secrets", "exit": 0 },
+    "pii_scan": { "command": "python3 scripts/ci/security_scan.py --mode pii", "exit": 0 },
+    "whitespace": { "command": "git --no-pager diff --check", "exit": 0 }
+  },
+  "collector_live": {
+    "summary": "baseline-collector-final.json",
+    "prior_success": "baseline-collector-live.json",
+    "note": "Validasi collector dan kandidat baseline yang sudah dipublikasikan, bukan CI source baru"
+  },
+  "editor_diagnostics": {
+    "collector_source": "0 error, 0 warning setelah typed request/transport contracts",
+    "collector_tests": "0 error, masih ada warning lint fixture (penamaan parameter, style dan closure loop)",
+    "repository": "Diagnostik legacy Python masih ada; tidak diklaim bersih repo-wide"
+  },
+  "source_manifest": "source-manifest.json"
+}

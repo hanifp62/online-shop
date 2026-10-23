@@ -1,0 +1,26 @@
+{
+  "reviewer_session": "8ed5648d-904a-4e6a-a256-7bd2153da3bd",
+  "started_at": "2026-10-22T22:05:11Z",
+  "ended_at": "2026-10-22T22:07:43Z",
+  "decision": "APPROVE scoped",
+  "scope": "Integritas manifest, konsistensi evidence, tautan lokal dan batas klaim pada snapshot penutupan",
+  "base_commit": "016fb944c4d1d0dc380a014b9f99570167b106f0",
+  "checks": {
+    "source_hashes_matched": 84,
+    "source_inventory_exact": true,
+    "unique_allowlisted_components": 20,
+    "component_files_exist": 20,
+    "relative_links_valid": 131,
+    "documents_checked": 5,
+    "evidence_json_valid_before_this_record": 18,
+    "index_references_exist": 18,
+    "native_mandatory_stages": 29,
+    "native_optional_unavailable": 2,
+    "native_unexpected_console_errors": 0,
+    "counts_and_timestamps_consistent": true,
+    "collector_evidence_is_baseline_not_new_ci": true,
+    "command_checks_exit": 0
+  },
+  "not_rerun": ["PHP", "Node", "React", "Python", "build", "browser", "database", "remote", "editor diagnostics"],
+  "limits": "Bukan approval produksi; tidak ada source/ledger/evidence ditulis reviewer. Commit/push, CI SHA baru dan deployment belum diklaim."
+}

@@ -1,0 +1,38 @@
+{
+  "scope": "CLI bootstrap only; HTTP renderer/build verified separately",
+  "php": "8.5.11",
+  "laravel": "13.36.0",
+  "base_path_matches_checkout": true,
+  "public_path_matches_checkout": true,
+  "storage_path_matches_checkout": true,
+  "configuration_cached": false,
+  "routes_cached": false,
+  "environment": "local",
+  "debug": true,
+  "database_driver": "mysql",
+  "session_driver": "database",
+  "cache_driver": "database",
+  "queue_driver": "database",
+  "mail_driver": "log",
+  "inertia_provider_loaded": true,
+  "inertia_gateway_bound": true,
+  "cli_signed_url_origin_matches_8001": true,
+  "frontend_enabled": true,
+  "frontend_page_count": 20,
+  "features": {
+    "admin_ops_summary": {
+      "enabled": false,
+      "rollout": 100
+    },
+    "admin_sales_summary": {
+      "enabled": true,
+      "rollout": 100
+    }
+  },
+  "canonical_origin_is_loopback": true,
+  "canonical_loopback_port": 8001,
+  "canonical_matches_127_8001": true,
+  "session_secure_cookie": false,
+  "session_host_only": true,
+  "hot_file_absent": true
+}

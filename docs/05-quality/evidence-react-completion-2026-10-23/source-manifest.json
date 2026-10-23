@@ -1,0 +1,341 @@
+{
+  "base_commit": "016fb944c4d1d0dc380a014b9f99570167b106f0",
+  "files": [
+    {
+      "path": "app/Http/Controllers/AdminDashboardController.php",
+      "sha256": "2bcbb5f2db46ec7a26f0d51f64e6f014282e39ce606b6b79e0fa112af138ba56"
+    },
+    {
+      "path": "app/Http/Controllers/AdminTotpEnrolController.php",
+      "sha256": "19cadd50d49a3dd55b7a130210a8b4ecac738ba456740d2ed72dad47ae07b808"
+    },
+    {
+      "path": "app/Http/Controllers/CustomerTotpController.php",
+      "sha256": "372faacc44beadea21c18ae8f3a79a2da1164045863a7ab4267a79bd92d88642"
+    },
+    {
+      "path": "app/Http/Controllers/ProfileController.php",
+      "sha256": "1511699f9f80e737d4eb1aab0e980c8d03a26b9f275fe273e751b349aafdbede"
+    },
+    {
+      "path": "app/Http/Controllers/ShopController.php",
+      "sha256": "3b2489d529477a89278d74fa89a89707e4c3b5fa1f4131b467d5346584cee5d0"
+    },
+    {
+      "path": "app/Http/Controllers/StorefrontController.php",
+      "sha256": "964537e2779848b61bc47181336b4a2b17d1599706872bd1ef61ac836b495a41"
+    },
+    {
+      "path": "app/Http/Middleware/HandleInertiaRequests.php",
+      "sha256": "732d859bc2869ea3d1d871fd12d965d1236132c264ec401ed2c876f2a3e47cc7"
+    },
+    {
+      "path": "app/Support/AdminDashboardPageProps.php",
+      "sha256": "f7ae544e9cb6ccf9af01ba8a8d748e7a87e71b1c993f1be4bb96c03a6ff530ec"
+    },
+    {
+      "path": "app/Support/CartReminderUnsubscribePageProps.php",
+      "sha256": "c3c427965dbcbc94cb8b9e0078ee348cd00f3f6a2b5c53a1fd773101e3133487"
+    },
+    {
+      "path": "app/Support/ShopPageProps.php",
+      "sha256": "fadd53af1bb52e2bf4e6a04a3dcffeb832dbd5d24e82e8a83a54100a10f46c3b"
+    },
+    {
+      "path": "app/Support/StorefrontPageProps.php",
+      "sha256": "94fd061ebdb69165511dc87f54367cdab2553988c69b84dc73bf05d9f6af4f2b"
+    },
+    {
+      "path": "app/Support/TotpEnrolPageProps.php",
+      "sha256": "f79ff96ee58dc55310f4e8dd3981d828786ef46d124c1f27024ce971c678a547"
+    },
+    {
+      "path": "config/frontend.php",
+      "sha256": "0509eb04f3814ef8047238c6dde32c06e68ecb177cf8a9f57f08d22d60e123dc"
+    },
+    {
+      "path": "resources/css/admin-dashboard.css",
+      "sha256": "5871523f490ba7228028ca01c6a6409a6555e3bfb77f91577ca06f619e362160"
+    },
+    {
+      "path": "resources/css/shop-react.css",
+      "sha256": "0c85ed4e5881f2a9e4d72c288a6d8f3771a212338923ccaa11680ab158b433ab"
+    },
+    {
+      "path": "resources/css/storefront-react.css",
+      "sha256": "37c874f93d31d4747f18e597b668873e82e098ead06fd0e6684752456c48cfc4"
+    },
+    {
+      "path": "resources/js/components/TotpEnrolment.jsx",
+      "sha256": "585a39d91895bf0a2ce394f105eb8e67e5658c4493c769da927a983deb7bf949"
+    },
+    {
+      "path": "resources/js/components/admin-dashboard/ExternalForms.jsx",
+      "sha256": "89f40bcb467a44cc229149e34c22b5ccee2f3b0b541c1436751e1c7ef58c07fc"
+    },
+    {
+      "path": "resources/js/components/admin-dashboard/Table.jsx",
+      "sha256": "620244abedb1baf15e75719c81646d7826fc7b9c042add06e21e2ba053b7446d"
+    },
+    {
+      "path": "resources/js/components/shop/Fields.jsx",
+      "sha256": "aade88be0846cc02d41088de44079b99918c225e25bb6db049be6c520ad2ecbd"
+    },
+    {
+      "path": "resources/js/components/shop/Orders.jsx",
+      "sha256": "982a0792e8a70b65ea5f04a32d1adbf65e2e631df463acb924ba9dd83c924c41"
+    },
+    {
+      "path": "resources/js/components/shop/Summary.jsx",
+      "sha256": "3321e607a4f66d3f9c858a4c5cccc868ea4c024ff80a91932b61a63e4933ab7b"
+    },
+    {
+      "path": "resources/js/components/storefront/CartDrawer.jsx",
+      "sha256": "afc85c9b35d461e2f4b119bb5fbe42f1cb53194d195d76238cf2c742114a8961"
+    },
+    {
+      "path": "resources/js/components/storefront/Chrome.jsx",
+      "sha256": "dd26cdc0b5929768b17b0f63bd15e8ae1350b3ef75872e05d54921e45886d687"
+    },
+    {
+      "path": "resources/js/components/storefront/Forms.jsx",
+      "sha256": "c9f5f69a3ac817eb631fe8cf152282a43563babc30d6aea16f8b32fba9bf2952"
+    },
+    {
+      "path": "resources/js/components/storefront/Layout.jsx",
+      "sha256": "c6cab501839021692ed70c05eb8fde3b86cc8ff3532ed07dfb44110b7a9a119a"
+    },
+    {
+      "path": "resources/js/components/storefront/Primitives.jsx",
+      "sha256": "4664a22635b30b1dd8e1550b4a675a8eeacf795dafa985aba132e51e28cf038d"
+    },
+    {
+      "path": "resources/js/components/storefront/Products.jsx",
+      "sha256": "bba1faca947e12425ce6dd5c423a3d5503db899ec3679aa66e2fb1895e3c9089"
+    },
+    {
+      "path": "resources/js/components/storefront/StorefrontProvider.jsx",
+      "sha256": "2d0115e9a59e38a143e5ddf129f27a26f377cf76ab46ad8211e82095f2dcfbdd"
+    },
+    {
+      "path": "resources/js/inertia.jsx",
+      "sha256": "988bfbd622bbebf2a2fc20362158c7056b39be81a157c6a3226ff759a3efa2e4"
+    },
+    {
+      "path": "resources/js/lib/admin-dashboard.js",
+      "sha256": "0dfc4876b031a476aa7337b8497da34aa23e7ee92ba482df7e8e3f775e276756"
+    },
+    {
+      "path": "resources/js/lib/frontend-traversal.js",
+      "sha256": "c2c9ed021f205ae43dadbf8e530b58f860fa84dc42c157207c045b506f47f65f"
+    },
+    {
+      "path": "resources/js/lib/shop-client.js",
+      "sha256": "a73871d462b1b331ef26df708a75ec1c448cbb14f6cefa27a0d3aed27a072f75"
+    },
+    {
+      "path": "resources/js/lib/storefront-cart.js",
+      "sha256": "fc97c7a1c8547ac06db9f197bf5b94f87cedff2561b129c5ea654ab85bee5f86"
+    },
+    {
+      "path": "resources/js/lib/storefront-preferences.js",
+      "sha256": "19354adf5b63bc43cc0e5e17314819092d11c610169186a060c9cfc6ecb66906"
+    },
+    {
+      "path": "resources/js/pages/Account/CartReminderUnsubscribe.jsx",
+      "sha256": "874d418058c7d9e7223970e0bcf09a546be23adfa4c2c909546404e306c2fdb9"
+    },
+    {
+      "path": "resources/js/pages/Account/TotpEnrol.jsx",
+      "sha256": "cb3c6ee87eb63fc370c93ff3b9f258eb0150367af94c26edeca04db21b4faaf5"
+    },
+    {
+      "path": "resources/js/pages/Account/TotpRecovery.jsx",
+      "sha256": "7c06fc0bb69a884b51be0ff696b5e148e6aecd4ef0817c3fad2f81583cab042d"
+    },
+    {
+      "path": "resources/js/pages/Admin/Dashboard.jsx",
+      "sha256": "fe7172fced9a906f554f21d1918d6eeb990c14315d229555d2c2a47605e262e6"
+    },
+    {
+      "path": "resources/js/pages/Admin/TotpEnrol.jsx",
+      "sha256": "7c77a4ddd6ec6f0284acd1e167c4253cb374a8fb23e8affbc8b7e9c22bcd328a"
+    },
+    {
+      "path": "resources/js/pages/Admin/TotpRecovery.jsx",
+      "sha256": "00e0f2baef8d5935d21bfb51a87e61b5e8105da8053be482c133f03278de7cae"
+    },
+    {
+      "path": "resources/js/pages/Products/Show.jsx",
+      "sha256": "ab733158c1826ba38f8b2010be5c8b6427808c6bf7b85c980dca9011f5aae7ab"
+    },
+    {
+      "path": "resources/js/pages/Shop/Index.jsx",
+      "sha256": "17fb3adb562755d19f4f2c32e48f970fcc69fa68d73ba71c4e6e2b65dddb216f"
+    },
+    {
+      "path": "resources/js/pages/Storefront/Home.jsx",
+      "sha256": "a591729e3372219b20ea496418535d229a59dd141056ce083299509ed441c997"
+    },
+    {
+      "path": "resources/views/account/cart-reminder-unsubscribed.blade.php",
+      "sha256": "db0903f54878026dc14d72bce58d950390a717465e4493f892a0be53988e7fe6"
+    },
+    {
+      "path": "resources/views/account/totp-enrol.blade.php",
+      "sha256": "26f483c7ba28f0d7c2c233f5319f9036acf517b86d105733df8c84ddceffbc1f"
+    },
+    {
+      "path": "resources/views/account/totp-recovery.blade.php",
+      "sha256": "c00b99385784b2f89807bc10435bfe53e03cde3911b883317cd4c893ecb930ad"
+    },
+    {
+      "path": "resources/views/admin/dashboard.blade.php",
+      "sha256": "630056325ed35eb7d3e8d37eb3f61d6f9790966b3fa49883336119403dc7751e"
+    },
+    {
+      "path": "resources/views/admin/totp-enrol-recovery.blade.php",
+      "sha256": "5879a6d8b2ab48b33c6a5a7ac7fc8aa1b3db914cec7066df2f9d3b82b7662f6f"
+    },
+    {
+      "path": "resources/views/admin/totp-enrol.blade.php",
+      "sha256": "0fbabe45fe23708463ff494f51b749e02c988cd581997b262013620f65aea3d3"
+    },
+    {
+      "path": "resources/views/products/show.blade.php",
+      "sha256": "0f56d5f741e2abc9a72e4fb4f51544d03ac170450c2c279d8794ed4252ad9118"
+    },
+    {
+      "path": "resources/views/shop/index.blade.php",
+      "sha256": "7a8dc6335ec8784635d01ec795510b819df07c972a4dc10cb4b36c9d9d545395"
+    },
+    {
+      "path": "resources/views/welcome.blade.php",
+      "sha256": "286b353c2c9ed90cee693f0766c6cfc58186d72acd74d9e9929d1b94b196ebec"
+    },
+    {
+      "path": "scripts/amadis/acceptance_react.cjs",
+      "sha256": "7bc4e2c692c3381df9c4b63923ab7b627f043528df5ace165bcee1678d92e426"
+    },
+    {
+      "path": "scripts/amadis/acceptance_react.sh",
+      "sha256": "c90622c295c000b1c693f6f96994a9019550cac3deed02b6158127daa6d1853e"
+    },
+    {
+      "path": "scripts/amadis/acceptance_react_complete.cjs",
+      "sha256": "f1a7711932cc54428cd7c587c529a77017a7a535c23868f54bf7756cae61af56"
+    },
+    {
+      "path": "scripts/amadis/acceptance_react_monitor.cjs",
+      "sha256": "33d3445f855d939403f3264f180eb5abfd0e097bec51a3a61c4077bba848dbb2"
+    },
+    {
+      "path": "scripts/amadis/acceptance_react_security.cjs",
+      "sha256": "3459710d14ed0a6118be8aee1993112dfe652784a59fb9a70591b5b88890ee85"
+    },
+    {
+      "path": "scripts/ci/collect_publication.py",
+      "sha256": "3cefcddfc6e1935d701e87d30c9ae2458441b761938d320639772a62b9a83f23"
+    },
+    {
+      "path": "tests/Feature/AdminFilterBadgeCopyTest.php",
+      "sha256": "5f8bc41f846abe8becf2a44c30dedc59f81594de0add20c5a6ce801f8314bd72"
+    },
+    {
+      "path": "tests/Feature/AdminListContextTest.php",
+      "sha256": "d11101b11e02114bda1625f296d92d8e1b256212267d92e3bb10459c9d1b3542"
+    },
+    {
+      "path": "tests/Feature/AdminProductStockUiTest.php",
+      "sha256": "92105008e57390194b018dc45fb053d8c378a981e0b87a5b4ec70ba1bac3aec5"
+    },
+    {
+      "path": "tests/Feature/AdminTableCopyTest.php",
+      "sha256": "f47b0058ca6d886e4aefee9d305d9c114248b0f2f73f09929d51e83f349209a7"
+    },
+    {
+      "path": "tests/Feature/AdminTablesPaginationTest.php",
+      "sha256": "0958d4928167a94a00861ca828fa73f1ae4e95673dc589a16f8f09c1dcc91c87"
+    },
+    {
+      "path": "tests/Feature/DataRemediationTest.php",
+      "sha256": "5437697dd7ffb53c0880e4b68559cc0121559dd20671a08817e25faf3d494aeb"
+    },
+    {
+      "path": "tests/Feature/InertiaAdminDashboardTest.php",
+      "sha256": "68461eee80d3a775e1dd45c22c2d83f176bf6cc19048288f4575d910148c36d0"
+    },
+    {
+      "path": "tests/Feature/InertiaSecurityEnrolmentTest.php",
+      "sha256": "2e6b35de6e76ee0ee402ac44ebb65c47432a75f384116d5315b040a99be7cb71"
+    },
+    {
+      "path": "tests/Feature/InertiaShopTest.php",
+      "sha256": "93c353cf73e4225d65fcc076699cb521e780433a234960560bf79b50c4b6650e"
+    },
+    {
+      "path": "tests/Feature/InertiaStorefrontTest.php",
+      "sha256": "4419e76e47f521d9d7a76a6f89f11c0c281e0609946519e43842f254b9376a41"
+    },
+    {
+      "path": "tests/Feature/StorefrontCacheSerializationTest.php",
+      "sha256": "8a080319fd5812e88357482ebf3d05e2297872dd91f2d5cc33c56fd0d78731aa"
+    },
+    {
+      "path": "tests/Feature/StorefrontCacheTest.php",
+      "sha256": "ab254301a1bbf3ce9800cb217b89565557f9b4d4b5a99a93a57af72ec788dac7"
+    },
+    {
+      "path": "tests/admin-dashboard-state.test.mjs",
+      "sha256": "ea5d3879a49ec7461baf494e779efcc5f7a5db144fe85ed7cd3e744e96bbf30b"
+    },
+    {
+      "path": "tests/python/test_ci_collect_publication.py",
+      "sha256": "4b747b4db27ff4987c5737b2eab5d05104f15e5892a933cb26f2239b0e559c5f"
+    },
+    {
+      "path": "tests/react-browser-monitor.test.mjs",
+      "sha256": "4c4a28998e980ac69f03142c077ae7f430980e668bd8ab56eef2f6876fb1171c"
+    },
+    {
+      "path": "tests/react/admin-dashboard-fallback.spec.jsx",
+      "sha256": "9b529e8843db0987bfd6fa61260d3ea7654d9a605f726b9119ad12691d4a4143"
+    },
+    {
+      "path": "tests/react/admin-dashboard.spec.jsx",
+      "sha256": "fc1f6ba937ecc7dcb9d6a3097637a927eb5874bc36667f14980bfbadf037290c"
+    },
+    {
+      "path": "tests/react/security-enrolment.spec.jsx",
+      "sha256": "87d009e25f607a1a9dd2e6dadbdaf9185fd97130c5219d6625eb6a665400be6e"
+    },
+    {
+      "path": "tests/react/shop-checkout.spec.jsx",
+      "sha256": "44ee54c77327d564f82ef5b663796afc5ce25c8636b35ac36941aa75ae3f222a"
+    },
+    {
+      "path": "tests/react/shop-fallback.spec.jsx",
+      "sha256": "4a8f106070519de70ba835ceb77f695be81afa3991833123a6b9c7b916c5196e"
+    },
+    {
+      "path": "tests/react/storefront-client.spec.jsx",
+      "sha256": "35e8aff23d839525fa407977835b11e7033d6813db7e6999c4c6d86913f587ec"
+    },
+    {
+      "path": "tests/react/storefront-fallback.spec.jsx",
+      "sha256": "24ce2a1dc8323eb5254b3f686978b6e41dafbb8397cb12cabc9536df74009538"
+    },
+    {
+      "path": "tests/react/storefront-ui.spec.jsx",
+      "sha256": "3e8720ad64ebd9f337e985f057da0e36a56afc7e114d0c8471498677c83f1110"
+    },
+    {
+      "path": "tests/shop-react-client.test.mjs",
+      "sha256": "8d4daf43dcc9bd939a7994a86722d5531d3cd51b8a1e20c886a62b528c31c8c7"
+    },
+    {
+      "path": "tests/shop-react-fallback.test.mjs",
+      "sha256": "30543f7d080ff3e79d94a9e455e77b5bf56fcdde36221c629a6eaba1c8a817af"
+    }
+  ]
+}

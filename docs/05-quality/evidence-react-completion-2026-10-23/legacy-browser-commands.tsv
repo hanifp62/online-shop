@@ -1,0 +1,11 @@
+step	start_utc	end_utc	rc	command
+migrate	2026-10-22T21:26:10Z	2026-10-22T21:26:10Z	0	scripts/amadis/launch.sh migrate
+seed	2026-10-22T21:26:10Z	2026-10-22T21:26:10Z	0	scripts/amadis/launch.sh seed
+provision	2026-10-22T21:26:10Z	2026-10-22T21:26:11Z	0	scripts/amadis/launch.sh provision
+am01	2026-10-22T21:26:11Z	2026-10-22T21:26:11Z	0	sqlite3 file:/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-10ad49d864f4120a9a775781/database.sqlite?mode=ro select 'products', count(*), sum(is_active) from products;
+select 'category', c.cat_title, count(p.product_id), sum(p.is_active) from categories c left join products p on p.product_cat=c.cat_id group by c.cat_id order by c.cat_id;
+select 'stock37', product_id, stock from products where product_slug='amadis-demo-stock-37';
+am06_escape_phpunit	2026-10-22T21:26:11Z	2026-10-22T21:26:12Z	0	scripts/amadis/launch.sh test --filter=AmadisCatalogTest
+browser	2026-10-22T21:26:12Z	2026-10-22T21:26:15Z	0	python3 scripts/amadis/acceptance_server.py 8042 scratch/react-migration/complete-legacy-r1/serve.log node scripts/amadis/acceptance_isolated.cjs
+am10_db	2026-10-22T21:26:15Z	2026-10-22T21:26:15Z	0	sqlite3 file:/private/var/folders/3n/g8p6ncc153dcc72zmv1bff9m0000gn/T/opencode/amadis-10ad49d864f4120a9a775781/database.sqlite?mode=ro select 'stock', stock from products where product_slug='amadis-demo-stock-37';
+select 'order', o.id, o.status, i.quantity from orders o join order_items i on i.order_id=o.id join products p on p.product_id=i.product_id where p.product_slug='amadis-demo-stock-37' order by o.id;

@@ -1,0 +1,292 @@
+{
+  "started_at": "2026-10-23T04:11:04.174Z",
+  "browser": "Chromium Playwright isolated contexts",
+  "source_manifest_sha256": "703d28e69f1f7e44016a4ba6b11d17cac264d1f9bdb9256914e844f3ddaca1df",
+  "build_manifest_sha256": "e13a60d6bd92a30a881a6b40322f38c54cb09dde0184ae8a6e45778cf2f33f80",
+  "build_files": [
+    {
+      "file": "assets/AuthEvents-CayGLiyZ.js",
+      "sha256": "9f6d515540f6b1e4883f62096ff21573dc856077aeaeafe93b799c22bd0b9f3e"
+    },
+    {
+      "file": "assets/AuthForm-2p325AvH.js",
+      "sha256": "9188da80f9d1ee9e20153f37742336b6c03c5dcb210217cb9b06022a9b9c50b9"
+    },
+    {
+      "file": "assets/AuthSecurity-Bh7Zhm6D.js",
+      "sha256": "e2d43482077c9295201671715aeadf73891bab3d516af967ec54cd334a84f37b"
+    },
+    {
+      "file": "assets/CartReminderUnsubscribe-DT1hBgpx.js",
+      "sha256": "c96a32104c76f3c58f474a60746d8e9e5bb71f1f687d21b91b3c181901789535"
+    },
+    {
+      "file": "assets/Dashboard-BuIIXD7q.css",
+      "sha256": "a0eaadd427ca52c5d1ff6d6bc88bdc3b8abab73393dfb55e1e2f54ae06ebebdc"
+    },
+    {
+      "file": "assets/Dashboard-pa3BysYW.js",
+      "sha256": "3f1d84820a35726edd419279f8f3fd8a1b2f982c1dd14cf4ea014e514845061c"
+    },
+    {
+      "file": "assets/ForgotPassword-DP-dpnlm.js",
+      "sha256": "d3b858d533d1175754612fc894485ca660c1718ebf1af4612d56478457be65c1"
+    },
+    {
+      "file": "assets/Home-Dqp2Uwoh.js",
+      "sha256": "7553d73a43baf03f3439086784b1466b38f3038e8e89d8407067cb2d9bb18ff8"
+    },
+    {
+      "file": "assets/Index-Bknr1I0u.css",
+      "sha256": "d5da83bf65c90d3fb2a7a2e80b6f052aa41c46dc4f57f4a11c94ba577a4574bc"
+    },
+    {
+      "file": "assets/Index-CrwqpTHW.js",
+      "sha256": "e6cbed3f723843f39dd9668e2c52bc1a47550c654edcb0e2a247e6cac5369fc4"
+    },
+    {
+      "file": "assets/Index-DQsrLUqq.js",
+      "sha256": "920577e2085c3383db579206566320a88147842fed74bb0bc6db6eddff33aa9a"
+    },
+    {
+      "file": "assets/Layout-CCGqf029.css",
+      "sha256": "c772dcc9d09769c01b85aacc218590b1c6db94643c65b5d7d57f09e6715e7111"
+    },
+    {
+      "file": "assets/Layout-DqDDJ_x5.js",
+      "sha256": "e77ba4396adb93c63f4e66ae8c7e470095b70b087686feb676d180c56c8b5336"
+    },
+    {
+      "file": "assets/Login-BWSsR4o4.js",
+      "sha256": "448233c45a796556670f4140d1919a02cccc2f1a4db4f2a50b53fb9b8475300a"
+    },
+    {
+      "file": "assets/Login-CVMJa4Bk.js",
+      "sha256": "5b75174cd56586b133601143bc76663052be55328cef18790601324f025cc82a"
+    },
+    {
+      "file": "assets/OperationsSummary-CdEjjaMM.js",
+      "sha256": "a8aca48d3c4d62f4799dd7d11902b7f68cf3a4d5bc1d2d9a9f841eb8216b6c62"
+    },
+    {
+      "file": "assets/Register-CXSuZV2b.js",
+      "sha256": "9f3ecb5b1014d647ed9f8851807194091e3fe7b643784ce7abb1a4abf5e5f99e"
+    },
+    {
+      "file": "assets/ResetPassword-DgYN8EwV.js",
+      "sha256": "39592c0e0619fa40636748a7feed1095ded9ad58837a7569e5f6af236d2a808b"
+    },
+    {
+      "file": "assets/Show-CBnE1Hgj.js",
+      "sha256": "d8ee83d19f147188cf01d9f9420be999131ba87702b128bb59e50f970a48126d"
+    },
+    {
+      "file": "assets/Show-CshRMOr8.js",
+      "sha256": "66b5c7730e031460abe2e109e636c9ca39567f78d97c50167190fa47008bb953"
+    },
+    {
+      "file": "assets/TotpChallenge-BatWSZRT.js",
+      "sha256": "8f5e45b6b90d7358f28117591cedf0c3e58deac08830dbd1e913b34442175ec6"
+    },
+    {
+      "file": "assets/TotpChallenge-CQ4xieiS.js",
+      "sha256": "9084c9126c7cbe82f4777a8d35131edd00bce13d9a85038989ad7d6b5315d4d2"
+    },
+    {
+      "file": "assets/TotpEnrol-BQ6Bls7F.js",
+      "sha256": "f7d057ce84f6d5d26c85d77dee31d6fe7a2c0d2ef4f73d7f1c0b7a3c8a436ca6"
+    },
+    {
+      "file": "assets/TotpEnrol-DBXbpmgU.js",
+      "sha256": "a2e1fcba15b13eb453dec1cb3fce810a7ab4416cb7a4533ce2b6dfdc1ce4b852"
+    },
+    {
+      "file": "assets/TotpEnrolment-jRoVTdmf.js",
+      "sha256": "4fab3ee69d8273bb3d56203bf27b3222623e61ae9fa6f0bfbd78e6ccf676c3ac"
+    },
+    {
+      "file": "assets/TotpRecovery-ANrWM8lr.js",
+      "sha256": "b3177385786b708ef4f3c2a547af7ebd97de06d65c80e37ee2c0fab775f030d9"
+    },
+    {
+      "file": "assets/TotpRecovery-OGHtt-ip.js",
+      "sha256": "2946f5ac0af4b0c256a637106fd1a620160d2083854abd7af328ee9ca6433db7"
+    },
+    {
+      "file": "assets/admin-C9OvZwax.css",
+      "sha256": "c5f18fe3f86b90f5b800022b7e8e822969de3f7453b1465422c2a91f2c4432e5"
+    },
+    {
+      "file": "assets/app-B51-0sRn.js",
+      "sha256": "04ce401b2a4d6b3be55d4fa67ea943515bf15840738ff17a02997de74da085bd"
+    },
+    {
+      "file": "assets/app-BhiDxxwq.css",
+      "sha256": "6ac388af97a15a36f0b7f9b02046b5d74158d3cbb489d46b79036e9e6b3760a1"
+    },
+    {
+      "file": "assets/inertia-9cIpRNbY.js",
+      "sha256": "2e698da94b5cc9c90e2e8d65342567bd1fbc28e6cdb23b1c5338d91851191b9c"
+    }
+  ],
+  "origins": [
+    {
+      "port": 8001,
+      "routes": [
+        {
+          "route": "/",
+          "component": "Storefront/Home",
+          "status": 200,
+          "react_ready": true,
+          "inert_payload_removed": true
+        },
+        {
+          "route": "/koleksi",
+          "component": "Catalog/Index",
+          "status": 200,
+          "react_ready": true,
+          "inert_payload_removed": true
+        },
+        {
+          "route": "/belanja",
+          "component": "Shop/Index",
+          "status": 200,
+          "react_ready": true,
+          "inert_payload_removed": true
+        },
+        {
+          "route": "/login",
+          "component": "Auth/Login",
+          "status": 200,
+          "react_ready": true,
+          "inert_payload_removed": true
+        },
+        {
+          "route": "/register",
+          "component": "Auth/Register",
+          "status": 200,
+          "react_ready": true,
+          "inert_payload_removed": true
+        },
+        {
+          "route": "/lupa-kata-sandi",
+          "component": "Auth/ForgotPassword",
+          "status": 200,
+          "react_ready": true,
+          "inert_payload_removed": true
+        },
+        {
+          "route": "/admin/login",
+          "component": "Admin/Login",
+          "status": 200,
+          "react_ready": true,
+          "inert_payload_removed": true
+        },
+        {
+          "route": "/produk/{public-slug}",
+          "component": "Products/Show",
+          "status": 200,
+          "react_ready": true
+        }
+      ],
+      "loaded_build_assets": [
+        {
+          "file": "assets/app-BhiDxxwq.css",
+          "status": 200,
+          "matches_disk": true
+        },
+        {
+          "file": "assets/inertia-9cIpRNbY.js",
+          "status": 200,
+          "matches_disk": true
+        },
+        {
+          "file": "assets/Layout-CCGqf029.css",
+          "status": 200,
+          "matches_disk": true
+        },
+        {
+          "file": "assets/Home-Dqp2Uwoh.js",
+          "status": 200,
+          "matches_disk": true
+        },
+        {
+          "file": "assets/Layout-DqDDJ_x5.js",
+          "status": 200,
+          "matches_disk": true
+        },
+        {
+          "file": "assets/Index-CrwqpTHW.js",
+          "status": 200,
+          "matches_disk": true
+        },
+        {
+          "file": "assets/Index-Bknr1I0u.css",
+          "status": 200,
+          "matches_disk": true
+        },
+        {
+          "file": "assets/Index-DQsrLUqq.js",
+          "status": 200,
+          "matches_disk": true
+        },
+        {
+          "file": "assets/Login-CVMJa4Bk.js",
+          "status": 200,
+          "matches_disk": true
+        },
+        {
+          "file": "assets/AuthForm-2p325AvH.js",
+          "status": 200,
+          "matches_disk": true
+        },
+        {
+          "file": "assets/Register-CXSuZV2b.js",
+          "status": 200,
+          "matches_disk": true
+        },
+        {
+          "file": "assets/ForgotPassword-DP-dpnlm.js",
+          "status": 200,
+          "matches_disk": true
+        },
+        {
+          "file": "assets/Login-BWSsR4o4.js",
+          "status": 200,
+          "matches_disk": true
+        },
+        {
+          "file": "assets/AuthSecurity-Bh7Zhm6D.js",
+          "status": 200,
+          "matches_disk": true
+        },
+        {
+          "file": "assets/Show-CshRMOr8.js",
+          "status": 200,
+          "matches_disk": true
+        },
+        {
+          "file": "assets/app-B51-0sRn.js",
+          "status": 200,
+          "matches_disk": true
+        }
+      ],
+      "service_worker_controlled": true,
+      "last_document_status": 200,
+      "mobile_home_no_overflow": true,
+      "explicit_blade_fallback": true,
+      "return_from_fallback_react_ready": true,
+      "no_js_catalogue_links": true
+    }
+  ],
+  "console_errors": 0,
+  "console_warnings": 0,
+  "page_errors": 0,
+  "failed_requests": 0,
+  "http_errors": 0,
+  "blocked_non_get": 0,
+  "asset_mismatches": 0,
+  "errors": [],
+  "pass": true,
+  "ended_at": "2026-10-23T04:11:18.857Z"
+}

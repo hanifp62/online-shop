@@ -1,0 +1,27 @@
+{
+  "started_at": "2026-10-23T04:11:03.719089+00:00",
+  "command": [
+    "php",
+    "artisan",
+    "serve",
+    "--host=127.0.0.1",
+    "--port=8001",
+    "--no-reload"
+  ],
+  "business_mutation_tests": false,
+  "explicit_nonsecret_override": {
+    "APP_URL": "http://127.0.0.1:8001"
+  },
+  "config_probe_exit": 0,
+  "inherited_override_names": [],
+  "owned_artisan_pid": 863,
+  "listener_pids": [
+    896
+  ],
+  "listener_group_owned": true,
+  "browser_exit": 0,
+  "owned_server_exit": 0,
+  "port8001_released": true,
+  "original8000_preserved": true,
+  "ended_at": "2026-10-23T04:11:18.890316+00:00"
+}

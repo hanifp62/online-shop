@@ -1,0 +1,71 @@
+{
+  "source_files_unchanged": 84,
+  "commands": [
+    {
+      "name": "node",
+      "command": [
+        "node",
+        "--test"
+      ],
+      "started_at": "2026-10-23T04:12:44.826938+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T04:12:47.708289+00:00",
+      "counts": {
+        "tests": 556,
+        "pass": 556,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "name": "react",
+      "command": [
+        "npm",
+        "run",
+        "test:react"
+      ],
+      "started_at": "2026-10-23T04:12:47.708937+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T04:12:49.250421+00:00",
+      "tests_passed": [
+        232
+      ]
+    },
+    {
+      "name": "python",
+      "command": [
+        "scratch/ci-validation/venv/bin/python",
+        "scripts/ci/run_python_tests.py"
+      ],
+      "started_at": "2026-10-23T04:12:49.250986+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T04:12:59.968373+00:00",
+      "summary": {
+        "cases": [],
+        "counts": {
+          "errors": 0,
+          "expected_failures": 0,
+          "failures": 0,
+          "import_errors": 0,
+          "skipped": 0,
+          "tests": 402,
+          "unexpected_successes": 0
+        },
+        "reasons": [],
+        "status": "PASS"
+      }
+    },
+    {
+      "name": "pint",
+      "command": [
+        "vendor/bin/pint",
+        "--test"
+      ],
+      "started_at": "2026-10-23T04:12:59.968694+00:00",
+      "exit": 1,
+      "ended_at": "2026-10-23T04:13:00.888247+00:00"
+    }
+  ]
+}

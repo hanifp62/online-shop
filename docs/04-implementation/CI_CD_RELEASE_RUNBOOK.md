@@ -51,6 +51,8 @@ Bagian sampai aggregate `php` ada dalam [workflow CI](../../.github/workflows/ci
 | **NFR-CICD-007** — processing/alert | §9 | Probe async selesai, scheduler host dan worker aktual terverifikasi, kegagalan menghentikan promosi, alert benar-benar diterima operator; source/test readiness bukan bukti daemon |
 | **NFR-CICD-008** — pengukuran dan operasi | §10–12 | Workload/SLI/SLO, benchmark dan event deploy/incident/recovery nyata; runbook dapat diikuti operator berbeda. Jumlah assertion dan durasi CI bukan kapasitas produksi atau metrik DORA |
 
+**Jalur localhost pengguna:** [runbook native Artisan8001](LOCALHOST_TESTING.md) dan [bukti paritas/discovery](../05-quality/LOCALHOST_PARITY_2026-10-23.md). Harness CI terisolasi tidak membuktikan package discovery, konfigurasi dan browser-state checkout lokal pengguna secara otomatis.
+
 ## 3. Gate A — source, izin, dan checkout aman
 
 ### 3.1 Sebelum membuka atau memperbarui PR
@@ -222,6 +224,27 @@ python3 scripts/ci/check_browser_report.py "$RUNNER_TEMP/browser-evidence" | tee
 - Publish hanya `browser-summary.json`; jangan upload keseluruhan directory browser yang memuat log, identitas fixture, dan data diagnostik.
 
 ## 6. Gate E/F — kandidat artefak dan aggregate `php`
+
+### Koleksi bukti satu run attempt, tambahan 23 Oktober 2026
+
+[`scripts/ci/collect_publication.py`](../../scripts/ci/collect_publication.py) mengatasi job snapshot yang masih stale dan unduhan massal yang sulit didiagnosis. Ini tool read-only untuk bukti/kandidat, **bukan deployment, approval, atau pengganti CI source terbaru**.
+
+```sh
+python3 scripts/ci/collect_publication.py --help
+```
+
+Operator memberikan `--repo`, `--run-id`, `--sha` 40 karakter, `--attempt`, `--event` (`push` atau `pull_request`), dan `--output` baru dalam direktori yang sudah ada. Nilainya harus berasal dari metadata run target yang benar-benar ingin diperiksa, bukan run sukses lain. Token Actions read disediakan lewat environment proses `GH_TOKEN` melalui kanal credential yang disetujui; jangan menaruhnya pada argv, chat, log atau dokumentasi.
+
+Kontrak collector:
+
+- Run identity dan setiap job harus cocok; tepat lima nama wajib `quality`, `mysql`, `browser`, `release`, `php`, semuanya completed/success. Bounded wait60detik hanya untuk konsistensi snapshot, bukan menunggu build panjang.
+- Empat artifact terikat nama/SHA/run, window waktu attempt, expiry, digest dan ukuran. Metadata GitHub tidak mempunyai attempt ID artifact; window yang ambigu ditolak, tidak diklaim sebagai attestation kriptografis attempt.
+- Download per-artifact maksimal90detik budget, read timeout maksimal15detik per receive. Socket timeout sebelum deadline boleh retry GET satu kali dengan deadline semula. HTTP errors tidak diretry. DNS/TLS setup masih mempunyai batas platform, bukan hard wall-clock universal.
+- Redirect HTTPS maksimal3hop; Host dibentuk ulang dan credential/header API tidak dibawa lintas origin. Body redirect ditutup tanpa drain. Chunked, Content-Length dan close-delimited mempunyai byte/deadline guard.
+- Struktur ZIP exact, termasuk nested path MySQL producer; path traversal/symlink/duplikasi ditolak. Kandidat release wajib lolos verifier offline dan SHA sumber sebelum output final diterbitkan.
+- Output berisi `publication-summary.json` dan kandidat terverifikasi dalam `release/`; raw report fields/metadata/ZIP/log tidak dipublikasikan. Jika CLI nonzero, tidak ada approval; jangan menggunakan output dari run lain atau meningkatkan timeout tanpa diagnosis.
+
+**Bukti eksekusi:** collector source increment ini lulus live untuk baseline `016fb944c4d1d0dc380a014b9f99570167b106f0`, run39825513680/attempt1/push, pada22OktoberUTC21:40:22–21:40:47. [Evidence pertama](../05-quality/evidence-react-completion-2026-10-23/baseline-collector-live.json). Rerun source final22:02:10–22:03:13UTC juga lulus: [evidence final](../05-quality/evidence-react-completion-2026-10-23/baseline-collector-final.json). Itu bukan CI remote untuk increment integrasi yang belum dipush. [Laporan lengkap](../05-quality/REACT_INERTIA_COMPLETION_2026-10-23.md).
 
 ### 6.1 Build/verify kandidat, bukan deploy
 

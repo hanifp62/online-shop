@@ -1,0 +1,162 @@
+{
+  "source_files_unchanged": 84,
+  "commands": [
+    {
+      "name": "node",
+      "command": [
+        "node",
+        "--test"
+      ],
+      "started_at": "2026-10-23T04:13:59.351830+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T04:14:02.256405+00:00",
+      "counts": {
+        "tests": 556,
+        "pass": 556,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "name": "react",
+      "command": [
+        "npm",
+        "run",
+        "test:react"
+      ],
+      "started_at": "2026-10-23T04:14:02.257084+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T04:14:03.759684+00:00",
+      "tests_passed": [
+        232
+      ]
+    },
+    {
+      "name": "python",
+      "command": [
+        "scratch/ci-validation/venv/bin/python",
+        "scripts/ci/run_python_tests.py"
+      ],
+      "started_at": "2026-10-23T04:14:03.760146+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T04:14:14.384316+00:00",
+      "summary": {
+        "cases": [],
+        "counts": {
+          "errors": 0,
+          "expected_failures": 0,
+          "failures": 0,
+          "import_errors": 0,
+          "skipped": 0,
+          "tests": 402,
+          "unexpected_successes": 0
+        },
+        "reasons": [],
+        "status": "PASS"
+      }
+    },
+    {
+      "name": "pint",
+      "command": [
+        "vendor/bin/pint",
+        "--test"
+      ],
+      "started_at": "2026-10-23T04:14:14.384648+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T04:14:14.729990+00:00"
+    },
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "started_at": "2026-10-23T04:14:14.730192+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T04:14:15.400737+00:00",
+      "manifest_sha256": "e13a60d6bd92a30a881a6b40322f38c54cb09dde0184ae8a6e45778cf2f33f80"
+    },
+    {
+      "name": "composer_validate",
+      "command": [
+        "composer",
+        "validate",
+        "--no-check-publish"
+      ],
+      "started_at": "2026-10-23T04:14:15.401001+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T04:14:15.533749+00:00",
+      "exact_pin_warning": true
+    },
+    {
+      "name": "composer_audit",
+      "command": [
+        "composer",
+        "audit",
+        "--no-interaction"
+      ],
+      "started_at": "2026-10-23T04:14:15.533985+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T04:14:16.556243+00:00"
+    },
+    {
+      "name": "npm_audit",
+      "command": [
+        "npm",
+        "audit",
+        "--audit-level=low"
+      ],
+      "started_at": "2026-10-23T04:14:16.556545+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T04:14:17.154158+00:00"
+    },
+    {
+      "name": "actionlint",
+      "command": [
+        "scratch/ci-validation/actionlint"
+      ],
+      "started_at": "2026-10-23T04:14:17.154992+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T04:14:17.185950+00:00"
+    },
+    {
+      "name": "secrets",
+      "command": [
+        "python3",
+        "scripts/ci/security_scan.py",
+        "--mode",
+        "secrets"
+      ],
+      "started_at": "2026-10-23T04:14:17.186438+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T04:14:18.655746+00:00"
+    },
+    {
+      "name": "pii",
+      "command": [
+        "python3",
+        "scripts/ci/security_scan.py",
+        "--mode",
+        "pii"
+      ],
+      "started_at": "2026-10-23T04:14:18.655990+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T04:14:18.715907+00:00"
+    },
+    {
+      "name": "whitespace",
+      "command": [
+        "git",
+        "--no-pager",
+        "diff",
+        "--check"
+      ],
+      "started_at": "2026-10-23T04:14:18.716153+00:00",
+      "exit": 0,
+      "ended_at": "2026-10-23T04:14:18.729358+00:00"
+    }
+  ]
+}

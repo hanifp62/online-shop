@@ -1,0 +1,20 @@
+{
+  "command": "scratch/ci-validation/venv/bin/python scripts/ci/run_python_tests.py",
+  "started_at": "2026-10-22T21:41:43.254748+00:00",
+  "ended_at": "2026-10-22T21:41:53.764545+00:00",
+  "exit": 0,
+  "result": {
+    "cases": [],
+    "counts": {
+      "errors": 0,
+      "expected_failures": 0,
+      "failures": 0,
+      "import_errors": 0,
+      "skipped": 0,
+      "tests": 402,
+      "unexpected_successes": 0
+    },
+    "reasons": [],
+    "status": "PASS"
+  }
+}

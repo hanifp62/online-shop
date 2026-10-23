@@ -1,6 +1,6 @@
 # Migrasi frontend React 19 + Inertia 3
 
-**Tanggal:** 22 Oktober 2026. **Mandat:** pengguna menyetujui Laravel13 + React19 + Inertia3. **Status:** implementasi bertahap; bukan klaim seluruh frontend sudah dimigrasi atau siap produksi.
+**Tanggal kontrak:** 22 Oktober 2026. **Pembaruan:** 23 Oktober 2026 WIB. **Mandat:** pengguna menyetujui Laravel13 + React19 + Inertia3. **Status terkini:** 20 komponen halaman interaktif masuk allowlist, native JSX dengan fallback Blade. Gate lokal lulus; bukan approval produksi. [Laporan penyelesaian dan batas bukti](../05-quality/REACT_INERTIA_COMPLETION_2026-10-23.md).
 
 ## Baseline dan keputusan
 
@@ -54,7 +54,17 @@ Diakses 22 Oktober 2026:
 - https://inertiajs.com/docs/v3/advanced/server-side-rendering.md
 - Metadata `npm view` dan `composer show inertiajs/inertia-laravel 3.5.2 --all --format=json`.
 
-## Review dan batas bukti
+## Penyelesaian cakupan, 23 Oktober 2026
+
+Sembilan komponen tambahan: Storefront/Home, Products/Show, Shop/Index, Admin/Dashboard, Account/TotpEnrol, Account/TotpRecovery, Admin/TotpEnrol, Admin/TotpRecovery, Account/CartReminderUnsubscribe. Ditambah sebelas komponen milestone awal, total20. Operations flag tetap mati bawaan. Shell admin, email/PDF/XML/invoice/error darurat tetap server-native secara sengaja.
+
+Dashboard menggunakan satu snapshot JSON tujuh region, dua tahap consent draft dan Inertia sebagai satu-satunya penulis history. Setiap commit diverifikasi terhadap marker pada entry yang benar-benar didekripsi. Dispatcher popstate wajib dipasang sebelum core init: Chromium menjalankan listener pada Window menurut urutan registrasi, bukan asumsi prioritas capture. Entry dispatcher tanpa owner tidak mengganggu halaman lain/fallback.
+
+Checkout mempertahankan frozen payload/idempotency key dalam memori dan membedakan hasil uncertain dari penolakan definitif. Material TOTP hanya flash; version/rollback redirect diperiksa sebelum konsumsi state sekali tampil. Native dan fallback tetap mempunyai tes terpisah.
+
+PHP1286pass+3exactengineskip/160073assertion, Node556, React232, Python402, Pint406, build/scanner/audit lulus; browser native29mandatory/console0/cleanupPASS dan browser regresi lama lulus. Dua optional browser belum tersedia. Pada snapshot penutupan lokal increment belum commit/push; validasi collector live saat itu hanya terhadap run baseline016fb94. Verifikasi berikutnya terhadap runtime Artisan pengguna dan panduan origin8001 ada pada [laporan localhost](../05-quality/LOCALHOST_PARITY_2026-10-23.md). Detail acceptance, riwayat rework, manifest dan gate produksi berada pada laporan penyelesaian, bukan dianggap selesai oleh dependency/framework saja.
+
+## Riwayat review milestone awal, sebelum penyelesaian di atas
 
 Inventaris auth: `5c4e3425-7333-4f3d-9bc7-b51a4b62eb8b`; admin dan review arsitektur awal: `232f9a3d-4f9c-4e5a-a8fa-1a1d081c1169`. Review arsitektur katalog **bersyarat**, bukan approval runtime: lindungi handoff input, serialisasi cart, head/lang/canonical, vary/cache, dan bukti native terpisah. Resource live serial oleh integrator.
 

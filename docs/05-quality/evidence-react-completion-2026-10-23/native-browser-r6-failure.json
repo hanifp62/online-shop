@@ -1,0 +1,43 @@
+{
+  "status": "FAIL",
+  "checks": [
+    "catalog-native",
+    "catalog-spa-pagination-history",
+    "catalog-repeated-filters",
+    "catalog-locale-head",
+    "catalog-dialog-cart",
+    "catalog-mobile",
+    "auth-native-post-errors",
+    "auth-other-pages",
+    "catalog-delayed-chunk-draft",
+    "entry-failure-fallback",
+    "no-js-and-explicit-rollback",
+    "admin-private-history",
+    "home-native-mobile-keyboard-theme-reflow",
+    "home-native-search-category-locale",
+    "pdp-native-inquiry-draft-cart-delta-undo",
+    "shop-guest-frozen-idempotent-replay",
+    "shop-account-address-voucher-orders-favorites",
+    "dashboard-native-seven-regions-atomic-drafts",
+    "dashboard-native-inline-consent-late-edit",
+    "dashboard-native-back-failure-recovery",
+    "dashboard-native-order-json-once-refresh",
+    "dashboard-native-private-history",
+    "account-native-update-export-logout",
+    "reset-native-flash-validation",
+    "customer-totp-native-enrol-recovery",
+    "customer-totp-native-challenge",
+    "admin-totp-native-enrol-recovery",
+    "admin-totp-native-challenge"
+  ],
+  "failedStage": "console-clean",
+  "consoleErrors": 1,
+  "unexpectedEvents": [
+    {
+      "event": "requestfailed",
+      "reason": "unapproved",
+      "stage": "account-native-update-export-logout",
+      "status": null
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "started_at": "2026-10-23T04:15:14.517476+00:00",
+  "command": [
+    "php",
+    "artisan",
+    "serve"
+  ],
+  "business_mutation_tests": false,
+  "config_probe_exit": 0,
+  "inherited_override_names": [],
+  "owned_artisan_pid": 2031,
+  "listener_pids": [
+    2061
+  ],
+  "listener_group_owned": true,
+  "browser_exit": 0,
+  "owned_server_exit": 0,
+  "port8001_released": true,
+  "original8000_preserved": true,
+  "ended_at": "2026-10-23T04:15:24.149014+00:00"
+}

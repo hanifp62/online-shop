@@ -7,34 +7,38 @@ ZAFIRA is a Laravel storefront prototype for a luxury atelier. It includes a pro
 - Laravel 13
 - PHP 8.4+
 - Node.js 22 (see `.nvmrc`)
-- Vite
-- Blade and vanilla JavaScript
+- React 19 + Inertia 3, bundled with Vite
+- Blade for initial HTML, fallback, admin shell, email and PDF
 - SQLite or MySQL
 - PHPUnit / Laravel test runner
 
-## Local setup
+## Menjalankan lokal
 
-```bash
-cp .env.example .env
-composer install
-npm install
-php artisan key:generate
-php artisan migrate --seed
+Untuk checkout dengan konfigurasi dan database lokal yang sudah tersedia:
+
+```sh
+composer install --no-interaction --prefer-dist
+npm ci
 npm run build
-php artisan serve
+APP_URL=http://127.0.0.1:8001 php artisan serve --host=127.0.0.1 --port=8001 --no-reload
 ```
 
-Open `http://127.0.0.1:8000` after starting the server.
+Buka **http://127.0.0.1:8001**. Profil ini memakai build, bukan Vite HMR, dan mensyaratkan config cache tidak aktif. `--no-reload` menjaga override URL kanonis pada child PHP; restart server jika konfigurasi berubah. Jangan menimpa `.env`, meregenerasi key, atau menjalankan seed pada database existing.
 
-Do not commit `.env` or other credentials. Use `.env.example` as the configuration reference.
+`php artisan serve` tanpa opsi juga bekerja, tetapi port bisa bergeser saat8000sibuk. [Runbook localhost](docs/04-implementation/LOCALHOST_TESTING.md) menjelaskan discovery Inertia, port, canonical URL, cache, browser dan perbedaan dengan harness. [Bukti pengujian native Artisan](docs/05-quality/LOCALHOST_PARITY_2026-10-23.md).
+
+Untuk instalasi baru, siapkan konfigurasi/kredensial secara privat dan database khusus development terlebih dahulu. Jangan commit atau membagikan `.env` dan secret.
 
 ## Verification
 
-```bash
-php artisan test
+```sh
+node --test
+npm run test:react
 vendor/bin/pint --test
 npm run build
 ```
+
+Tes PHP/transaksi harus memakai fixture terisolasi, bukan DB lokal yang sedang dipakai pengguna. Ikuti [perintah dan gate CI](docs/04-implementation/CI_CD_RELEASE_RUNBOOK.md#43-php-dengan-guard-fixture-js-dan-python).
 
 Browser evidence scripts live in `scripts/benchmarks/` and require a running local server plus Playwright:
 

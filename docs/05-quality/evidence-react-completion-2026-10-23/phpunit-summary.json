@@ -1,0 +1,25 @@
+{
+  "cases": [
+    {
+      "id": "testcase-911",
+      "reason": "ALLOWED_SKIP"
+    },
+    {
+      "id": "testcase-912",
+      "reason": "ALLOWED_SKIP"
+    },
+    {
+      "id": "testcase-913",
+      "reason": "ALLOWED_SKIP"
+    }
+  ],
+  "counts": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 1286,
+    "skipped": 3,
+    "tests": 1289
+  },
+  "reasons": [],
+  "status": "PASS"
+}

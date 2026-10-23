@@ -1,0 +1,36 @@
+{
+  "task": "FE-COMP-PUB-20261023",
+  "reviewer_session": "6b48bb68-719d-422d-a7d6-eaf8b913b60a",
+  "started_at": "2026-10-23T04:27:38Z",
+  "ended_at": "2026-10-23T04:28:16Z",
+  "decision": "APPROVE scoped for pre-push local evidence",
+  "source_commit": "acae7f4310e9125b16611ac258b02df8acf2a817",
+  "source_files_matching_worktree_and_git": 84,
+  "delta_from_historical_manifest": "One EOF newline removed from tests/react/admin-dashboard.spec.jsx",
+  "source_manifest_sha256": "7e50bb29578b67d57c0c58c5e8db01b6e741cfe18510975a9b6c6283385da783",
+  "build_manifest_sha256": "e13a60d6bd92a30a881a6b40322f38c54cb09dde0184ae8a6e45778cf2f33f80",
+  "referenced_build_files_matching": 31,
+  "json_files_validated_at_snapshot": 14,
+  "preserved_failure_records": 3,
+  "documents_checked": 7,
+  "local_links_valid": 117,
+  "anchors_valid": 2,
+  "external_links_not_accessed": 3,
+  "reviewer_python_readonly_validators": {"commands": 3, "exit": 0},
+  "runtime_evidence_checked_not_rerun": {
+    "profiles": 3,
+    "routes_per_profile": 8,
+    "matched_loaded_assets_per_profile": 16,
+    "inert_payload_checks_per_profile": 7,
+    "console_and_network_error_counters": 0,
+    "owned_server_cleanup": "PASS",
+    "port8000_preserved": true
+  },
+  "precommit_gates_checked": 12,
+  "bounds": [
+    "Reviewer did not run PHP, browser, server, build or database",
+    "Configuration snapshots are CLI bootstrap, not child HTTP introspection",
+    "Full React rerun after newline fix reported by parent, no invented reviewer runtime timestamp",
+    "Not CI approval for final commit, deployment, or production readiness"
+  ]
+}
