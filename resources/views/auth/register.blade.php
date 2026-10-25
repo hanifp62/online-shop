@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
+    <x-theme-preference />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#17263f">
     <meta name="csrf-token" content="{{ csrf_token() }}">

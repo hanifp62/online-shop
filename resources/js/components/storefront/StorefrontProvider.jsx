@@ -1,6 +1,6 @@
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createStorefrontCart, formatCopy, readLegacyCart, rupiah, storefrontRequest } from '../../lib/storefront-cart.js';
-import { createLocaleWriter, locales, postLocale, readPreference, themes } from '../../lib/storefront-preferences.js';
+import { connectThemePreference, createLocaleWriter, locales, postLocale, readThemePreference, themes } from '../../lib/storefront-preferences.js';
 
 const Context = createContext(null);
 export const useStorefront = () => useContext(Context);
@@ -13,7 +13,9 @@ export function StorefrontProvider({ children, ...props }) {
     const [wishlist, setWishlist] = useState([]);
     const [wishlistOnly, setWishlistOnly] = useState(false);
     const [legacy, setLegacy] = useState([]);
-    const [theme, setTheme] = useState('system');
+    const [theme, updateTheme] = useState(() => readThemePreference());
+    const themeClient = useRef(null);
+    const setTheme = value => themeClient.current?.set(value);
     const [localeStatus, setLocaleStatus] = useState('');
     const opener = useRef(null);
     const epoch = useRef(0);
@@ -126,7 +128,7 @@ export function StorefrontProvider({ children, ...props }) {
         mounted.current = true;
         try {
             setLegacy(readLegacyCart(localStorage));
-            setTheme(readPreference(localStorage, 'zafira_theme', 'zafira-theme', themes, 'system'));
+
             if (!props.links.favorites) {
                 const saved = JSON.parse(localStorage.getItem('zafira-wishlist:v1') ?? localStorage.getItem('zafira-wishlist') ?? '[]');
                 if (Array.isArray(saved)) setWishlist(saved.filter(id => typeof id === 'string'));
@@ -144,17 +146,11 @@ export function StorefrontProvider({ children, ...props }) {
         document.addEventListener('visibilitychange', visible); window.addEventListener('storage', storage);
         return () => { mounted.current = false; document.removeEventListener('visibilitychange', visible); window.removeEventListener('storage', storage); };
     }, []);
-    useEffect(() => {
-        const media = window.matchMedia?.('(prefers-color-scheme: dark)');
-        const apply = () => {
-            const effective = theme === 'system' ? media?.matches ? 'dark' : 'light' : theme;
-            document.documentElement.dataset.theme = effective; document.documentElement.dataset.themeSetting = theme;
-            document.documentElement.style.colorScheme = effective;
-            try { localStorage.setItem('zafira_theme', theme); } catch { /* Optional preference. */ }
-        };
-        apply(); media?.addEventListener('change', apply);
-        return () => media?.removeEventListener('change', apply);
-    }, [theme]);
+    useLayoutEffect(() => {
+        const client = connectThemePreference(updateTheme);
+        themeClient.current = client;
+        return () => { client.dispose(); themeClient.current = null; };
+    }, []);
     return <Context.Provider value={{ ...props, t, dialog, open, close, toast, setToast, notify, cart, cartStatus, cartMessage, refreshCart, add, addCatalog, remove, adjust: (id, delta) => cartAction(() => cartClient.current.adjust(id, delta)), legacy, wishlist, wishlistKey, wishlistOnly, toggleFavorite, showFavorites, theme, setTheme, chooseLocale, localeStatus, locales, themes }}>
         {children}
     </Context.Provider>;

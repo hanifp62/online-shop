@@ -16,6 +16,14 @@ return [
         'contact_intro' => 'Kelola informasi kontak Anda untuk memudahkan komunikasi dengan concierge.',
         'unverified' => 'Email belum terverifikasi. Buka tautan yang kami kirim ke :email.',
         'resend' => 'Kirim ulang tautan',
+        'account_label' => 'Akun saya',
+        'navigation' => 'Menu akun',
+        'details' => 'Detail kontak',
+        'security' => 'Keamanan & akun tertaut',
+        'theme' => 'Tampilan',
+        'theme_light' => 'Terang',
+        'theme_dark' => 'Gelap',
+        'theme_system' => 'Otomatis',
     ],
     'profile' => [
         'name' => 'Nama lengkap',
@@ -57,7 +65,7 @@ return [
     ],
     'history' => [
         'heading' => 'Riwayat Concierge & Janji Temu Kriya',
-        'empty' => 'Belum ada permintaan concierge dari email ini. Janji temu baru akan muncul di sini secara real-time.',
+        'empty' => 'Belum ada permintaan concierge yang tertaut ke akun ini. Permintaan dan janji temu terbaru Anda akan tampil di sini.',
         'unscheduled' => 'Tanpa jadwal spesifik',
         'submitted' => 'Diajukan :date',
     ],

@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
+    <x-theme-preference />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#17263f">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -106,13 +107,13 @@
 
                     <!-- Live Monogram Personalization Card (Norman Constraints) -->
                     <div style="display:flex; align-items:center; gap:14px; padding:12px 14px; background:var(--ivory); border-radius:4px; border:1px solid var(--line); margin-bottom:16px;">
-                        <div id="pdp-monogram-badge" style="width:42px; height:42px; border-radius:50%; border:2px solid var(--gold); background:#fff; color:var(--ink); display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-size:16px; font-weight:600; box-shadow:0 2px 8px rgba(182,154,100,0.2);">Z</div>
+                        <div id="pdp-monogram-badge" style="width:42px; height:42px; border-radius:50%; border:2px solid var(--gold); background:var(--surface); color:var(--ink); display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-size:16px; font-weight:600; box-shadow:0 2px 8px rgba(182,154,100,0.2);">Z</div>
                         <div style="flex:1;">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
                                 <label for="pdp-monogram-input" style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink); margin:0;">{{ __('shop_ui.pdp.monogram_label') }}</label>
                                 <span id="pdp-monogram-counter" aria-live="polite" style="font-size:10px; font-weight:700; color:var(--muted);">0 / 3</span>
                             </div>
-                            <input type="text" id="pdp-monogram-input" maxlength="3" value="" placeholder="A-Z" aria-describedby="pdp-monogram-help" aria-label="{{ __('shop_ui.pdp.monogram_aria') }}" style="width:100%; padding:5px 10px; font-size:12px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; border:1px solid var(--line); border-radius:3px; background:#fff;">
+                            <input type="text" id="pdp-monogram-input" maxlength="3" value="" placeholder="A-Z" aria-describedby="pdp-monogram-help" aria-label="{{ __('shop_ui.pdp.monogram_aria') }}" style="width:100%; padding:5px 10px; font-size:12px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; border:1px solid var(--line); border-radius:3px; background:var(--surface); color:var(--ink);">
                             <small id="pdp-monogram-help" style="font-size:9.5px; color:var(--muted); display:block; margin-top:2px;">{{ __('shop_ui.pdp.monogram_help') }}</small>
                         </div>
                     </div>

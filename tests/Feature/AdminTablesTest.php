@@ -199,7 +199,7 @@ class AdminTablesTest extends TestCase
         $this->assertSame(1, $xpath->query('//table[@data-table-body="produk"]//span[contains(concat(" ",normalize-space(@class)," ")," badge-cancelled ")]')->length);
         $this->assertSame(1, $xpath->query('//table[@data-table-body="concierge"]//span[contains(concat(" ",normalize-space(@class)," ")," badge-confirmed ")]')->length);
         foreach (['.badge-new { background: #e0f2fe; color: #075985; }', '.badge-contacted { background: #fef3c7; color: #92400e; }', '.badge-confirmed { background: #dcfce7; color: #166534; }', '.badge-completed { background: #f3e8ff; color: #7e22ce; }', '.badge-cancelled { background: #fee2e2; color: #991b1b; }'] as $rule) {
-            $this->assertStringContainsString($rule, file_get_contents(resource_path('css/admin.css')));
+            $this->assertStringContainsString($rule, file_get_contents(resource_path('css/app.css')));
         }
     }
 
@@ -265,7 +265,10 @@ class AdminTablesTest extends TestCase
     {
         $this->seedRows();
         $this->login();
-        $this->get(route('admin.dashboard', ['kq' => 'Needle']))->assertOk()->assertSee('<span>Kategori</span><strong>12</strong>', false);
+        $html = $this->get(route('admin.dashboard', ['kq' => 'Needle']))->assertOk()->getContent();
+        $metric = $this->xpath($html)->query('//*[@data-dashboard-metric="categories"]');
+        $this->assertSame(1, $metric->length);
+        $this->assertSame('Kategori12', preg_replace('/\s+/', '', $metric->item(0)->textContent));
     }
 
     #[DataProvider('tables')]

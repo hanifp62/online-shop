@@ -24,5 +24,6 @@ return [
         'Products/Show',
         'Shop/Index',
         'Admin/Dashboard',
+        'Admin/Profile',
     ],
 ];

@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
 use DOMDocument;
 use DOMXPath;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -93,15 +94,20 @@ class ResidualLiteralLocaleTest extends TestCase
         }
     }
 
-    public function test_gift_quote_and_client_room_link_are_server_rendered_in_every_locale(): void
+    public function test_gift_quote_and_profile_or_login_link_are_server_rendered_in_every_locale(): void
     {
-        foreach (self::LOCALES as $locale) {
-            $html = $this->get(route('home', ['locale' => $locale]))->assertOk()->getContent();
-            $this->assertStringContainsString('“'.e(trans('shop_ui.welcome.packaging_quote', [], $locale)).'”', $html, "$locale: quote");
-            $links = $this->xpath($html)->query('//a[@data-i18n="profile_full_portal"]');
-            $this->assertSame(1, $links->length, "$locale: portal link");
-            $this->assertSame(route('account.show'), $links->item(0)->getAttribute('href'));
-            $this->assertSame(trans('shop_ui.welcome.profile_full_portal', [], $locale), trim($links->item(0)->textContent), "$locale: portal text");
+        foreach ([false, true] as $signedIn) {
+            if ($signedIn) {
+                $this->actingAs(User::factory()->create());
+            }
+            foreach (self::LOCALES as $locale) {
+                $html = $this->get(route('home', ['locale' => $locale]))->assertOk()->getContent();
+                $this->assertStringContainsString('“'.e(trans('shop_ui.welcome.packaging_quote', [], $locale)).'”', $html, "$locale: quote");
+                $links = $this->xpath($html)->query('//aside[@id="welcome-profile-drawer"]//nav//a[contains(@class,"button-sapphire")]');
+                $this->assertSame(1, $links->length, "$locale: profile link");
+                $this->assertSame(route($signedIn ? 'account.show' : 'login'), $links->item(0)->getAttribute('href'));
+                $this->assertSame(trans('shop_ui.header.'.($signedIn ? 'auth_profile' : 'login_aria'), [], $locale), trim($links->item(0)->textContent), "$locale: profile text");
+            }
         }
     }
 

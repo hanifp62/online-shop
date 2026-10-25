@@ -7,8 +7,11 @@ const welcome = readFileSync(new URL('../resources/views/welcome.blade.php', imp
 const core = readFileSync(new URL('../public/js/zafira-core.js', import.meta.url), 'utf8');
 const app = readFileSync(new URL('../resources/js/app.js', import.meta.url), 'utf8');
 
-test('client-room label survives language selection', () => {
-  assert.match(welcome, /data-i18n="profile_full_portal"[^>]*>\s*\{\{\s*__\(['"]shop_ui\.welcome\.profile_full_portal['"]\)\s*\}\}/);
+test('profile navigation uses server-localized account/login labels without client copy replacement', () => {
+  assert.match(welcome, /href="\{\{ route\('account.show'\) \}\}">\{\{ __\('shop_ui.header.auth_profile'\) \}\}/);
+  assert.match(welcome, /href="\{\{ route\('login'\) \}\}">\{\{ __\('shop_ui.header.login_aria'\) \}\}/);
+  assert.doesNotMatch(welcome, /data-i18n="profile_full_portal"/);
+  // The legacy dictionary remains compatible, but no longer overwrites the profile navigation.
   const context = { window: {}, document: { readyState: 'loading', addEventListener() {} } };
   runInNewContext(core, context);
   const labels = {

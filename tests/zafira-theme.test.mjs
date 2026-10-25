@@ -6,7 +6,8 @@ import { runInNewContext } from 'node:vm';
 const corePaths = ['../prototype/zafira-core.js', '../public/js/zafira-core.js'];
 const cores = corePaths.map(path => readFileSync(new URL(path, import.meta.url), 'utf8'));
 const htmlPaths = ['../prototype/index.html', '../resources/views/welcome.blade.php'];
-const htmlFiles = htmlPaths.map(path => readFileSync(new URL(path, import.meta.url), 'utf8'));
+const themeHead = readFileSync(new URL('../resources/views/components/theme-preference.blade.php', import.meta.url), 'utf8');
+const htmlFiles = htmlPaths.map(path => readFileSync(new URL(path, import.meta.url), 'utf8').replace('<x-theme-preference />', themeHead));
 
 function bootCore(source, { values = {}, dark = false, storageBlocked = false } = {}) {
     const attrs = {};

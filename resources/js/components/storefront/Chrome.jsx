@@ -6,7 +6,7 @@ import { useStorefront } from './StorefrontProvider.jsx';
 export function Preferences({ compact = false, profile = false }) {
     const { copy: { welcome: w, header: h }, theme, setTheme, chooseLocale, locale, locales, themes } = useStorefront();
     if (profile) return <>
-        <div className="profile-setting-row"><div className="setting-info"><span className="setting-name">{w.profile_theme_label}</span><span className="setting-desc">{w.profile_theme_desc}</span></div><div className="profile-theme-segmented" role="group" aria-label={w.theme_selector}>{themes.map(mode => <button type="button" className={`theme-seg-btn${theme === mode ? ' active' : ''}`} key={mode} title={w[`theme_${mode}`]} aria-label={w[`theme_${mode}`]} aria-pressed={theme === mode} onClick={() => setTheme(mode)}><Icon name={mode} /><span>{({ light: 'Clair', dark: 'Sombre', system: 'Auto' })[mode]}</span></button>)}</div></div>
+        <div className="profile-setting-row"><div className="setting-info"><span className="setting-name">{w.profile_theme_label}</span><span className="setting-desc">{w.profile_theme_desc}</span></div><div className="profile-theme-segmented" role="group" aria-label={w.theme_selector}>{themes.map(mode => <button type="button" className={`theme-seg-btn${theme === mode ? ' active' : ''}`} key={mode} title={w[`theme_${mode}`]} aria-label={w[`theme_${mode}`]} aria-pressed={theme === mode} onClick={() => setTheme(mode)}><Icon name={mode} /><span>{w[`theme_${mode}`]}</span></button>)}</div></div>
         <div className="profile-setting-row"><div className="setting-info"><span className="setting-name">{w.profile_lang_label}</span><span className="setting-desc">{w.profile_lang_desc}</span></div><select className="zafira-lang-select profile-lang-select" aria-label={h.language_selector} value={locale} onChange={event => void chooseLocale(event.target.value)}>{locales.map(code => <option key={code} value={code}>{({ id: 'Bahasa Indonesia', en: 'English', fr: 'Français', it: 'Italiano', zh: '中文' })[code]}</option>)}</select></div>
     </>;
     return <div className={compact ? 'storefront-preferences compact' : 'storefront-preferences'}>
@@ -47,7 +47,7 @@ export function Header({ home = false }) {
             <nav className="desktop-nav" aria-label={h.nav_label}>{nav.map(([hash, label]) => <a key={hash} href={href(hash)}>{label}</a>)}</nav>
             <a className="brand" href={links.home} aria-label={h.home_aria}><Brand /></a>
             <div className="header-actions"><button className="icon-button" type="button" onClick={() => open('search')} aria-label={h.search}><Icon name="search" /></button>
-                {home ? <button className="icon-button" type="button" onClick={() => open('profile')} aria-label={w.profile_aria}><Icon name="user" /></button> : user ? <div className="account-wrap" ref={accountRef}><button className="icon-button account-button" type="button" aria-expanded={account} aria-label={formatCopy(h.auth_account_aria, { name: user.name })} onClick={() => setAccount(!account)}><Icon name="user" /></button><div className={`account-menu${account ? ' open' : ''}`} hidden={!account}><span>{formatCopy(h.auth_greeting, { name: user.name })}</span><a href={links.account}>{h.auth_profile}</a>{logout}</div></div> : <a className="icon-button" href={links.login} aria-label={h.login_aria}><Icon name="user" /></a>}
+                {home ? <button className="icon-button" type="button" onClick={() => open('profile')} aria-haspopup="dialog" aria-expanded={dialog?.type === 'profile'} aria-label={user ? formatCopy(h.auth_account_aria, { name: user.name }) : h.login_aria}><Icon name="user" /></button> : user ? <div className="account-wrap" ref={accountRef}><button className="icon-button account-button" type="button" aria-expanded={account} aria-label={formatCopy(h.auth_account_aria, { name: user.name })} onClick={() => setAccount(!account)}><Icon name="user" /></button><div className={`account-menu${account ? ' open' : ''}`} hidden={!account}><span>{formatCopy(h.auth_greeting, { name: user.name })}</span><a href={links.account}>{h.auth_profile}</a>{logout}</div></div> : <a className="icon-button" href={links.login} aria-label={h.login_aria}><Icon name="user" /></a>}
                 <button className="icon-button wishlist-trigger" type="button" onClick={showFavorites} aria-label={h.wishlist_show}><Icon name="heart" /><span className={`action-count wishlist-count${wishlist.length ? ' has-items' : ''}`}>{wishlist.length}</span></button>
                 <button className="icon-button" type="button" onClick={() => open('cart')} aria-label={h.cart_open}><Icon name="bag" /><span className={`action-count cart-count${cart.items.length ? ' has-items' : ''}`}>{cart.items.reduce((n, item) => n + item.quantity, 0)}</span></button>
             </div>
@@ -77,6 +77,25 @@ export function Footer({ home = false }) {
     </footer>;
 }
 export function Profile() {
-    const { copy: { welcome: w }, user, links, open } = useStorefront();
-    return <Dialog type="profile" title={w.profile_drawer_title} className="drawer profile-drawer"><div className="drawer-header"><div><span className="profile-eyebrow">{w.profile_drawer_eyebrow}</span><h3>{w.profile_drawer_title}</h3></div><CloseButton className="icon-button" label={w.profile_close} /></div><div className="drawer-body profile-drawer-body"><div className="profile-vic-card"><div className="profile-vic-avatar"><span>{user?.name?.split(/\s+/).map(part => part[0]).slice(0, 2).join('') || 'Z'}</span></div><div className="profile-vic-info"><h4 className="profile-vic-name">{user?.name || w.guest}</h4><p className="profile-vic-email">{user?.email || w.guest_hint}</p></div></div><div className="profile-quick-actions"><button type="button" className="profile-action-pill" onClick={() => open('concierge')}>{w.profile_action_fitting}</button><a className="profile-action-pill" href={links.account}>{w.profile_action_orders}</a></div><div className="profile-section-card profile-settings-group"><div className="profile-section-header"><span className="profile-section-title">{w.profile_settings_title}</span></div><Preferences profile /></div><div className="profile-footer-links"><a className="button button-gold" href={links.account}>{w.profile_full_portal}</a></div></div></Dialog>;
+    const { copy: { welcome: w, header: h }, user, links, open, locale } = useStorefront();
+    const initials = user?.name?.trim().split(/\s+/).filter(Boolean).slice(0, 2).map(part => Array.from(part)[0]).join('').toLocaleUpperCase(locale.replaceAll('_', '-'));
+    return <Dialog type="profile" title={w.profile_drawer_title} className="drawer profile-drawer">
+        <div className="drawer-header"><h3>{w.profile_drawer_title}</h3><CloseButton className="icon-button" label={w.profile_close} /></div>
+        <div className="drawer-body profile-drawer-body">
+            <div className="profile-vic-card">
+                <div className="profile-vic-avatar" aria-hidden="true">{user ? <span>{initials}</span> : <Icon name="user" />}</div>
+                <div className="profile-vic-info"><h4 className="profile-vic-name">{user?.name || w.guest}</h4><p className="profile-vic-email">{user?.email || w.guest_hint}</p></div>
+            </div>
+            <nav className="profile-drawer-menu" aria-label={w.profile_drawer_title}>
+                <a className="button button-sapphire" href={user ? links.account : links.login}>{user ? h.auth_profile : h.login_aria}</a>
+                {user && <a className="text-link" href={`${links.account}#account-history`}>{w.profile_action_orders}</a>}
+            </nav>
+            <div className="profile-quick-actions"><button type="button" className="profile-action-pill" onClick={() => open('concierge')}>{w.profile_action_fitting}</button></div>
+            <div className="profile-section-card profile-settings-group"><div className="profile-section-header"><span className="profile-section-title">{w.profile_settings_title}</span></div><Preferences profile /></div>
+            {user && <form className="profile-footer-links" method="POST" action={links.logout} onSubmit={event => { event.currentTarget.elements.namedItem('_token').value = document.querySelector('meta[name="csrf-token"]')?.content || ''; }}>
+                <input type="hidden" name="_token" defaultValue={globalThis.document?.querySelector('meta[name="csrf-token"]')?.content || ''} />
+                <button className="text-link" type="submit">{h.auth_logout_full}</button>
+            </form>}
+        </div>
+    </Dialog>;
 }

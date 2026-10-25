@@ -2,15 +2,22 @@
 @section('title', 'Ringkasan operasional')
 @section('styles')
 <style>
-    .ops-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 1rem; }
-    .ops-filters .field { display: grid; gap: .5rem; }
+    .ops-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 1rem; padding: 20px; }
+    .ops-filters .field { display: grid; flex: 1 1 12rem; min-width: 0; gap: .5rem; margin: 0; }
     .ops-filters input, .ops-filters select, .ops-filters button { min-height: 44px; min-width: 44px; font: inherit; }
     .ops-filters :focus-visible, .ops-table:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
     .ops-table { overflow-x: auto; }
-    .ops-detail { display: block; margin-top: .5rem; }
+    .ops-table table { min-width: 40rem; }
+    .ops-detail { display: block; margin-top: .5rem; color: var(--muted); font-size: 12px; font-weight: 400; }
+    .admin-operations .admin-panel > p:not(.panel-hint):not(.auth-errors) { margin: 0; padding: 12px 20px; overflow-wrap: anywhere; }
+    .admin-operations .admin-panel > p:last-child { padding-bottom: 20px; }
+    .admin-operations .ops-table th[scope="row"] { font-size: 13px; background: var(--surface); color: var(--ink); text-transform: none; }
+    .admin-operations .ops-table dd { margin: 0 0 8px; font-variant-numeric: tabular-nums; }
+    @media (max-width: 640px) { .ops-filters { align-items: stretch; } .ops-filters button { width: 100%; } }
 </style>
 @endsection
 @section('content')
+<div class="admin-operations">
 <section class="admin-panel" aria-labelledby="ops-filter-heading" lang="id">
     <h2 id="ops-filter-heading">Periode kejadian</h2>
     <p id="ops-window-help" class="panel-hint">Tanggal UTC, maksimal 366 hari. Pilih Khusus untuk memakai tanggal mulai dan akhir (inklusif). Filter hanya mengubah metrik kejadian, bukan backlog. Tidak ada penyegaran otomatis.</p>
@@ -85,7 +92,10 @@
     </div>
 </section>
 @endforeach
+@else
+<p class="admin-empty" lang="id">Ringkasan belum tersedia. Terapkan periode untuk membaca data operasional.</p>
 @endif
+</div>
 </div>
 @endsection
 @section('after-content')

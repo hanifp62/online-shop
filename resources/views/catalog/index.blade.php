@@ -2,6 +2,7 @@
 <html lang="{{ $locale }}">
 <head>
     <meta charset="utf-8">
+    <x-theme-preference />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title data-inertia="">{{ $t['title'] }} — ZAFIRA: La Maison de Lumière</title>
@@ -488,6 +489,7 @@
             background: #fff;
         }
     </style>
+    @vite('resources/css/app.css')
 </head>
 <body class="catalog-page">
 <x-react-root :page="$page ?? null">

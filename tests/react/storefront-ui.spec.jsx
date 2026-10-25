@@ -168,7 +168,7 @@ it('theme controls synchronize without a DOM translation observer and honor syst
     await mount(); const select = host.querySelector('.zafira-theme-select');
     await act(async () => { select.value = 'dark'; select.dispatchEvent(new Event('change', { bubbles: true })); });
     expect(document.documentElement.dataset.theme).toBe('dark'); expect(localStorage.getItem('zafira_theme')).toBe('dark');
-    await click(host.querySelector(`button[aria-label="${copy.welcome.profile_aria}"]`));
+    await click(host.querySelector(`button[aria-label="${copy.header.login_aria}"]`));
     expect(host.querySelector(`button[aria-label="${copy.welcome.theme_dark}"][class*="theme-seg"]`).getAttribute('aria-pressed')).toBe('true');
 });
 it.each(['id', 'en', 'fr', 'it', 'zh'])('native home and PDP use server copy for locale %s', async locale => {
@@ -261,7 +261,7 @@ it('R6-7 closing concierge retains its draft, an inquiry does not overwrite it, 
 it('R6-6/8 computed drawer structure and focus selector keep layout and the established contrast token', async () => {
     const css = readFileSync('resources/css/storefront-react.css', 'utf8');
     const style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
-    await mount(); await click(host.querySelector(`button[aria-label="${copy.welcome.profile_aria}"]`));
+    await mount(); await click(host.querySelector(`button[aria-label="${copy.header.login_aria}"]`));
     expect(getComputedStyle(host.querySelector('.profile-drawer .drawer-header')).display).not.toBe('contents');
     expect(getComputedStyle(host.querySelector('.profile-drawer .drawer-body')).display).not.toBe('contents');
     expect(css).not.toMatch(/\.sf-native \.drawer>div\s*\{display:contents\}/);

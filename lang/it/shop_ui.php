@@ -354,7 +354,7 @@ return [
         'profile_drawer_eyebrow' => 'Spazio Clienti VIP · Maison ZAFIRA',
         'profile_drawer_title' => 'Profilo & Preferenze del Salone',
         'profile_action_fitting' => 'Prenota Prova Privata',
-        'profile_action_orders' => 'Cronologia Ordini Alta Moda',
+        'profile_action_orders' => 'Storico concierge e appuntamenti',
         'profile_settings_title' => 'Preferenze & Impostazioni del Salone',
         'profile_theme_label' => 'Modalità di Visualizzazione',
         'profile_theme_desc' => 'Seleziona l\'atmosfera visiva del salone',

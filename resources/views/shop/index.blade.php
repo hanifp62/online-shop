@@ -2,20 +2,22 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="csrf-token" content="{{ csrf_token() }}">
+<x-theme-preference />
 <title>{{ __('shop_ui.shop.title') }}</title>
 <link rel="preconnect" href="https://fonts.bunny.net"><link href="https://fonts.bunny.net/css?family=bodoni-moda:400,500,600&family=manrope:300,400,500,600&display=swap" rel="stylesheet">
 <style>
-:root{--sapphire:#0d1b2a;--linen:#f4ede2;--gold:#a17d36;--ivory:#faf7f2;--line:#d8d0c5}
+
 *{box-sizing:border-box}body{margin:0;background:var(--ivory);color:var(--sapphire);font:15px/1.65 Manrope,sans-serif}a{color:var(--sapphire)}a:hover{color:var(--gold)}h1,h2,h3,.brand{font-family:'Bodoni Moda',serif;font-weight:400}h1{font-size:clamp(2.3rem,5vw,4rem);margin:.2em 0}h2{font-size:2rem;margin:0 0 .5rem}h3{font-size:1.4rem;margin:.5rem 0}.brand{font-size:1.7rem;letter-spacing:.18em;text-decoration:none}header,main,footer{max-width:1100px;margin:auto;padding:24px}header{display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap}nav{display:flex;gap:16px;flex-wrap:wrap}nav a{min-height:44px;display:inline-flex;align-items:center}main{padding-bottom:72px}.intro{border-top:1px solid var(--line);padding:36px 0}.eyebrow{color:var(--gold);letter-spacing:.2em;text-transform:uppercase;font-size:.75rem}section.panel{background:white;border:1px solid var(--line);padding:clamp(18px,3vw,32px);margin:20px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}.stack{display:grid;gap:12px}.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.item{border-top:1px solid var(--line);padding:14px 0;overflow-wrap:anywhere}.muted{color:#555}label{display:block;font-size:.85rem;font-weight:600}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;min-width:0;padding:10px 12px;overflow-wrap:anywhere;word-break:break-word;border:1px solid #827b72;background:white;min-height:44px;color:var(--sapphire)}textarea{min-height:80px}button,.button{border:1px solid var(--sapphire);background:var(--sapphire);color:white;cursor:pointer;padding:10px 16px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}button:hover,button:focus-visible,.button:hover,.button:focus-visible{background:var(--gold);border-color:var(--gold);color:var(--sapphire)}button:disabled{opacity:.5;cursor:not-allowed}.secondary{background:white;color:var(--sapphire)}:focus-visible{outline:3px solid var(--gold);outline-offset:2px}.notice{background:var(--linen);border-left:4px solid var(--gold);padding:14px 18px}.status{min-height:24px}.notice.is-error{border-left-color:#9b443b;background:#ecddd7;color:#793c34}footer{border-top:1px solid var(--line);color:#555}.skip{position:absolute;left:-9999px}.skip:focus{left:12px;top:12px;background:white;padding:12px;z-index:10}code{display:block;max-width:100%;overflow-wrap:anywhere;word-break:break-all;user-select:all}
 .checkout-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,340px);grid-template-rows:auto minmax(0,1fr);gap:24px;align-items:start}.checkout-summary{position:sticky;top:16px;grid-column:2;grid-row:1;align-self:start;background:var(--linen);border:1px solid var(--line);padding:16px;min-width:0;overflow-wrap:anywhere}.checkout-summary p{margin:.35rem 0}.checkout-fields{grid-column:1;grid-row:1;min-width:0}.checkout-fields fieldset{margin:0;min-width:0;border:1px solid var(--line);padding:16px}.checkout-fields .field-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}.checkout-fields p{margin:0 0 12px}
 @media(max-width:760px){.checkout-layout{display:block}.checkout-summary{position:sticky;top:0;z-index:1;grid-column:1;grid-row:1;padding:8px 12px}.checkout-summary>:not(h3):not(#checkout-estimate){display:none}.checkout-summary h3{margin:0;font-size:1rem}.checkout-fields{grid-column:1;grid-row:2;min-width:0}.checkout-fields :is(input,select,button){scroll-margin-top:var(--checkout-summary-clearance,100px)}.checkout-fields .field-pair{grid-template-columns:1fr}.checkout-fields input,.checkout-fields select{font-size:16px}}
 </style>
+@vite('resources/css/app.css')
 @isset($page)
 @viteReactRefresh
 @vite('resources/js/inertia.jsx')
 @endisset
 </head>
-<body>
+<body class="shop-page">
 <x-private-page-lifecycle />
 <x-react-root :page="$page ?? null">
 <a class="skip" href="#main">{{ __('shop_ui.shop.skip') }}</a>

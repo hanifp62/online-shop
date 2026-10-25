@@ -16,6 +16,14 @@ return [
         'contact_intro' => 'Manage your contact details to help the concierge reach you.',
         'unverified' => 'Email not verified. Open the link we sent to :email.',
         'resend' => 'Resend link',
+        'account_label' => 'My account',
+        'navigation' => 'Account menu',
+        'details' => 'Contact details',
+        'security' => 'Security & linked accounts',
+        'theme' => 'Appearance',
+        'theme_light' => 'Light',
+        'theme_dark' => 'Dark',
+        'theme_system' => 'System',
     ],
     'profile' => [
         'name' => 'Full name',
@@ -57,7 +65,7 @@ return [
     ],
     'history' => [
         'heading' => 'Concierge & Craft Appointment History',
-        'empty' => 'No concierge requests from this email yet. New appointments will appear here in real time.',
+        'empty' => 'No concierge requests linked to this account yet. Your latest requests and appointments will appear here.',
         'unscheduled' => 'No specific schedule',
         'submitted' => 'Submitted :date',
     ],

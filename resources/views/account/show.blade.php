@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
+    <x-theme-preference />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ __('account_ui.show.title') }}</title>
@@ -29,19 +30,35 @@
             <p>{{ __('account_ui.show.intro') }}</p>
         </div>
     </section>
-    <section class="auth-content">
+    <section class="auth-content profile-content">
         <a class="auth-back text-link" href="{{ route('home') }}" style="display:inline-flex; align-items:center; gap:6px;">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
             <span>{{ __('account_ui.show.back') }}</span>
         </a>
-        <div class="auth-card" style="max-width: 580px;">
+        <div class="auth-card profile-page profile-customer" style="max-width: 580px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
-                <span class="eyebrow" style="margin-bottom:0;">Votre Compte</span>
+                <span class="eyebrow" style="margin-bottom:0;">{{ __('account_ui.show.account_label') }}</span>
                 <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="text-link" style="border:0;background:none;cursor:pointer;">{{ __('account_ui.show.logout') }}</button></form>
             </div>
             
-            <h1>{{ __('account_ui.show.greeting', ['name' => $user->first_name ?? $user->name]) }}</h1>
-            <p>{{ __('account_ui.show.contact_intro') }}</p>
+            <header class="profile-identity">
+                <span class="profile-initials" aria-hidden="true">{{ mb_strtoupper(collect(preg_split('/\s+/u', trim($user->name), -1, PREG_SPLIT_NO_EMPTY))->take(2)->map(fn ($part) => mb_substr($part, 0, 1))->implode('')) }}</span>
+                <div><h1>{{ __('account_ui.show.greeting', ['name' => $user->first_name ?? $user->name]) }}</h1><p>{{ $user->email }}</p></div>
+            </header>
+            <nav class="profile-section-nav" aria-label="{{ __('account_ui.show.navigation') }}">
+                <a href="#account-details">{{ __('account_ui.show.details') }}</a>
+                <a href="#account-security">{{ __('account_ui.show.security') }}</a>
+                <a href="#account-privacy">{{ __('account_ui.privacy.heading') }}</a>
+                <a href="#account-history">{{ __('account_ui.history.heading') }}</a>
+            </nav>
+            <div class="field profile-theme-field">
+                <label for="account-theme">{{ __('account_ui.show.theme') }}</label>
+                <select id="account-theme" data-theme-select>
+                    @foreach (['system', 'light', 'dark'] as $mode)
+                        <option value="{{ $mode }}">{{ __('account_ui.show.theme_'.$mode) }}</option>
+                    @endforeach
+                </select>
+            </div>
 
             @if (session('success'))
                 <div class="auth-errors" role="status" style="border-color: green"><ul><li>{{ session('success') }}</li></ul></div>
@@ -56,7 +73,9 @@
                 </div>
             @endunless
 
-            <!-- Form Profil -->
+            <section class="profile-section" id="account-details" aria-labelledby="account-details-heading">
+            <h2 id="account-details-heading">{{ __('account_ui.show.details') }}</h2>
+            <p class="profile-note">{{ __('account_ui.show.contact_intro') }}</p>
             <form method="POST" action="{{ route('account.update') }}" data-auth-form novalidate>
                 @csrf
                 @method('PATCH')
@@ -73,10 +92,13 @@
                 <button class="button button-sapphire" type="submit">{{ __('account_ui.profile.save') }}</button>
             </form>
 
+            </section>
+            <section class="profile-section" id="account-security" aria-labelledby="account-security-heading">
+            <h2 id="account-security-heading">{{ __('account_ui.show.security') }}</h2>
             @php($linkedProviders = $user->socialAccounts()->pluck('provider')->all())
             @if (\App\Http\Controllers\SocialAuthController::enabled('google') || $linkedProviders)
                 <div style="margin-top:32px">
-                    <span class="eyebrow">{{ __('account_ui.social.heading') }}</span>
+                    <h3>{{ __('account_ui.social.heading') }}</h3>
                     <ul style="list-style:none;margin:12px 0 0;padding:0;display:grid;gap:10px">
                         @foreach (['google' => 'Google', 'apple' => 'Apple'] as $provider => $label)
                             @if (in_array($provider, $linkedProviders, true))
@@ -97,10 +119,10 @@
             @endif
 
             <div style="margin-top:32px">
-                <span class="eyebrow">{{ __('account_ui.totp.heading') }}</span>
+                <h3>{{ __('account_ui.totp.heading') }}</h3>
                 @if ($user->hasTotp())
                     <p style="color:var(--muted);font-size:12px;margin:6px 0 12px">{{ __('account_ui.totp.active', ['date' => $user->totp_enabled_at->format('d M Y'), 'count' => $user->totpRecoveryCodes()->count()]) }}</p>
-                    <details>
+                    <details @if ($errors->has('disable_code')) open @endif>
                         <summary style="cursor:pointer;min-height:44px">{{ __('account_ui.totp.disable_heading') }}</summary>
                         <form method="POST" action="{{ route('account.totp.destroy') }}" style="display:grid;gap:12px;margin-top:12px" novalidate>
                             @csrf
@@ -115,16 +137,17 @@
                 @endif
             </div>
 
-            <div style="margin-top:32px">
-                <span class="eyebrow">{{ __('account_ui.privacy.heading') }}</span>
+            </section>
+            <section class="profile-section" id="account-privacy" aria-labelledby="account-privacy-heading">
+                <h2 id="account-privacy-heading">{{ __('account_ui.privacy.heading') }}</h2>
                 <p style="color:var(--muted);font-size:12px;margin:6px 0 12px">{{ __('account_ui.privacy.intro') }}</p>
                 <a class="button button-light" href="{{ route('account.export') }}">{{ __('account_ui.privacy.export') }}</a>
-                <details style="margin-top:16px">
+                <details style="margin-top:16px" @if ($errors->hasAny(['password', 'confirmation', 'delete'])) open @endif>
                     <summary style="cursor:pointer;min-height:44px">{{ __('account_ui.privacy.delete') }}</summary>
                     <form method="POST" action="{{ route('account.destroy') }}" style="display:grid;gap:12px;margin-top:12px" onsubmit="return confirm({{ \Illuminate\Support\Js::from(__('account_ui.privacy.confirm')) }})">
                         @csrf
                         @method('DELETE')
-                        @error('delete')<p role="alert" style="color:#a32">{{ $message }}</p>@enderror
+                        @error('delete')<p role="alert" style="color:var(--danger)">{{ $message }}</p>@enderror
                         @if ($user->has_password)
                             <div class="field"><label for="delete_password">{{ __('account_ui.privacy.password') }}</label><input id="delete_password" name="password" type="password" autocomplete="current-password" required @error('password') aria-invalid="true" aria-describedby="delete-password-error" @enderror>@error('password')<small id="delete-password-error" role="alert">{{ $message }}</small>@enderror</div>
                         @else
@@ -133,18 +156,17 @@
                         <button class="button button-dark" type="submit">{{ __('account_ui.privacy.submit') }}</button>
                     </form>
                 </details>
-            </div>
+            </section>
 
-            <!-- Concierge & Commissions History -->
-            <div style="margin-top:32px">
-                <span class="eyebrow">{{ __('account_ui.history.heading') }}</span>
+            <section class="profile-section" id="account-history" aria-labelledby="account-history-heading">
+                <h2 id="account-history-heading">{{ __('account_ui.history.heading') }}</h2>
                 @if (($history ?? collect())->isEmpty())
                     <p style="color:var(--muted); font-size:12px; margin-top:6px;">{{ __('account_ui.history.empty') }}</p>
                 @else
                     <ul style="list-style:none;margin:12px 0 0;padding:0;display:grid;gap:16px">
                         @foreach ($history as $item)
-                            <li style="border:1px solid var(--line);padding:18px 20px;background:var(--white);border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.03);">
-                                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                            <li class="profile-history-item">
+                                <div class="profile-history-heading">
                                     <strong style="font-size:15px; color:var(--ink);">{{ $item->service }}</strong>
                                     <span class="badge-status badge-{{ $item->status }}">{{ \Illuminate\Support\Facades\Lang::has('account_ui.status.'.$item->status) ? __('account_ui.status.'.$item->status) : $item->status }}</span>
                                 </div>
@@ -153,7 +175,7 @@
                                 </div>
 
                                 @if ($item->notes)
-                                    <div style="margin-top:10px;font-size:12px;line-height:1.45;color:var(--ink);background:var(--ivory);padding:10px 12px;border-radius:4px;border-left:3px solid var(--gold);white-space:pre-wrap;word-break:break-word">
+                                    <div class="profile-history-notes" style="white-space:pre-wrap">
                                         {{ $item->notes }}
                                     </div>
                                 @endif
@@ -161,7 +183,7 @@
                         @endforeach
                     </ul>
                 @endif
-            </div>
+            </section>
 
         </div>
     </section>

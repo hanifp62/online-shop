@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminOperationsSummaryController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
+use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\AdminTotpController;
 use App\Http\Controllers\AdminTotpEnrolController;
 use App\Http\Controllers\AuthController;
@@ -241,6 +242,7 @@ Route::middleware([NoStore::class, 'auth:admin'])->group(function () {
 
 Route::middleware([NoStore::class, 'auth:admin', EnsureAdminTotp::class])->group(function () {
     Route::get('/admin', [AdminDashboardController::class, 'index'])->middleware('admin.can:view-dashboard')->name('admin.dashboard');
+    Route::get('/admin/profil', [AdminProfileController::class, 'show'])->middleware('admin.can:view-dashboard')->name('admin.profile.show');
     Route::patch('/admin/concierge/{concierge}', [AdminDashboardController::class, 'updateConcierge'])->middleware('admin.can:manage-concierge')->name('admin.concierge.update');
     Route::patch('/admin/password', [AdminDashboardController::class, 'updatePassword'])->middleware('admin.can:view-dashboard')->name('admin.password.update');
     Route::post('/admin/categories', [AdminCategoryController::class, 'store'])->middleware('admin.can:manage-categories')->name('admin.categories.store');

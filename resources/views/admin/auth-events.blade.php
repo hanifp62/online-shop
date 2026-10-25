@@ -2,117 +2,32 @@
 @section('title', __('admin_ui.events.heading'))
 @section('styles')
     <style>
-        :root {
-            --zafira-sapphire: var(--sapphire-deep);
-            --zafira-gold: #c5a059;
-            --zafira-linen: #f4efe6;
-            --zafira-ivory: #faf7f2;
-            --zafira-charcoal: #23201d;
-            --zafira-muted: #6b635b;
-            --zafira-border: #e6ded2;
-            --zafira-danger: #8a2be2;
-        }
-        .admin-work-main *, .admin-work-main *::before, .admin-work-main *::after { box-sizing: border-box; }
-        .admin-work-main { font-family: 'Manrope', -apple-system, sans-serif; color: var(--zafira-charcoal); font-size: 14px; }
-        .admin-work-main h1 {
-            font-family: 'Bodoni Moda', serif;
-            font-size: 28px;
-            color: var(--zafira-sapphire);
-            font-weight: 600;
-        }
-        .admin-work-main .filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 20px;
-            background: #fff;
-            padding: 16px;
-            border-radius: 4px;
-            border: 1px solid var(--zafira-border);
-            align-items: flex-end;
-        }
-        .admin-work-main .filter-field {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .admin-work-main .filter-field label {
-            font-size: 11px;
-            letter-spacing: .05em;
-            text-transform: uppercase;
-            color: var(--zafira-muted);
-            font-weight: 600;
-        }
-        .admin-work-main select, .admin-work-main input[type="text"], .admin-work-main button,
-        .admin-work-main .filters a {
-            display: inline-flex;
-            align-items: center;
-            min-height: 44px;
-            font-family: inherit;
-            padding: 8px 12px;
-            border: 1px solid var(--zafira-border);
-            border-radius: 4px;
-            background: #fff;
-            font-size: 13px;
-        }
-        .admin-work-main button {
-            background: var(--zafira-sapphire);
-            color: #fff;
-            cursor: pointer;
-            border: none;
-        }
-        .admin-work-main .auth-events-table-wrap {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            border: 1px solid var(--zafira-border);
-            background: #fff;
-        }
-        .admin-work-main .auth-events-table-wrap:focus-visible {
-            outline: 2px solid var(--focus-ring);
-            outline-offset: 2px;
-        }
-        .admin-work-main table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-        }
-        .admin-work-main th, .admin-work-main td {
-            padding: 12px 16px;
-            text-align: left;
-            border-bottom: 1px solid var(--zafira-border);
-        }
-        .admin-work-main th {
-            background: var(--zafira-linen);
-            font-size: 12px;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            color: var(--zafira-muted);
-        }
-        .admin-work-main .badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 3px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .admin-work-main .badge-success { background: #e6f4ea; color: #137333; }
-        .admin-work-main .badge-failure { background: #fce8e6; color: #c5221f; }
-        .pagination-container {
-            margin-top: 20px;
-        }
-        .admin-work-main .active-filters-box { margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-        .admin-work-main .active-filters-box > .badge { background: var(--zafira-linen); color: var(--zafira-charcoal); border: 1px solid var(--zafira-border); }
-        .admin-work-main .filters :focus-visible, .pagination-container a:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
-        .pagination-container a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 12px; }
+        .admin-auth-events .filters { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 20px; padding: 20px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); align-items: end; }
+        .admin-auth-events .filter-field { display: flex; flex: 1 1 12rem; min-width: 0; flex-direction: column; gap: 6px; }
+        .admin-auth-events .filter-field label { font-size: 12px; color: var(--muted); font-weight: 600; }
+        .admin-auth-events .filters :is(select, input, button, a) { min-height: 44px; min-width: 44px; padding: 8px 12px; border: 1px solid var(--muted); border-radius: 3px; color: var(--ink); background: var(--surface); font: inherit; }
+        .admin-auth-events .filters :is(select, input) { width: 100%; font-size: 16px; }
+        .admin-auth-events .filters button { background: var(--accent); color: var(--on-accent); border-color: var(--accent); cursor: pointer; }
+        .admin-auth-events .filters button:hover { background: var(--surface); color: var(--ink); border-color: var(--ink); }
+        .admin-auth-events .auth-events-table-wrap { max-width: 100%; overflow-x: auto; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); }
+        .admin-auth-events table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+        .admin-auth-events th, .admin-auth-events td { padding: 12px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+        .admin-auth-events th { background: var(--surface-alt); font-size: 12px; color: var(--muted); }
+        .admin-auth-events code, .admin-auth-events pre { font-size: 12px; }
+        .admin-auth-events .badge { display: inline-block; padding: 3px 8px; border: 1px solid var(--muted); border-radius: 3px; font-size: 12px; font-weight: 600; color: var(--ink); background: var(--surface-alt); }
+        .admin-auth-events .badge-failure { border-style: dashed; }
+        .admin-auth-events .active-filters-box { margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; overflow-wrap: anywhere; }
+        .admin-auth-events .pagination-container { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 20px; }
+        .admin-auth-events .pagination-container a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 12px; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
         @media (max-width: 640px) {
-            .admin-work-main .filters { flex-direction: column; align-items: stretch; }
-            .admin-work-main .filters select, .admin-work-main .filters input[type="text"], .admin-work-main .filters button { width: 100%; }
+            .admin-auth-events .filters { flex-direction: column; align-items: stretch; }
+            .admin-auth-events .filter-field { flex-basis: auto; }
         }
     </style>
 @endsection
 @section('content')
-    <p style="margin-bottom: 16px; color: var(--zafira-muted);">{{ __('admin_ui.events.intro') }}</p>
+<div class="admin-auth-events">
+    <p class="admin-page-intro">{{ __('admin_ui.events.intro') }}</p>
     @php
         $activeFilters = array_filter([
             'event' => request('event'),
@@ -121,10 +36,10 @@
         ]);
     @endphp
     @if (!empty($activeFilters))
-        <div class="active-filters-box" style="margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
-            <span style="font-size: 12px; color: var(--zafira-muted); text-transform: uppercase; letter-spacing: 0.05em;">{{ __('admin_ui.common.active_filters') }}</span>
+        <div class="active-filters-box">
+            <span>{{ __('admin_ui.common.active_filters') }}</span>
             @foreach ($activeFilters as $key => $val)
-                <span class="badge" data-active-filter="{{ $key }}: {{ $val }}" style="background: var(--zafira-linen); color: var(--zafira-charcoal); border: 1px solid var(--zafira-border);">
+                <span class="badge" data-active-filter="{{ $key }}: {{ $val }}">
                     {{ $key }}: {{ $val }}
                 </span>
             @endforeach
@@ -218,4 +133,5 @@
     <div class="pagination-container">
         {{ $events->links() }}
     </div>
+</div>
 @endsection

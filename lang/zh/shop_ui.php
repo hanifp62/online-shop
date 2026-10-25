@@ -354,7 +354,7 @@ return [
         'profile_drawer_eyebrow' => '贵宾客户空间 · Maison ZAFIRA',
         'profile_drawer_title' => '资料与沙龙偏好',
         'profile_action_fitting' => '预约私人试衣',
-        'profile_action_orders' => '高级定制订单记录',
+        'profile_action_orders' => '礼宾与预约记录',
         'profile_settings_title' => '沙龙偏好与设置',
         'profile_theme_label' => '外观模式',
         'profile_theme_desc' => '选择展厅的视觉氛围',

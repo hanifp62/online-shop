@@ -61,7 +61,7 @@ export default function OperationsSummary({ url, filters, report: initial, valid
         }
     }
     const metrics = new Map((report?.metrics ?? []).map(m => [m.id, m]));
-    return <div lang="id">
+    return <div className="admin-operations" lang="id">
         <section className="admin-panel" aria-labelledby="ops-filter-heading"><h2 id="ops-filter-heading">Periode kejadian</h2>
             <p id="ops-window-help" className="panel-hint">Tanggal UTC, maksimal 366 hari. Pilih Khusus untuk memakai tanggal mulai dan akhir (inklusif). Filter hanya mengubah metrik kejadian, bukan backlog. Tidak ada penyegaran otomatis.</p>
             {errors.length > 0 && <div className="auth-errors" data-ops-validation-errors role="alert"><p>Periksa rentang tanggal UTC.</p><ul>{errors.map((error, i) => <li key={i}>{error}</li>)}</ul></div>}
@@ -74,6 +74,7 @@ export default function OperationsSummary({ url, filters, report: initial, valid
         </section>
         <p id="ops-refresh-status" data-ops-refresh-status role="status" aria-live="polite" aria-atomic="true">{status}</p>
         <div data-ops-report data-as-of={report?.as_of ?? ''} aria-describedby="ops-refresh-status" aria-busy={busy}>
+            {!report && <p className="admin-empty">Ringkasan belum tersedia. Terapkan periode untuk membaca data operasional.</p>}
             {report && <><section className="admin-panel" aria-labelledby="ops-reading-heading"><h2 id="ops-reading-heading">Hasil pembacaan</h2>
                 {report.message && <p className="auth-errors" role="alert">{report.message}</p>}
                 <p><strong>{statuses[report.summary.status] ?? statuses.unknown}</strong> · Cakupan {report.summary.coverage === 'complete' ? 'lengkap' : 'sebagian'}.</p>

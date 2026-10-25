@@ -354,7 +354,7 @@ return [
         'profile_drawer_eyebrow' => 'Espace Klien VIP · Maison ZAFIRA',
         'profile_drawer_title' => 'Profil & Preferensi Salon',
         'profile_action_fitting' => 'Reservasi Fitting Privat',
-        'profile_action_orders' => 'Riwayat Pesanan Adibusana',
+        'profile_action_orders' => 'Riwayat concierge & janji temu',
         'profile_settings_title' => 'Preferensi & Pengaturan Salon',
         'profile_theme_label' => 'Mode Tampilan',
         'profile_theme_desc' => 'Pilih suasana visual ruang pamer',

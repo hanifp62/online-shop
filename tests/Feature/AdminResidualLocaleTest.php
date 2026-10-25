@@ -78,7 +78,8 @@ class AdminResidualLocaleTest extends TestCase
             $events->assertSee(trans('admin_ui.events.success', [], $locale));
             $events->assertSee(trans('admin_ui.events.request_id', [], $locale));
             $header = $this->get(route('admin.dashboard', ['locale' => $locale]))->assertOk();
-            $header->assertSee(trans('admin_ui.common.administration', [], $locale).' · ZAFIRA Maison');
+            $header->assertSee('<p class="admin-nav-label">'.e(trans('admin_ui.common.administration', [], $locale)).'</p>', false);
+            $header->assertSee('ZAFIRA');
         }
     }
 

@@ -354,7 +354,7 @@ return [
         'profile_drawer_eyebrow' => 'Espace Client VIP · Maison ZAFIRA',
         'profile_drawer_title' => 'Profil & Préférences du Salon',
         'profile_action_fitting' => 'Réserver un Essayage Privé',
-        'profile_action_orders' => 'Historique des Commandes Haute Couture',
+        'profile_action_orders' => 'Historique concierge et rendez-vous',
         'profile_settings_title' => 'Préférences & Paramètres du Salon',
         'profile_theme_label' => 'Mode d\'Affichage',
         'profile_theme_desc' => 'Choisissez l\'ambiance visuelle du salon',

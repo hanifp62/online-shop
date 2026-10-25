@@ -16,6 +16,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-server-locale="{{ app()->getLocale() }}" data-locale-url="{{ route('locale.update') }}">
 <head>
     <meta charset="utf-8">
+    <x-theme-preference />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#17263f">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -48,7 +49,7 @@
     @endisset
     <script>
         (function() {
-            var theme = 'system', lang = document.documentElement.getAttribute('data-server-locale') || 'id';
+            var lang = document.documentElement.getAttribute('data-server-locale') || 'id';
             try {
                 var read = function(key, legacy, ok) {
                     var v = localStorage.getItem(key);
@@ -56,7 +57,6 @@
                     v = localStorage.getItem(legacy);
                     return ok(v) ? v : null;
                 };
-                theme = read('zafira_theme', 'zafira-theme', function(v) { return v === 'light' || v === 'dark' || v === 'system'; }) || 'system';
                 var queryLocale = new URLSearchParams(window.location.search).get('locale');
                 if (queryLocale && ['id', 'en', 'fr', 'it', 'zh'].indexOf(queryLocale) !== -1) {
                     try { localStorage.setItem('zafira_lang', queryLocale); } catch (e) {}
@@ -65,9 +65,6 @@
                     lang = read('zafira_lang', 'zafira-lang', function(v) { return v === 'id' || v === 'en' || v === 'fr' || v === 'it' || v === 'zh'; }) || 'id';
                 }
             } catch (e) {}
-            var resolved = theme === 'dark' || (theme === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', resolved);
-            document.documentElement.setAttribute('data-theme-setting', theme);
             document.documentElement.setAttribute('lang', lang);
         })();
     </script>
@@ -97,22 +94,6 @@
             .desktop-only-flex { display: none !important; }
             .announcement-bar { padding: 0 16px; height: 34px; justify-content: center; text-align: center; }
             .announcement-bar p { font-size: 8.5px; letter-spacing: 0.1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; }
-        }
-        
-        /* Dark Theme Price Typography & High Contrast */
-        html[data-theme="dark"] .product-info p,
-        html[data-theme="dark"] .product-price,
-        html[data-theme="dark"] .quick-price,
-        html[data-theme="dark"] .cart-item-info > p,
-        html[data-theme="dark"] [translate="no"],
-        html[data-theme="dark"] [data-quick-price] {
-            color: #f2eee8 !important;
-            font-weight: 600;
-        }
-        html[data-theme="dark"] .cart-total strong,
-        html[data-theme="dark"] [data-cart-total] {
-            color: #f1d59b !important;
-            font-weight: 700;
         }
     </style>
 </head>
@@ -188,9 +169,9 @@
             <button class="icon-button" type="button" data-open-search aria-label="{{ __('shop_ui.header.search') }}">
                 <svg aria-hidden="true"><use href="#icon-search"/></svg>
             </button>
-            <button class="icon-button" type="button" id="btn-header-profile" data-open-profile aria-label="{{ __('shop_ui.welcome.profile_aria') }}" title="{{ __('shop_ui.welcome.profile_aria') }}" style="position:relative;">
+            <button class="icon-button" type="button" id="btn-header-profile" data-open-profile aria-haspopup="dialog" aria-label="{{ auth()->check() ? __('shop_ui.header.auth_profile') : __('shop_ui.header.login_aria') }}" title="{{ auth()->check() ? __('shop_ui.header.auth_profile') : __('shop_ui.header.login_aria') }}" style="position:relative;">
                 <svg aria-hidden="true"><use href="#icon-user"/></svg>
-                <span style="position:absolute; top:7px; right:7px; width:7px; height:7px; border-radius:50%; background:var(--gold); box-shadow:0 0 8px var(--gold);"></span>
+
             </button>
             <button class="icon-button wishlist-trigger" type="button" data-show-wishlist aria-label="{{ __('shop_ui.header.wishlist_show') }}">
                 <svg aria-hidden="true"><use href="#icon-heart"/></svg><span class="action-count wishlist-count">0</span>
@@ -329,7 +310,7 @@
                         <form id="home-catalog-search" style="position:relative; min-width:260px; flex:1; max-width:340px;" role="search" aria-label="{{ __('shop_ui.welcome.catalog_search') }}" method="get" action="{{ route('catalog.index') }}">
                             <label for="home-catalog-query" class="sr-only">{{ __('shop_ui.welcome.catalog_search') }}</label>
                             <input type="search" id="home-catalog-query" name="q" maxlength="100" placeholder="{{ __('shop_ui.welcome.catalog_placeholder') }}" data-i18n-placeholder="search_placeholder"
-                                   style="width:100%; padding:9px 16px 9px 36px; border:1px solid rgba(32,32,29,0.18); border-radius:100px; font-size:12.5px; background:rgba(255,255,255,0.85); outline:none;"
+                                   style="width:100%; padding:9px 16px 9px 36px; border:1px solid rgba(32,32,29,0.18); border-radius:100px; font-size:12.5px; background:var(--surface); color:var(--ink);"
                                    autocomplete="off" spellcheck="false">
                                                                <button type="submit" class="text-link">{{ __('shop_ui.footer.search_submit') }}</button>
                             <svg aria-hidden="true" style="position:absolute; left:12px; top:20px; transform:translateY(-50%); width:14px; height:14px; stroke:var(--taupe); fill:none;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -613,7 +594,7 @@
             <!-- 1. VIP Client Identity Card -->
             <div class="profile-vic-card">
                 <div class="profile-vic-avatar">
-                    <span>AT</span>
+                    <span aria-hidden="true">{{ auth()->check() ? \Illuminate\Support\Str::upper(\Illuminate\Support\Str::substr(auth()->user()->name, 0, 1)) : 'Z' }}</span>
                 </div>
                 <div class="profile-vic-info">
                     <h4 class="profile-vic-name">{{ auth()->user()->name ?? __('shop_ui.welcome.guest') }}</h4>
@@ -622,15 +603,20 @@
             </div>
 
             <!-- Quick Action Buttons -->
+            <nav class="profile-drawer-menu" aria-label="{{ __('shop_ui.header.auth_profile') }}">
+                @auth
+                    <a class="button button-sapphire" href="{{ route('account.show') }}">{{ __('shop_ui.header.auth_profile') }}</a>
+                    <a class="text-link" href="{{ route('account.show') }}#account-history">{{ __('shop_ui.welcome.profile_action_orders') }}</a>
+                @else
+                    <a class="button button-sapphire" href="{{ route('login') }}">{{ __('shop_ui.header.login_aria') }}</a>
+                @endauth
+            </nav>
             <div class="profile-quick-actions">
                 <button type="button" class="profile-action-pill" data-open-concierge>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                     <span data-i18n="profile_action_fitting">{{ __('shop_ui.welcome.profile_action_fitting') }}</span>
                 </button>
-                <a href="{{ route('account.show') }}" class="profile-action-pill" style="text-decoration:none;">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                    <span data-i18n="profile_action_orders">{{ __('shop_ui.welcome.profile_action_orders') }}</span>
-                </a>
+
             </div>
 
             <!-- 4. Salon & Experience Preferences (Harmonized Settings) -->
@@ -682,7 +668,9 @@
 
             <!-- 5. Navigation Links & Portal Bridge -->
             <div class="profile-footer-links" style="margin-top:20px;">
-                <a href="{{ route('account.show') }}" class="button button-gold" style="width:100%; justify-content:center; padding:12px; display:flex; text-decoration:none; background:var(--gold); color:#fff; border-radius:8px; font-weight:600; font-size:12px;" data-i18n="profile_full_portal">{{ __('shop_ui.welcome.profile_full_portal') }}</a>
+                @auth
+                    <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="text-link">{{ __('shop_ui.header.auth_logout') }}</button></form>
+                @endauth
             </div>
         </div>
     </aside>

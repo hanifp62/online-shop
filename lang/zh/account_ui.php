@@ -16,6 +16,14 @@ return [
         'contact_intro' => '管理联系方式，方便礼宾与您沟通。',
         'unverified' => '邮箱尚未验证。请打开我们发送至 :email 的链接。',
         'resend' => '重新发送链接',
+        'account_label' => '我的账户',
+        'navigation' => '账户菜单',
+        'details' => '联系方式',
+        'security' => '安全与关联账户',
+        'theme' => '外观',
+        'theme_light' => '浅色',
+        'theme_dark' => '深色',
+        'theme_system' => '跟随系统',
     ],
     'profile' => [
         'name' => '姓名',
@@ -57,7 +65,7 @@ return [
     ],
     'history' => [
         'heading' => '礼宾与工艺预约记录',
-        'empty' => '此邮箱尚无礼宾申请。新预约将在此实时显示。',
+        'empty' => '此账户尚无关联的礼宾申请。您的近期申请和预约将显示在此处。',
         'unscheduled' => '未指定时间',
         'submitted' => '提交于 :date',
     ],

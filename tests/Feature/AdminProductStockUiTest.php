@@ -169,7 +169,7 @@ class AdminProductStockUiTest extends TestCase
         $response = $this->actingAs($admin, 'admin')->get(route('admin.dashboard'))->assertOk();
 
         $this->assertProductEmptyState($response->getContent(), false);
-        $this->assertMatchesRegularExpression('/<details id="form-produk"\s+open/', $response->getContent());
+        $this->assertSame(1, $this->xpath($response->getContent())->query('//details[@id="form-produk"][@open]')->length);
     }
 
     public function test_empty_search_result_offers_reset_instead_of_create(): void

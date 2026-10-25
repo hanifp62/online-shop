@@ -59,7 +59,7 @@ export function AuthFeedback({ errors = {}, status }) {
     }, [errors]);
 
     return <>
-        {status && <div className="auth-errors" role="status" style={{ borderColor: '#16a34a', background: 'rgba(22, 163, 74, 0.08)', color: '#15803d', marginBottom: 16 }}><ul><li>{status}</li></ul></div>}
+        {status && <div className="auth-errors" role="status" style={{ borderColor: 'var(--success)', background: 'var(--success-surface)', color: 'var(--success)', marginBottom: 16 }}><ul><li>{status}</li></ul></div>}
         {messages.length > 0 && <div id="auth-error-summary" className="auth-errors" role="alert" tabIndex={-1} ref={summary}>
             <ul>{messages.map((message, index) => <li key={index}>{message}</li>)}</ul>
         </div>}

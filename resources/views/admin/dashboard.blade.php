@@ -1,22 +1,10 @@
 @extends('admin.layouts.app', ['pageTitle' => __('admin_ui.dashboard.heading'), 'activePage' => 'dashboard'])
 @section('title', __('admin_ui.dashboard.title'))
 @section('content')
-    <p style="margin-bottom: 16px; color: var(--zafira-muted);">{{ __('admin_ui.dashboard.intro') }}</p>
+    <p class="admin-page-intro">{{ __('admin_ui.dashboard.intro') }}</p>
     {{-- Persistent outside swapped regions so screen readers hear loading and the new page summary. --}}
     <p class="sr-only" data-table-announcement role="status" aria-live="polite"></p>
-    <nav class="admin-nav" aria-label="{{ __('admin_ui.dashboard.navigation') }}">
-        <a href="#panel-kategori">{{ __('admin_ui.common.category') }}</a>
-        <a href="#panel-produk">{{ __('admin_ui.common.product') }}</a>
-        <a href="#panel-pesanan">{{ __('admin_ui.dashboard.orders_reports') }}</a>
-        @if (auth('admin')->user()->isAdmin() && app(\App\Support\FeatureFlags::class)->enabled('admin_ops_summary', (string) auth('admin')->id()))
-            <a href="{{ route('admin.reports.operations-summary') }}">Ringkasan operasional</a>
-        @endif
-        <a href="#panel-user">{{ __('admin_ui.common.user') }}</a>
-        <a href="#panel-audit">{{ __('admin_ui.common.audit') }}</a>
-        <a href="#panel-concierge">{{ __('admin_ui.common.concierge') }}</a>
-        <a href="#panel-subscriber">{{ __('admin_ui.common.subscriber') }}</a>
-        <a href="#panel-keamanan">{{ __('admin_ui.common.security') }}</a>
-    </nav>
+
 
     @if (auth('admin')->user()->getRawOriginal('totp_secret') === null)
         <div class="auth-errors" role="status">
@@ -28,14 +16,33 @@
         <div class="auth-errors" role="alert" style="margin-bottom:16px"><ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
     @endif
 
-    <div class="stat-grid">
-        <div class="stat-card"><span>{{ __('admin_ui.common.user') }}</span><strong>{{ $stats['users'] }}</strong></div>
-        <div class="stat-card"><span>{{ __('admin_ui.common.audit') }}</span><strong>{{ $stats['backups'] }}</strong></div>
-        <div class="stat-card"><span>{{ __('admin_ui.common.concierge') }}</span><strong>{{ $stats['concierge'] }}</strong></div>
-        <div class="stat-card"><span>{{ __('admin_ui.common.subscriber') }}</span><strong>{{ $stats['subscribers'] }}</strong></div>
-        <div class="stat-card"><span>{{ __('admin_ui.common.product') }}</span><strong>{{ $stats['products'] }}</strong></div>
-        <div class="stat-card"><span>{{ __('admin_ui.common.category') }}</span><strong>{{ $stats['categories'] }}</strong></div>
+    <div class="admin-overview">
+        <dl class="stat-grid">
+            <div class="stat-card" data-dashboard-metric="orders"><dt><a href="#panel-pesanan">{{ __('admin_ui.common.order') }}</a></dt><dd>{{ $stats['orders'] }}</dd></div>
+            <div class="stat-card" data-dashboard-metric="products"><dt><a href="#panel-produk">{{ __('admin_ui.common.product') }}</a></dt><dd>{{ $stats['products'] }}</dd></div>
+            <div class="stat-card" data-dashboard-metric="concierge"><dt><a href="#panel-concierge">{{ __('admin_ui.common.concierge') }}</a></dt><dd>{{ $stats['concierge'] }}</dd></div>
+            <div class="stat-card" data-dashboard-metric="users"><dt><a href="#panel-user">{{ __('admin_ui.common.user') }}</a></dt><dd>{{ $stats['users'] }}</dd></div>
+        </dl>
+        <dl class="stat-secondary">
+            <div data-dashboard-metric="categories"><dt><a href="#panel-kategori">{{ __('admin_ui.common.category') }}</a></dt><dd>{{ $stats['categories'] }}</dd></div>
+            <div data-dashboard-metric="backups"><dt><a href="#panel-audit">{{ __('admin_ui.common.audit') }}</a></dt><dd>{{ $stats['backups'] }}</dd></div>
+            <div data-dashboard-metric="subscribers"><dt><a href="#panel-subscriber">{{ __('admin_ui.common.subscriber') }}</a></dt><dd>{{ $stats['subscribers'] }}</dd></div>
+        </dl>
     </div>
+
+    <nav class="admin-nav" aria-label="{{ __('admin_ui.dashboard.navigation') }}">
+        <a href="#panel-pesanan">{{ __('admin_ui.dashboard.orders_reports') }}</a>
+        <a href="#panel-kategori">{{ __('admin_ui.common.category') }}</a>
+        <a href="#panel-produk">{{ __('admin_ui.common.product') }}</a>
+        <a href="#panel-user">{{ __('admin_ui.common.user') }}</a>
+        <a href="#panel-audit">{{ __('admin_ui.common.audit') }}</a>
+        <a href="#panel-concierge">{{ __('admin_ui.common.concierge') }}</a>
+        <a href="#panel-subscriber">{{ __('admin_ui.common.subscriber') }}</a>
+        @if (auth('admin')->user()->isAdmin() && app(\App\Support\FeatureFlags::class)->enabled('admin_ops_summary', (string) auth('admin')->id()))
+            <a href="{{ route('admin.reports.operations-summary') }}">Ringkasan operasional</a>
+        @endif
+        <a href="#panel-keamanan">{{ __('admin_ui.common.security') }}</a>
+    </nav>
 
     @php
         $filterLabels = ['oq' => __('admin_ui.dashboard.filter_order'), 'ostatus' => __('admin_ui.dashboard.filter_order_status'), 'status' => __('admin_ui.dashboard.filter_request_status'), 'q' => __('admin_ui.dashboard.filter_concierge')];
@@ -43,6 +50,83 @@
         $kategoriAria = $filters['kdir'] === 'asc' ? 'ascending' : 'descending';
         $kategoriOther = \Illuminate\Support\Arr::except($tableState, ['kq', 'ksort', 'kdir', 'kpage']);
     @endphp
+    @php
+        $pesananAria = $filters['odir'] === 'asc' ? 'ascending' : 'descending';
+        $pesananFilters = array_filter(['oq' => $filters['oq'] ?? '', 'ostatus' => $filters['ostatus'] ?? ''], fn ($v) => $v !== '');
+        $orderStatusLabels = ['pending' => __('admin_ui.dashboard.pending'), 'paid' => __('admin_ui.dashboard.paid'), 'processing' => __('admin_ui.dashboard.processing'), 'shipped' => __('admin_ui.dashboard.shipped'), 'completed' => __('admin_ui.dashboard.completed'), 'cancelled' => __('admin_ui.dashboard.cancelled')];
+    @endphp
+    <section class="admin-panel" id="panel-pesanan">
+        <div data-admin-table="pesanan" aria-busy="false">
+        <h2 tabindex="-1">{{ __('admin_ui.dashboard.orders_reports') }}</h2>
+        <p class="panel-hint">{{ __('admin_ui.dashboard.order_count_hint', ['count' => $stats['orders']]) }}</p>
+        <form class="inline-form inline-form--mobile-stack" data-admin-table-form="pesanan" method="GET" action="{{ route('admin.dashboard') }}#panel-pesanan" style="grid-template-columns: 1fr 1fr auto">
+            @include('admin.components.table-controls', ['part' => 'state', 'own' => ['oq', 'osort', 'odir', 'opage', 'ostatus']])
+            <div class="field"><label for="filter-ostatus">{{ __('admin_ui.common.filter_status') }}</label><select id="filter-ostatus" name="ostatus"><option value="">{{ __('admin_ui.common.all_statuses') }}</option>@foreach (array_keys(\App\Models\Order::STATUS_FLOW) as $orderStatus)<option value="{{ $orderStatus }}" @selected(($filters['ostatus'] ?? '') === $orderStatus)>{{ $orderStatusLabels[$orderStatus] }}</option>@endforeach</select></div>
+            <div class="field"><label for="filter-oq">{{ __('admin_ui.dashboard.search_order') }}</label><input id="filter-oq" name="oq" type="search" value="{{ $filters['oq'] ?? '' }}" placeholder="{{ __('admin_ui.dashboard.order_hint_input') }}" autocomplete="off"></div>
+            <button class="button button-dark" type="submit">{{ __('admin_ui.common.filter') }}</button>
+            @include('admin.components.table-controls', ['part' => 'sort', 'table' => 'pesanan', 'sortName' => 'osort', 'dirName' => 'odir', 'sortOptions' => ['id' => __('admin_ui.dashboard.order_number'), 'created_at' => __('admin_ui.common.date'), 'total' => __('admin_ui.dashboard.value')], 'currentSort' => $filters['osort'], 'currentDir' => $filters['odir']])
+        </form>
+        <p class="admin-empty" data-table-error role="alert" hidden></p>
+        <div class="panel-context" data-panel-count="pesanan" aria-live="polite">
+            @if (! empty($pesananFilters))
+                {{ __('admin_ui.common.active_filters') }}
+                @foreach ($pesananFilters as $key => $val)
+                    <span class="badge" data-active-filter="{{ $key }}: {{ $val }}">{{ $filterLabels[$key] ?? $key }}: {{ $key === 'ostatus' ? ($orderStatusLabels[$val] ?? $val) : $val }}</span>
+                @endforeach
+                <a data-table-link href="{{ route('admin.dashboard', \Illuminate\Support\Arr::except($tableState, ['oq', 'osort', 'odir', 'opage', 'ostatus'])) }}#panel-pesanan">{{ __('admin_ui.common.reset') }}</a> ·
+            @endif
+            {{ __('admin_ui.common.showing', ['count' => $latestOrders->count(), 'total' => $latestOrders->total()]) }}
+        </div>
+        @include('admin.components.table-controls', ['part' => 'density', 'table' => 'pesanan'])
+        @if ($latestOrders->isNotEmpty())
+            <div class="table-selection-toolbar" hidden data-table-enhancement>
+                <label><input type="checkbox" data-table-select-all="pesanan"> {{ __('admin_ui.dashboard.select_all') }}</label>
+                <span class="table-selection-count" data-table-selection-count="pesanan" aria-live="polite">{{ __('admin_ui.common.selected', ['count' => 0]) }}</span>
+                <button class="button button-dark" type="button" data-table-copy-selection="pesanan" disabled>{{ __('admin_ui.dashboard.copy_orders') }}</button>
+            </div>
+        @endif
+        <div class="admin-table-wrap" tabindex="0" role="region" aria-label="{{ __('admin_ui.common.table_region', ['label' => __('admin_ui.common.order')]) }}"><table class="admin-table" data-density="compact" data-table-body="pesanan">
+            <caption class="sr-only">{{ __('admin_ui.common.order') }}</caption>
+            <thead><tr><th scope="col" class="table-select-cell" hidden data-table-enhancement><span class="sr-only">{{ __('admin_ui.dashboard.select') }}</span></th><th scope="col" @if ($filters['osort'] === 'id') aria-sort="{{ $pesananAria }}" @endif>{{ __('admin_ui.dashboard.order_number') }}</th><th scope="col" @if ($filters['osort'] === 'created_at') aria-sort="{{ $pesananAria }}" @endif>{{ __('admin_ui.common.date') }}</th><th scope="col">{{ __('admin_ui.dashboard.client') }}</th><th scope="col" @if ($filters['osort'] === 'total') aria-sort="{{ $pesananAria }}" @endif>{{ __('admin_ui.dashboard.recorded_value') }}</th><th scope="col">{{ __('admin_ui.common.status') }}</th><th scope="col">{{ __('admin_ui.dashboard.documents') }}</th></tr></thead>
+            <tbody>
+            @forelse ($latestOrders as $order)
+                <tr>
+                    <td class="table-select-cell" hidden data-table-enhancement><label class="table-select-label"><input type="checkbox" data-table-select="pesanan" value="{{ $order->id }}" aria-label="{{ __('admin_ui.dashboard.select_order', ['id' => $order->id]) }}"></label></td>
+                    <td>#{{ $order->id }}</td>
+                    <td>{{ $order->created_at->format('d M Y H:i') }} UTC</td>
+                    <td>{{ $order->customer_name ?? $order->user?->name ?? __('admin_ui.dashboard.guest') }}</td>
+                    <td>Rp {{ number_format($order->total, 0, ',', '.') }}</td>
+                    <td><span class="badge-status badge-{{ $order->status }}">{{ $orderStatusLabels[$order->status] ?? $order->status }}</span>
+                        @if (!empty(\App\Models\Order::STATUS_FLOW[$order->status]))
+                            <form class="status-form" data-order-status-form method="POST" action="{{ route('admin.orders.update', $order->id) }}">
+                                @csrf @method('PATCH')
+                                <select name="status" required aria-label="{{ __('admin_ui.dashboard.order_status_aria', ['id' => $order->id]) }}">
+                                    <option value="" disabled selected>{{ __('admin_ui.dashboard.choose_status') }}</option>
+                                    @foreach (array_diff(\App\Models\Order::STATUS_FLOW[$order->status], \App\Models\Order::MANUAL_BLOCKED) as $nextStatus)
+                                        <option value="{{ $nextStatus }}">{{ $orderStatusLabels[$nextStatus] ?? $nextStatus }}</option>
+                                    @endforeach
+                                </select>
+                                <button type="submit" aria-label="{{ __('admin_ui.dashboard.save_order_status', ['id' => $order->id]) }}">{{ __('admin_ui.common.save') }}</button>
+                            </form>
+                        @endif
+                    </td>
+                    <td><a href="{{ route('admin.orders.invoice', $order->id) }}">{{ __('admin_ui.dashboard.order_slip') }}</a></td>
+                </tr>
+            @empty
+                <tr><td colspan="7">{{ $pesananFilters ? __('admin_ui.dashboard.orders_empty_filtered') : __('admin_ui.dashboard.orders_empty') }}@if ($pesananFilters) <a href="{{ route('admin.dashboard', \Illuminate\Support\Arr::except($tableState, ['oq', 'osort', 'odir', 'opage', 'ostatus'])) }}#panel-pesanan">{{ __('admin_ui.common.reset') }}</a>@endif</td></tr>
+            @endforelse
+            </tbody>
+        </table></div>
+        @include('admin.components.table-controls', ['part' => 'pagination', 'table' => 'pesanan', 'label' => 'pesanan', 'paginator' => $latestOrders])
+        </div>
+        <form class="inline-form" method="GET" action="{{ route('admin.orders.report') }}">
+            <div class="field"><label for="report-period">{{ __('admin_ui.dashboard.report_period') }}</label><select id="report-period" name="period"><option value="today">{{ __('admin_ui.dashboard.today') }}</option><option value="7d">{{ __('admin_ui.dashboard.last_7') }}</option><option value="30d">{{ __('admin_ui.dashboard.last_30') }}</option><option value="custom">{{ __('admin_ui.dashboard.date_range') }}</option></select></div>
+            <div class="field"><label for="report-from">{{ __('admin_ui.dashboard.from_utc') }}</label><input id="report-from" type="date" name="from"></div>
+            <div class="field"><label for="report-to">{{ __('admin_ui.dashboard.to_utc') }}</label><input id="report-to" type="date" name="to"></div>
+            <button class="button button-sapphire" type="submit">{{ __('admin_ui.dashboard.download_pdf') }}</button>
+        </form>
+    </section>
+
     <section class="admin-panel" id="panel-kategori">
         {{-- Hanya region ini yang diganti oleh admin-table.js; form tambah/laporan berada di luar agar draf tidak hilang. --}}
         <div data-admin-table="kategori" aria-busy="false">
@@ -180,9 +264,9 @@
         @endif
         </div>
 
-        <details id="form-produk" @if ($latestProducts->isEmpty() && ($filters['pq'] ?? '') === '') open @endif style="margin: 12px 18px 16px; border: 1px solid var(--line); padding: 14px 18px; background: #fafafa;">
-            <summary style="font-weight: 600; cursor: pointer; font-size: 13px; color: var(--sapphire);">{{ __('admin_ui.dashboard.add_new_product') }}</summary>
-            <form class="inline-form" method="POST" action="{{ route('admin.products.store') }}" style="grid-template-columns: 1fr 1fr 1fr; padding: 14px 0 0; gap: 12px;">
+        <details id="form-produk" class="dashboard-product-create" @if ($latestProducts->isEmpty() && ($filters['pq'] ?? '') === '') open @endif>
+            <summary>{{ __('admin_ui.dashboard.add_new_product') }}</summary>
+            <form class="inline-form dashboard-product-fields" method="POST" action="{{ route('admin.products.store') }}">
                 @csrf
                 <div class="field"><label for="product_title">{{ __('admin_ui.dashboard.product_name') }}</label><input id="product_title" name="product_title" type="text" required placeholder="{{ __('admin_ui.dashboard.product_name_hint') }}"></div>
                 <div class="field"><label for="product_cat">{{ __('admin_ui.common.category') }}</label>
@@ -209,82 +293,6 @@
         </details>
     </section>
 
-    @php
-        $pesananAria = $filters['odir'] === 'asc' ? 'ascending' : 'descending';
-        $pesananFilters = array_filter(['oq' => $filters['oq'] ?? '', 'ostatus' => $filters['ostatus'] ?? ''], fn ($v) => $v !== '');
-        $orderStatusLabels = ['pending' => __('admin_ui.dashboard.pending'), 'paid' => __('admin_ui.dashboard.paid'), 'processing' => __('admin_ui.dashboard.processing'), 'shipped' => __('admin_ui.dashboard.shipped'), 'completed' => __('admin_ui.dashboard.completed'), 'cancelled' => __('admin_ui.dashboard.cancelled')];
-    @endphp
-    <section class="admin-panel" id="panel-pesanan">
-        <div data-admin-table="pesanan" aria-busy="false">
-        <h2 tabindex="-1">{{ __('admin_ui.dashboard.orders_reports') }}</h2>
-        <p class="panel-hint">{{ __('admin_ui.dashboard.order_count_hint', ['count' => $stats['orders']]) }}</p>
-        <form class="inline-form inline-form--mobile-stack" data-admin-table-form="pesanan" method="GET" action="{{ route('admin.dashboard') }}#panel-pesanan" style="grid-template-columns: 1fr 1fr auto">
-            @include('admin.components.table-controls', ['part' => 'state', 'own' => ['oq', 'osort', 'odir', 'opage', 'ostatus']])
-            <div class="field"><label for="filter-ostatus">{{ __('admin_ui.common.filter_status') }}</label><select id="filter-ostatus" name="ostatus"><option value="">{{ __('admin_ui.common.all_statuses') }}</option>@foreach (array_keys(\App\Models\Order::STATUS_FLOW) as $orderStatus)<option value="{{ $orderStatus }}" @selected(($filters['ostatus'] ?? '') === $orderStatus)>{{ $orderStatusLabels[$orderStatus] }}</option>@endforeach</select></div>
-            <div class="field"><label for="filter-oq">{{ __('admin_ui.dashboard.search_order') }}</label><input id="filter-oq" name="oq" type="search" value="{{ $filters['oq'] ?? '' }}" placeholder="{{ __('admin_ui.dashboard.order_hint_input') }}" autocomplete="off"></div>
-            <button class="button button-dark" type="submit">{{ __('admin_ui.common.filter') }}</button>
-            @include('admin.components.table-controls', ['part' => 'sort', 'table' => 'pesanan', 'sortName' => 'osort', 'dirName' => 'odir', 'sortOptions' => ['id' => __('admin_ui.dashboard.order_number'), 'created_at' => __('admin_ui.common.date'), 'total' => __('admin_ui.dashboard.value')], 'currentSort' => $filters['osort'], 'currentDir' => $filters['odir']])
-        </form>
-        <p class="admin-empty" data-table-error role="alert" hidden></p>
-        <div class="panel-context" data-panel-count="pesanan" aria-live="polite">
-            @if (! empty($pesananFilters))
-                {{ __('admin_ui.common.active_filters') }}
-                @foreach ($pesananFilters as $key => $val)
-                    <span class="badge" data-active-filter="{{ $key }}: {{ $val }}">{{ $filterLabels[$key] ?? $key }}: {{ $key === 'ostatus' ? ($orderStatusLabels[$val] ?? $val) : $val }}</span>
-                @endforeach
-                <a data-table-link href="{{ route('admin.dashboard', \Illuminate\Support\Arr::except($tableState, ['oq', 'osort', 'odir', 'opage', 'ostatus'])) }}#panel-pesanan">{{ __('admin_ui.common.reset') }}</a> ·
-            @endif
-            {{ __('admin_ui.common.showing', ['count' => $latestOrders->count(), 'total' => $latestOrders->total()]) }}
-        </div>
-        @include('admin.components.table-controls', ['part' => 'density', 'table' => 'pesanan'])
-        @if ($latestOrders->isNotEmpty())
-            <div class="table-selection-toolbar" hidden data-table-enhancement>
-                <label><input type="checkbox" data-table-select-all="pesanan"> {{ __('admin_ui.dashboard.select_all') }}</label>
-                <span class="table-selection-count" data-table-selection-count="pesanan" aria-live="polite">{{ __('admin_ui.common.selected', ['count' => 0]) }}</span>
-                <button class="button button-dark" type="button" data-table-copy-selection="pesanan" disabled>{{ __('admin_ui.dashboard.copy_orders') }}</button>
-            </div>
-        @endif
-        <div class="admin-table-wrap" tabindex="0" role="region" aria-label="{{ __('admin_ui.common.table_region', ['label' => __('admin_ui.common.order')]) }}"><table class="admin-table" data-density="compact" data-table-body="pesanan">
-            <caption class="sr-only">{{ __('admin_ui.common.order') }}</caption>
-            <thead><tr><th scope="col" class="table-select-cell" hidden data-table-enhancement><span class="sr-only">{{ __('admin_ui.dashboard.select') }}</span></th><th scope="col" @if ($filters['osort'] === 'id') aria-sort="{{ $pesananAria }}" @endif>{{ __('admin_ui.dashboard.order_number') }}</th><th scope="col" @if ($filters['osort'] === 'created_at') aria-sort="{{ $pesananAria }}" @endif>{{ __('admin_ui.common.date') }}</th><th scope="col">{{ __('admin_ui.dashboard.client') }}</th><th scope="col" @if ($filters['osort'] === 'total') aria-sort="{{ $pesananAria }}" @endif>{{ __('admin_ui.dashboard.recorded_value') }}</th><th scope="col">{{ __('admin_ui.common.status') }}</th><th scope="col">{{ __('admin_ui.dashboard.documents') }}</th></tr></thead>
-            <tbody>
-            @forelse ($latestOrders as $order)
-                <tr>
-                    <td class="table-select-cell" hidden data-table-enhancement><label class="table-select-label"><input type="checkbox" data-table-select="pesanan" value="{{ $order->id }}" aria-label="{{ __('admin_ui.dashboard.select_order', ['id' => $order->id]) }}"></label></td>
-                    <td>#{{ $order->id }}</td>
-                    <td>{{ $order->created_at->format('d M Y H:i') }} UTC</td>
-                    <td>{{ $order->customer_name ?? $order->user?->name ?? __('admin_ui.dashboard.guest') }}</td>
-                    <td>Rp {{ number_format($order->total, 0, ',', '.') }}</td>
-                    <td><span class="badge-status badge-{{ $order->status }}">{{ $orderStatusLabels[$order->status] ?? $order->status }}</span>
-                        @if (!empty(\App\Models\Order::STATUS_FLOW[$order->status]))
-                            <form class="status-form" data-order-status-form method="POST" action="{{ route('admin.orders.update', $order->id) }}">
-                                @csrf @method('PATCH')
-                                <select name="status" required aria-label="{{ __('admin_ui.dashboard.order_status_aria', ['id' => $order->id]) }}">
-                                    <option value="" disabled selected>{{ __('admin_ui.dashboard.choose_status') }}</option>
-                                    @foreach (array_diff(\App\Models\Order::STATUS_FLOW[$order->status], \App\Models\Order::MANUAL_BLOCKED) as $nextStatus)
-                                        <option value="{{ $nextStatus }}">{{ $orderStatusLabels[$nextStatus] ?? $nextStatus }}</option>
-                                    @endforeach
-                                </select>
-                                <button type="submit" aria-label="{{ __('admin_ui.dashboard.save_order_status', ['id' => $order->id]) }}">{{ __('admin_ui.common.save') }}</button>
-                            </form>
-                        @endif
-                    </td>
-                    <td><a href="{{ route('admin.orders.invoice', $order->id) }}">{{ __('admin_ui.dashboard.order_slip') }}</a></td>
-                </tr>
-            @empty
-                <tr><td colspan="7">{{ $pesananFilters ? __('admin_ui.dashboard.orders_empty_filtered') : __('admin_ui.dashboard.orders_empty') }}@if ($pesananFilters) <a href="{{ route('admin.dashboard', \Illuminate\Support\Arr::except($tableState, ['oq', 'osort', 'odir', 'opage', 'ostatus'])) }}#panel-pesanan">{{ __('admin_ui.common.reset') }}</a>@endif</td></tr>
-            @endforelse
-            </tbody>
-        </table></div>
-        @include('admin.components.table-controls', ['part' => 'pagination', 'table' => 'pesanan', 'label' => 'pesanan', 'paginator' => $latestOrders])
-        </div>
-        <form class="inline-form" method="GET" action="{{ route('admin.orders.report') }}">
-            <div class="field"><label for="report-period">{{ __('admin_ui.dashboard.report_period') }}</label><select id="report-period" name="period"><option value="today">{{ __('admin_ui.dashboard.today') }}</option><option value="7d">{{ __('admin_ui.dashboard.last_7') }}</option><option value="30d">{{ __('admin_ui.dashboard.last_30') }}</option><option value="custom">{{ __('admin_ui.dashboard.date_range') }}</option></select></div>
-            <div class="field"><label for="report-from">{{ __('admin_ui.dashboard.from_utc') }}</label><input id="report-from" type="date" name="from"></div>
-            <div class="field"><label for="report-to">{{ __('admin_ui.dashboard.to_utc') }}</label><input id="report-to" type="date" name="to"></div>
-            <button class="button button-sapphire" type="submit">{{ __('admin_ui.dashboard.download_pdf') }}</button>
-        </form>
-    </section>
 
     @php
         $userSort = $filters['usort'];

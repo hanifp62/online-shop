@@ -64,17 +64,27 @@ test('visible mobile field and desktop focus do not force scrolling', () => {
     assert.equal(focusCheckout({ fieldTop: 140 }).scrolled, undefined);
     assert.equal(focusCheckout({ mobile: false }).scrolled, undefined);
 });
-test('gold button hover and keyboard focus preserve AA text contrast', () => {
-    const rule = blade.match(/button:hover,button:focus-visible,\.button:hover,\.button:focus-visible\{([^}]+)\}/)[1];
-    assert.match(rule, /background:var\(--gold\)/);
-    assert.match(rule, /color:var\(--sapphire\)/);
-    const luminance = name => {
-        const hex = blade.match(new RegExp(`--${name}:#([0-9a-f]{6})`))[1];
-        const channels = hex.match(/../g).map(value => parseInt(value, 16) / 255)
-            .map(value => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
-        return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+test('shared checkout button and hover pairs preserve AA contrast in both themes', () => {
+    const theme = readFileSync('resources/css/theme.css', 'utf8');
+    const app = readFileSync('resources/css/app.css', 'utf8');
+    assert.match(blade, /@vite\('resources\/css\/app.css'\)/);
+    assert.match(theme, /:is\(\.shop-page, \.shop-react\) :is\(button, \.button\) \{ color: var\(--on-accent\); background: var\(--accent\)/);
+    assert.match(theme, /:is\(button, \.button\):hover \{ color: var\(--ink\); background: var\(--surface-alt\)/);
+    const tokens = block => Object.fromEntries([...block.matchAll(/(--[\w-]+):\s*([^;]+);/g)].map(m => [m[1], m[2].trim()]));
+    const base = { ...tokens(app.match(/:root\s*\{([^}]+)\}/s)[1]), ...tokens(theme.match(/html\s*\{([^}]+)\}/s)[1]) };
+    const luminance = (name, values) => {
+        let value = values[name];
+        while (value.startsWith('var(')) value = values[value.slice(4, -1)];
+        const hex = value.slice(1).length === 3 ? [...value.slice(1)].map(c => c + c).join('') : value.slice(1);
+        const channels = hex.match(/../g).map(v => parseInt(v, 16) / 255).map(v => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4);
+        return channels.reduce((sum, value, i) => sum + value * [.2126, .7152, .0722][i], 0);
     };
-    assert.ok((luminance('gold') + 0.05) / (luminance('sapphire') + 0.05) >= 4.5);
+    for (const values of [base, { ...base, ...tokens(theme.match(/html\[data-theme="dark"\]\s*\{([^}]+)\}/s)[1]) }]) {
+        for (const [foreground, background] of [['--on-accent', '--accent'], ['--ink', '--surface-alt'], ['--muted', '--surface']]) {
+            const pair = [luminance(foreground, values), luminance(background, values)].sort((a, b) => b - a);
+            assert.ok((pair[0] + .05) / (pair[1] + .05) >= 4.5, `${foreground}/${background}`);
+        }
+    }
 });
 test('shared aside stays visible before both forms, sticky on desktop and above mobile forms without nested scrolling', () => {
     const checkout = blade.slice(blade.indexOf('<section class="panel" id="checkout"'), blade.indexOf('<div class="grid"><section class="panel" id="pesanan"'));

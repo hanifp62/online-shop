@@ -16,6 +16,14 @@ return [
         'contact_intro' => 'Gestisci i recapiti per facilitare le comunicazioni con il concierge.',
         'unverified' => 'Email non verificata. Apri il link inviato a :email.',
         'resend' => 'Invia di nuovo il link',
+        'account_label' => 'Il mio account',
+        'navigation' => 'Menu dell’account',
+        'details' => 'Recapiti',
+        'security' => 'Sicurezza e account collegati',
+        'theme' => 'Aspetto',
+        'theme_light' => 'Chiaro',
+        'theme_dark' => 'Scuro',
+        'theme_system' => 'Sistema',
     ],
     'profile' => [
         'name' => 'Nome completo',
@@ -57,7 +65,7 @@ return [
     ],
     'history' => [
         'heading' => 'Storico concierge e appuntamenti artigianali',
-        'empty' => 'Nessuna richiesta concierge da questa email. I nuovi appuntamenti appariranno qui in tempo reale.',
+        'empty' => 'Nessuna richiesta concierge collegata a questo account. Le richieste e gli appuntamenti recenti appariranno qui.',
         'unscheduled' => 'Nessun orario specifico',
         'submitted' => 'Inviata il :date',
     ],

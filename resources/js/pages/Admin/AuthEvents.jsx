@@ -1,7 +1,7 @@
 export default function AuthEvents({ locale, copy: { common: c, events: e }, url, filters, eventOptions, rows, pagination: p }) {
     const active = Object.entries(filters).filter(([, value]) => value);
-    return <div lang={locale}>
-        <p style={{ marginBottom: 16, color: 'var(--zafira-muted)' }}>{e.intro}</p>
+    return <div className="admin-auth-events" lang={locale}>
+        <p className="admin-page-intro">{e.intro}</p>
         {active.length > 0 && <div className="active-filters-box"><span>{c.active_filters}</span>{active.map(([key, value]) => <span className="badge" data-active-filter={`${key}: ${value}`} key={key}>{key}: {value}</span>)}</div>}
         <form method="GET" action={url} className="filters">
             <div className="filter-field"><label htmlFor="auth-event-filter">{e.event}</label><select id="auth-event-filter" name="event" defaultValue={filters.event ?? ''}><option value="">{e.all_events}</option>{eventOptions.map(value => <option key={value}>{value}</option>)}</select></div>

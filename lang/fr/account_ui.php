@@ -16,6 +16,14 @@ return [
         'contact_intro' => 'Gérez vos coordonnées pour faciliter les échanges avec le concierge.',
         'unverified' => 'Adresse e-mail non vérifiée. Ouvrez le lien envoyé à :email.',
         'resend' => 'Renvoyer le lien',
+        'account_label' => 'Mon compte',
+        'navigation' => 'Menu du compte',
+        'details' => 'Coordonnées',
+        'security' => 'Sécurité et comptes associés',
+        'theme' => 'Apparence',
+        'theme_light' => 'Clair',
+        'theme_dark' => 'Sombre',
+        'theme_system' => 'Système',
     ],
     'profile' => [
         'name' => 'Nom complet',
@@ -57,7 +65,7 @@ return [
     ],
     'history' => [
         'heading' => 'Historique concierge et rendez-vous artisanaux',
-        'empty' => 'Aucune demande concierge pour cet e-mail. Les nouveaux rendez-vous apparaîtront ici en temps réel.',
+        'empty' => 'Aucune demande concierge associée à ce compte. Vos demandes et rendez-vous récents apparaîtront ici.',
         'unscheduled' => 'Sans horaire précis',
         'submitted' => 'Envoyée le :date',
     ],

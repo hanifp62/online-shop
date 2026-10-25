@@ -1770,6 +1770,7 @@
     }
 
     function getTheme() {
+        if (window.ZafiraTheme) return window.ZafiraTheme.get();
         return (
             themeSetting ||
             (themeSetting =
@@ -1777,9 +1778,27 @@
         );
     }
 
+    function updateThemeDock(mode = getTheme()) {
+        const dockThemeText = document.getElementById("dock-theme-text");
+        if (dockThemeText) {
+            const dict = I18N[getLanguage()] || I18N.id;
+            dockThemeText.textContent =
+                mode === "light"
+                    ? dict.theme_light || "Terang"
+                    : mode === "dark"
+                      ? dict.theme_dark || "Gelap"
+                      : dict.theme_system || "Sistem";
+        }
+    }
+
     function applyTheme(mode) {
-        const root = document.documentElement;
         if (!isValidTheme(mode)) mode = "system";
+        if (window.ZafiraTheme) {
+            window.ZafiraTheme.set(mode);
+            updateThemeDock();
+            return;
+        }
+        const root = document.documentElement;
         themeSetting = mode;
         safeSet(THEME_KEY, mode);
 
@@ -1792,6 +1811,8 @@
         }
         root.setAttribute("data-theme", effectiveTheme);
         root.setAttribute("data-theme-setting", mode);
+        root.setAttribute("data-theme-preference", mode);
+        if (root.style) root.style.colorScheme = effectiveTheme;
 
         // Apply color-scheme meta
         let meta = document.querySelector('meta[name="color-scheme"]');
@@ -1812,22 +1833,12 @@
         });
 
         // Update theme selects if present
-        document.querySelectorAll(".zafira-theme-select").forEach((sel) => {
+        document.querySelectorAll("select[data-theme-select], select.zafira-theme-select").forEach((sel) => {
+            for (const option of sel.options) option.defaultSelected = option.value === mode;
             sel.value = mode;
         });
 
-        // Update dock widgets
-        const dockThemeText = document.getElementById("dock-theme-text");
-        if (dockThemeText) {
-            const lang = getLanguage();
-            const dict = I18N[lang] || I18N.id;
-            dockThemeText.textContent =
-                mode === "light"
-                    ? dict.theme_light || "Terang"
-                    : mode === "dark"
-                      ? dict.theme_dark || "Gelap"
-                      : dict.theme_system || "Sistem";
-        }
+        updateThemeDock(mode);
 
         // Dispatch event
         window.dispatchEvent(
@@ -2009,11 +2020,16 @@
     // --- 4. ATTACH LISTENERS & INITIALIZE ---
     function init() {
         // 1. Theme initialization
-        const currentTheme = getTheme();
-        applyTheme(currentTheme);
+        if (window.ZafiraTheme) {
+            window.ZafiraTheme.sync();
+            updateThemeDock();
+            window.addEventListener("zafira:theme-changed", () => updateThemeDock());
+        } else {
+            applyTheme(getTheme());
+        }
 
-        // Watch OS system theme changes
-        if (window.matchMedia) {
+        // The shared head owns OS changes when present, even in the Blade fallback.
+        if (!window.ZafiraTheme && window.matchMedia) {
             const media = window.matchMedia("(prefers-color-scheme: dark)");
             media.addEventListener("change", () => {
                 if (getTheme() === "system") {
@@ -2030,6 +2046,7 @@
         document.addEventListener("click", (e) => {
             const themeBtn = e.target.closest("[data-set-theme]");
             if (themeBtn) {
+                if (window.ZafiraTheme) return;
                 e.preventDefault();
                 const mode = themeBtn.getAttribute("data-set-theme");
                 applyTheme(mode);
@@ -2049,7 +2066,7 @@
             if (e.target.matches(".zafira-lang-select")) {
                 selectLanguage(e.target.value);
             }
-            if (e.target.matches(".zafira-theme-select")) {
+            if (!window.ZafiraTheme && e.target.matches("select[data-theme-select], select.zafira-theme-select")) {
                 applyTheme(e.target.value);
             }
         });

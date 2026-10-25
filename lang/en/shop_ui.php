@@ -354,7 +354,7 @@ return [
         'profile_drawer_eyebrow' => 'VIP Client Space · Maison ZAFIRA',
         'profile_drawer_title' => 'Profile & Salon Preferences',
         'profile_action_fitting' => 'Reserve Private Fitting',
-        'profile_action_orders' => 'Haute Couture Orders History',
+        'profile_action_orders' => 'Concierge & appointment history',
         'profile_settings_title' => 'Salon Preferences & Settings',
         'profile_theme_label' => 'Appearance Mode',
         'profile_theme_desc' => 'Select digital salon visual ambiance',

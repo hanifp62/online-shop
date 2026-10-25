@@ -308,8 +308,8 @@ function CatalogPage({ t, catalogCopy, products, filters, categories, colors, ma
                 {products.data.length === 0 ? (
                     <div className="catalog-empty">
                         <p>{t.empty}</p>
-                        <p style={{ fontSize: 13, color: '#888' }}>{filters.q != null ? t.search_empty_hint : t.empty_hint}</p>
-                        {searchRecovery === 'narrow' && <p style={{ fontSize: 13, color: '#888' }}>{t.search_narrow}</p>}
+                        <p style={{ fontSize: 13, color: 'var(--muted)' }}>{filters.q != null ? t.search_empty_hint : t.empty_hint}</p>
+                        {searchRecovery === 'narrow' && <p style={{ fontSize: 13, color: 'var(--muted)' }}>{t.search_narrow}</p>}
                         {filters.q != null && <Link href={links.withoutSearch} className="catalog-btn catalog-btn-secondary" preserveState={false}>{t.clear_search}</Link>}
                         <Link href={links.clear} className="catalog-btn" preserveState={false}>{t.clear_all}</Link>
                     </div>

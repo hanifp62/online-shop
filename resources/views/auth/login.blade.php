@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
+    <x-theme-preference />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#17263f">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -35,7 +36,7 @@
             <h1>{{ __('auth_ui.login.heading') }}</h1>
             <p>{{ __('auth_ui.login.intro') }}</p>
             @if (session('success'))
-                <div class="auth-errors" role="status" style="border-color: #16a34a; background: rgba(22, 163, 74, 0.08); color: #15803d; margin-bottom: 16px;"><ul><li>{{ session('success') }}</li></ul></div>
+                <div class="auth-errors" role="status" style="border-color:var(--success);background:var(--success-surface);color:var(--success);margin-bottom:16px;"><ul><li>{{ session('success') }}</li></ul></div>
             @endif
             @if ($errors->any())
                 <div class="auth-errors" role="alert" tabindex="-1"><ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
