@@ -1,0 +1,134 @@
+{
+    "requirement": "FR-STOCK-20261025",
+    "mode": "applied",
+    "environment": "local",
+    "driver": "mysql",
+    "local_endpoint": true,
+    "quantity": 10,
+    "selected_count": 12,
+    "eligible_count": 12,
+    "changed_count": 12,
+    "products": [
+        {
+            "product_id": 1,
+            "product_slug": "sac-seraphine",
+            "product_title": "Sac Séraphine",
+            "is_active": true,
+            "stock_before": 0,
+            "stock_after": 10,
+            "stock_proposed": 10,
+            "action": "set"
+        },
+        {
+            "product_id": 2,
+            "product_slug": "celeste-trench",
+            "product_title": "Trench Céleste",
+            "is_active": true,
+            "stock_before": 0,
+            "stock_after": 10,
+            "stock_proposed": 10,
+            "action": "set"
+        },
+        {
+            "product_id": 3,
+            "product_slug": "elan-dress",
+            "product_title": "Robe Élan",
+            "is_active": true,
+            "stock_before": 0,
+            "stock_after": 10,
+            "stock_proposed": 10,
+            "action": "set"
+        },
+        {
+            "product_id": 4,
+            "product_slug": "riva-loafer",
+            "product_title": "Mocassin Riva",
+            "is_active": true,
+            "stock_before": 0,
+            "stock_after": 10,
+            "stock_proposed": 10,
+            "action": "set"
+        },
+        {
+            "product_id": 5,
+            "product_slug": "saphir-clutch",
+            "product_title": "Minaudière Saphir",
+            "is_active": true,
+            "stock_before": 0,
+            "stock_after": 10,
+            "stock_proposed": 10,
+            "action": "set"
+        },
+        {
+            "product_id": 6,
+            "product_slug": "firenze-coat",
+            "product_title": "Manteau Firenze",
+            "is_active": true,
+            "stock_before": 0,
+            "stock_after": 10,
+            "stock_proposed": 10,
+            "action": "set"
+        },
+        {
+            "product_id": 7,
+            "product_slug": "lumiere-scarf",
+            "product_title": "Carré Lumière",
+            "is_active": true,
+            "stock_before": 0,
+            "stock_after": 10,
+            "stock_proposed": 10,
+            "action": "set"
+        },
+        {
+            "product_id": 8,
+            "product_slug": "nocturne-watch",
+            "product_title": "Montre Nocturne",
+            "is_active": true,
+            "stock_before": 0,
+            "stock_after": 10,
+            "stock_proposed": 10,
+            "action": "set"
+        },
+        {
+            "product_id": 9,
+            "product_slug": "kebaya-lumiere",
+            "product_title": "Kebaya Lumière",
+            "is_active": true,
+            "stock_before": 0,
+            "stock_after": 10,
+            "stock_proposed": 10,
+            "action": "set"
+        },
+        {
+            "product_id": 10,
+            "product_slug": "chemise-riviere",
+            "product_title": "Chemise Rivière",
+            "is_active": true,
+            "stock_before": 0,
+            "stock_after": 10,
+            "stock_proposed": 10,
+            "action": "set"
+        },
+        {
+            "product_id": 11,
+            "product_slug": "echarpe-eclat",
+            "product_title": "Écharpe Éclat",
+            "is_active": true,
+            "stock_before": 0,
+            "stock_after": 10,
+            "stock_proposed": 10,
+            "action": "set"
+        },
+        {
+            "product_id": 12,
+            "product_slug": "robe-aurore",
+            "product_title": "Robe Aurore",
+            "is_active": true,
+            "stock_before": 0,
+            "stock_after": 10,
+            "stock_proposed": 10,
+            "action": "set"
+        }
+    ],
+    "cache": "unchanged; beranda\/rekomendasi dapat menyimpan stok lama hingga TTL 300 detik. Muat ulang katalog\/PDP untuk data baru."
+}

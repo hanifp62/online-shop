@@ -763,6 +763,9 @@ def main():
            'APP_PACKAGES_CACHE': str(root / 'bootstrap/packages.php'),
            'APP_ROUTES_CACHE': str(root / 'bootstrap/routes.php'),
            'APP_EVENTS_CACHE': str(root / 'bootstrap/events.php')}
+    # Explicit opt-in for the UI acceptance fixture; never inherited by normal app processes.
+    if args[0] == 'serve' and os.environ.get('AMADIS_UI_OPS_SUMMARY') == '1':
+        env['ZAFIRA_FEATURE_ADMIN_OPS_SUMMARY_ENABLED'] = 'true'
     if args[0] == 'init':
         print(root)
         return 0

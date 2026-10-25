@@ -38,6 +38,10 @@ Selamat datang di indeks dokumentasi teknis dan produk untuk proyek e-commerce *
 
 **Verifikasi lokal 21 Oktober 2026:** [Bukti browser lifecycle dan checkout tamu multibahasa](execution/amadis/browser-20261021/REPORT.md) mencatat S0–S5 serta delapan kombinasi locale/viewport. Pengujian ini memakai data sintetis dan database terisolasi, bukan transaksi produksi.
 
+## Perubahan lokal terbaru
+
+- **Dashboard, profil, tema dan stok simulasi (25 Oktober UTC / 26 Oktober WIB):** [hasil, screenshot, batas bukti dan delivery gate](05-quality/ADMIN_PROFILE_THEME_STOCK_2026-10-25.md), [requirement/AC](04-implementation/ADMIN_PROFILE_THEME_STOCK_2026-10-25.md). Sidebar/topbar admin, profil `/admin/profil` dan `/akun`, tema konsisten pada19head, serta12produk lokal diisi10unit. Browser78cases/2149checks dan31mandatory lulus; Node667, React255, PHP1367pass+3engineskip (8partisi), Python434, Pint/build lulus. Review independen APPROVE scoped. Belum commit/push/CIremote/deploy; tidak mengklaim sertifikasiWCAG atau tes konkurensiMySQL dariSQLite.
+
 ## Indeks Struktur Dokumentasi
 
 ```

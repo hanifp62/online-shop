@@ -9,6 +9,17 @@
 
 ---
 
+## Tambahan UI-LOCAL-20261025
+
+Total setelah penambahan: **44 berkas Blade**. Inventaris di bawah tetap merekam baseline42berkas, bukan verbatim versi baru.
+
+| Berkas | Peran/copy |
+|---|---|
+| `resources/views/admin/profile.blade.php` | Profil admin: identitas read-only, keamanan dan ubah kata sandi melalui endpoint existing. Copy `profile_ui` tersedia di5locale. |
+| `resources/views/components/theme-preference.blade.php` | Initializer preferensi tema lintas19head, tidak menambah copy pengguna. |
+
+Navigasi profil beranda kini memakai label `shop_ui.header.auth_profile` bagi pengguna masuk dan `login_aria` bagi tamu. Riwayat diberi label concierge/janji temu, bukan pesanan. Halaman akun memakai section kontak/keamanan/privasi/riwayat. Lihat [kontrak dan bukti UI-LOCAL](ADMIN_PROFILE_THEME_STOCK_2026-10-25.md).
+
 ## 1. Peta Klaster Permukaan Teks
 
 | Klaster | Jumlah Berkas | Nada Bicara Sesuai Matriks | Persona Target |
