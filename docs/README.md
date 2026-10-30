@@ -128,6 +128,7 @@ docs/
 ├── audit/
 │   └── BACKEND_ROUTE_PERMISSION_AUDIT.md     # Audit route/permission backend
 ├── research/                                 # Benchmark global, Indonesia, luxury, scorecard, diferensiasi
+│   └── CHATBOT_ECOMMERCE_DEEP_RESEARCH_2026-10-30.md # Riset chatbot e-commerce: dampak, luxury, WhatsApp ID, agentic, REA 10 storefront, kandidat FR-401–404 (bukti: 05-quality/evidence-chatbot-rea-2026-10-30/); implementasi tahap 0–1: 05-quality/evidence-chatbot-impl-2026-10-30/
 └── SCREENSHOT_TO_CODE_WORKFLOW.md            # Panduan operasional & integrasi Screenshot to Code
 ```
 

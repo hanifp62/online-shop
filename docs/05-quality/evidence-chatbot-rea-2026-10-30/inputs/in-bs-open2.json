@@ -1,0 +1,7 @@
+{"browser":{"mode":"launch","executable_path":"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome","headless":true},
+ "start_url":{"url":"https://buttonscarves.com/"},
+ "environment":{"locale":"id-ID","timezone":"Asia/Jakarta","viewport":{"width":1366,"height":900,"device_scale_factor":1}},
+ "actions":[{"step_id":"settle","action":"wait_for_timeout","duration_ms":12000},
+   {"step_id":"open-ai","action":"click","locator":{"kind":"css","selector":"#ads-agent-host button"},"timeout_ms":15000},
+   {"step_id":"after-open","action":"wait_for_timeout","duration_ms":6000}],
+ "capture":{"after_each_step":[],"at_end":["url","screenshot","accessibility"],"events":["network","websockets"],"limits":{"max_network_transactions":1500}}}

@@ -1,0 +1,5 @@
+{"browser":{"mode":"launch","executable_path":"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome","headless":true},
+ "start_url":{"url":"https://www.mytheresa.com/int/en/women"},
+ "environment":{"locale":"id-ID","timezone":"Asia/Jakarta","viewport":{"width":1366,"height":900,"device_scale_factor":1}},
+ "actions":[{"step_id":"settle","action":"wait_for_timeout","duration_ms":12000}],
+ "capture":{"at_end":["url","accessibility"],"events":["network","websockets","frames","page-errors"],"limits":{"max_network_transactions":1500}}}

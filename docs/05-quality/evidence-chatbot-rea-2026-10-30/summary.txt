@@ -1,0 +1,165 @@
+# Ringkasan keluaran REA capture-browser-scenario (rea-agents@6.7.0), dijalankan 2026-10-30 dari macOS, Chrome headless 156, tanpa login
+
+=== sociolla
+FILE out-sociolla.json evidence ev_2805d6605d8bc9645 completeness complete events 472 dropped 0
+final_url https://www.sociolla.com/
+requests 160 distinct_origins 36
+top_origins www.sociolla.com:76, analytics.tiktok.com:15, www.google.com:5, sociollaid.api.useinsider.com:5, eitri.api.useinsider.com:5, www.googletagmanager.com:4, fonts.gstatic.com:3, analytics.google.com:3, www.google.co.id:3, www.googleadservices.com:3, assets.api.useinsider.com:3, www.google-analytics.com:2, connect.facebook.net:2, stats.g.doubleclick.net:2, googleads.g.doubleclick.net:2, analytics-ipv6.tiktokw.us:2, analytics-api.soco.id:2, app.adjust.com:2, carrier.useinsider.com:2, log.api.useinsider.com:2, unification.useinsider.com:2, fonts.googleapis.com:1, static.hotjar.com:1, ad.doubleclick.net:1, accounts-api.sociolla.com:1
+websockets []
+a11y_bytes 14554 matching_lines 15
+  A11Y - link "Help Center Help Center":
+  A11Y - img "Help Center"
+  A11Y - text: Help Center
+  A11Y - link "Face Mask,":
+  A11Y - paragraph: Face Mask,
+  A11Y - link "Contact us":
+  A11Y - link "Help Center":
+  A11Y - paragraph: Customer Care
+  A11Y - link "0811987881 (WhatsApp)":
+  A11Y - paragraph: 0811987881 (WhatsApp)
+  A11Y - paragraph: 0853-1111-1010 (WhatsApp)
+limitations ['Event sequence records provider receipt order; simultaneous browser causality is not inferred.', 'Network content is retained only when selected; Playwright response-body bytes are API results and are not guaranteed to', 'Request bytes are limited to what Playwright exposes; not_exposed does not establish body absence or multipart file cove', 'Network content reads settle within 5 seconds each and the observer does not request bodies from unfinished responses.']
+
+=== erigo
+FILE out-erigo.json evidence ev_9ad4c382245525b68 completeness complete events 1370 dropped 0
+final_url https://erigostore.co.id/
+requests 461 distinct_origins 39
+top_origins erigostore.co.id:301, cdn.shopify.com:58, shopify-assets.shopifycdn.com:31, otlp-http-production.shopifysvc.com:11, :8, form-ext.contlo.com:5, shop.app:4, fonts.googleapis.com:3, cdn.ecomposer.app:3, www.googletagmanager.com:3, connect.facebook.net:2, analyzely.gropulse.com:2, js.smile.io:2, monorail-edge.shopifysvc.com:2, unpkg.com:2, fonts.gstatic.com:1, www.merchant-center-analytics.goog:1, api.ipify.org:1, www.google-analytics.com:1, www.powr.io:1, assets.dailydeals.ai:1, seo.apps.avada.io:1, gtmfsstatic.getgoogletagmanager.com:1, whatschat.shopiapps.in:1, marketing.contlo.com:1
+websockets []
+VENDOR shopify-inbox/chat -> ['cdn.shopify.com/storefront/web-components/chat/shopify-chat-telemetry-7h4Mv [script]']
+VENDOR whatsapp -> ['shopiapps.in/whatsapp-share/script/sp_wslcacr_widget_css_v1.css [stylesheet]', 'whatschat.shopiapps.in/script/sp-whatsapp-app-tabs.js [script]']
+a11y_bytes 17799 matching_lines 18
+  A11Y - img "Erigo Short Shirt Pocket Daeio Olive - Kemeja Lengan Pendek Rayon Unisex"
+  A11Y - heading "Erigo Short Shirt Pocket Daeio Olive - Kemeja Lengan Pendek Rayon Unisex Sale" [level=3]:
+  A11Y - link "Erigo Short Shirt Pocket Daeio Olive - Kemeja Lengan Pendek Rayon Unisex Sale":
+  A11Y - text: Erigo Short Shirt Pocket Daeio Olive - Kemeja Lengan Pendek Rayon Unisex
+  A11Y - img "Erigo Relax Chino Pants Erven Olive - Celana Panjang Relax Unisex"
+  A11Y - heading "Erigo Relax Chino Pants Erven Olive - Celana Panjang Relax Unisex Sale" [level=3]:
+  A11Y - link "Erigo Relax Chino Pants Erven Olive - Celana Panjang Relax Unisex Sale":
+  A11Y - text: Erigo Relax Chino Pants Erven Olive - Celana Panjang Relax Unisex
+  A11Y - text: Kolaborasi Erigo x EVOS esports Kolaborasi ini menjawab pertanyaan bagaimana saat kreativitas dari fashion menyatu dengan meriahnya dunia game. Setelah 
+  A11Y - link "Hubungi Kami":
+  A11Y - heading "BANTUAN" [level=2]
+  A11Y - text: Hubungi kami
+  A11Y - paragraph: Direktorat Jenderal Perlindungan Konsumen dan Tertib Niaga, Kementerian Perdagangan Republik Indonesia, 0853-1111-1010 (WhatsApp)
+limitations ['Event sequence records provider receipt order; simultaneous browser causality is not inferred.', 'Network content is retained only when selected; Playwright response-body bytes are API results and are not guaranteed to', 'Request bytes are limited to what Playwright exposes; not_exposed does not establish body absence or multipart file cove', 'Network content reads settle within 5 seconds each and the observer does not request bodies from unfinished responses.']
+
+=== zalora
+FILE out-zalora.json evidence ev_b71ad4067140068c7 completeness incomplete events 564 dropped 0
+final_url https://www.zalora.co.id/
+requests 191 distinct_origins 39
+top_origins static-id.zacdn.com:69, :20, dynamic.zacdn.com:19, cdn.segment.com:10, api.zalora.co.id:8, collector-pxzg5bkbll.px-cloud.net:5, www.zalora.co.id:4, asia.creativecdn.com:4, client.px-cloud.net:3, api.segment.io:3, sslwidget.criteo.com:3, fonts.gstatic.com:3, crcldu.com:3, ift.px-cloud.net:2, graphql.contentful.com:2, static-segmentpool.com:2, www.google.com:2, captcha.px-cdn.net:2, gum.criteo.com:2, images.ctfassets.net:2, fonts.googleapis.com:2, www.googleadservices.com:2, widget.eu.criteo.com:2, js.px-cloud.net:2, static.zalora.com:1
+websockets []
+a11y_bytes 22 matching_lines 0
+limitations ['Event sequence records provider receipt order; simultaneous browser causality is not inferred.', 'Network content is retained only when selected; Playwright response-body bytes are API results and are not guaranteed to', 'Request bytes are limited to what Playwright exposes; not_exposed does not establish body absence or multipart file cove', 'Network content reads settle within 5 seconds each and the observer does not request bodies from unfinished responses.']
+
+=== blibli
+FILE out-blibli.json evidence ev_ffdb05162ced1e295 completeness incomplete events 95 dropped 0
+final_url https://www.blibli.com/
+requests 36 distinct_origins 5
+top_origins :17, www.blibli.com:7, challenges.cloudflare.com:7, www.static-src.com:4, hagen.challenges.cloudflare.com:1
+websockets []
+a11y_bytes 369 matching_lines 1
+  A11Y - link "hubungi customer service kami.":
+limitations ['Event sequence records provider receipt order; simultaneous browser causality is not inferred.', 'Network content is retained only when selected; Playwright response-body bytes are API results and are not guaranteed to', 'Request bytes are limited to what Playwright exposes; not_exposed does not establish body absence or multipart file cove', 'Network content reads settle within 5 seconds each and the observer does not request bodies from unfinished responses.']
+
+=== buttonscarves
+FILE out-buttonscarves.json evidence ev_54380038d534929ef completeness incomplete events 2597 dropped 0
+final_url https://www.buttonscarves.com/
+requests 867 distinct_origins 76
+top_origins www.buttonscarves.com:389, asset.fwcdn3.com:141, cdn.shopify.com:58, static.klaviyo.com:26, www.googletagmanager.com:21, analytics.tiktok.com:20, ct.pinterest.com:17, js.smile.io:17, www.google.com:15, otlp-http-production.shopifysvc.com:12, www.google.co.id:8, f.clarity.ms:6, s.pinimg.com:6, fonts.googleapis.com:6, js.stripe.com:6, googleads.g.doubleclick.net:6, www.googleadservices.com:6, static-ai-assistant.fastsimon.com:5, static-visual.fastsimon.com:5, bzrcdn.openai.com:4, static-tracking.klaviyo.com:4, fonts.gstatic.com:4, tryon.auglio.com:4, www.clarity.ms:3, connect.facebook.net:3
+websockets []
+VENDOR chatgpt/openai -> ['bzr.openai.com/v1/sdk/events [fetch]', 'bzrcdn.openai.com/pixel-config/v1/9Ah6zHo6sFDLcbdyK8oVUT.json [fetch]', 'bzrcdn.openai.com/sdk/oaiq.min.js [script]']
+VENDOR whatsapp -> ['www.buttonscarves.com/cdn/shop/t/227/assets/whatsapp-button.png [image]']
+a11y_bytes 17226 matching_lines 8
+  A11Y - link "Ask Claude":
+  A11Y - link "Ask ChatGPT":
+  A11Y - link "Ask Perplexity":
+  A11Y - link "Contact Us":
+  A11Y - heading "Contact Us" [level=2]
+  A11Y - text: Direktorat Jenderal Perlindungan Konsumen dan Tertib Niaga Kementerian Perdagangan RI Nomor Whatsapp Ditjen PKTN 0853-1111-1010
+limitations ['Event sequence records provider receipt order; simultaneous browser causality is not inferred.', 'Network content is retained only when selected; Playwright response-body bytes are API results and are not guaranteed to', 'Request bytes are limited to what Playwright exposes; not_exposed does not establish body absence or multipart file cove', 'Network content reads settle within 5 seconds each and the observer does not request bodies from unfinished responses.']
+
+=== gymshark
+FILE out-gymshark.json evidence ev_fb55bebf737746424 completeness incomplete events 739 dropped 0
+final_url https://www.gymshark.com/
+requests 252 distinct_origins 48
+top_origins www.gymshark.com:94, browser-intake-datadoghq.eu:23, cdn.shopify.com:18, analytics.tiktok.com:7, ct.pinterest.com:7, :7, cdn.cookielaw.org:6, 10ef4229c7d0.edge.sdk.awswaf.com:6, www.google.com:6, mp.gymshark.com:5, assets.gymshark.com:5, cdn.gymshark.com:4, bat.bing.com:4, c.amazon-adsystem.com:4, match.adsrvr.org:4, connect.facebook.net:3, www.google.co.id:3, cdn.dynamicyield.com:3, insight.adsrvr.org:3, b.applovin.com:3, 2deaes0cuo-dsn.algolia.net:2, s.pinimg.com:2, js.adsrvr.org:2, googleads.g.doubleclick.net:2, res4.applovin.com:2
+websockets []
+VENDOR algolia-ai -> ['2deaes0cuo-dsn.algolia.net/1/indexes/*/recommendations [xhr]', '2deaes0cuo-dsn.algolia.net/1/indexes/production_us_products_v2_popularity/query [xhr]']
+VENDOR intercom -> ['widget.intercom.io/widget/r2v7ynki [script]']
+a11y_bytes 37116 matching_lines 8
+  A11Y - paragraph: Workout Clothes designed to help you become your personal best. Because when it comes to performing at your max, there should be no obstacles – lea
+  A11Y - paragraph: Our legacy was built in the weight room. Gymshark was founded with a love for training and that passion continues into all our gym clothes today. Y
+  A11Y - text: feature classic styles, with modern cuts and innovative fabrics to help you raise the bar.
+  A11Y - paragraph: We create the tools that help everyone become their personal best – no matter the sport. Our range of Activewear is designed to give you the suppor
+  A11Y - heading "Help" [level=2]
+  A11Y - link "Delivery Information":
+limitations ['Event sequence records provider receipt order; simultaneous browser causality is not inferred.', 'Network content is retained only when selected; Playwright response-body bytes are API results and are not guaranteed to', 'Request bytes are limited to what Playwright exposes; not_exposed does not establish body absence or multipart file cove', 'Network content reads settle within 5 seconds each and the observer does not request bodies from unfinished responses.']
+
+=== allbirds
+FILE out-allbirds.json evidence ev_361ccb670dbde8a0e completeness complete events 1755 dropped 0
+final_url https://www.allbirds.com/
+requests 586 distinct_origins 39
+top_origins www.allbirds.com:385, shopify-extension.getredo.com:40, cdn.shopify.com:25, adsagentclientafd-b7hqhjdrf3fpeqh2.b01.azurefd.net:22, www.google.com:18, otlp-http-production.shopifysvc.com:12, www.googletagmanager.com:7, www.google.co.id:7, adsagentserverprod-ekd5fygyhpbvh9bd.b01.azurefd.net:7, t.clarity.ms:6, weareallbirds.myshopify.com:6, googleads.g.doubleclick.net:6, cdn.attn.tv:4, shop.app:3, khmms.allbirds.com:3, shopify-cdn.getredo.com:3, shopify-gtm-suite.getelevar.com:3, fonts.googleapis.com:3, www.clarity.ms:2, :2, connect.facebook.net:2, allbirds.attn.tv:2, c.clarity.ms:2, conf.config-security.com:1, api.config-security.com:1
+websockets []
+a11y_bytes 17056 matching_lines 5
+  A11Y - paragraph: Help
+  A11Y - link "help@allbirds.com":
+  A11Y - link "FAQ/Contact Us":
+limitations ['Event sequence records provider receipt order; simultaneous browser causality is not inferred.', 'Network content is retained only when selected; Playwright response-body bytes are API results and are not guaranteed to', 'Request bytes are limited to what Playwright exposes; not_exposed does not establish body absence or multipart file cove', 'Network content reads settle within 5 seconds each and the observer does not request bodies from unfinished responses.']
+
+=== mytheresa
+FILE out-mytheresa.json evidence ev_e75b81fc225dc7d52 completeness complete events 25 dropped 0
+final_url https://www.mytheresa.com/int/en/women
+requests 9 distinct_origins 2
+top_origins www.mytheresa.com:8, www.googletagmanager.com:1
+websockets []
+a11y_bytes 737 matching_lines 1
+  A11Y - text: We use our own cookies as well as cookies from third parties to help you get the most out of our website, but also to analyse the use of our website and
+limitations ['Event sequence records provider receipt order; simultaneous browser causality is not inferred.', 'Network content is retained only when selected; Playwright response-body bytes are API results and are not guaranteed to', 'Request bytes are limited to what Playwright exposes; not_exposed does not establish body absence or multipart file cove', 'Network content reads settle within 5 seconds each and the observer does not request bodies from unfinished responses.']
+
+=== sephora
+FILE out-sephora.json evidence ev_664721554f141c496 completeness complete events 4 dropped 0
+final_url https://www.sephora.com/
+requests 2 distinct_origins 1
+top_origins www.sephora.com:2
+websockets []
+a11y_bytes 273 matching_lines 0
+limitations ['Event sequence records provider receipt order; simultaneous browser causality is not inferred.', 'Network content is retained only when selected; Playwright response-body bytes are API results and are not guaranteed to', 'Request bytes are limited to what Playwright exposes; not_exposed does not establish body absence or multipart file cove', 'Network content reads settle within 5 seconds each and the observer does not request bodies from unfinished responses.']
+
+=== hermes
+FILE out-hermes.json evidence ev_256738165ba4b81ee completeness complete events 391 dropped 0
+final_url https://www.hermes.com/us/en/
+requests 132 distinct_origins 16
+top_origins assets.hermes.com:55, www.hermes.com:35, :8, bam.nr-data.net:6, img.riskified.com:5, static.captcha-delivery.com:4, stream.hermes.cn:4, www.googletagmanager.com:3, dd.hermes.com:2, sdk.privacy-center.org:2, bck.hermes.com:2, geo.captcha-delivery.com:2, static.cloudflareinsights.com:1, beacon.riskified.com:1, js-agent.newrelic.com:1, c.riskified.com:1
+websockets []
+a11y_bytes 18228 matching_lines 9
+  A11Y - heading "Standard delivery" [level=2]
+  A11Y - paragraph: Free standard delivery. Hermès offers several fast and secure delivery options.
+  A11Y - heading "Customer Service" [level=2]
+  A11Y - link "Contact us":
+  A11Y - list "Contact us FAQ Find a store Stores selling beauty products Stores selling Apple Watch Hermès Gifting Made to measure Maintenance and repair":
+  A11Y - link "Contact us":
+limitations ['Event sequence records provider receipt order; simultaneous browser causality is not inferred.', 'Network content is retained only when selected; Playwright response-body bytes are API results and are not guaranteed to', 'Request bytes are limited to what Playwright exposes; not_exposed does not establish body absence or multipart file cove', 'Network content reads settle within 5 seconds each and the observer does not request bodies from unfinished responses.']
+
+=== interaksi gymshark-open
+evidence ev_33bc06fd3eb61caa5ac7590360ff947c6c543c684f98414dbb8220631862923d
+STEP scenario_start completed None
+STEP settle completed None
+STEP open-messenger failed Analysis operation timed out after 15000ms: capture_browser_scenario
+STEP after-open cancelled not executed after an earlier action failure
+
+=== interaksi bs-open
+evidence ev_f5152a6ff9b1d086f3d5fc9c73c7e0b67227597798e91bb5d06501674b4efd83
+STEP scenario_start completed None
+STEP settle completed None
+STEP open-ai failed locator.click: Error: strict mode violation: locator('#fast-simon-chatbot button, #fast-simon-chatbot [role=button], #fast-simon-chatbot') resolved to 2 element
+STEP after-open cancelled not executed after an earlier action failure
+
+=== interaksi bs-open2
+evidence ev_90b00af893b86191f3b1db762fac7cd46d972fae32117a1bbf12f92f8da6c932
+STEP scenario_start completed None
+STEP settle completed None
+STEP open-ai failed locator.click: Timeout 15000ms exceeded. Call log:   - waiting for locator('#ads-agent-host button') 
+STEP after-open cancelled not executed after an earlier action failure
