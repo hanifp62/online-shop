@@ -171,6 +171,7 @@ class StorefrontController extends Controller
             'preferred_date' => ['nullable', 'date', 'after_or_equal:today'],
             'preferred_time' => ['nullable', 'date_format:H:i'],
             'notes' => ['nullable', 'string', 'max:1000'],
+            'source' => ['nullable', 'in:assistant'],
             'order_items' => ['nullable', 'array', 'max:20'],
             'order_items.*' => ['array'],
             'order_items.*.id' => ['required', 'string', 'max:255', Rule::exists('products', 'product_slug')->where('is_active', true)],
@@ -207,7 +208,7 @@ class StorefrontController extends Controller
         $message = __('customer_messages.storefront.concierge_received');
 
         if ($request->expectsJson()) {
-            return response()->json(['message' => $message], 201);
+            return response()->json(['message' => $message, 'reference' => $concierge->reference()], 201);
         }
 
         return back()->with('success', $message);

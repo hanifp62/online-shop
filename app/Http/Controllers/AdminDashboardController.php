@@ -88,7 +88,11 @@ class AdminDashboardController extends Controller
         }
 
         if (($validated['q'] ?? '') !== '') {
-            $conciergeQuery->where(fn ($query) => $this->containsAny($query, ['name', 'email', 'phone'], $validated['q']));
+            // Clients quote the reference the assistant showed them (ZC-000042).
+            $reference = preg_match('/^\s*zc-?0*(\d{1,9})\s*$/i', $validated['q'], $match) === 1 ? (int) $match[1] : null;
+            $conciergeQuery->where(fn ($query) => $reference !== null
+                ? $query->whereKey($reference)
+                : $this->containsAny($query, ['name', 'email', 'phone'], $validated['q']));
         }
 
         $userQuery = User::query();

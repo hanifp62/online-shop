@@ -123,3 +123,27 @@ Vokabulari: `PASS` (acceptance teruji dengan bukti), `FAIL`, `BLOCKED`, `NOT RUN
 | FR-014 | PRD | Bcrypt round 12 | `AdminDashboardController` | round tidak terbukti | NOT RUN |
 | Kompetitor terblokir | S-register | Observasi saja | — | CAPTCHA/403/Cloudflare/timeout/cert | BLOCKED |
 | Latensi/aksesibilitas dari asset bytes | — | — | — | tidak ada pengukuran | NA sebagai klaim lulus |
+
+## Adendum asisten bantuan tahap 0–1 (2026-10-30)
+
+Kandidat dari [riset chatbot §12.2](../research/CHATBOT_ECOMMERCE_DEEP_RESEARCH_2026-10-30.md#122-usulan-bertahap-recommendation--status-kandidat-belum-requirement) diangkat menjadi requirement atas permintaan pemilik produk pada 2026-10-30. FR-403 dan FR-404 tetap kandidat. Bukti: [evidence-chatbot-impl-2026-10-30](../05-quality/evidence-chatbot-impl-2026-10-30/README.md).
+
+| Kebutuhan | Acceptance yang dapat diuji | Implementasi | Test/bukti | Status |
+|---|---|---|---|---|
+| FR-401 Satu pintu bantuan | Launcher berlabel teks "Bantuan & Concierge" berposisi tetap; tidak membuka sendiri; ≥44 px; tidak keluar layar 320 px; dialog berlabel, Esc menutup dan fokus kembali ke launcher (CB-13/14/15/19) | `Assistant.jsx` (`AssistantLauncher`), `Layout.jsx`, `storefront-react.css` | `storefront-assistant.spec.jsx`; browser 1280 & 320 px | PASS untuk beranda dan PDP; `/koleksi` dan `/belanja` belum memakai layout ini |
+| FR-402 Asisten terpandu | Tanpa LLM; menyebut kemampuan dan batas; detail produk dari data PDP live dengan tautan sumber; status pesanan hanya menautkan jalur kepemilikan yang ada (akun / kode pelacakan); keluhan rusak/tagihan dan dua kali gagal paham → concierge; handoff dikonfirmasi, catatan dapat disunting, ditutup dengan nomor referensi (CB-02/04/05/06/07/08/09/11/21) | `lib/storefront-assistant.js`, `Assistant.jsx`, `Forms.jsx`; `StorefrontController::bookConcierge` (`source`, `reference`); migrasi `add_source_to_concierge_requests_table` | Vitest 13/13; `ConciergeAssistantTest` 4/4; browser 26/27 (1 asersi salah rancang, lihat bukti) | PASS lokal; uji pengguna dan screen reader NOT RUN |
+| NFR-401 Privasi chat | Transkrip hanya di `sessionStorage` tab; tidak ada request sampai formulir concierge dikirim; peringatan jangan menulis kartu/kata sandi (CB-22) | `storefront-assistant.js`, copy `shop_ui.assistant.privacy` | Vitest persistensi & storage terblokir | PARSIAL: kebijakan retensi tertulis dan pemberitahuan PDP formal belum ada |
+| NFR-402 Tanpa vendor chat | Asisten tidak menambah origin eksternal | Kode internal, tanpa SDK | Browser: origin sebelum/sesudah interaksi sama | PASS |
+
+### Pembaruan 2026-10-30 (v2: pengembangan tampilan, fitur, dan spesifikasi)
+
+Spesifikasi lengkap dengan sub-requirement FR-401.1–FR-402.10 dan NFR-403: [CHATBOT_ASSISTANT_SPEC](CHATBOT_ASSISTANT_SPEC.md).
+
+| Kebutuhan | Implementasi | Test/bukti | Status |
+|---|---|---|---|
+| FR-402.3 Pencarian kreasi | `AssistantProductSearch`, `GET /bantuan/produk` | `ConciergeAssistantTest` ×3, Vitest, browser A | PASS lokal |
+| FR-402.4 Tambah ke tas dengan konfirmasi + urungkan | `Assistant.jsx` (`cart_confirm`/`cart_added`) | Vitest, browser A (badge 0→1→0) | PASS lokal |
+| FR-402.5–6 Topik pengetahuan + langkah lanjut | `Assistant.jsx`, copy `shop_ui.assistant` | Vitest | PASS lokal |
+| FR-402.7 Umpan balik anonim | `AssistantController::feedback`, tabel `assistant_feedback` | `ConciergeAssistantTest`, browser A (204) | PASS lokal; belum ada tampilan admin |
+| FR-402.10 Referensi di admin | `AdminDashboardPageProps`, `Dashboard.jsx`, `dashboard.blade.php`, pencarian `ZC-…` | `ConciergeAssistantTest` admin | PASS lokal |
+| NFR-403 Aksesibilitas panel | `storefront-react.css` | Browser C: target ≥44 px, kontras 4,69–16,08, 0 px overflow | PASS lokal; screen reader NOT RUN |

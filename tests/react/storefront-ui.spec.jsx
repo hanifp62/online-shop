@@ -9,7 +9,7 @@ import Show from '../../resources/js/pages/Products/Show.jsx';
 function translatedCopy(locale) {
     const source = readFileSync(`lang/${locale}/shop_ui.php`, 'utf8');
     const result = {};
-    for (const section of ['app_js', 'pdp', 'header', 'footer', 'cart', 'welcome']) {
+    for (const section of ['app_js', 'pdp', 'header', 'footer', 'cart', 'welcome', 'assistant']) {
         const start = source.indexOf(`    '${section}' => [`);
         const end = source.indexOf('\n    ],', start);
         result[section] = Object.fromEntries([...source.slice(start, end).matchAll(/'([^']+)'\s*=>\s*'((?:\\.|[^'])*)'/g)].map(match => [match[1], match[2].replace(/\\'/g, "'")]));

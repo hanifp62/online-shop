@@ -107,6 +107,7 @@ body.admin-console .status-form button.danger, body.admin-console button.status-
 .badge-status { display: inline-block; padding: 3px 8px; border: 1px solid currentColor; border-radius: 3px; font-size: 12px; font-weight: 600; margin-bottom: 6px; background: var(--surface-alt); color: var(--ink); }
 .badge-cancelled { border-style: dashed; }
 .concierge-notes-box { font-size: 12px; line-height: 1.5; color: var(--ink); background: var(--surface-alt); padding: 8px 12px; border: 1px solid var(--line); border-radius: 3px; margin-top: 8px; max-width: 320px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.concierge-reference { color: var(--muted); font-size: 11px; letter-spacing: .04em; font-variant-numeric: tabular-nums; }
 .inline-form { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; gap: 12px; padding: 16px 20px; align-items: end; }
 .inline-form .field { margin: 0; min-width: 0; }
 .inline-form input:not([type="hidden"]), .inline-form select, .inline-form button { min-height: 44px; }

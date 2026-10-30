@@ -42,7 +42,7 @@ final class AdminDashboardPageProps
                 'email' => $row->email, 'phone' => $row->mobile ?? '-', 'date' => $row->created_at?->format('d M Y H:i'),
             ]),
             'concierge' => self::table($data['latestConcierge'], fn ($row) => [
-                'id' => $row->id, 'name' => $row->name, 'userName' => $row->user ? '#'.$row->user_id.' '.$row->user->name : null,
+                'id' => $row->id, 'reference' => $row->reference(), 'viaAssistant' => $row->source === 'assistant', 'name' => $row->name, 'userName' => $row->user ? '#'.$row->user_id.' '.$row->user->name : null,
                 'phone' => $row->phone, 'notes' => $row->notes, 'email' => $row->email, 'service' => $row->service,
                 'schedule' => ($row->preferred_date?->format('d M Y') ?? '-').' '.($row->preferred_time ?? ''),
                 'status' => $row->status, 'transitions' => $row->availableTransitions(), 'update' => $url('admin.concierge.update', $row->id),

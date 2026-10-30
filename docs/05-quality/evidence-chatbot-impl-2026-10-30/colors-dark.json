@@ -1,0 +1,67 @@
+[
+  {
+    "selector": ".sf-assistant-entry.is-bot",
+    "fg": "rgb(242, 238, 232)",
+    "bg": "rgb(14, 23, 38)"
+  },
+  {
+    "selector": ".sf-assistant-entry.is-user",
+    "fg": "rgb(23, 38, 63)",
+    "bg": "rgb(227, 199, 143)"
+  },
+  {
+    "selector": ".sf-assistant-status",
+    "fg": "rgb(180, 191, 206)",
+    "bg": "rgb(24, 37, 58)"
+  },
+  {
+    "selector": ".sf-assistant-muted",
+    "fg": "rgb(180, 191, 206)",
+    "bg": "rgb(14, 23, 38)"
+  },
+  {
+    "selector": ".sf-assistant-time",
+    "fg": "rgb(242, 238, 232)",
+    "bg": "rgb(14, 23, 38)"
+  },
+  {
+    "selector": ".sf-assistant-card-category",
+    "fg": "rgb(180, 191, 206)",
+    "bg": "rgb(24, 37, 58)"
+  },
+  {
+    "selector": ".sf-assistant-stock",
+    "fg": "rgb(178, 225, 193)",
+    "bg": "rgb(24, 37, 58)"
+  },
+  {
+    "selector": ".sf-assistant-card-actions a",
+    "fg": "rgb(227, 199, 143)",
+    "bg": "rgb(24, 37, 58)"
+  },
+  {
+    "selector": ".sf-assistant-tiles button",
+    "fg": "rgb(242, 238, 232)",
+    "bg": "rgb(24, 37, 58)"
+  },
+  {
+    "selector": ".sf-assistant-feedback",
+    "fg": "rgb(180, 191, 206)",
+    "bg": "rgb(14, 23, 38)"
+  },
+  {
+    "selector": ".sf-assistant-footer p",
+    "fg": "rgb(180, 191, 206)",
+    "bg": "rgb(24, 37, 58)"
+  },
+  {
+    "selector": ".sf-assistant-human",
+    "fg": "rgb(23, 38, 63)",
+    "bg": "rgb(227, 199, 143)"
+  },
+  {
+    "selector": ".sf-assistant-launcher",
+    "fg": "rgb(23, 38, 63)",
+    "bg": "rgb(227, 199, 143)"
+  }
+]

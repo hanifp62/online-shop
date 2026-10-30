@@ -418,6 +418,7 @@
                 @foreach ($latestConcierge as $item)
                     <tr>
                         <td style="overflow-wrap:anywhere">
+                            <small class="concierge-reference">{{ $item->reference() }}@if ($item->source === 'assistant') · <span class="badge">{{ __('admin_ui.dashboard.via_assistant') }}</span>@endif</small><br>
                             <strong>{{ $item->name }}</strong>{{ $item->user ? ' · #'.$item->user_id.' '.$item->user->name : '' }}
                             @if ($item->phone)<br><small style="color:var(--muted)">WA: {{ $item->phone }}</small>@endif
                             @if ($item->notes)

@@ -1,6 +1,6 @@
 const normalize = (value) => String(value ?? '').normalize('NFC').toLocaleLowerCase();
 
-function isOneEditOrTransposition(query, candidate) {
+export function isOneEditOrTransposition(query, candidate) {
     const left = Array.from(query);
     const right = Array.from(candidate);
     if (Math.abs(left.length - right.length) > 1) return false;

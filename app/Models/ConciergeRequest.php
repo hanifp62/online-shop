@@ -31,6 +31,7 @@ class ConciergeRequest extends Model
         'preferred_date',
         'preferred_time',
         'notes',
+        'source',
         'status',
     ];
 
@@ -39,6 +40,12 @@ class ConciergeRequest extends Model
         return [
             'preferred_date' => 'date',
         ];
+    }
+
+    // Shown to the client after a request so staff can find it by ID.
+    public function reference(): string
+    {
+        return 'ZC-'.str_pad((string) $this->id, 6, '0', STR_PAD_LEFT);
     }
 
     public function user(): BelongsTo

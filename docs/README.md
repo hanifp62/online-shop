@@ -63,6 +63,7 @@ docs/
 │   ├── PRD.md                                # Product Requirements Document formal (FR/NFR/US)
 │   ├── USER_JOURNEYS.md                      # Pemetaan alur pengalaman pengguna & admin
 │   ├── REQUIREMENTS_TRACEABILITY.md          # Matriks ketertelusuran kebutuhan ke implementasi
+│   ├── CHATBOT_ASSISTANT_SPEC.md             # Spesifikasi asisten Bantuan & Concierge (FR-401/402, API, intent, metrik)
 │   ├── HCI_RPL_UX_RESEARCH_AND_COMPARISON.md # Riset komparasi luxury, HCI (Norman/Nielsen), dan RPL
 │   └── LUXURY_ECOMMERCE_HCI_UX_RESEARCH_AND_ATM_BENCHMARK.md # Riset mendalam HCI/IMK & ATM luxury 2026
 ├── 03-architecture/

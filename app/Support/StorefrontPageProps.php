@@ -21,7 +21,7 @@ final class StorefrontPageProps
         $user = auth()->guard('web')->user();
 
         return [
-            'copy' => array_intersect_key(__('shop_ui'), array_flip(['app_js', 'pdp', 'header', 'footer', 'cart', 'welcome'])),
+            'copy' => array_intersect_key(__('shop_ui'), array_flip(['app_js', 'pdp', 'header', 'footer', 'cart', 'welcome', 'assistant'])),
             'locale' => app()->getLocale(),
             'user' => $user ? $user->only(['name', 'email', 'mobile']) : null,
             'today' => now()->toDateString(),
@@ -34,6 +34,7 @@ final class StorefrontPageProps
                 'account' => route('account.show'), 'login' => route('login'),
                 'logout' => route('logout'), 'locale' => route('locale.update'),
                 'concierge' => route('concierge.store'), 'newsletter' => route('newsletter.store'),
+                'assistantProducts' => route('assistant.products'), 'assistantFeedback' => route('assistant.feedback'),
                 'locales' => array_map(fn ($code) => ['code' => $code, 'url' => request()->fullUrlWithQuery(['locale' => $code])], ['id', 'en', 'fr', 'it', 'zh']),
             ],
             'assets' => collect(['hero_couture', 'chemise_riviere', 'minaudiere_saphir', 'robe_elan', 'manteau_firenze', 'robe_aurore'])

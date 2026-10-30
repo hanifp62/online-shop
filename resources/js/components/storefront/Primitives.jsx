@@ -11,6 +11,16 @@ const paths = {
     bag: <><path d="M5 8.5h14l-1 12H6l-1-12Z" /><path d="M9 9V6.5a3 3 0 0 1 6 0V9" /></>,
     close: <path d="m5 5 14 14M19 5 5 19" />, arrow: <path d="M4 12h15M14 6l6 6-6 6" />,
     plus: <path d="M12 5v14M5 12h14" />, minus: <path d="M5 12h14" />, check: <path d="m5 12 4 4L19 6" />,
+    chat: <path d="M4.5 5.5h15v10h-9l-4.5 3.5v-3.5h-1.5v-10Z" />,
+    sparkle: <path d="M12 3.5 13.8 10.2 20.5 12l-6.7 1.8L12 20.5l-1.8-6.7L3.5 12l6.7-1.8L12 3.5Z" />,
+    ruler: <><path d="M3.5 15.5 15.5 3.5l5 5-12 12-5-5Z" /><path d="m7.5 11.5 2 2m1-5 2 2m1-5 2 2" /></>,
+    truck: <><path d="M3 6.5h11v9H3zM14 9.5h4l3 3v3h-7" /><circle cx="7" cy="17.5" r="1.8" /><circle cx="17" cy="17.5" r="1.8" /></>,
+    package: <><path d="M4 7.5 12 3.5l8 4v9l-8 4-8-4v-9Z" /><path d="m4 7.5 8 4 8-4M12 11.5v9" /></>,
+    gift: <><path d="M4 9.5h16v3H4zM5.5 12.5h13v8h-13zM12 9.5v11" /><path d="M12 9.5C10 9.5 7.5 8.8 7.5 6.8 7.5 5 10.5 5.2 12 9.5Zm0 0c2 0 4.5-.7 4.5-2.7 0-1.8-3-1.6-4.5 2.7Z" /></>,
+    pen: <><path d="m14.5 5.5 4 4L8 20H4v-4L14.5 5.5Z" /><path d="m12.5 7.5 4 4" /></>,
+    card: <><rect x="3" y="5.5" width="18" height="13" rx="1.5" /><path d="M3 9.5h18M6.5 15h4" /></>,
+    drop: <path d="M12 3.5c3 4 5.5 7 5.5 10.2a5.5 5.5 0 0 1-11 0C6.5 10.5 9 7.5 12 3.5Z" />,
+    grid: <path d="M4.5 4.5h6v6h-6zM13.5 4.5h6v6h-6zM4.5 13.5h6v6h-6zM13.5 13.5h6v6h-6z" />,
     instagram: <><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><path d="M17.5 6.5h.01" /></>,
 };
 export function Icon({ name, ...props }) { return <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5" {...props}>{paths[name]}</svg>; }

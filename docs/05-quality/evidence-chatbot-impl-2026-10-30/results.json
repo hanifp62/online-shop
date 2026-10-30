@@ -1,0 +1,142 @@
+[
+  {
+    "id": "CB-13 no auto-open",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "id": "NFR-402 no assistant call before opening",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "id": "live concierge status shown",
+    "pass": true,
+    "detail": "Concierge tersedia sekarang"
+  },
+  {
+    "id": "topic menu has 8 tiles",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "id": "search returns Minaudière Saphir",
+    "pass": true,
+    "detail": "Minaudière Saphir"
+  },
+  {
+    "id": "CB-11 confirmation before cart change",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "id": "cart count increments",
+    "pass": true,
+    "detail": "0->1"
+  },
+  {
+    "id": "undo restores cart count",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "id": "feedback stored (204)",
+    "pass": true,
+    "detail": "GET /bantuan/produk?q=tas%20sutra ; <- 200 /bantuan/produk ; POST /bantuan/umpan-balik ; <- 204 /bantuan/umpan-balik"
+  },
+  {
+    "id": "NFR-402 assistant adds no external origin",
+    "pass": true,
+    "detail": "https://fonts.bunny.net,https://images.unsplash.com"
+  },
+  {
+    "id": "no console errors A",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "id": "H shortcut opens help",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "id": "gift answer from official copy",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "id": "service preselected private-styling",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "id": "CB-06 reference closure",
+    "pass": true,
+    "detail": "ZC-000004"
+  },
+  {
+    "id": "no console errors B",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "id": "CB-14 launcher within 320 (light)",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "id": "CB-18 no horizontal overflow (light)",
+    "pass": true,
+    "detail": "0px"
+  },
+  {
+    "id": "CB-19 targets >= 44 (light)",
+    "pass": true,
+    "detail": "[]"
+  },
+  {
+    "id": "log keeps reading room (light)",
+    "pass": true,
+    "detail": "307px"
+  },
+  {
+    "id": "no console errors C (light)",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "id": "CB-14 launcher within 320 (dark)",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "id": "CB-18 no horizontal overflow (dark)",
+    "pass": true,
+    "detail": "0px"
+  },
+  {
+    "id": "CB-19 targets >= 44 (dark)",
+    "pass": true,
+    "detail": "[]"
+  },
+  {
+    "id": "log keeps reading room (dark)",
+    "pass": true,
+    "detail": "307px"
+  },
+  {
+    "id": "no console errors C (dark)",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "id": "CB-21 transcript survives navigation",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "id": "en launcher",
+    "pass": true,
+    "detail": ""
+  }
+]

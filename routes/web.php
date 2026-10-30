@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\AdminTotpController;
 use App\Http\Controllers\AdminTotpEnrolController;
+use App\Http\Controllers\AssistantController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
@@ -122,6 +123,8 @@ Route::get('/sitemap.xml', [StorefrontController::class, 'sitemap'])->name('site
 Route::post('/concierge', [StorefrontController::class, 'bookConcierge'])
     ->middleware('throttle:concierge')
     ->name('concierge.store');
+Route::get('/bantuan/produk', [AssistantController::class, 'products'])->middleware([NoStore::class, 'throttle:30,1'])->name('assistant.products');
+Route::post('/bantuan/umpan-balik', [AssistantController::class, 'feedback'])->middleware('throttle:20,1')->name('assistant.feedback');
 Route::post('/newsletter', [StorefrontController::class, 'subscribe'])
     ->middleware('throttle:newsletter')
     ->name('newsletter.store');

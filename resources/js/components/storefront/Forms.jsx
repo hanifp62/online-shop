@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { storefrontRequest } from '../../lib/storefront-cart.js';
+import { formatCopy, storefrontRequest } from '../../lib/storefront-cart.js';
 import { CloseButton, Dialog, Icon } from './Primitives.jsx';
 import { useStorefront } from './StorefrontProvider.jsx';
 
@@ -20,7 +20,7 @@ function useSubmission() {
     return { busy, errors, submit };
 }
 export function Concierge() {
-    const { copy: { footer: f }, links, user, today, dialog, close, notify, t } = useStorefront();
+    const { copy: { footer: f, assistant: a }, links, user, today, dialog, open, close, notify, t } = useStorefront();
     const [drafts, setDrafts] = useState({});
     const [statuses, setStatuses] = useState({});
     // This owner survives keyed form remounts. A draft can have only one unresolved request.
@@ -44,7 +44,7 @@ export function Concierge() {
         if (dialog?.type === 'concierge' && Object.keys(errors).length) formRef.current?.querySelector('[aria-invalid="true"]')?.focus();
     }, [status, dialog]);
     const inquiry = dialog?.type === 'concierge' ? dialog.data : null;
-    const fields = drafts[key] || { name: user?.name || '', email: user?.email || '', phone: user?.mobile || '', service: key === 'generic' ? 'private-styling' : 'atelier', preferred_date: '', preferred_time: '10:00', notes: key === 'generic' ? '' : key, order_items: '' };
+    const fields = drafts[key] || { name: user?.name || '', email: user?.email || '', phone: user?.mobile || '', service: inquiry?.service || (key === 'generic' ? 'private-styling' : 'atelier'), preferred_date: '', preferred_time: '10:00', notes: key === 'generic' ? '' : key, order_items: '', ...(inquiry?.source ? { source: inquiry.source } : {}) };
     const setFields = next => {
         versions.current.set(key, (versions.current.get(key) || 0) + 1);
         setDrafts(previous => ({ ...previous, [key]: next }));
@@ -64,9 +64,11 @@ export function Concierge() {
             if (ownsView()) {
                 versions.current.set(key, request.version + 1);
                 setDrafts(previous => { const next = { ...previous }; delete next[key]; return next; });
+                // FR-402: an assistant handoff closes back into the conversation with its reference.
+                if (request.dialog?.data?.source === 'assistant') { open('assistant', { reference: result.reference }); return; }
                 close();
             }
-            notify(result.message);
+            notify(result.reference ? `${result.message} ${formatCopy(a.reference, { reference: result.reference })}` : result.message);
         } catch (error) {
             if (!ownsRequest()) return;
             if (ownsView()) setStatuses(previous => ({ ...previous, [key]: {
@@ -85,7 +87,7 @@ export function Concierge() {
 function ConciergeForm({ f, links, today, t, inquiry, fields, setFields, submit, errors, busy, formRef }) {
     const input = (name, label, type = 'text', extra = {}) => <div className="field"><label htmlFor={`sf-concierge-${name}`}>{label}</label><input id={`sf-concierge-${name}`} name={name} type={type} value={fields[name]} onChange={event => setFields({ ...fields, [name]: event.target.value })} aria-invalid={errors[name] ? 'true' : undefined} aria-describedby={errors[name] ? `sf-error-${name}` : undefined} {...extra} />{errors[name] && <p className="form-error" id={`sf-error-${name}`} role="alert">{errors[name][0]}</p>}</div>;
     return <Dialog type="concierge" title={`${f.concierge_title_1} ${f.concierge_title_2}`} className="concierge-modal modal"><CloseButton label={f.close} /><div className="concierge-intro"><span className="eyebrow light">ZAFIRA Concierge</span><h2>{f.concierge_title_1}<br />{f.concierge_title_2}</h2><p>{f.concierge_intro}</p><span className="concierge-hours">{f.hours}</span></div>
-        {inquiry && <div className="concierge-order-summary"><h3>{f.order_summary}</h3><ul><li>{inquiry.summary}</li></ul><strong>{t('inquiry_total')}</strong></div>}
+        {inquiry?.summary && <div className="concierge-order-summary"><h3>{f.order_summary}</h3><ul><li>{inquiry.summary}</li></ul><strong>{t('inquiry_total')}</strong></div>}
         <form ref={formRef} className="concierge-form" action={links.concierge} method="POST" aria-busy={busy} onSubmit={event => void submit(event)}>
             <input type="hidden" name="order_items" value="" />
             {input('name', f.name, 'text', { required: true, maxLength: 100, autoComplete: 'name' })}<div className="form-row">{input('email', f.email, 'email', { required: true, maxLength: 255, autoComplete: 'email', spellCheck: false })}{input('phone', f.phone, 'tel', { required: true, maxLength: 30, autoComplete: 'tel' })}</div>
