@@ -50,7 +50,7 @@ class CartNullableIdTest extends TestCase
             'customer_phone' => '081234567890', 'phone' => '081234567890', 'label' => 'Rumah',
             'recipient_name' => 'Sutra', 'line1' => 'Jalan 1', 'city' => 'Jakarta',
             'province' => 'DKI', 'postal_code' => '12345',
-        ])->assertUnprocessable();
+        ])->assertUnauthorized()->assertJsonPath('auth_required', true);
         $this->assertDatabaseCount('carts', 0);
     }
 }

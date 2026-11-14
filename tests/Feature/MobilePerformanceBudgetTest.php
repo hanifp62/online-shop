@@ -17,7 +17,10 @@ class MobilePerformanceBudgetTest extends TestCase
 
     public function test_every_local_asset_has_webp_variants_within_budget(): void
     {
-        $jpgs = glob(public_path('prototype/assets/*.jpg'));
+        $assetPattern = is_dir(public_path('prototype/assets'))
+            ? public_path('prototype/assets/*.jpg')
+            : base_path('prototype/assets/*.jpg');
+        $jpgs = glob($assetPattern);
         $this->assertNotEmpty($jpgs);
 
         foreach ($jpgs as $jpg) {

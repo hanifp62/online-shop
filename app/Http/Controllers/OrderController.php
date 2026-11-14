@@ -50,6 +50,20 @@ class OrderController extends Controller
     public function store(Request $request): JsonResponse
     {
         if (! $request->user()) {
+            if (config('services.shop.require_auth_checkout', true)) {
+                $intended = '/belanja#checkout';
+
+                return response()->json([
+                    'message' => __('shop_ui.request.401'),
+                    'auth_required' => true,
+                    'login_url' => route('login', ['intended' => $intended]),
+                    'register_url' => route('register', ['intended' => $intended]),
+                    'google_url' => SocialAuthController::enabled('google')
+                        ? route('social.redirect', ['provider' => 'google', 'intended' => $intended])
+                        : null,
+                ], 401)->header('Cache-Control', 'no-store, private');
+            }
+
             return app(GuestCheckoutController::class)->store($request, $this->checkout);
         }
 

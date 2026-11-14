@@ -15,15 +15,13 @@ export function Preferences({ compact = false, profile = false }) {
     </div>;
 }
 export function Header({ home = false }) {
-    const { copy: { welcome: w, header: h }, links, user, cart, wishlist, dialog, open, showFavorites, locale, chooseLocale, locales, theme, setTheme, themes, localeStatus, close } = useStorefront();
-    const [account, setAccount] = useState(false); const [fixed, setFixed] = useState(!home); const [hidden, setHidden] = useState(false); const accountRef = useRef(null);
+    const { copy: { welcome: w, header: h }, links, user, cart, wishlist, dialog, open, showFavorites, locale, chooseLocale, locales, localeStatus } = useStorefront();
+    const [account, setAccount] = useState(false); const [fixed, setFixed] = useState(!home); const accountRef = useRef(null);
     useEffect(() => {
-        let last = window.scrollY;
+        if (!home) { setFixed(true); return; }
         const scroll = () => {
-            const position = window.scrollY;
-            setFixed(!home || position > 110);
-            setHidden(position > 450 && position > last + 8);
-            last = position;
+            const barHeight = document.querySelector('.announcement-bar')?.offsetHeight || 40;
+            setFixed(window.scrollY >= barHeight);
         };
         scroll(); window.addEventListener('scroll', scroll, { passive: true });
         return () => window.removeEventListener('scroll', scroll);
@@ -40,9 +38,17 @@ export function Header({ home = false }) {
     const logout = <form method="POST" action={links.logout}><input type="hidden" name="_token" value={globalThis.document?.querySelector('meta[name="csrf-token"]')?.content || ''} /><button type="submit">{h.auth_logout}</button></form>;
     return <>
         <div className="announcement-bar">
-            {home ? <><p id="locale-status" role="status" aria-live="polite">{localeStatus}</p><p>{w.announcement}</p><div className="desktop-only-flex"><div className="lang-switcher" role="group" aria-label={h.language_selector}>{locales.map(code => <button type="button" key={code} className={`lang-btn${locale === code ? ' active' : ''}`} aria-pressed={locale === code} onClick={() => void chooseLocale(code)}>{code.toUpperCase()}</button>)}</div><div className="theme-switcher" role="group" aria-label={w.theme_selector}>{themes.map(mode => <button key={mode} className={`theme-btn${theme === mode ? ' active' : ''}`} type="button" aria-pressed={theme === mode} onClick={() => setTheme(mode)} title={w[`theme_${mode}`]} aria-label={w[`theme_${mode}`]}><Icon name={mode} /></button>)}</div><button type="button" onClick={() => open('concierge')}>{w.rendezvous_btn}</button></div></> : <><nav className="lang-switcher" aria-label={h.language_selector}>{links.locales.map(item => <a key={item.code} href={item.url} hrefLang={item.code} aria-current={locale === item.code ? 'true' : undefined}>{item.code.toUpperCase()}</a>)}</nav><p>{h.announcement}</p><button type="button" onClick={() => open('concierge')}>Rendez-vous privé</button></>}
+            {home ? <>
+                <div className="announcement-start desktop-only-flex"><div className="lang-switcher" role="group" aria-label={h.language_selector}>{locales.map(code => <button type="button" key={code} className={`lang-btn${locale === code ? ' active' : ''}`} aria-pressed={locale === code} onClick={() => void chooseLocale(code)}>{code.toUpperCase()}</button>)}</div></div>
+                <div className="announcement-center"><p className="announcement-copy">{w.announcement}</p><p id="locale-status" role="status" aria-live="polite" aria-atomic="true">{localeStatus}</p></div>
+                <div className="announcement-end desktop-only-flex"><button type="button" className="announcement-cta" onClick={() => open('concierge')}>{w.rendezvous_btn}</button></div>
+            </> : <>
+                <div className="announcement-start desktop-only-flex"><nav className="lang-switcher" aria-label={h.language_selector}>{links.locales.map(item => <a key={item.code} href={item.url} hrefLang={item.code} className={`lang-btn${locale === item.code ? ' active' : ''}`} aria-current={locale === item.code ? 'true' : undefined}>{item.code.toUpperCase()}</a>)}</nav></div>
+                <div className="announcement-center"><p className="announcement-copy">{h.announcement}</p></div>
+                <div className="announcement-end desktop-only-flex"><button type="button" className="announcement-cta" onClick={() => open('concierge')}>Rendez-vous privé</button></div>
+            </>}
         </div>
-        <header className={`site-header${fixed ? ' is-fixed' : ''}${hidden ? ' is-hidden' : ''}`} id="site-header">
+        <header className={`site-header${fixed ? ' is-fixed' : ''}`} id="site-header">
             <button className="icon-button mobile-menu-button" type="button" aria-label={h.menu_open} aria-controls="mobile-menu" aria-expanded={dialog?.type === 'menu'} onClick={() => open('menu')}><Icon name="menu" /></button>
             <nav className="desktop-nav" aria-label={h.nav_label}>{nav.map(([hash, label]) => <a key={hash} href={href(hash)}>{label}</a>)}</nav>
             <a className="brand" href={links.home} aria-label={h.home_aria}><Brand /></a>
@@ -59,11 +65,11 @@ export function MobileMenu({ home = false }) {
     const { copy: { welcome: w, header: h }, links, close, open } = useStorefront();
     const nav = home ? [['collection', w.nav_collection], ['new-arrivals', w.nav_arrivals], ['heritage', w.nav_heritage], ['atelier', w.nav_atelier], ['packaging-section', w.nav_packaging], ['services', w.nav_services]] : [['collection', h.nav_collection], ['new-arrivals', h.nav_new], ['heritage', h.nav_heritage], ['maison', 'La Maison']];
     const href = hash => `${home ? '' : links.home}#${hash}`;
-    return <Dialog type="menu" title={h.nav_label} className="mobile-menu"><div id="mobile-menu"><div className="mobile-menu-top"><a className="brand brand-horizontal" href={links.home}><Brand /></a><CloseButton className="icon-button" label={h.menu_close} /></div><nav>{nav.map(([hash, label], index) => <a key={hash} href={href(hash)} onClick={close}><span className="mobile-menu-ordinal" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{label}</a>)}</nav><MenuUtilities home={home} />{home && <Preferences compact />}<button type="button" className="text-link light mobile-concierge" onClick={() => open('concierge')}>{h.arrange}<Icon name="arrow" /></button></div></Dialog>;
+    return <Dialog type="menu" title={h.nav_label} className="mobile-menu"><div id="mobile-menu"><div className="mobile-menu-top"><a className="brand brand-horizontal" href={links.home} onClick={close}><Brand /></a><CloseButton className="icon-button mobile-menu-close" label={h.menu_close} /></div><nav aria-label={h.nav_label}>{nav.map(([hash, label], index) => <a key={hash} href={href(hash)} onClick={close}><span className="mobile-menu-ordinal" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span><span className="mobile-menu-label">{label}</span><Icon name="arrow" /></a>)}</nav><div className="mobile-menu-footer"><MenuUtilities home={home} />{home && <Preferences compact />}<button type="button" className="text-link light mobile-concierge" onClick={() => open('concierge')}><span>{h.arrange}</span><Icon name="arrow" /></button></div></div></Dialog>;
 }
 function MenuUtilities({ home }) {
-    const { links, copy: { header: h }, user, showFavorites, wishlist, close } = useStorefront();
-    return <div className="mobile-utilities"><a href={user ? links.account : links.login}>{user ? h.auth_profile : h.login_aria}</a><button type="button" onClick={showFavorites}>{h.favorites} <span className="wishlist-count">{wishlist.length}</span></button>{!home && user && <form method="POST" action={links.logout}><input type="hidden" name="_token" value={globalThis.document?.querySelector('meta[name="csrf-token"]')?.content || ''} /><button>{h.auth_logout_full}</button></form>}</div>;
+    const { links, copy: { header: h }, user, showFavorites, wishlist } = useStorefront();
+    return <div className="mobile-utilities"><a href={user ? links.account : links.login}><Icon name="user" /><span>{user ? h.auth_profile : h.login_aria}</span></a><button type="button" onClick={showFavorites}><Icon name="heart" /><span>{h.favorites}</span><span className="wishlist-count">{wishlist.length}</span></button>{!home && user && <form method="POST" action={links.logout}><input type="hidden" name="_token" value={globalThis.document?.querySelector('meta[name="csrf-token"]')?.content || ''} /><button type="submit">{h.auth_logout_full}</button></form>}</div>;
 }
 export function Footer({ home = false }) {
     const { copy: { footer: f, welcome: w }, links, open, year } = useStorefront();
@@ -72,8 +78,7 @@ export function Footer({ home = false }) {
         <div className="footer-links"><h3>{home ? w.footer_col_collection : f.collection}</h3>{['women', 'men', 'handbags', 'accessories'].map(key => <a key={key} href={href('new-arrivals')}>{f[key]}</a>)}</div>
         <div className="footer-links"><h3>La Maison</h3><a href={href('maison')}>{f.story}</a><a href={href('atelier')}>Atelier Z</a><a href={href('services')}>{f.services}</a>{home && <a href={href('returns-policy')}>{f.shipping_returns}</a>}<button type="button" onClick={() => open('concierge')}>Rendez-vous</button></div>
         {!home && <div className="footer-links"><h3>{f.help}</h3><a href="mailto:bonjour@zafira.maison">{f.contact}</a><a href={href('returns-policy')}>{f.shipping_returns}</a><a href={href('services')}>{f.care}</a><a href={href('services')}>{f.size_guide}</a></div>}
-        {home && <div className="footer-preferences-bar"><Preferences /></div>}
-        <div className="footer-bottom"><span>© {year} <span translate="no">ZAFIRA</span> Maison. {f.rights}</span><div>{home ? <button type="button" className="text-link" onClick={() => open('shortcuts')} aria-label={w.shortcuts_open} title={w.shortcuts_hint}>{w.shortcuts_trigger}</button> : <a href={href('maison')}>{f.privacy}</a>}<a href={href('services')}>{f.terms}</a><a href="#main-content">{home ? w.region_badge : f.language}</a><a href={href('main-content')} aria-label="Instagram ZAFIRA"><Icon name="instagram" /></a></div></div>
+        <div className="footer-bottom"><span>© {year} <span translate="no">ZAFIRA</span> Maison. {f.rights}</span><div>{home ? <button type="button" className="text-link" onClick={() => open('shortcuts')} aria-label={w.shortcuts_open} title={w.shortcuts_hint}>{w.shortcuts_trigger}</button> : <a href={href('maison')}>{f.privacy}</a>}<a href={href('services')}>{f.terms}</a>{home ? <button type="button" className="text-link" onClick={() => open('profile')}>{w.region_badge}</button> : <a href="#main-content">{f.language}</a>}<a href={href('main-content')} aria-label="Instagram ZAFIRA"><Icon name="instagram" /></a></div></div>
     </footer>;
 }
 export function Profile() {

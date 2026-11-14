@@ -6,11 +6,13 @@ use App\Http\Middleware\AuthenticateGuardSession;
 use App\Models\Admin;
 use App\Models\User;
 use App\Observers\UserObserver;
+use App\Support\WindowsCaBundle;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use SocialiteProviders\Apple\Provider as AppleProvider;
@@ -78,5 +80,10 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(function (SocialiteWasCalled $event): void {
             $event->extendSocialite('apple', AppleProvider::class);
         });
+
+        $caBundle = WindowsCaBundle::resolve();
+        if ($caBundle !== null) {
+            Http::globalOptions(['verify' => $caBundle]);
+        }
     }
 }

@@ -11,7 +11,9 @@ const paths = {
     bag: <><path d="M5 8.5h14l-1 12H6l-1-12Z" /><path d="M9 9V6.5a3 3 0 0 1 6 0V9" /></>,
     close: <path d="m5 5 14 14M19 5 5 19" />, arrow: <path d="M4 12h15M14 6l6 6-6 6" />,
     plus: <path d="M12 5v14M5 12h14" />, minus: <path d="M5 12h14" />, check: <path d="m5 12 4 4L19 6" />,
-    chat: <path d="M4.5 5.5h15v10h-9l-4.5 3.5v-3.5h-1.5v-10Z" />,
+    chat: <><path d="M12 4C7 4 3 7.4 3 11.6c0 2.1 1 4 2.7 5.4L4.8 20l3.7-1.4c1.1.4 2.3.6 3.5.6 5 0 9-3.4 9-7.6S17 4 12 4Z" /><path d="M8.5 11.5h7M8.5 14.2h4.5" strokeLinecap="round" /></>,
+    send: <path d="M5 12h13M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />,
+    refresh: <><path d="M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4" strokeLinecap="round" strokeLinejoin="round" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" strokeLinecap="round" strokeLinejoin="round" /></>,
     sparkle: <path d="M12 3.5 13.8 10.2 20.5 12l-6.7 1.8L12 20.5l-1.8-6.7L3.5 12l6.7-1.8L12 3.5Z" />,
     ruler: <><path d="M3.5 15.5 15.5 3.5l5 5-12 12-5-5Z" /><path d="m7.5 11.5 2 2m1-5 2 2m1-5 2 2" /></>,
     truck: <><path d="M3 6.5h11v9H3zM14 9.5h4l3 3v3h-7" /><circle cx="7" cy="17.5" r="1.8" /><circle cx="17" cy="17.5" r="1.8" /></>,
@@ -75,18 +77,46 @@ export function Toast() {
     }, [toast]);
     return <div className={`toast${toast ? ' show' : ''}`} role="status" aria-live="polite"><span><Icon name="check" /></span><p>{toast?.message}</p>{toast?.action && <button ref={action} type="button" className="text-link" onFocus={() => { actionFocused.current = true; }} onBlur={() => { actionFocused.current = false; }} onClick={() => { const run = toast.action.run; document.querySelector('[data-sf-cart-close]')?.focus(); void run(); }}>{toast.action.label}</button>}</div>;
 }
-export function Reveal({ as: Tag = 'div', className = '', children, ...props }) {
+let revealObserver = null;
+const revealListeners = new Map();
+
+function observeReveal(node, onVisible) {
+    if (!revealObserver) {
+        revealObserver = new IntersectionObserver(entries => {
+            for (const entry of entries) {
+                if (!entry.isIntersecting && entry.intersectionRatio <= 0) continue;
+                const callback = revealListeners.get(entry.target);
+                revealListeners.delete(entry.target);
+                revealObserver?.unobserve(entry.target);
+                callback?.();
+            }
+            if (!revealListeners.size) {
+                revealObserver?.disconnect();
+                revealObserver = null;
+            }
+        }, { threshold: 0.08, rootMargin: '0px 0px -44px 0px' });
+    }
+    revealListeners.set(node, onVisible);
+    revealObserver.observe(node);
+    return () => {
+        revealListeners.delete(node);
+        revealObserver?.unobserve(node);
+        if (!revealListeners.size) {
+            revealObserver?.disconnect();
+            revealObserver = null;
+        }
+    };
+}
+
+export function Reveal({ as: Tag = 'div', className = '', delay = 0, variant, style, children, ...props }) {
     const ref = useRef(null);
-    const [visible, setVisible] = useState(() => !globalThis.IntersectionObserver || globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches);
+    const [visible, setVisible] = useState(() => !globalThis.IntersectionObserver || Boolean(globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches));
     useEffect(() => {
-        if (visible) return;
-        const observer = new IntersectionObserver(entries => {
-            if (entries.some(entry => entry.isIntersecting)) { setVisible(true); observer.disconnect(); }
-        }, { threshold: 0.12, rootMargin: '0px 0px -40px' });
-        observer.observe(ref.current);
-        return () => observer.disconnect();
+        if (visible || !ref.current) return;
+        return observeReveal(ref.current, () => setVisible(true));
     }, [visible]);
-    return <Tag ref={ref} className={`${className} reveal${visible ? ' is-visible' : ''}`} {...props}>{children}</Tag>;
+    const mergedStyle = delay > 0 ? { ...style, '--sf-delay': `${delay}ms` } : style;
+    return <Tag ref={ref} className={`${className ? `${className} ` : ''}reveal${visible ? ' is-visible' : ''}`} data-reveal={variant || undefined} style={mergedStyle} {...props}>{children}</Tag>;
 }
 export function Image({ asset, alt, sizes = '(max-width: 900px) 100vw, 50vw', ...props }) {
     return <img src={asset.src} srcSet={`${asset.small} 600w, ${asset.webp} 896w`} sizes={sizes} decoding="async" alt={alt} loading="lazy" width="1200" height="1500" {...props} />;

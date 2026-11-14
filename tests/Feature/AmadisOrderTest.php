@@ -448,7 +448,7 @@ class AmadisOrderTest extends TestCase
         $product = $this->product(1);
         $this->postJson('/cart/items', ['product_id' => $product->product_id, 'quantity' => 0])->assertUnprocessable();
         $this->postJson('/cart/items', ['product_id' => $product->product_id, 'quantity' => 2])->assertUnprocessable();
-        $this->postJson('/checkout', ['address_id' => 1, 'idempotency_key' => 'guest'])->assertUnprocessable();
+        $this->postJson('/checkout', ['address_id' => 1, 'idempotency_key' => 'guest'])->assertUnauthorized()->assertJsonPath('auth_required', true);
         DB::table('products')->where('product_id', $product->product_id)->update(['is_active' => false]);
         $this->postJson('/cart/items', ['product_id' => $product->product_id, 'quantity' => 1])->assertUnprocessable();
     }

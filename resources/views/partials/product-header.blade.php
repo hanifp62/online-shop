@@ -1,11 +1,17 @@
 <div class="announcement-bar">
-    <nav class="lang-switcher" aria-label="{{ __('shop_ui.header.language_selector') }}">
-        @foreach (['id' => 'ID', 'en' => 'EN', 'fr' => 'FR', 'it' => 'IT', 'zh' => 'ZH'] as $code => $label)
-            <a href="{{ request()->fullUrlWithQuery(['locale' => $code]) }}" hreflang="{{ $code }}" @if (app()->getLocale() === $code) aria-current="true" @endif>{{ $label }}</a>
-        @endforeach
-    </nav>
-    <p>{{ __('shop_ui.header.announcement') }}</p>
-    <button type="button" data-open-concierge>Rendez-vous privé</button>
+    <div class="announcement-start desktop-only-flex">
+        <nav class="lang-switcher" aria-label="{{ __('shop_ui.header.language_selector') }}">
+            @foreach (['id' => 'ID', 'en' => 'EN', 'fr' => 'FR', 'it' => 'IT', 'zh' => 'ZH'] as $code => $label)
+                <a href="{{ request()->fullUrlWithQuery(['locale' => $code]) }}" hreflang="{{ $code }}" class="lang-btn{{ app()->getLocale() === $code ? ' active' : '' }}" @if (app()->getLocale() === $code) aria-current="true" @endif>{{ $label }}</a>
+            @endforeach
+        </nav>
+    </div>
+    <div class="announcement-center">
+        <p class="announcement-copy">{{ __('shop_ui.header.announcement') }}</p>
+    </div>
+    <div class="announcement-end desktop-only-flex">
+        <button type="button" class="announcement-cta" data-open-concierge>Rendez-vous privé</button>
+    </div>
 </div>
 
 <header class="site-header is-fixed" id="site-header">

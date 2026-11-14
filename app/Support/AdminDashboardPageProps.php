@@ -26,6 +26,12 @@ final class AdminDashboardPageProps
             'pesanan' => self::table($data['latestOrders'], fn ($row) => [
                 'id' => $row->id, 'date' => $row->created_at?->format('d M Y H:i').' UTC',
                 'customer' => $row->customer_name ?? $row->user?->name ?? __('admin_ui.dashboard.guest'),
+                'itemsSummary' => $row->relationLoaded('items')
+                    ? $row->items->map(fn ($item) => $item->product_title
+                        .($item->size ? ' ['.$item->size.']' : '')
+                        .($item->monogram ? ' {'.$item->monogram.'}' : '')
+                        .' ×'.$item->quantity)->implode(', ')
+                    : '',
                 'price' => 'Rp '.number_format($row->total, 0, ',', '.'), 'status' => $row->status,
                 'transitions' => array_values(array_diff(Order::STATUS_FLOW[$row->status] ?? [], Order::MANUAL_BLOCKED)),
                 'update' => $url('admin.orders.update', $row->id), 'invoice' => $url('admin.orders.invoice', $row->id),
@@ -61,7 +67,8 @@ final class AdminDashboardPageProps
         $admin = request()->user('admin');
         $snapshot = [
             'contract' => 'admin-dashboard.v1', 'url' => route('admin.dashboard', $state),
-            'tableState' => $state, 'filters' => $data['filters'], 'stats' => $data['stats'],
+            'tableState' => $state, 'filters' => $data['filters'],
+            'stats' => array_merge($data['stats'], $data['msiStats'] ?? []),
             'categoryOptions' => $data['categoryOptions']->map(fn ($row) => ['id' => $row->cat_id, 'title' => $row->cat_title])->values()->all(),
             'tables' => $tables,
         ];

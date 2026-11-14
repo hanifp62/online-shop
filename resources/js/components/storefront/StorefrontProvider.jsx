@@ -52,23 +52,28 @@ export function StorefrontProvider({ children, ...props }) {
     };
     const add = async product => {
         if (product.stock <= 0) return;
-        if (product.category === 'Busana') { window.location.assign(product.href); return; }
+        if (product.hasSizes || String(product.category || '').startsWith('Busana')) { window.location.assign(product.href); return; }
         return addCatalog(product);
     };
-    const addCatalog = async product => {
-        const result = await cartAction(() => cartClient.current.adjust(product.productId, 1));
-        if (result) notify(t('added_toast', { name: product.name }));
+    const addCatalog = async (product, variant = {}) => {
+        const result = await cartAction(() => cartClient.current.adjust(product.productId, 1, variant));
+        if (result) {
+            const suffix = [variant?.size, variant?.monogram].filter(Boolean).join(' · ');
+            notify(t('added_toast', { name: suffix ? `${product.name} (${suffix})` : product.name }));
+        }
         return result;
     };
-    const remove = async productId => {
+    const remove = async (productId, variant = {}) => {
         const started = epoch.current;
-        const result = await cartAction(() => cartClient.current.remove(productId));
+        const result = await cartAction(() => cartClient.current.remove(productId, variant));
         if (!result?.removed_quantity || started !== epoch.current) return;
-        notify(t('removed_toast'), { label: t('undo'), run: async () => {
-            setToast(null);
-            const restored = await cartAction(() => cartClient.current.adjust(productId, result.removed_quantity));
-            if (!restored) setCartMessage(t('undo_failed', { name: '', status: t('err_bag') }));
-        } });
+        notify(t('removed_toast'), {
+            label: t('undo'), run: async () => {
+                setToast(null);
+                const restored = await cartAction(() => cartClient.current.adjust(productId, result.removed_quantity, variant));
+                if (!restored) setCartMessage(t('undo_failed', { name: '', status: t('err_bag') }));
+            }
+        });
     };
     const refreshFavorites = async () => {
         const data = await storefrontRequest(props.links.favorites);
@@ -93,7 +98,7 @@ export function StorefrontProvider({ children, ...props }) {
             notify(t(removing ? 'wish_removed' : 'wish_saved_local', { name: product.name }));
             return;
         }
-        favoriteQueue.current = favoriteQueue.current.catch(() => {}).then(async () => {
+        favoriteQueue.current = favoriteQueue.current.catch(() => { }).then(async () => {
             try {
                 const current = favoritesReady.current ? favoriteState.current : await refreshFavorites();
                 const key = wishlistKey(product); const removing = current.includes(key);
@@ -137,7 +142,7 @@ export function StorefrontProvider({ children, ...props }) {
         setWishlistOnly(new URLSearchParams(window.location.search).get('tampilkan') === 'favorit');
         void refreshCart();
         const favorites = () => {
-            if (props.links.favorites) favoriteQueue.current = favoriteQueue.current.catch(() => {}).then(refreshFavorites).catch(() => { favoritesReady.current = false; notify(t('wish_failed')); });
+            if (props.links.favorites) favoriteQueue.current = favoriteQueue.current.catch(() => { }).then(refreshFavorites).catch(() => { favoritesReady.current = false; notify(t('wish_failed')); });
         };
         favorites();
         if (props.flash) notify(props.flash);
@@ -151,7 +156,7 @@ export function StorefrontProvider({ children, ...props }) {
         themeClient.current = client;
         return () => { client.dispose(); themeClient.current = null; };
     }, []);
-    return <Context.Provider value={{ ...props, t, dialog, open, close, toast, setToast, notify, cart, cartStatus, cartMessage, refreshCart, add, addCatalog, remove, adjust: (id, delta) => cartAction(() => cartClient.current.adjust(id, delta)), legacy, wishlist, wishlistKey, wishlistOnly, toggleFavorite, showFavorites, theme, setTheme, chooseLocale, localeStatus, locales, themes }}>
+    return <Context.Provider value={{ ...props, t, dialog, open, close, toast, setToast, notify, cart, cartStatus, cartMessage, refreshCart, add, addCatalog, remove, adjust: (id, delta, variant = {}) => cartAction(() => cartClient.current.adjust(id, delta, variant)), legacy, wishlist, wishlistKey, wishlistOnly, toggleFavorite, showFavorites, theme, setTheme, chooseLocale, localeStatus, locales, themes }}>
         {children}
     </Context.Provider>;
 }

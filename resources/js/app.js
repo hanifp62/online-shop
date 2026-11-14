@@ -1535,21 +1535,18 @@ if (storefront) {
     });
 
     const header = select("#site-header");
-    let lastScroll = 0;
-    window.addEventListener(
-        "scroll",
-        () => {
-            const position = window.scrollY;
-            header?.classList.toggle("is-fixed", position > 110);
-            header?.classList.toggle(
-                "is-hidden",
-                position > 450 && position > lastScroll + 8,
-            );
-            if (position < lastScroll) header?.classList.remove("is-hidden");
-            lastScroll = position;
-        },
-        { passive: true },
-    );
+    const announcementBar = select(".announcement-bar");
+    const isProductPage = storefront.classList.contains("product-page");
+    const syncHeader = () => {
+        const barHeight = announcementBar?.offsetHeight || 40;
+        header?.classList.toggle(
+            "is-fixed",
+            isProductPage || window.scrollY >= barHeight,
+        );
+        header?.classList.remove("is-hidden");
+    };
+    syncHeader();
+    window.addEventListener("scroll", syncHeader, { passive: true });
 
     // rendering-content-visibility analog di sisi JS: tunda observasi reveal
     // sampai browser idle agar tidak bersaing dengan first paint.

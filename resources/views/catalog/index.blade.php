@@ -49,78 +49,205 @@
         }
         .catalog-skip:focus { left: 16px; }
         .catalog-header {
+            position: sticky;
+            top: 0;
+            z-index: 45;
             border-bottom: 1px solid var(--zafira-line);
-            padding: 20px 32px;
+            padding: 14px clamp(16px, 4vw, 40px);
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+            align-items: center;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+        .catalog-header-start {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            background: #fff;
+            justify-self: start;
+            min-width: 0;
+        }
+        .catalog-back-link {
+            min-height: 44px;
+            padding: 0 4px;
+            border: 0;
+            border-radius: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--zafira-ink);
+            background: transparent;
+            text-decoration: none;
+            font-size: 10.5px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            transition: color 0.22s ease;
+        }
+        .catalog-back-icon {
+            width: 18px;
+            height: 11px;
+            flex-shrink: 0;
+            color: var(--zafira-gold);
+            transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .catalog-back-label {
+            position: relative;
+            padding: 3px 0;
+        }
+        .catalog-back-label::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--zafira-gold);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .catalog-back-link:hover {
+            color: var(--zafira-gold);
+        }
+        .catalog-back-link:hover .catalog-back-icon {
+            transform: translateX(-3px);
+        }
+        .catalog-back-link:hover .catalog-back-label::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        .catalog-back-link:focus-visible {
+            outline: 2px solid var(--zafira-gold);
+            outline-offset: 4px;
         }
         .catalog-brand {
+            justify-self: center;
             font-family: 'Bodoni Moda', serif;
-            font-size: 26px;
-            letter-spacing: 0.18em;
+            font-size: clamp(22px, 2.4vw, 28px);
+            font-weight: 500;
+            letter-spacing: 0.22em;
             color: var(--zafira-sapphire);
             text-decoration: none;
             text-transform: uppercase;
+            line-height: 1;
+        }
+        .catalog-header-end {
+            display: flex;
+            align-items: center;
+            justify-self: end;
+            gap: 18px;
+            min-width: 0;
         }
         .catalog-locales {
-            display: flex;
-            gap: 12px;
-            font-size: 12px;
-            letter-spacing: 0.1em;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            padding: 0;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            font-size: 10.5px;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
         }
         .catalog-locales a {
             color: var(--zafira-ink);
             text-decoration: none;
-            padding: 10px 8px;
-            min-height: 44px;
-            min-width: 44px;
+            padding: 0 7px;
+            min-height: 36px;
+            min-width: 32px;
+            border-radius: 0;
+            border-bottom: 1.5px solid transparent;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             box-sizing: border-box;
+            transition: border-color 0.2s ease, color 0.2s ease;
+        }
+        .catalog-locales a:hover {
+            color: var(--zafira-gold);
         }
         .catalog-locales a.active {
             font-weight: 700;
-            color: var(--zafira-gold);
-            border-bottom: 2px solid var(--zafira-gold);
+            color: var(--zafira-sapphire);
+            background: transparent;
+            border-bottom-color: var(--zafira-gold);
         }
-        @media (max-width: 600px) {
+        .catalog-bag-btn {
+            border-radius: 2px;
+            white-space: nowrap;
+        }
+        @media (max-width: 900px) {
             .catalog-header {
+                grid-template-columns: auto 1fr auto;
                 padding: 12px 16px;
-                display: grid;
-                grid-template-columns: minmax(0, 1fr) auto;
-                gap: 8px;
+                gap: 10px;
             }
-            .catalog-brand { font-size: 22px; min-height: 44px; display: inline-flex; align-items: center; }
-            .catalog-header > .catalog-btn { grid-column: 2; grid-row: 1; padding-inline: 12px; }
-            .catalog-locales {
+            .catalog-header-end {
                 grid-column: 1 / -1;
+                justify-self: stretch;
                 justify-content: space-between;
-                gap: 0;
+                padding-top: 8px;
+                border-top: 1px solid var(--zafira-line);
             }
-            .catalog-locales a { flex: 1; }
+            .catalog-brand {
+                justify-self: end;
+            }
+        }
+        @media (max-width: 520px) {
+            .catalog-back-link { gap: 8px; font-size: 10px; letter-spacing: 0.14em; }
+            .catalog-back-icon { width: 15px; height: 10px; }
+            .catalog-locales a { min-width: 30px; padding: 0 6px; font-size: 10px; }
+            .catalog-bag-btn { padding: 0 12px; font-size: 10.5px; }
+        }
+        .catalog-breadcrumb {
+            padding: 22px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #777;
+        }
+        .catalog-breadcrumb a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .catalog-breadcrumb a:hover {
+            color: var(--zafira-gold);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        .catalog-breadcrumb [aria-current="page"] {
+            color: var(--zafira-sapphire);
+            font-weight: 600;
         }
         .catalog-hero {
             text-align: center;
-            padding: 48px 24px 32px;
-            max-width: 820px;
+            padding: 28px 24px 34px;
+            max-width: 760px;
             margin: 0 auto;
         }
         .catalog-eyebrow {
-            font-size: 12px;
-            letter-spacing: 0.25em;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.26em;
             text-transform: uppercase;
             color: var(--zafira-gold);
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         .catalog-title {
             font-family: 'Bodoni Moda', serif;
-            font-size: clamp(32px, 5vw, 48px);
+            font-size: clamp(36px, 5vw, 54px);
             font-weight: 400;
+            line-height: 1.06;
+            letter-spacing: -0.02em;
             margin: 0 0 12px;
             color: var(--zafira-sapphire);
         }
@@ -131,21 +258,23 @@
             line-height: 1.6;
         }
         .catalog-container {
-            max-width: 1280px;
+            max-width: 1320px;
             margin: 0 auto;
-            padding: 0 24px 64px;
+            padding: 0 clamp(16px, 3.5vw, 36px) 72px;
         }
         .catalog-filter-disclosure {
             background: #fff;
             border: 1px solid var(--zafira-line);
-            margin-bottom: 32px;
+            border-radius: 6px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 28px rgba(13, 27, 42, 0.04);
         }
         .catalog-filter-summary {
             display: none;
-            min-height: 44px;
+            min-height: 48px;
             box-sizing: border-box;
-            padding: 14px 24px;
-            font-size: 12px;
+            padding: 14px 20px;
+            font-size: 11.5px;
             letter-spacing: 0.14em;
             text-transform: uppercase;
             font-weight: 700;
@@ -162,39 +291,188 @@
         .catalog-filter-disclosure .catalog-form {
             border: 0;
             margin-bottom: 0;
+            box-shadow: none;
         }
         .catalog-form {
             background: #fff;
             border: 1px solid var(--zafira-line);
-            padding: 24px;
-            margin-bottom: 32px;
+            border-radius: 6px;
+            padding: 26px 28px;
+            margin-bottom: 28px;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            gap: 18px 16px;
             align-items: end;
+        }
+        .catalog-field {
+            grid-column: span 3;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            min-width: 0;
+        }
+        .catalog-field-search {
+            grid-column: span 6;
+        }
+        .catalog-field-quarter {
+            grid-column: span 3;
+        }
+        .catalog-form .catalog-category-set {
+            grid-column: 1 / -1;
+            order: -1;
+            display: block;
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+            margin: 0 0 6px;
+            padding: 0 0 22px;
+            border: 0;
+            border-bottom: 1px solid var(--zafira-line);
+        }
+        .catalog-category-set > legend {
+            display: block;
+            width: 100%;
+            padding: 0;
+            margin: 0 0 12px;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--zafira-gold);
+        }
+        .catalog-category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            width: 100%;
+        }
+        .catalog-check {
+            min-height: 42px;
+            padding: 8px 13px;
+            border: 1px solid var(--zafira-line);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            line-height: 1.25;
+            cursor: pointer;
+            user-select: none;
+            transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+        }
+        .catalog-check:hover {
+            border-color: var(--zafira-gold);
+            background: rgba(197, 160, 89, 0.05);
+        }
+        .catalog-check input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 15px;
+            height: 15px;
+            margin: 0;
+            border: 1px solid rgba(13, 27, 42, 0.28);
+            border-radius: 2px;
+            background: transparent;
+            display: inline-grid;
+            place-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background-color 0.18s ease, border-color 0.18s ease;
+        }
+        .catalog-check input[type="checkbox"]::before {
+            content: '';
+            width: 8px;
+            height: 5px;
+            border-left: 1.6px solid currentColor;
+            border-bottom: 1.6px solid currentColor;
+            transform: translateY(-1px) rotate(-45deg) scale(0);
+            transition: transform 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .catalog-check input[type="checkbox"]:checked {
+            background: var(--zafira-sapphire);
+            border-color: var(--zafira-sapphire);
+            color: #fff;
+        }
+        .catalog-check input[type="checkbox"]:checked::before {
+            transform: translateY(-1px) rotate(-45deg) scale(1);
+        }
+        .catalog-check input[type="checkbox"]:focus-visible {
+            outline: 2px solid var(--zafira-gold);
+            outline-offset: 2px;
+        }
+        .catalog-check:has(input:checked) {
+            background: rgba(13, 27, 42, 0.045);
+            border-color: var(--zafira-sapphire);
+            color: var(--zafira-sapphire);
+        }
+        .catalog-field-spacer {
+            font-size: 10.5px;
+            line-height: 1;
+            user-select: none;
+        }
+        .catalog-stock-toggle {
+            height: 44px;
+            padding: 0 14px;
+            border: 1px solid var(--zafira-line);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+        .catalog-stock-toggle:hover {
+            border-color: var(--zafira-gold);
+        }
+        .catalog-stock-toggle input[type="checkbox"] {
+            margin: 0;
+            accent-color: var(--zafira-gold);
+            cursor: pointer;
+            flex-shrink: 0;
         }
         .catalog-form-actions {
             grid-column: 1 / -1;
+            padding-top: 14px;
+            border-top: 1px solid var(--zafira-line);
             display: flex;
             gap: 12px;
             justify-content: flex-end;
             flex-wrap: wrap;
         }
-        @media (max-width: 900px) {
-            .catalog-form { grid-template-columns: 1fr 1fr; }
+        @media (max-width: 960px) {
+            .catalog-category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .catalog-field,
+            .catalog-field-quarter { grid-column: span 6; }
+            .catalog-field-search { grid-column: 1 / -1; }
         }
         @media (max-width: 600px) {
             .catalog-filter-summary { display: list-item; list-style-position: inside; }
-            .catalog-form { grid-template-columns: 1fr; }
+            .catalog-form { grid-template-columns: 1fr; padding: 18px; gap: 14px; }
+            .catalog-category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+            .catalog-check { min-height: 40px; padding: 7px 10px; font-size: 10px; letter-spacing: 0.06em; gap: 8px; }
+            .catalog-field,
+            .catalog-field-quarter,
+            .catalog-field-search { grid-column: 1 / -1; }
+            .catalog-field-spacer { display: none; }
+            .catalog-form-actions > * { flex: 1; }
         }
-        .catalog-field {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+        @media (max-width: 360px) {
+            .catalog-category-grid { grid-template-columns: 1fr; }
         }
-        .catalog-field label {
-            font-size: 11px;
-            letter-spacing: 0.12em;
+        .catalog-field > label:not(.catalog-stock-toggle) {
+            font-size: 10.5px;
+            letter-spacing: 0.13em;
             text-transform: uppercase;
             font-weight: 600;
             color: var(--zafira-sapphire);
@@ -202,27 +480,30 @@
         .catalog-control {
             height: 44px;
             padding: 0 14px;
-            font-size: 14px;
+            font-size: 13.5px;
             border: 1px solid var(--zafira-line);
             background: #fff;
             color: var(--zafira-ink);
             font-family: inherit;
             box-sizing: border-box;
-            border-radius: 0;
+            border-radius: 3px;
+            transition: border-color 0.2s ease;
         }
         .catalog-control:focus {
             outline: 2px solid var(--zafira-gold);
             outline-offset: 1px;
+            border-color: var(--zafira-gold);
         }
         .catalog-btn {
             height: 44px;
             min-width: 44px;
-            padding: 0 20px;
-            font-size: 12px;
+            padding: 0 22px;
+            font-size: 11px;
             letter-spacing: 0.14em;
             text-transform: uppercase;
             font-weight: 600;
             border: 1px solid var(--zafira-sapphire);
+            border-radius: 3px;
             background: var(--zafira-sapphire);
             color: #fff;
             cursor: pointer;
@@ -231,7 +512,7 @@
             justify-content: center;
             box-sizing: border-box;
             text-decoration: none;
-            transition: background 0.2s, color 0.2s;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
         }
         .catalog-btn:hover, .catalog-btn:focus {
             background: var(--zafira-gold);
@@ -300,15 +581,27 @@
         }
         #catalog-shop-status {
             display: block;
-            line-height: 1.6;
+            line-height: 1.65;
+            padding: 12px 16px;
+            border: 1px solid var(--zafira-line);
+            border-left: 3px solid var(--zafira-gold);
+            border-radius: 4px;
+            background: rgba(197, 160, 89, 0.06);
+            font-size: 12.5px;
+        }
+        #catalog-shop-status a {
+            color: var(--zafira-gold);
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 3px;
         }
         .catalog-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 26px 22px;
         }
         @media (max-width: 1024px) {
-            .catalog-grid { grid-template-columns: repeat(2, 1fr); }
+            .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
         @media (max-width: 540px) {
             .catalog-grid { grid-template-columns: 1fr; }
@@ -316,10 +609,17 @@
         .catalog-card {
             background: #fff;
             border: 1px solid var(--zafira-line);
+            border-radius: 5px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             position: relative;
+            transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+        }
+        .catalog-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(197, 160, 89, 0.45);
+            box-shadow: 0 16px 36px rgba(13, 27, 42, 0.09);
         }
         .catalog-card-media {
             aspect-ratio: 4/5;
@@ -332,31 +632,32 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.4s ease;
+            transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
         }
         .catalog-card:hover .catalog-card-media img {
-            transform: scale(1.03);
+            transform: scale(1.04);
         }
         .catalog-card-body {
-            padding: 18px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             flex: 1;
         }
         .catalog-card-category {
-            font-size: 10px;
-            letter-spacing: 0.2em;
+            font-size: 9.5px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
             text-transform: uppercase;
             color: var(--zafira-gold);
             margin-bottom: 6px;
         }
         .catalog-card-title {
             font-family: 'Bodoni Moda', serif;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 500;
             margin: 0 0 8px;
             color: var(--zafira-sapphire);
-            line-height: 1.3;
+            line-height: 1.25;
         }
         .catalog-card-title a {
             color: inherit;
@@ -366,29 +667,42 @@
             color: var(--zafira-gold);
         }
         .catalog-card-attrs {
-            font-size: 12px;
+            font-size: 11.5px;
             color: #666;
-            margin: 0 0 12px;
+            margin: 0 0 10px;
             display: flex;
-            gap: 12px;
+            gap: 6px 12px;
             flex-wrap: wrap;
         }
         .catalog-card-price {
             font-size: 15px;
             font-weight: 600;
+            font-variant-numeric: tabular-nums;
             color: var(--zafira-sapphire);
             margin-top: auto;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
         .catalog-card-actions {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1.15fr;
             gap: 8px;
+            margin-top: 4px;
+        }
+        .catalog-card-actions form {
+            margin: 0;
+            display: flex;
         }
         .catalog-card-actions .catalog-btn {
-            flex: 1;
-            padding: 0 8px;
-            font-size: 11px;
+            width: 100%;
+            padding: 0 10px;
+            font-size: 10.5px;
             letter-spacing: 0.08em;
+        }
+        .catalog-dialog-desc {
+            font-size: 13.5px;
+            color: #555;
+            line-height: 1.6;
+            margin: 0 0 16px;
         }
         .catalog-empty {
             padding: 64px 24px;
@@ -496,20 +810,35 @@
     <a class="catalog-skip" href="#main-catalog">{{ $t['skip'] }}</a>
 
     <header class="catalog-header">
+        <div class="catalog-header-start">
+            <a class="catalog-back-link" href="{{ url('/') }}">
+                <svg class="catalog-back-icon" viewBox="0 0 20 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.35">
+                    <path d="M19 6H1.5M6.5 1L1.5 6l5 5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span class="catalog-back-label">{{ __('shop_ui.catalog.back') }}</span>
+            </a>
+        </div>
         <a class="catalog-brand" href="{{ url('/') }}">ZAFIRA</a>
-        <a class="catalog-btn" href="{{ route('shop.index') }}">{{ __('shop_ui.catalog.bag') }}</a>
-        <nav class="catalog-locales" aria-label="{{ $t['language'] }}">
-            @foreach (['id' => 'ID', 'en' => 'EN', 'zh' => 'ZH', 'fr' => 'FR', 'it' => 'IT'] as $code => $name)
-                <a href="{{ $catalogUrl([...$filters, 'locale' => $code]) }}"
-                   class="{{ $locale === $code ? 'active' : '' }}"
-                   aria-current="{{ $locale === $code ? 'true' : 'false' }}">
-                    {{ $name }}
-                </a>
-            @endforeach
-        </nav>
+        <div class="catalog-header-end">
+            <nav class="catalog-locales" aria-label="{{ $t['language'] }}">
+                @foreach (['id' => 'ID', 'en' => 'EN', 'zh' => 'ZH', 'fr' => 'FR', 'it' => 'IT'] as $code => $name)
+                    <a href="{{ $catalogUrl([...$filters, 'locale' => $code]) }}"
+                       class="{{ $locale === $code ? 'active' : '' }}"
+                       aria-current="{{ $locale === $code ? 'true' : 'false' }}">
+                        {{ $name }}
+                    </a>
+                @endforeach
+            </nav>
+            <a class="catalog-btn catalog-bag-btn" href="{{ route('shop.index') }}">{{ __('shop_ui.catalog.bag') }}</a>
+        </div>
     </header>
 
     <main id="main-catalog" class="catalog-container">
+        <nav class="catalog-breadcrumb" aria-label="Breadcrumb">
+            <a href="{{ url('/') }}">{{ __('shop_ui.catalog.home') }}</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">{{ $t['title'] }}</span>
+        </nav>
         <section class="catalog-hero">
             <span class="catalog-eyebrow">{{ $t['eyebrow'] }}</span>
             <h1 class="catalog-title">{{ $t['title'] }}</h1>
@@ -528,7 +857,7 @@
             <form class="catalog-form" method="GET" autocomplete="off" action="{{ url('/koleksi') }}" role="search" aria-label="{{ $t['filters'] }}">
                 <input type="hidden" name="locale" value="{{ $locale }}">
                 
-                <div class="catalog-field">
+                <div class="catalog-field catalog-field-search">
                     <label for="filter-q">{{ $t['search'] }}</label>
                     <input id="filter-q" class="catalog-control" type="search" name="q" value="{{ $filters['q'] ?? '' }}" placeholder="{{ $t['search_ph'] }}" maxlength="100">
                 </div>
@@ -538,15 +867,17 @@
                 @endisset
                 <fieldset class="catalog-field catalog-category-set">
                     <legend>{{ $t['category'] }}</legend>
-                    @foreach ($categoryOptions as $slug => $cat)
-                        <label class="catalog-check">
-                            <input type="checkbox" name="kategori" value="{{ $slug }}" @checked(in_array($slug, $filters['kategori'] ?? [], true))>
-                            {{ $cat->cat_title }}
-                        </label>
-                    @endforeach
+                    <div class="catalog-category-grid">
+                        @foreach ($categoryOptions as $slug => $cat)
+                            <label class="catalog-check">
+                                <input type="checkbox" name="kategori" value="{{ $slug }}" @checked(in_array($slug, $filters['kategori'] ?? [], true))>
+                                <span>{{ $cat->cat_title }}</span>
+                            </label>
+                        @endforeach
+                    </div>
                 </fieldset>
 
-                <div class="catalog-field">
+                <div class="catalog-field catalog-field-quarter">
                     <label for="filter-color">{{ $t['color'] }}</label>
                     <select id="filter-color" class="catalog-control" name="color">
                         <option value="">{{ $t['all'] }}</option>
@@ -556,7 +887,7 @@
                     </select>
                 </div>
 
-                <div class="catalog-field">
+                <div class="catalog-field catalog-field-quarter">
                     <label for="filter-material">{{ $t['material'] }}</label>
                     <select id="filter-material" class="catalog-control" name="material">
                         <option value="">{{ $t['all'] }}</option>
@@ -566,17 +897,17 @@
                     </select>
                 </div>
 
-                <div class="catalog-field">
+                <div class="catalog-field catalog-field-quarter">
                     <label for="filter-harga-min">{{ $t['harga_min'] }}</label>
-                    <input id="filter-harga-min" class="catalog-control" type="number" name="harga_min" value="{{ $filters['harga_min'] ?? '' }}" min="0" step="1">
+                    <input id="filter-harga-min" class="catalog-control" type="number" name="harga_min" value="{{ $filters['harga_min'] ?? '' }}" placeholder="0" min="0" step="1">
                 </div>
 
-                <div class="catalog-field">
+                <div class="catalog-field catalog-field-quarter">
                     <label for="filter-harga-max">{{ $t['harga_max'] }}</label>
-                    <input id="filter-harga-max" class="catalog-control" type="number" name="harga_max" value="{{ $filters['harga_max'] ?? '' }}" min="0" step="1">
+                    <input id="filter-harga-max" class="catalog-control" type="number" name="harga_max" value="{{ $filters['harga_max'] ?? '' }}" placeholder="30000000" min="0" step="1">
                 </div>
 
-                <div class="catalog-field">
+                <div class="catalog-field catalog-field-quarter">
                     <label for="filter-urut">{{ $t['urut'] }}</label>
                     <select id="filter-urut" class="catalog-control" name="urut">
                         <option value="">{{ $t['all'] }}</option>
@@ -586,16 +917,17 @@
                     </select>
                 </div>
 
-                <div class="catalog-field" style="justify-content:center; align-items:flex-start;">
-                    <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                <div class="catalog-field catalog-field-quarter catalog-field-stock">
+                    <span class="catalog-field-spacer" aria-hidden="true">&nbsp;</span>
+                    <label class="catalog-stock-toggle">
                         <input type="checkbox" name="tersedia" value="1" @checked(($filters['tersedia'] ?? null) === '1') style="width:20px; height:20px;">
-                        {{ $t['available'] }}
+                        <span>{{ $t['available'] }}</span>
                     </label>
                 </div>
 
                 <div class="catalog-form-actions">
-                    <button type="submit" class="catalog-btn">{{ $t['apply'] }}</button>
                     <a href="{{ $catalogUrl(['locale' => $locale]) }}" class="catalog-btn catalog-btn-secondary">{{ $t['reset'] }}</a>
+                    <button type="submit" class="catalog-btn">{{ $t['apply'] }}</button>
                 </div>
             </form>
         </details>
@@ -649,10 +981,18 @@
         @else
             <div class="catalog-grid">
                 @foreach ($products as $product)
+                    @php
+                        $catOverride = \App\Support\StorefrontPageProps::overrideFor($product->product_slug, $product->product_image);
+                        $catImgSrc = $catOverride ? asset("prototype/assets/{$catOverride}.jpg") : ($product->product_image ? $product->imageWidth(600) : null);
+                        $catImgSrcset = $catOverride
+                            ? asset("prototype/assets/{$catOverride}-600.webp").' 600w, '.asset("prototype/assets/{$catOverride}.webp").' 896w'
+                            : $product->imageSrcset([400, 600, 800]);
+                        $catQuickImg = $catOverride ? asset("prototype/assets/{$catOverride}.jpg") : $product->imageWidth(800);
+                    @endphp
                     <article class="catalog-card">
                         <div class="catalog-card-media">
-                            @if ($product->product_image)
-                                <img src="{{ $product->imageWidth(600) }}" @if ($product->imageSrcset([400, 600, 800])) srcset="{{ $product->imageSrcset([400, 600, 800]) }}" sizes="(max-width: 700px) 50vw, 25vw" @endif decoding="async" alt="{{ $product->imageAlt() }}" loading="lazy" width="400" height="500">
+                            @if ($catImgSrc)
+                                <img src="{{ $catImgSrc }}" @if ($catImgSrcset) srcset="{{ $catImgSrcset }}" sizes="(max-width: 700px) 50vw, 25vw" @endif decoding="async" alt="{{ $product->imageAlt() }}" loading="lazy" width="400" height="500">
                             @endif
                         </div>
                         <div class="catalog-card-body">
@@ -679,7 +1019,7 @@
                                         data-title="{{ $product->product_title }}"
                                         data-category="{{ $product->category?->cat_title }}"
                                         data-price="Rp{{ number_format((float) $product->product_price, 0, ',', '.') }}"
-                                        data-image="{{ $product->imageWidth(800) }}"
+                                        data-image="{{ $catQuickImg }}"
                                         data-alt="{{ $product->imageAlt() }}"
                                         data-description="{{ $product->product_description }}"
                                         data-material="{{ $product->product_material }}"
@@ -734,10 +1074,10 @@
             </div>
             <div class="catalog-dialog-content">
                 <span class="catalog-card-category" id="dialog-category"></span>
-                <h2 class="catalog-card-title" id="dialog-title" style="font-size:22px; margin-bottom:12px;"></h2>
-                <div class="catalog-card-price" id="dialog-price" translate="no" style="font-size:18px;"></div>
+                <h2 class="catalog-card-title" id="dialog-title" style="font-size:24px; margin-bottom:10px;"></h2>
+                <div class="catalog-card-price" id="dialog-price" translate="no" style="font-size:17px;"></div>
                 <div class="catalog-card-attrs" id="dialog-attrs"></div>
-                <p id="dialog-desc" style="font-size:13px; color:#555; line-height:1.5; margin:0 0 16px;"></p>
+                <p id="dialog-desc" class="catalog-dialog-desc"></p>
                 <form id="dialog-cart-form" method="POST" action="{{ url('/cart/items') }}" class="catalog-cart-form">
                     @csrf
                     <input type="hidden" name="product_id" id="dialog-product-id" value="">

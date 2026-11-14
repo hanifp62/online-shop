@@ -34,7 +34,7 @@
 <p class="muted">{{ __('shop_ui.shop.summary_note') }}</p>{{-- Potongan voucher dan total akhir dipastikan saat pesanan dibuat --}}
 </aside>
 <div class="checkout-fields" role="region" aria-label="{{ __('shop_ui.shop.form_label') }}">
-@auth<form id="checkout-form" class="stack"><label>{{ __('shop_ui.shop.saved_address') }}<select id="checkout-address" name="address_id" required></select></label><label>{{ __('shop_ui.shop.voucher') }}<input name="voucher_code" maxlength="40"></label><button id="checkout-button">{{ __('shop_ui.shop.confirm_order') }}</button></form>@else<p>{!! str_replace(['[[', ']]'], ['<a href="' . route('login') . '">', '</a>'], e(__('shop_ui.shop.guest_intro'))) !!}</p><form id="guest-checkout-form" class="stack" method="post"><fieldset class="stack"><legend>{{ __('shop_ui.shop.step_contact') }}</legend><label>{{ __('shop_ui.shop.full_name') }}<input name="customer_name" required maxlength="120" autocomplete="name"></label><label>{{ __('shop_ui.shop.email') }}<input type="email" name="customer_email" required maxlength="255" autocomplete="email"></label><label>{{ __('shop_ui.shop.phone') }}<input type="tel" name="customer_phone" required maxlength="30" autocomplete="tel" placeholder="+62 812 3456 7890"></label></fieldset><fieldset class="stack"><legend>{{ __('shop_ui.shop.step_address') }}</legend><label>{{ __('shop_ui.shop.label') }}<input name="label" required maxlength="50" value="{{ __('shop_ui.shop.label_default') }}"></label><label>{{ __('shop_ui.shop.recipient') }}<input name="recipient_name" required maxlength="120" autocomplete="shipping name"></label><label>{{ __('shop_ui.shop.recipient_phone') }}<input type="tel" name="phone" required maxlength="30" autocomplete="shipping tel"></label><label>{{ __('shop_ui.shop.street') }}<input name="line1" required maxlength="255" autocomplete="shipping address-line1"></label><label>{{ __('shop_ui.shop.detail') }}<input name="line2" maxlength="255" autocomplete="shipping address-line2"></label><div class="field-pair"><label>{{ __('shop_ui.shop.city') }}<input name="city" required maxlength="120" autocomplete="shipping address-level2"></label><label>{{ __('shop_ui.shop.province') }}<input name="province" required maxlength="120" autocomplete="shipping address-level1"></label><label>{{ __('shop_ui.shop.postal') }}<input name="postal_code" required maxlength="20" autocomplete="shipping postal-code"></label></div></fieldset><button id="guest-checkout-button" disabled>{{ __('shop_ui.shop.guest_button') }}</button></form>@endauth
+@auth<form id="checkout-form" class="stack"><label>{{ __('shop_ui.shop.saved_address') }}<select id="checkout-address" name="address_id" required></select></label><label>{{ __('shop_ui.shop.voucher') }}<input name="voucher_code" maxlength="40"></label><button id="checkout-button">{{ __('shop_ui.shop.confirm_order') }}</button></form>@elseif(config('services.shop.require_auth_checkout', true))<div id="checkout-auth-wall" class="stack" style="border:1px solid var(--line);background:var(--linen);padding:20px"><span class="eyebrow">{{ __('shop_ui.shop.auth_wall_eyebrow') }}</span><h3>{{ __('shop_ui.shop.auth_wall_title') }}</h3><p>{{ __('shop_ui.shop.auth_wall_lead') }}</p>@if(isset($errors) && $errors->any())<div class="notice is-error" role="alert"><ul>@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif<a id="google-checkout-login" class="button secondary" href="{{ route('social.redirect', ['provider' => 'google', 'intended' => '/belanja#checkout']) }}">{{ __('shop_ui.shop.auth_wall_google') }}</a><form id="checkout-login-form" class="stack" method="post" action="{{ route('login.process', ['intended' => '/belanja#checkout']) }}">@csrf<input type="hidden" name="intended" value="/belanja#checkout"><label>{{ __('shop_ui.shop.email') }}<input type="email" name="email" value="{{ old('email') }}" required maxlength="255" autocomplete="email"></label><label>{{ __('shop_ui.shop.auth_wall_password') }}<input type="password" name="password" required autocomplete="current-password"></label><button type="submit">{{ __('shop_ui.shop.auth_wall_login_btn') }}</button></form><p><a href="{{ route('register', ['intended' => '/belanja#checkout']) }}">{{ __('shop_ui.shop.auth_wall_tab_register') }}</a></p><template data-legacy-guest-label>{{ __('shop_ui.shop.guest_button') }}</template></div>@else<p>{!! str_replace(['[[', ']]'], ['<a href="' . route('login') . '">', '</a>'], e(__('shop_ui.shop.guest_intro'))) !!}</p><form id="guest-checkout-form" class="stack" method="post"><fieldset class="stack"><legend>{{ __('shop_ui.shop.step_contact') }}</legend><label>{{ __('shop_ui.shop.full_name') }}<input name="customer_name" required maxlength="120" autocomplete="name"></label><label>{{ __('shop_ui.shop.email') }}<input type="email" name="customer_email" required maxlength="255" autocomplete="email"></label><label>{{ __('shop_ui.shop.phone') }}<input type="tel" name="customer_phone" required maxlength="30" autocomplete="tel" placeholder="+62 812 3456 7890"></label></fieldset><fieldset class="stack"><legend>{{ __('shop_ui.shop.step_address') }}</legend><label>{{ __('shop_ui.shop.label') }}<input name="label" required maxlength="50" value="{{ __('shop_ui.shop.label_default') }}"></label><label>{{ __('shop_ui.shop.recipient') }}<input name="recipient_name" required maxlength="120" autocomplete="shipping name"></label><label>{{ __('shop_ui.shop.recipient_phone') }}<input type="tel" name="phone" required maxlength="30" autocomplete="shipping tel"></label><label>{{ __('shop_ui.shop.street') }}<input name="line1" required maxlength="255" autocomplete="shipping address-line1"></label><label>{{ __('shop_ui.shop.detail') }}<input name="line2" maxlength="255" autocomplete="shipping address-line2"></label><div class="field-pair"><label>{{ __('shop_ui.shop.city') }}<input name="city" required maxlength="120" autocomplete="shipping address-level2"></label><label>{{ __('shop_ui.shop.province') }}<input name="province" required maxlength="120" autocomplete="shipping address-level1"></label><label>{{ __('shop_ui.shop.postal') }}<input name="postal_code" required maxlength="20" autocomplete="shipping postal-code"></label></div></fieldset><button id="guest-checkout-button" disabled>{{ __('shop_ui.shop.guest_button') }}</button></form>@endauth
 </div></div></section>
 <div class="grid"><section class="panel" id="pesanan"><h2>{{ __('shop_ui.shop.orders_title') }} <span id="order-count" data-list-count="orders" aria-live="polite"></span></h2>@guest<div id="guest-order-confirmation" aria-live="polite"></div><button id="guest-clear-token" type="button" class="secondary">{{ __('shop_ui.shop.clear_token') }}</button><form id="guest-track-form" class="stack" method="post"><label>{{ __('shop_ui.shop.track_label') }}<input name="token" required minlength="64" maxlength="64" autocomplete="off"></label><button type="submit">{{ __('shop_ui.shop.track_button') }}</button></form><div id="guest-track-result" aria-live="polite"></div>@endguest<div id="order-list"></div><div id="order-pages" class="row"></div></section><section class="panel" id="favorit"><h2>{{ __('shop_ui.shop.favorites_title') }} <span id="favorite-count" data-list-count="favorites" aria-live="polite"></span></h2><p>{!! str_replace(['[[', ']]'], ['<a href="' . route('catalog.index') . '">', '</a>'], e(__('shop_ui.shop.favorites_intro'))) !!}</p><div id="favorite-list"></div></section></div>
 </main><footer>© {{ date('Y') }} ZAFIRA Maison · La Maison de Lumière</footer>
@@ -111,10 +111,11 @@
             controls.forEach((control, index) => { control.disabled = disabled[index]; });
             $('clear-cart').disabled = !cart.items.length;
             if (loggedIn) $('checkout-button').disabled = !pendingCheckout && (!cart.items.length || cart.items.some(item => !item.available));
-            else $('guest-checkout-button').disabled = !pendingCheckout && (!cart.items.length || cart.items.some(item => !item.available));
+            else if ($('guest-checkout-button')) $('guest-checkout-button').disabled = !pendingCheckout && (!cart.items.length || cart.items.some(item => !item.available));
             // A replay uses the frozen payload, so edited/invalid visible fields must not
             // block it at the browser's constraint-validation gate before submit fires.
-            $(loggedIn ? 'checkout-button' : 'guest-checkout-button').formNoValidate = Boolean(pendingCheckout);
+            const activeCheckoutBtn = $(loggedIn ? 'checkout-button' : 'guest-checkout-button');
+            if (activeCheckoutBtn) activeCheckoutBtn.formNoValidate = Boolean(pendingCheckout);
             document.querySelector('main').removeAttribute('aria-busy');
             busy = false;
         }
@@ -129,25 +130,29 @@
             $('cart-total').textContent = '';
             $('clear-cart').disabled = true;
             renderCheckoutSummary(false);
-            $(loggedIn ? 'checkout-button' : 'guest-checkout-button').disabled = true;
+            const activeBtnErr = $(loggedIn ? 'checkout-button' : 'guest-checkout-button');
+            if (activeBtnErr) activeBtnErr.disabled = true;
             throw error;
         }
         list.replaceChildren();
         if (!cart.items.length) list.append(text('p', shopText('cart_empty', 'Tas kosong. Tambahkan kreasi dari katalog.')));
         for (const item of cart.items) {
             const row = text('div', ''); row.className = 'item stack';
-            row.append(text('strong', item.product_title), text('span', `${money(item.unit_price)} × ${item.quantity} = ${money(item.subtotal)}`));
+            const variantLabel = [item.size, item.monogram].filter(Boolean).join(' · ');
+            row.append(text('strong', variantLabel ? `${item.product_title} (${variantLabel})` : item.product_title), text('span', `${money(item.unit_price)} × ${item.quantity} = ${money(item.subtotal)}`));
             if (!item.available) row.append(text('p', shopText('unavailable', 'Stok tidak tersedia. Hapus atau periksa kembali sebelum checkout.')));
             const controls = text('div', ''); controls.className = 'row';
             const qty = document.createElement('input'); qty.type = 'number'; qty.min = 1; qty.max = 99; qty.value = item.quantity; qty.setAttribute('aria-label', shopText('qty_aria', `Jumlah ${item.product_title}`, {title: item.product_title})); qty.style.maxWidth = '90px';
-            const update = text('button', shopText('update', 'Ubah jumlah')); update.type = 'button'; update.onclick = () => action(async () => { requireSettledCheckout(); await api(@json(route('cart.items.store')), 'POST', {product_id:item.product_id, quantity:Number(qty.value)}); checkoutKey = pendingCheckout = null; await loadCart(); message(shopText('qty_updated', 'Jumlah di tas belanja diperbarui.')); });
-            const remove = text('button', shopText('remove', 'Hapus')); remove.type = 'button'; remove.className = 'secondary'; remove.onclick = () => action(async () => { requireSettledCheckout(); await api(@json(url('/cart/items')).concat('/' + item.product_id), 'DELETE'); checkoutKey = pendingCheckout = null; await loadCart(); message(shopText('removed', 'Kreasi dihapus dari tas.')); });
+            const variantPayload = Object.assign({}, item.size ? {size: item.size} : {}, item.monogram ? {monogram: item.monogram} : {});
+            const update = text('button', shopText('update', 'Ubah jumlah')); update.type = 'button'; update.onclick = () => action(async () => { requireSettledCheckout(); await api(@json(route('cart.items.store')), 'POST', Object.assign({product_id:item.product_id, quantity:Number(qty.value)}, variantPayload)); checkoutKey = pendingCheckout = null; await loadCart(); message(shopText('qty_updated', 'Jumlah di tas belanja diperbarui.')); });
+            const remove = text('button', shopText('remove', 'Hapus')); remove.type = 'button'; remove.className = 'secondary'; remove.onclick = () => action(async () => { requireSettledCheckout(); await api(@json(url('/cart/items')).concat('/' + item.product_id), 'DELETE', Object.keys(variantPayload).length ? variantPayload : undefined); checkoutKey = pendingCheckout = null; await loadCart(); message(shopText('removed', 'Kreasi dihapus dari tas.')); });
             controls.append(qty, update, remove); row.append(controls); list.append(row);
         }
         $('cart-total').textContent = shopText('subtotal', 'Subtotal: :amount', {amount: money(cart.subtotal)});
         $('clear-cart').disabled = !cart.items.length;
         renderCheckoutSummary();
-        $(loggedIn ? 'checkout-button' : 'guest-checkout-button').disabled = !pendingCheckout && (!cart.items.length || cart.items.some(i => !i.available));
+        const activeBtnReady = $(loggedIn ? 'checkout-button' : 'guest-checkout-button');
+        if (activeBtnReady) activeBtnReady.disabled = !pendingCheckout && (!cart.items.length || cart.items.some(i => !i.available));
     }
     function renderCheckoutSummary(available = true) {
         const summary = $('checkout-summary');
@@ -296,30 +301,32 @@
         }); };
     }
     if (!loggedIn) {
-        $('guest-checkout-form').addEventListener('input', checkoutInputChanged);
-        $('guest-checkout-form').onsubmit = event => { event.preventDefault(); const fields = new FormData(event.target); action(async () => {
-            if (!pendingCheckout) {
-                await loadCart(); // Validate only new attempts; an uncertain response must replay the original payload.
-                if (!cart.items.length || cart.items.some(i => !i.available)) { message(shopText('check_cart', 'Periksa tas dan stok sebelum checkout.')); return; }
-                const payload = Object.fromEntries(fields); payload.idempotency_key = checkoutKey ||= crypto.randomUUID();
-                pendingCheckout = payload;
-            }
-            try {
-                const result = await api(@json(route('checkout.store')), 'POST', pendingCheckout); validateCheckoutResult(result); checkoutKey = pendingCheckout = null;
-                const confirmation = $('guest-order-confirmation'); confirmation.replaceChildren();
-                confirmation.append(text('h3', shopText('order_title', 'Pesanan #:id', {id: result.order.id})), text('p', shopText('order_line', 'Status: :status · Total :amount', {status: statusLabel(result.order.status), amount: money(result.order.total)})));
-                for (const item of result.order.items) confirmation.append(text('p', `${item.product_title} × ${item.quantity} · ${money(item.subtotal)}`));
-                if (result.tracking_token) {
-                    const note = text('p', shopText('token_note', 'Kode pelacakan (tampil sekali, simpan sekarang):')); note.className = 'token-note';
-                    confirmation.append(note, text('code', result.tracking_token));
-                    document.querySelector('#guest-track-form [name=token]').value = result.tracking_token;
-                } else if (result.message) {
-                    confirmation.append(text('p', result.message));
+        if ($('guest-checkout-form')) {
+            $('guest-checkout-form').addEventListener('input', checkoutInputChanged);
+            $('guest-checkout-form').onsubmit = event => { event.preventDefault(); const fields = new FormData(event.target); action(async () => {
+                if (!pendingCheckout) {
+                    await loadCart();
+                    if (!cart.items.length || cart.items.some(i => !i.available)) { message(shopText('check_cart', 'Periksa tas dan stok sebelum checkout.')); return; }
+                    const payload = Object.fromEntries(fields); payload.idempotency_key = checkoutKey ||= crypto.randomUUID();
+                    pendingCheckout = payload;
                 }
-                event.target.reset(); await loadCart();
-                message(shopText('order_created', 'Pesanan #:id dibuat: menunggu pembayaran. Total :amount. Pembayaran online belum tersedia dan tidak ada konfirmasi pembayaran otomatis.', {id: result.order.id, amount: money(result.order.total)}));
-            } catch (error) { if ([409, 422].includes(error.status)) checkoutKey = pendingCheckout = null; throw error; }
-        }); };
+                try {
+                    const result = await api(@json(route('checkout.store')), 'POST', pendingCheckout); validateCheckoutResult(result); checkoutKey = pendingCheckout = null;
+                    const confirmation = $('guest-order-confirmation'); confirmation.replaceChildren();
+                    confirmation.append(text('h3', shopText('order_title', 'Pesanan #:id', {id: result.order.id})), text('p', shopText('order_line', 'Status: :status · Total :amount', {status: statusLabel(result.order.status), amount: money(result.order.total)})));
+                    for (const item of result.order.items) confirmation.append(text('p', `${item.product_title} × ${item.quantity} · ${money(item.subtotal)}`));
+                    if (result.tracking_token) {
+                        const note = text('p', shopText('token_note', 'Kode pelacakan (tampil sekali, simpan sekarang):')); note.className = 'token-note';
+                        confirmation.append(note, text('code', result.tracking_token));
+                        document.querySelector('#guest-track-form [name=token]').value = result.tracking_token;
+                    } else if (result.message) {
+                        confirmation.append(text('p', result.message));
+                    }
+                    event.target.reset(); await loadCart();
+                    message(shopText('order_created', 'Pesanan #:id dibuat: menunggu pembayaran. Total :amount. Pembayaran online belum tersedia dan tidak ada konfirmasi pembayaran otomatis.', {id: result.order.id, amount: money(result.order.total)}));
+                } catch (error) { if ([409, 422].includes(error.status)) checkoutKey = pendingCheckout = null; throw error; }
+            }); };
+        }
         $('guest-clear-token').onclick = () => {
             document.querySelector('#guest-track-form [name=token]').value = '';
             $('guest-order-confirmation').querySelectorAll('code, .token-note').forEach(node => node.remove());

@@ -31,7 +31,7 @@ class CheckoutService
         return 'cart';
     }
 
-    /** Keranjang persisten di database; hanya menyimpan product_id => quantity. */
+    /** Keranjang persisten di database; mendukung kunci product_id maupun lineKey varian. */
     public static function cart(Request $request): array
     {
         return CartStore::locked($request, fn (?int $id, array $items) => $items);
@@ -39,8 +39,9 @@ class CheckoutService
 
     public static function validateCart(array $cart): void
     {
-        foreach ($cart as $productId => $quantity) {
-            if (! ctype_digit((string) $productId) || is_bool($quantity)
+        foreach ($cart as $lineKey => $quantity) {
+            $parsed = CartStore::parseLineKey($lineKey);
+            if ($parsed === null || is_bool($quantity)
                 || filter_var($quantity, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE) === null
                 || (int) $quantity < 1 || (int) $quantity > self::MAX_QUANTITY) {
                 throw ValidationException::withMessages(['cart' => __('customer_messages.checkout.invalid_cart')]);
@@ -53,21 +54,42 @@ class CheckoutService
     {
         self::validateCart($cart);
 
-        $products = Product::whereIn('product_id', array_keys($cart))->get()->keyBy('product_id');
+        $parsedLines = [];
+        $totalsByProduct = [];
+        foreach ($cart as $lineKey => $quantity) {
+            [$productId, $size, $monogram] = CartStore::parseLineKey($lineKey);
+            $qty = (int) $quantity;
+            $parsedLines[] = [
+                'line_key' => (string) CartStore::lineKey($productId, $size, $monogram),
+                'product_id' => $productId,
+                'size' => $size !== '' ? $size : null,
+                'monogram' => $monogram !== '' ? $monogram : null,
+                'quantity' => $qty,
+            ];
+            $totalsByProduct[$productId] = ($totalsByProduct[$productId] ?? 0) + $qty;
+        }
+
+        $products = Product::whereIn('product_id', array_keys($totalsByProduct))->get()->keyBy('product_id');
         $lines = [];
-        foreach ($cart as $productId => $quantity) {
-            $product = $products->get($productId);
+        foreach ($parsedLines as $entry) {
+            $product = $products->get($entry['product_id']);
             if (! $product) {
                 continue;
             }
             $unit = self::idr($product->product_price);
+            $totalRequestedForProduct = $totalsByProduct[$entry['product_id']];
             $lines[] = [
-                'product_id' => (int) $productId,
+                'line_key' => $entry['line_key'],
+                'product_id' => $entry['product_id'],
                 'product_title' => $product->product_title,
+                'product_slug' => $product->product_slug,
+                'product_image' => $product->product_image,
+                'size' => $entry['size'],
+                'monogram' => $entry['monogram'],
                 'unit_price' => $unit,
-                'quantity' => (int) $quantity,
-                'subtotal' => $unit * (int) $quantity,
-                'available' => (bool) $product->is_active && (int) $product->stock >= (int) $quantity,
+                'quantity' => $entry['quantity'],
+                'subtotal' => $unit * $entry['quantity'],
+                'available' => (bool) $product->is_active && (int) $product->stock >= $totalRequestedForProduct,
             ];
         }
 
@@ -155,7 +177,7 @@ class CheckoutService
         self::validateCart($cart);
         $lookup = fn () => Order::whereNull('user_id')->where('guest_scope_hash', $scope)->where('idempotency_key', $key);
         $replay = function (Order $order) use ($contact, $address, $cart) {
-            $items = $cart !== [] ? $cart : $order->items->pluck('quantity', 'product_id')->all();
+            $items = $cart !== [] ? $cart : $this->reconstructOrderItems($order);
             if (! hash_equals($order->payload_hash, $this->guestHash($contact, $address, $items, $order->shipping_fee, $order->tax))) {
                 abort(409, __('customer_messages.checkout.idempotency_conflict'));
             }
@@ -185,6 +207,17 @@ class CheckoutService
         }, fn () => $lookup()->first(), $replay);
     }
 
+    private function reconstructOrderItems(Order $order): array
+    {
+        $items = [];
+        foreach ($order->items as $item) {
+            $key = CartStore::lineKey((int) $item->product_id, (string) ($item->size ?? ''), (string) ($item->monogram ?? ''));
+            $items[$key] = (int) $item->quantity;
+        }
+
+        return $items;
+    }
+
     private function guestHash(array $contact, array $address, array $cart, int $shipping, int $tax): string
     {
         $items = array_map('intval', $cart);
@@ -202,8 +235,6 @@ class CheckoutService
 
                 return [$order, $order->wasRecentlyCreated];
             } catch (QueryException|DeadlockException $e) {
-                // Laravel membungkus kegagalan kunci di dalam transaksi bersarang sebagai DeadlockException.
-                // A wrapper is propagated, not classified as retryable: it may wrap timeout 1205.
                 if ($nested && ($e instanceof DeadlockException || $this->isTransientLock($e))) {
                     throw $e;
                 }
@@ -220,7 +251,6 @@ class CheckoutService
                     throw $e;
                 }
                 if ($attempt === self::MAX_LOCK_RETRIES) {
-                    // Status pulih: kunci idempotensi tetap bisa dipakai ulang oleh klien.
                     abort(503, __('customer_messages.checkout.busy'));
                 }
                 usleep(self::LOCK_RETRY_BASE_MICROSECONDS * (2 ** $attempt) + random_int(0, 5_000));
@@ -257,7 +287,7 @@ class CheckoutService
     private function replay(Order $order, Address $address, array $cart, ?string $voucherCode): Order
     {
         // Keranjang dikosongkan setelah commit; retry jaringan membawa keranjang kosong.
-        $items = $cart !== [] ? $cart : $order->items->pluck('quantity', 'product_id')->all();
+        $items = $cart !== [] ? $cart : $this->reconstructOrderItems($order);
         if (! hash_equals($order->payload_hash, $this->hash($address->id, $voucherCode, $items, $order->shipping_fee, $order->tax))) {
             abort(409, __('customer_messages.checkout.idempotency_conflict'));
         }
@@ -275,10 +305,8 @@ class CheckoutService
 
     private function place(User $user, Address $address, array $cart, string $key, string $hash, ?string $voucherCode): Order
     {
-        // Serialisasi checkout per pengguna untuk batas voucher per pengguna.
         User::whereKey($user->id)->lockForUpdate()->firstOrFail();
 
-        // Recheck di dalam lock: worker kedua yang lolos lookup awal harus replay sebelum mutasi stok/voucher.
         $existing = Order::where('user_id', $user->id)->where('idempotency_key', $key)->lockForUpdate()->first();
         if ($existing) {
             return $this->replay($existing, $address, $cart, $voucherCode);
@@ -289,22 +317,41 @@ class CheckoutService
 
     private function createOrder(?User $user, array $address, array $cart, string $key, string $hash, ?string $voucherCode, array $guest = []): Order
     {
+        $lockIds = [];
+        foreach (array_keys($cart) as $rawKey) {
+            $parsed = CartStore::parseLineKey($rawKey);
+            if ($parsed !== null && $parsed[0] > 0) {
+                $lockIds[$parsed[0]] = $parsed[0];
+            }
+        }
+        if ($lockIds !== []) {
+            ksort($lockIds);
+            Product::whereIn('product_id', array_values($lockIds))->orderBy('product_id')->lockForUpdate()->get();
+        }
+
         $priced = self::priced($cart);
         if (count($priced['items']) !== count($cart)) {
             throw ValidationException::withMessages(['cart' => __('customer_messages.checkout.unavailable')]);
         }
 
-        // Urutan kunci baris produk deterministik agar checkout paralel tidak saling deadlock.
-        $lockOrdered = $priced['items'];
-        usort($lockOrdered, fn (array $a, array $b) => $a['product_id'] <=> $b['product_id']);
+        // Urutan kunci baris produk deterministik & teragregasi per product_id agar varian ganda dari produk sama aman dari race condition.
+        $groupedStock = [];
+        foreach ($priced['items'] as $line) {
+            $pid = $line['product_id'];
+            if (! isset($groupedStock[$pid])) {
+                $groupedStock[$pid] = ['product_id' => $pid, 'product_title' => $line['product_title'], 'quantity' => 0];
+            }
+            $groupedStock[$pid]['quantity'] += $line['quantity'];
+        }
+        ksort($groupedStock);
 
-        foreach ($lockOrdered as $line) {
-            $updated = Product::whereKey($line['product_id'])
+        foreach ($groupedStock as $stockRequirement) {
+            $updated = Product::whereKey($stockRequirement['product_id'])
                 ->where('is_active', true)
-                ->where('stock', '>=', $line['quantity'])
-                ->decrement('stock', $line['quantity']);
+                ->where('stock', '>=', $stockRequirement['quantity'])
+                ->decrement('stock', $stockRequirement['quantity']);
             if ($updated !== 1) {
-                throw ValidationException::withMessages(['cart' => __('customer_messages.checkout.stock', ['product' => $line['product_title']])]);
+                throw ValidationException::withMessages(['cart' => __('customer_messages.checkout.stock', ['product' => $stockRequirement['product_title']])]);
             }
         }
 
@@ -325,19 +372,25 @@ class CheckoutService
             'payload_hash' => $hash,
             'shipping_address' => $address,
             'voucher_id' => $voucher?->id,
-            // Snapshot locale permintaan untuk semua pesanan agar bahasa faktur tetap setelah user ganti locale.
             'locale' => RecipientLocale::resolve(app()->getLocale()),
         ] + $guest);
 
         foreach ($priced['items'] as $line) {
-            unset($line['available']);
-            $order->items()->create($line);
+            $order->items()->create([
+                'product_id' => $line['product_id'],
+                'product_title' => $line['product_title'],
+                'size' => $line['size'],
+                'monogram' => $line['monogram'],
+                'unit_price' => $line['unit_price'],
+                'quantity' => $line['quantity'],
+                'subtotal' => $line['subtotal'],
+            ]);
         }
         $order->statusHistory()->create(['from_status' => null, 'to_status' => 'pending']);
-        foreach ($priced['items'] as $line) {
+        foreach ($groupedStock as $stockRequirement) {
             $order->inventoryReservations()->create([
-                'product_id' => $line['product_id'],
-                'quantity' => $line['quantity'],
+                'product_id' => $stockRequirement['product_id'],
+                'quantity' => $stockRequirement['quantity'],
                 'expires_at' => now()->addMinutes(60),
             ]);
         }
@@ -345,13 +398,11 @@ class CheckoutService
         return $order->load('items');
     }
 
-    /** Ongkir flat dari konfigurasi server; default 0 sampai tarif kurir ditentukan. */
     public static function shippingFee(): int
     {
         return self::configInt('checkout.shipping_fee', PHP_INT_MAX);
     }
 
-    /** Pajak dalam basis poin (1100 = 11%) atas subtotal setelah diskon, dibulatkan half-up ke rupiah. */
     public static function taxRateBps(): int
     {
         return self::configInt('checkout.tax_rate_bps', 10_000);
@@ -362,7 +413,6 @@ class CheckoutService
         $bps = self::taxRateBps();
         $taxable = max(0, $taxable);
 
-        // Pecah agar taxable * bps tidak overflow int64 pada subtotal besar.
         return intdiv($taxable, 10_000) * $bps + intdiv($taxable % 10_000 * $bps + 5_000, 10_000);
     }
 
@@ -376,10 +426,6 @@ class CheckoutService
         return $value;
     }
 
-    /**
-     * Satu aturan kelayakan voucher untuk pre-calculation dan commit:
-     * aktif, kuota global tersisa, dan batas per pengguna belum tercapai.
-     */
     private function eligibleVoucher(User $user, string $code): Voucher
     {
         $voucher = Voucher::where('code', $code)->where('is_active', true)->first();
@@ -408,7 +454,6 @@ class CheckoutService
     {
         $voucher = $this->eligibleVoucher($user, $code);
 
-        // Klaim atomik tetap jadi penentu akhir saat checkout paralel berebut sisa kuota.
         $claimed = Voucher::whereKey($voucher->id)
             ->where('is_active', true)
             ->whereColumn('used', '<', 'quota')
@@ -420,7 +465,6 @@ class CheckoutService
         return $voucher;
     }
 
-    /** Ubah status; stok dan kuota voucher dikembalikan tepat sekali saat transisi ke cancelled. */
     public function transition(Order $order, string $status): Order
     {
         if ($order->status === $status && $status === 'cancelled') {
@@ -445,15 +489,11 @@ class CheckoutService
         return $order->refresh()->load('items');
     }
 
-    /**
-     * Tandai lunas dari verifikasi webhook tepercaya. Dipanggil di dalam transaksi pemanggil.
-     */
     public function markPaid(Order $order): bool
     {
         return $this->applyTransition($order, 'paid', null);
     }
 
-    /** Idempoten: slot (order, status) diklaim lewat unique key sebelum email diantrekan setelah commit. */
     private function notifyCustomer(Order $order, string $status): void
     {
         $email = $order->customer_email ?? $order->user?->email;
@@ -485,7 +525,6 @@ class CheckoutService
 
         $this->notifyCustomer($order, $status);
 
-        // Catatan pelacakan dilihat pelanggan, bukan admin yang memicu transisi: pakai bahasa pemilik pesanan.
         $locale = RecipientLocale::resolve($order->locale ?? $order->user?->locale);
 
         if ($status === 'shipped') {

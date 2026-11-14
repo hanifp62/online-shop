@@ -39,7 +39,7 @@ class InertiaStorefrontTest extends TestCase
         $response = $this->get('/')->assertOk();
         $response->assertInertia(fn (Assert $page) => $page->component('Storefront/Home')
             ->where('products.0.productId', $product->product_id)
-            ->where('products.0.image', asset('prototype/assets/minaudiere_saphir.jpg'))
+            ->where('products.0.image', asset('prototype/assets/sac_seraphine.jpg'))
             ->where('products.0.priceLabel', 'Rp120.000')->where('products.0.stock', 4)
             ->where('links.shop', route('shop.index'))->where('user', null)
             ->has('links.locales', 5)->missing('html')->missing('rawHtml')->missing('session')
@@ -50,13 +50,13 @@ class InertiaStorefrontTest extends TestCase
         $this->assertSame(1, substr_count($response->getContent(), '<h1'));
     }
 
-    public function test_all_seven_home_image_overrides_are_projected(): void
+    public function test_all_home_image_overrides_are_projected(): void
     {
         foreach (StorefrontPageProps::IMAGE_OVERRIDES as $slug => $file) {
             $this->product($slug);
         }
         $this->get('/')->assertInertia(function (Assert $page) {
-            $page->has('products', 7);
+            $page->has('products', count(StorefrontPageProps::IMAGE_OVERRIDES));
             foreach (array_values(StorefrontPageProps::IMAGE_OVERRIDES) as $index => $file) {
                 $page->where("products.{$index}.image", asset("prototype/assets/{$file}.jpg"))
                     ->where("products.{$index}.srcset", asset("prototype/assets/{$file}-600.webp").' 600w, '.asset("prototype/assets/{$file}.webp").' 896w');

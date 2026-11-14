@@ -9,19 +9,25 @@ final class AuthPageProps
 {
     public static function login(Request $request): array
     {
+        $intended = IntendedRedirect::sanitize($request->query('intended'));
+        $params = $intended !== null ? ['intended' => $intended] : [];
+
         return self::page($request, 'login', ['email'], [
-            'submit' => route('login.process'),
+            'submit' => route('login.process', $params),
             'forgotPassword' => route('password.request'),
-            'register' => route('register'),
-        ], self::providers());
+            'register' => route('register', $params),
+        ], self::providers($intended));
     }
 
     public static function register(Request $request): array
     {
+        $intended = IntendedRedirect::sanitize($request->query('intended'));
+        $params = $intended !== null ? ['intended' => $intended] : [];
+
         return self::page($request, 'register', ['name', 'first_name', 'last_name', 'email', 'mobile', 'address1'], [
-            'submit' => route('register.store'),
-            'login' => route('login'),
-        ], self::providers());
+            'submit' => route('register.store', $params),
+            'login' => route('login', $params),
+        ], self::providers($intended));
     }
 
     public static function forgotPassword(Request $request): array
@@ -59,14 +65,15 @@ final class AuthPageProps
         ];
     }
 
-    private static function providers(): array
+    private static function providers(?string $intended = null): array
     {
         $providers = [];
         foreach (['google' => 'Google', 'apple' => 'Apple'] as $provider => $label) {
-            if (SocialAuthController::enabled($provider)) {
+            if (SocialAuthController::visible($provider)) {
+                $routeParams = $intended !== null ? ['provider' => $provider, 'intended' => $intended] : $provider;
                 $providers[] = [
                     'id' => $provider,
-                    'url' => route('social.redirect', $provider),
+                    'url' => route('social.redirect', $routeParams),
                     'label' => __('auth_ui.social.continue', ['provider' => $label]),
                 ];
             }

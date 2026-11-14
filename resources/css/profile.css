@@ -103,17 +103,25 @@
 .profile-history-heading .badge-status { background: var(--surface); color: var(--ink); border: 1px solid var(--line); white-space: normal; }
 .profile-history-notes { margin-top: 0.75rem; padding: 0.75rem; background: var(--surface); color: var(--ink); font-size: 0.875rem; line-height: 1.6; overflow-wrap: anywhere; }
 
+.drawer.profile-drawer { width: min(440px, 100%); padding: 0 26px calc(20px + env(safe-area-inset-bottom)); }
+.profile-drawer .drawer-header { min-height: 82px; padding: 16px 0; }
+.profile-drawer .drawer-header h3 { margin: 0; font-family: var(--serif); font-size: 25px; font-weight: 400; line-height: 1.15; }
+.profile-drawer .profile-drawer-body { padding: 18px 0 24px; gap: 14px; }
 .profile-drawer .profile-drawer-menu { display: grid; gap: 0.5rem; }
 .profile-drawer-menu :is(a, button) { min-height: 44px; padding: 0.75rem; overflow-wrap: anywhere; white-space: normal; }
 .profile-drawer-menu .text-link { display: flex; align-items: center; color: var(--ink); }
 .profile-drawer-menu .button.button-sapphire { color: var(--on-accent); background: var(--accent); border-color: var(--accent); }
+.profile-drawer .profile-quick-actions { grid-template-columns: 1fr; }
+.profile-drawer .profile-action-pill { width: 100%; justify-content: center; }
 .profile-drawer .profile-vic-info { min-width: 0; overflow-wrap: anywhere; }
 .profile-drawer .profile-vic-email { white-space: normal; overflow-wrap: anywhere; }
 .profile-drawer .profile-vic-avatar { flex-shrink: 0; }
 .profile-drawer .profile-vic-avatar svg { width: 1.5rem; height: 1.5rem; }
-.profile-drawer .profile-theme-segmented { flex-wrap: wrap; max-width: 100%; }
-.profile-drawer .theme-seg-btn { min-width: 44px; min-height: 44px; white-space: normal; }
-.profile-drawer .profile-setting-row { flex-wrap: wrap; gap: 0.75rem; }
+.profile-drawer .profile-setting-row { flex-direction: column; align-items: stretch; gap: 0.5rem; padding: 0.5rem 0; }
+.profile-drawer .profile-theme-segmented { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; max-width: 100%; padding: 3px; gap: 3px; border-radius: 8px; }
+.profile-drawer .theme-seg-btn { justify-content: center; min-width: 44px; min-height: 40px; padding: 6px 8px; gap: 6px; font-size: 11.5px; border-radius: 6px; white-space: normal; }
+.profile-drawer .theme-seg-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+.profile-drawer .profile-lang-select { width: 100%; min-height: 42px; padding: 0 12px; border-radius: 6px; font-size: 12.5px; }
 .profile-drawer .profile-footer-links button { min-height: 44px; border: 0; background: none; color: var(--ink); cursor: pointer; }
 .profile-drawer :is(a, button, select):focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 

@@ -31,7 +31,21 @@ return [
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => env('GOOGLE_REDIRECT_URI'),
+        'redirect' => filled(env('GOOGLE_REDIRECT_URI'))
+            ? env('GOOGLE_REDIRECT_URI')
+            : 'http://127.0.0.1:8000/auth/google/callback',
+        'always_visible' => (bool) env('GOOGLE_OAUTH_ALWAYS_VISIBLE', env('APP_ENV') === 'local'),
+    ],
+
+    'gemini' => [
+        'key' => env('GEMINI_API_KEY'),
+        'model' => env('GEMINI_MODEL', 'gemini-3-flash-preview'),
+        'provider' => env('GEMINI_PROVIDER', 'aistudio'),
+        'timeout' => (int) env('GEMINI_TIMEOUT', 15),
+    ],
+
+    'shop' => [
+        'require_auth_checkout' => (bool) env('CHECKOUT_AUTH_WALL', true),
     ],
 
     'apple' => [

@@ -128,7 +128,7 @@ class AdminDashboardController extends Controller
             ->when(($filters['kq'] ?? '') !== '', fn ($query) => $this->containsAny($query, ['cat_title'], $filters['kq']));
         $productQuery = Product::with('category:cat_id,cat_title')
             ->when(($filters['pq'] ?? '') !== '', fn ($query) => $this->containsAny($query, ['product_title'], $filters['pq']));
-        $orderQuery = Order::with('user:id,name,email')
+        $orderQuery = Order::with(['user:id,name,email', 'items:id,order_id,product_title,size,monogram,quantity'])
             ->when(($filters['ostatus'] ?? '') !== '', fn ($query) => $query->where('status', $filters['ostatus']));
         if (($filters['oq'] ?? '') !== '') {
             $orderQuery->where(function ($query) use ($filters) {
@@ -151,6 +151,19 @@ class AdminDashboardController extends Controller
             ->when(($filters['sq'] ?? '') !== '', fn ($query) => $this->containsAny($query, ['email'], $filters['sq']));
         $categoryOptions = Category::orderBy('cat_id')->get(['cat_id', 'cat_title']);
 
+        $orderKpi = Order::query()->selectRaw(
+            "COALESCE(SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END), 0) as orders_pending, ".
+            "COALESCE(SUM(CASE WHEN status IN ('paid', 'processing', 'shipped') THEN 1 ELSE 0 END), 0) as orders_processing, ".
+            "COALESCE(SUM(CASE WHEN status != 'cancelled' THEN total ELSE 0 END), 0) as orders_non_cancelled_value"
+        )->first();
+        $productKpi = Product::query()->selectRaw(
+            'COALESCE(SUM(CASE WHEN is_active = 1 AND stock BETWEEN 1 AND 3 THEN 1 ELSE 0 END), 0) as low_stock_products, '.
+            'COALESCE(SUM(CASE WHEN is_active = 1 AND stock <= 0 THEN 1 ELSE 0 END), 0) as out_of_stock_products'
+        )->first();
+        $conciergeOpen = (int) ConciergeRequest::query()
+            ->selectRaw("COALESCE(SUM(CASE WHEN status IN ('new', 'contacted') THEN 1 ELSE 0 END), 0) as open_total")
+            ->value('open_total');
+
         $viewData = [
             'tableState' => $tableState,
             'categoryOptions' => $categoryOptions,
@@ -162,6 +175,15 @@ class AdminDashboardController extends Controller
                 'products' => Product::count(),
                 'orders' => Order::count(),
                 'categories' => $categoryOptions->count(),
+            ],
+            'msiStats' => [
+                'concierge_open' => $conciergeOpen,
+                'low_stock_products' => (int) ($productKpi?->low_stock_products ?? 0),
+                'out_of_stock_products' => (int) ($productKpi?->out_of_stock_products ?? 0),
+                'orders_pending' => (int) ($orderKpi?->orders_pending ?? 0),
+                'orders_processing' => (int) ($orderKpi?->orders_processing ?? 0),
+                'orders_non_cancelled_value' => (int) ($orderKpi?->orders_non_cancelled_value ?? 0),
+                'revenue_paid' => (int) DB::table('payments')->where('outcome', 'paid')->sum('amount'),
             ],
             'filters' => array_replace($filters, [
                 'status' => $validated['status'] ?? '',

@@ -185,3 +185,12 @@ it('empty state covers all regions without hiding external controls', async () =
     const value = props(); Object.values(value.dashboardSnapshot.tables).forEach(table => { table.rows = []; table.pagination = { total: 0, current: 1, last: 1, next: null, previous: null }; }); await mount(value);
     expect(host.querySelectorAll('[data-admin-table]')).toHaveLength(7); expect(host.querySelectorAll('.admin-empty')).toHaveLength(7); expect(host.querySelector('#form-produk').open).toBe(true);
 });
+it('renders MSI executive KPIs and line-item variants in order rows when present', async () => {
+    const value = props();
+    value.dashboardSnapshot.stats = { ...value.dashboardSnapshot.stats, revenue_paid: 18500000, orders_non_cancelled_value: 27000000, orders_pending: 2, orders_processing: 1, low_stock_products: 3, out_of_stock_products: 1, concierge_open: 4 };
+    value.dashboardSnapshot.tables.pesanan.rows[0].itemsSummary = 'Robe Élan (M · ZF) ×1';
+    await mount(value);
+    expect(host.querySelector('[data-msi-metric="revenue_paid"]').textContent).toContain('Rp18.500.000');
+    expect(host.querySelector('[data-msi-metric="gmv_active"]').textContent).toContain('Rp27.000.000');
+    expect(host.querySelector('#panel-pesanan .order-items-summary').textContent).toBe('Robe Élan (M · ZF) ×1');
+});

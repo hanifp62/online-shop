@@ -137,6 +137,51 @@
         navigation.open = false;
         summary.focus();
     });
+    const nav = navigation.querySelector('.admin-work-nav');
+    if (nav && nav.dataset.adminActive === 'dashboard') {
+        const heading = document.querySelector('.admin-page-heading h1');
+        if (heading && !heading.dataset.defaultTitle) heading.dataset.defaultTitle = heading.textContent;
+        const syncHash = () => {
+            const hash = window.location.hash || '';
+            const isPanel = hash.startsWith('#panel-');
+            let matchedLabel = '';
+            nav.querySelectorAll('a').forEach(link => {
+                const href = link.getAttribute('href') || '';
+                const active = isPanel && (href === hash || href.endsWith(hash));
+                if (active) {
+                    link.dataset.hashCurrent = 'true';
+                    matchedLabel = link.textContent.trim();
+                } else {
+                    delete link.dataset.hashCurrent;
+                }
+            });
+            if (isPanel) {
+                nav.dataset.activeHash = hash;
+                const panelHeading = document.querySelector(`${hash} h2`)?.textContent?.trim();
+                if (heading) heading.textContent = panelHeading || matchedLabel || heading.dataset.defaultTitle || '';
+            } else {
+                delete nav.dataset.activeHash;
+                if (heading && heading.dataset.defaultTitle) heading.textContent = heading.dataset.defaultTitle;
+            }
+        };
+        syncHash();
+        window.addEventListener('hashchange', syncHash);
+        nav.addEventListener('click', event => {
+            const link = event.target.closest?.('a');
+            if (!link) return;
+            const href = link.getAttribute('href') || '';
+            if (link.getAttribute('aria-current') === 'page' && window.location.hash) {
+                event.preventDefault();
+                window.history.pushState(null, '', window.location.pathname + window.location.search);
+                window.dispatchEvent(new Event('hashchange'));
+                window.scrollTo(0, 0);
+                if (isMobile) navigation.open = false;
+            } else if (href.includes('#panel-')) {
+                if (isMobile) navigation.open = false;
+                requestAnimationFrame(() => window.scrollTo(0, 0));
+            }
+        });
+    }
 })();
 </script>
 @yield('after-content')

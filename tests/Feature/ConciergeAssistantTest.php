@@ -81,7 +81,7 @@ class ConciergeAssistantTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page->component('Storefront/Home')
                 ->where('copy.assistant.launcher', 'Help & Concierge')
-                ->where('copy.assistant.disclosure', fn (string $text) => str_contains($text, 'not AI')));
+                ->where('copy.assistant.disclosure', fn (string $text) => str_contains($text, 'official Maison catalogue')));
 
         $slug = Product::where('is_active', true)->value('product_slug');
         $this->get(route('products.show', $slug).'?locale=id')

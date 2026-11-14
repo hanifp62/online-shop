@@ -34,43 +34,45 @@ function CatalogFilters({ t, filters, categories, colors, materials, links, loca
             </summary>
             <form className="catalog-form" method="GET" autoComplete="off" action={links.index} role="search" aria-label={t.filters} onSubmit={submit}>
                 <input type="hidden" name="locale" value={locale} />
-                <div className="catalog-field">
+                <div className="catalog-field catalog-field-search">
                     <label htmlFor="filter-q">{t.search}</label>
                     <input id="filter-q" className="catalog-control" type="search" name="q" defaultValue={filters.q ?? ''} placeholder={t.search_ph} maxLength={100} />
                 </div>
                 {filters.category != null && <input type="hidden" name="category" value={filters.category} />}
                 <fieldset className="catalog-field catalog-category-set">
                     <legend>{t.category}</legend>
-                    {categories.map((category) => (
-                        <label className="catalog-check" key={category.slug}>
-                            <input type="checkbox" name="kategori" value={category.slug} defaultChecked={(filters.kategori ?? []).includes(category.slug)} />
-                            {category.title}
-                        </label>
-                    ))}
+                    <div className="catalog-category-grid">
+                        {categories.map((category) => (
+                            <label className="catalog-check" key={category.slug}>
+                                <input type="checkbox" name="kategori" value={category.slug} defaultChecked={(filters.kategori ?? []).includes(category.slug)} />
+                                <span>{category.title}</span>
+                            </label>
+                        ))}
+                    </div>
                 </fieldset>
-                <div className="catalog-field">
+                <div className="catalog-field catalog-field-quarter">
                     <label htmlFor="filter-color">{t.color}</label>
                     <select id="filter-color" className="catalog-control" name="color" defaultValue={filters.color ?? ''}>
                         <option value="">{t.all}</option>
                         {colors.map((color) => <option key={color} value={color}>{color}</option>)}
                     </select>
                 </div>
-                <div className="catalog-field">
+                <div className="catalog-field catalog-field-quarter">
                     <label htmlFor="filter-material">{t.material}</label>
                     <select id="filter-material" className="catalog-control" name="material" defaultValue={filters.material ?? ''}>
                         <option value="">{t.all}</option>
                         {materials.map((material) => <option key={material} value={material}>{material}</option>)}
                     </select>
                 </div>
-                <div className="catalog-field">
+                <div className="catalog-field catalog-field-quarter">
                     <label htmlFor="filter-harga-min">{t.harga_min}</label>
-                    <input id="filter-harga-min" className="catalog-control" type="number" name="harga_min" defaultValue={filters.harga_min ?? ''} min="0" step="1" />
+                    <input id="filter-harga-min" className="catalog-control" type="number" name="harga_min" defaultValue={filters.harga_min ?? ''} placeholder="0" min="0" step="1" />
                 </div>
-                <div className="catalog-field">
+                <div className="catalog-field catalog-field-quarter">
                     <label htmlFor="filter-harga-max">{t.harga_max}</label>
-                    <input id="filter-harga-max" className="catalog-control" type="number" name="harga_max" defaultValue={filters.harga_max ?? ''} min="0" step="1" />
+                    <input id="filter-harga-max" className="catalog-control" type="number" name="harga_max" defaultValue={filters.harga_max ?? ''} placeholder="30000000" min="0" step="1" />
                 </div>
-                <div className="catalog-field">
+                <div className="catalog-field catalog-field-quarter">
                     <label htmlFor="filter-urut">{t.urut}</label>
                     <select id="filter-urut" className="catalog-control" name="urut" defaultValue={filters.urut ?? ''}>
                         <option value="">{t.all}</option>
@@ -79,15 +81,16 @@ function CatalogFilters({ t, filters, categories, colors, materials, links, loca
                         <option value="tersedia">{t.available}</option>
                     </select>
                 </div>
-                <div className="catalog-field" style={{ justifyContent: 'center', alignItems: 'flex-start' }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                <div className="catalog-field catalog-field-quarter catalog-field-stock">
+                    <span className="catalog-field-spacer" aria-hidden="true">&nbsp;</span>
+                    <label className="catalog-stock-toggle">
                         <input type="checkbox" name="tersedia" value="1" defaultChecked={filters.tersedia === '1'} style={{ width: 20, height: 20 }} />
-                        {t.available}
+                        <span>{t.available}</span>
                     </label>
                 </div>
                 <div className="catalog-form-actions">
-                    <button type="submit" className="catalog-btn">{t.apply}</button>
                     <Link href={links.reset} className="catalog-btn catalog-btn-secondary" preserveState={false}>{t.reset}</Link>
+                    <button type="submit" className="catalog-btn">{t.apply}</button>
                 </div>
             </form>
         </details>
@@ -229,10 +232,10 @@ export function CatalogQuickView({ selection, t, cartUrl, onClose, onSetQuantity
                 </div>
                 <div className="catalog-dialog-content">
                     <span className="catalog-card-category" id="dialog-category">{product?.category}</span>
-                    <h2 className="catalog-card-title" id="dialog-title" style={{ fontSize: 22, marginBottom: 12 }}>{product?.title}</h2>
-                    <div className="catalog-card-price" id="dialog-price" translate="no" style={{ fontSize: 18 }}>{product?.priceLabel}</div>
+                    <h2 className="catalog-card-title" id="dialog-title" style={{ fontSize: 24, marginBottom: 10 }}>{product?.title}</h2>
+                    <div className="catalog-card-price" id="dialog-price" translate="no" style={{ fontSize: 17 }}>{product?.priceLabel}</div>
                     <ProductAttributes product={product} id="dialog-attrs" />
-                    <p id="dialog-desc" style={{ fontSize: 13, color: '#555', lineHeight: 1.5, margin: '0 0 16px' }}>{product?.description}</p>
+                    <p id="dialog-desc" className="catalog-dialog-desc">{product?.description}</p>
                     <form id="dialog-cart-form" method="POST" action={cartUrl} className="catalog-cart-form" onSubmit={(event) => {
                         event.preventDefault();
                         if (soldOut) return;
@@ -281,15 +284,30 @@ function CatalogPage({ t, catalogCopy, products, filters, categories, colors, ma
             </Head>
             <a className="catalog-skip" href="#main-catalog">{t.skip}</a>
             <header className="catalog-header">
+                <div className="catalog-header-start">
+                    <a className="catalog-back-link" href={links.home}>
+                        <svg className="catalog-back-icon" viewBox="0 0 20 12" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.35">
+                            <path d="M19 6H1.5M6.5 1L1.5 6l5 5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <span className="catalog-back-label">{catalogCopy.back ?? catalogCopy.home}</span>
+                    </a>
+                </div>
                 <a className="catalog-brand" href={links.home}>ZAFIRA</a>
-                <a className="catalog-btn" href={links.shop}>{catalogCopy.bag}</a>
-                <nav className="catalog-locales" aria-label={t.language}>
-                    {links.locales.map(({ code, label, url }) => (
-                        <Link key={code} href={url} className={locale === code ? 'active' : ''} aria-current={locale === code ? 'true' : 'false'} preserveState={false}>{label}</Link>
-                    ))}
-                </nav>
+                <div className="catalog-header-end">
+                    <nav className="catalog-locales" aria-label={t.language}>
+                        {links.locales.map(({ code, label, url }) => (
+                            <Link key={code} href={url} className={locale === code ? 'active' : ''} aria-current={locale === code ? 'true' : 'false'} preserveState={false}>{label}</Link>
+                        ))}
+                    </nav>
+                    <a className="catalog-btn catalog-bag-btn" href={links.shop}>{catalogCopy.bag}</a>
+                </div>
             </header>
             <main id="main-catalog" className="catalog-container">
+                <nav className="catalog-breadcrumb" aria-label="Breadcrumb">
+                    <a href={links.home}>{catalogCopy.home}</a>
+                    <span aria-hidden="true">/</span>
+                    <span aria-current="page">{t.title}</span>
+                </nav>
                 <section className="catalog-hero">
                     <span className="catalog-eyebrow">{t.eyebrow}</span>
                     <h1 className="catalog-title">{t.title}</h1>

@@ -135,7 +135,7 @@ class AssistantProductSearch
         return mb_strtolower(preg_replace('/\p{Mn}+/u', '', $decomposed !== false ? $decomposed : (string) $value));
     }
 
-    private function item(Product $product): array
+    public function card(Product $product): array
     {
         $props = StorefrontPageProps::product($product);
 
@@ -145,5 +145,10 @@ class AssistantProductSearch
             'available' => $props['stock'] > 0, 'image' => $props['image'], 'alt' => $props['alt'],
             'href' => $props['href'], 'hasSizes' => $props['hasSizes'],
         ];
+    }
+
+    private function item(Product $product): array
+    {
+        return $this->card($product);
     }
 }

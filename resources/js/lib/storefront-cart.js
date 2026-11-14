@@ -30,6 +30,23 @@ export async function storefrontRequest(url, method = 'GET', payload, options = 
     finally { clearTimeout(timer); }
 }
 
+function variantPayload(variant = {}) {
+    const size = typeof variant?.size === 'string' ? variant.size.trim() : '';
+    const monogram = typeof variant?.monogram === 'string' ? variant.monogram.trim() : '';
+    const extra = {};
+    if (size) extra.size = size;
+    if (monogram) extra.monogram = monogram;
+    return extra;
+}
+
+function matchesCartLine(item, productId, variant = {}) {
+    if (Number(item.product_id) !== Number(productId)) return false;
+    const size = typeof variant?.size === 'string' ? variant.size.trim() : '';
+    const monogram = typeof variant?.monogram === 'string' ? variant.monogram.trim() : '';
+    if (!size && !monogram && !item.size && !item.monogram) return true;
+    return String(item.size || '') === size && String(item.monogram || '') === monogram;
+}
+
 export function createStorefrontCart({ request = storefrontRequest, publish = () => {}, url = '/cart' } = {}) {
     let queue = Promise.resolve();
     let snapshot = { items: [], subtotal: 0 };
@@ -44,15 +61,18 @@ export function createStorefrontCart({ request = storefrontRequest, publish = ()
     const fresh = async () => accept(await request(url));
     return {
         refresh: () => serial(fresh),
-        adjust: (productId, delta) => serial(async () => {
+        adjust: (productId, delta, variant = {}) => serial(async () => {
             await fresh();
-            if (delta < 0 && !snapshot.items.some(item => Number(item.product_id) === Number(productId))) return null;
-            return accept(await request(`${url}/items/${Number(productId)}/delta`, 'POST', { delta }));
+            const extra = variantPayload(variant);
+            if (delta < 0 && !snapshot.items.some(item => matchesCartLine(item, productId, extra))) return null;
+            return accept(await request(`${url}/items/${Number(productId)}/delta`, 'POST', { delta, ...extra }));
         }),
-        remove: productId => serial(async () => {
+        remove: (productId, variant = {}) => serial(async () => {
             await fresh();
-            if (!snapshot.items.some(item => Number(item.product_id) === Number(productId))) return null;
-            return accept(await request(`${url}/items/${Number(productId)}`, 'DELETE'));
+            const extra = variantPayload(variant);
+            if (!snapshot.items.some(item => matchesCartLine(item, productId, extra))) return null;
+            const hasVariant = Object.keys(extra).length > 0;
+            return accept(await (hasVariant ? request(`${url}/items/${Number(productId)}`, 'DELETE', extra) : request(`${url}/items/${Number(productId)}`, 'DELETE')));
         }),
     };
 }

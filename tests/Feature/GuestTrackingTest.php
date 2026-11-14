@@ -13,6 +13,12 @@ class GuestTrackingTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        config(['services.shop.require_auth_checkout' => false]);
+    }
+
     private function makeGuestOrder(): array
     {
         $category = Category::create(['cat_title' => 'Track']);

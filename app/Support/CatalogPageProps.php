@@ -23,22 +23,28 @@ final class CatalogPageProps
             't' => $copy,
             'catalogCopy' => __('shop_ui.catalog'),
             'products' => [
-                'data' => $products->getCollection()->map(fn (Product $product) => [
-                    'id' => $product->product_id,
-                    'title' => $product->product_title,
-                    'slug' => $product->product_slug,
-                    'href' => url('/produk/'.$product->product_slug),
-                    'category' => $product->category?->cat_title,
-                    'priceLabel' => 'Rp'.number_format((float) $product->product_price, 0, ',', '.'),
-                    'stock' => max(0, (int) $product->stock),
-                    'image' => $product->product_image ? $product->imageWidth(600) : null,
-                    'imageSrcset' => $product->imageSrcset([400, 600, 800]),
-                    'quickImage' => $product->imageWidth(800),
-                    'alt' => $product->imageAlt(),
-                    'description' => $product->product_description,
-                    'material' => $product->product_material,
-                    'color' => $product->product_color,
-                ])->all(),
+                'data' => $products->getCollection()->map(function (Product $product) {
+                    $override = StorefrontPageProps::overrideFor($product->product_slug, $product->product_image);
+
+                    return [
+                        'id' => $product->product_id,
+                        'title' => $product->product_title,
+                        'slug' => $product->product_slug,
+                        'href' => url('/produk/'.$product->product_slug),
+                        'category' => $product->category?->cat_title,
+                        'priceLabel' => 'Rp'.number_format((float) $product->product_price, 0, ',', '.'),
+                        'stock' => max(0, (int) $product->stock),
+                        'image' => $override ? asset("prototype/assets/{$override}.jpg") : ($product->product_image ? $product->imageWidth(600) : null),
+                        'imageSrcset' => $override
+                            ? asset("prototype/assets/{$override}-600.webp").' 600w, '.asset("prototype/assets/{$override}.webp").' 896w'
+                            : $product->imageSrcset([400, 600, 800]),
+                        'quickImage' => $override ? asset("prototype/assets/{$override}.jpg") : $product->imageWidth(800),
+                        'alt' => $product->imageAlt(),
+                        'description' => $product->product_description,
+                        'material' => $product->product_material,
+                        'color' => $product->product_color,
+                    ];
+                })->all(),
                 'total' => $products->total(),
                 'current_page' => $products->currentPage(),
                 'last_page' => $products->lastPage(),

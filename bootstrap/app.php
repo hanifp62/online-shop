@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HealthController;
+use App\Http\Controllers\PrototypeAssetController;
 use App\Http\Middleware\AuthenticateGuardSession;
 use App\Http\Middleware\AuthorizeAdmin;
 use App\Http\Middleware\CorrelationIdMiddleware;
@@ -28,6 +29,10 @@ return Application::configure(basePath: dirname(__DIR__))
         // Di luar grup web: tanpa sesi/cookie/CSRF, sehingga DB mati tetap menghasilkan 503 jujur.
         then: function (): void {
             Route::get('/health', HealthController::class)->name('health');
+            Route::get('/prototype/{path}', PrototypeAssetController::class)
+                ->where('path', '.+')
+                ->middleware(SecurityHeaders::class)
+                ->name('prototype.asset');
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {

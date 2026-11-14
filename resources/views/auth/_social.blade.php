@@ -1,4 +1,4 @@
-@php($socialProviders = collect(['google' => 'Google', 'apple' => 'Apple'])->filter(fn ($label, $provider) => \App\Http\Controllers\SocialAuthController::enabled($provider)))
+@php($socialProviders = collect(['google' => 'Google', 'apple' => 'Apple'])->filter(fn ($label, $provider) => \App\Http\Controllers\SocialAuthController::visible($provider)))
 @if ($socialProviders->isNotEmpty())
     <div class="social-auth" role="group" aria-label="{{ __('auth_ui.social.group') }}">
         @foreach ($socialProviders as $provider => $label)

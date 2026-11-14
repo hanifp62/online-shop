@@ -57,6 +57,7 @@ class AmadisShopTest extends TestCase
 
     public function test_shop_page_renders_for_guest_and_discloses_pending_checkout(): void
     {
+        config(['services.shop.require_auth_checkout' => false]);
         $this->get('/belanja')->assertOk()
             ->assertSee('id="checkout-summary"', false)
             ->assertDontSee('id="guest-summary"', false)
@@ -74,7 +75,7 @@ class AmadisShopTest extends TestCase
 
     public function test_shop_page_discloses_old_browser_cart_is_separate(): void
     {
-        $this->get('/belanja')->assertOk()->assertSee('tidak tersambung', false);
+        $this->get('/belanja')->assertOk()->assertSee('otomatis tersinkronisasi', false);
     }
 
     public function test_catalog_links_to_shop_and_discloses_cart_limits(): void
@@ -82,7 +83,7 @@ class AmadisShopTest extends TestCase
         $this->product();
         $this->get('/koleksi')->assertOk()
             ->assertSee('Belanja &amp; tas', false)
-            ->assertSee('menggantikan jumlah lama', false);
+            ->assertSee('menggantikan jumlah sebelumnya di tas', false);
     }
 
     public function test_cart_add_from_catalog_is_server_scoped(): void

@@ -96,6 +96,7 @@ docs/
 │   ├── BRAND_TOKEN_LOCK.md                 # R-55: token brand, guard Node, bukti & batas
 │   ├── GUIDING_MICROCOPY_AUDIT.md            # R-54: alt gambar, pesan galat membimbing, bukti & batas
 │   ├── SCHEDULED_TASKS_AND_ENV_PARITY.md     # Tugas terjadwal, cron, queue, dan paritas konfigurasi lingkungan
+│   ├── PANDUAN_PERINTAH_CEPAT.md             # Cheatsheet perintah PowerShell lokal (serve, auth:users, build, cache, backup, test)
 │   └── TEAM_SUPPORT_LEDGER.md                # Ledger dukungan tim dan sekretariat
 ├── 05-quality/
 │   ├── TEST_PLAN.md                          # Rencana pengujian otomatis, manual, & browser

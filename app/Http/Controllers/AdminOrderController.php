@@ -92,6 +92,8 @@ class AdminOrderController extends Controller
                 'id' => $item->id,
                 'product_id' => $item->product_id,
                 'product_title' => $item->product_title,
+                'size' => $item->size,
+                'monogram' => $item->monogram,
                 'unit_price' => $item->unit_price,
                 'quantity' => $item->quantity,
                 'subtotal' => $item->subtotal,
@@ -279,7 +281,12 @@ class AdminOrderController extends Controller
             .'<table><thead><tr><th>'.e(trans('admin_ui.invoice.product')).'</th><th>'.e(trans('admin_ui.invoice.quantity')).'</th><th>'.e(trans('admin_ui.invoice.price')).'</th><th>'.e(trans('admin_ui.invoice.subtotal')).'</th></tr></thead><tbody>';
 
         foreach ($order->items as $item) {
-            $html .= '<tr><td>'.e($item->product_title).'</td><td>'.$item->quantity.'</td><td>Rp '.number_format($item->unit_price, 0, ',', '.').'</td><td>Rp '.number_format($item->subtotal, 0, ',', '.').'</td></tr>';
+            $variantMeta = array_filter([
+                $item->size ? 'Ukuran '.$item->size : null,
+                $item->monogram ? 'Monogram '.$item->monogram : null,
+            ]);
+            $label = $item->product_title.($variantMeta ? ' ('.implode(' · ', $variantMeta).')' : '');
+            $html .= '<tr><td>'.e($label).'</td><td>'.$item->quantity.'</td><td>Rp '.number_format($item->unit_price, 0, ',', '.').'</td><td>Rp '.number_format($item->subtotal, 0, ',', '.').'</td></tr>';
         }
 
         $html .= '</tbody></table><p style="text-align:right;font-weight:bold;margin-top:20px">'

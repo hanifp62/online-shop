@@ -25,6 +25,11 @@
     <link href="https://fonts.bunny.net/css?family=bodoni-moda:400,400i,500,500i,600&family=manrope:300,400,500,600&display=swap" rel="stylesheet">
     @php
         $storefrontAppCopy = array_merge(__('shop_ui.app_js'), ['stock_rejection' => __('customer_messages.cart.stock'), 'adjust_stock_rejection' => __('customer_messages.cart.adjust_stock')]);
+        $productAssetOverride = \App\Support\StorefrontPageProps::overrideFor($product->product_slug, $product->product_image);
+        $productHeroSrc = $productAssetOverride ? asset("prototype/assets/{$productAssetOverride}.jpg") : $product->imageWidth(1600);
+        $productHeroSrcset = $productAssetOverride
+            ? asset("prototype/assets/{$productAssetOverride}-600.webp").' 600w, '.asset("prototype/assets/{$productAssetOverride}.webp").' 896w'
+            : $product->imageSrcset([800, 1200, 1600]);
     @endphp
     <script type="application/json" id="zafira-app-copy">@json($storefrontAppCopy)</script>
     @vite(['resources/css/app.css'])
@@ -51,7 +56,7 @@
             </a>
             <div class="product-detail-grid">
                 <div class="product-detail-media">
-                    <img src="{{ $product->imageWidth(1600) }}" @if ($product->imageSrcset([800, 1200, 1600])) srcset="{{ $product->imageSrcset([800, 1200, 1600]) }}" sizes="(max-width: 900px) 100vw, 55vw" @endif decoding="async" alt="{{ $product->imageAlt() }}" fetchpriority="high" width="1200" height="1500">
+                    <img src="{{ $productHeroSrc }}" @if ($productHeroSrcset) srcset="{{ $productHeroSrcset }}" sizes="(max-width: 900px) 100vw, 55vw" @endif decoding="async" alt="{{ $product->imageAlt() }}" fetchpriority="high" width="1200" height="1500">
                 </div>
                 <div class="product-detail-info">
                     <span class="eyebrow">{{ $product->category?->cat_title }}</span>

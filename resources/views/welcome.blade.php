@@ -2,15 +2,9 @@
     $products = $products ?? [];
     $storefrontAppCopy = array_merge(__('shop_ui.app_js'), ['stock_rejection' => __('customer_messages.cart.stock'), 'adjust_stock_rejection' => __('customer_messages.cart.adjust_stock')]);
     $purchaseIds = \App\Models\Product::whereIn('product_slug', collect($products)->pluck('id'))->pluck('product_id', 'product_slug');
-    $localAssets = [
-        'sac-seraphine' => asset('prototype/assets/minaudiere_saphir.jpg'),
-        'chemise-riviere' => asset('prototype/assets/chemise_riviere.jpg'),
-        'elan-dress' => asset('prototype/assets/robe_elan.jpg'),
-        'manteau-firenze' => asset('prototype/assets/manteau_firenze.jpg'),
-        'echarpe-eclat' => asset('prototype/assets/echarpe_eclat.jpg'),
-        'robe-aurore' => asset('prototype/assets/robe_aurore.jpg'),
-        'riva-loafer' => asset('prototype/assets/mocassin_riva.jpg'),
-    ];
+    $localAssets = collect(\App\Support\StorefrontPageProps::IMAGE_OVERRIDES)
+        ->mapWithKeys(fn ($file, $slug) => [$slug => asset("prototype/assets/{$file}.jpg")])
+        ->all();
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-server-locale="{{ app()->getLocale() }}" data-locale-url="{{ route('locale.update') }}">
@@ -76,24 +70,24 @@
         .film-grain-overlay {
             display: none;
         }
-        .hero { position: relative; min-height: 90vh; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #08101d; }
+        .hero { position: relative; min-height: 92svh; padding: 136px 20px 88px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #08101d; }
         .hero-media { position: absolute; inset: 0; }
         .hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; filter: brightness(0.72) contrast(1.05); }
         .hero-overlay { position: absolute; inset: 0; background: rgba(8, 16, 29, 0.45); }
-        .hero-edition { position: absolute; top: 120px; right: 4vw; color: rgba(255,255,255,0.7); font-family: var(--mono, monospace); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; z-index: 2; text-align: right; }
-        .hero-content { position: relative; left: auto; right: auto; bottom: auto; z-index: 2; max-width: 800px; text-align: center; padding: 0 20px; color: #fff; margin-top: 40px; }
+        .hero-edition { position: absolute; top: 144px; right: 4vw; color: rgba(255,255,255,0.7); font-family: var(--mono, monospace); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; z-index: 2; text-align: right; }
+        .hero-content { position: relative; left: auto; right: auto; bottom: auto; z-index: 2; max-width: 800px; text-align: center; padding: 0 20px; color: #fff; margin-top: 0; }
         .hero-content h1 { font-family: 'Bodoni Moda', serif; font-size: clamp(38px, 6vw, 68px); font-weight: 400; line-height: 1.1; margin: 18px 0 24px; text-shadow: 0 4px 24px rgba(0,0,0,0.4); }
         .hero-content p { font-size: clamp(14px, 1.8vw, 17px); color: rgba(255,255,255,0.88); max-width: 580px; margin: 0 auto 32px; font-weight: 300; }
-        .hero-scroll { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.75); font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; }
-        .hero-scroll span { width: 1px; height: 32px; background: rgba(182, 154, 100, 0.65); }
+        .hero-scroll { position: absolute; bottom: 28px; left: 4vw; right: auto; transform: none; min-height: 44px; padding: 8px 4px; color: rgba(255,255,255,0.76); font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase; display: inline-flex; flex-direction: row; align-items: center; gap: 12px; z-index: 2; }
+        .hero-scroll > span:first-child { display: block; width: 28px; height: 1px; flex-shrink: 0; background: rgba(255, 255, 255, 0.45); }
+        .hero-scroll > span:first-child::after { display: none; }
+        .hero-scroll > span:last-child { display: inline-block; width: auto; height: auto; background: transparent; overflow: visible; }
         
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             .hero-scroll { display: none !important; }
-        }
-        @media (max-width: 768px) {
             .desktop-only-flex { display: none !important; }
-            .announcement-bar { padding: 0 16px; height: 34px; justify-content: center; text-align: center; }
-            .announcement-bar p { font-size: 8.5px; letter-spacing: 0.1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; }
+            .announcement-bar { padding: 0 16px; min-height: 34px; height: 34px; grid-template-columns: 1fr; justify-items: center; text-align: center; }
+            .announcement-copy { font-size: 8.5px; letter-spacing: 0.14em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; }
         }
     </style>
 </head>
@@ -118,32 +112,21 @@
     </svg>
 
     <div class="announcement-bar">
-        <p id="locale-status" role="status" aria-live="polite" aria-atomic="true" style="font-size:11px; color:inherit"></p>
-        <p data-i18n="announcement">{{ __('shop_ui.welcome.announcement') }}</p>
-        <div class="desktop-only-flex" style="display:flex; align-items:center; gap:16px;">
+        <div class="announcement-start desktop-only-flex">
             <div class="lang-switcher" role="radiogroup" aria-label="{{ __('shop_ui.header.language_selector') }}">
                 <button type="button" class="lang-btn active" data-set-lang="id" aria-label="Bahasa Indonesia" role="radio" aria-checked="true">ID</button>
-                <span class="lang-divider">/</span>
                 <button type="button" class="lang-btn" data-set-lang="en" aria-label="English" role="radio" aria-checked="false">EN</button>
-                <span class="lang-divider">/</span>
                 <button type="button" class="lang-btn" data-set-lang="fr" aria-label="Français" role="radio" aria-checked="false">FR</button>
-                <span class="lang-divider">/</span>
                 <button type="button" class="lang-btn" data-set-lang="it" aria-label="Italiano" role="radio" aria-checked="false">IT</button>
-                <span class="lang-divider">/</span>
                 <button type="button" class="lang-btn" data-set-lang="zh" aria-label="中文" role="radio" aria-checked="false">ZH</button>
             </div>
-            <div class="theme-switcher" role="radiogroup" aria-label="{{ __('shop_ui.welcome.theme_selector') }}">
-                <button type="button" class="theme-btn" data-set-theme="light" title="{{ __('shop_ui.welcome.theme_light') }}" aria-label="{{ __('shop_ui.welcome.theme_light') }}" data-i18n-title="theme_light" data-i18n-aria-label="theme_light" role="radio" aria-checked="false">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-                </button>
-                <button type="button" class="theme-btn" data-set-theme="dark" title="{{ __('shop_ui.welcome.theme_dark') }}" aria-label="{{ __('shop_ui.welcome.theme_dark') }}" data-i18n-title="theme_dark" data-i18n-aria-label="theme_dark" role="radio" aria-checked="false">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                </button>
-                <button type="button" class="theme-btn active" data-set-theme="system" title="{{ __('shop_ui.welcome.theme_system') }}" aria-label="{{ __('shop_ui.welcome.theme_system') }}" data-i18n-title="theme_system" data-i18n-aria-label="theme_system" role="radio" aria-checked="true">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                </button>
-            </div>
-            <button type="button" data-open-concierge data-i18n="rendezvous_btn">{{ __('shop_ui.welcome.rendezvous_btn') }}</button>
+        </div>
+        <div class="announcement-center">
+            <p class="announcement-copy" data-i18n="announcement">{{ __('shop_ui.welcome.announcement') }}</p>
+            <p id="locale-status" role="status" aria-live="polite" aria-atomic="true"></p>
+        </div>
+        <div class="announcement-end desktop-only-flex">
+            <button type="button" class="announcement-cta" data-open-concierge data-i18n="rendezvous_btn">{{ __('shop_ui.welcome.rendezvous_btn') }}</button>
         </div>
     </div>
 
@@ -195,7 +178,7 @@
             <a href="#packaging-section"><span class="mobile-menu-ordinal" aria-hidden="true">05</span><span lang="fr" data-i18n="nav_packaging">{{ __('shop_ui.welcome.nav_packaging') }}</span></a>
             <a href="#services"><span class="mobile-menu-ordinal" aria-hidden="true">06</span><span data-i18n="nav_services">{{ __('shop_ui.welcome.nav_services') }}</span></a>
         </nav>
-        <div class="mobile-utilities" style="display:flex; flex-direction:column; gap:14px; padding:18px 0; border-top:1px solid rgba(255,255,255,0.15); border-bottom:1px solid rgba(255,255,255,0.15);">
+        <div class="mobile-utilities" style="display:flex; flex-direction:column; gap:14px; padding:16px 20px; border-top:1px solid rgba(223,192,136,0.16); border-bottom:1px solid rgba(223,192,136,0.16);">
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <span style="font-size:10px; text-transform:uppercase; letter-spacing:0.15em; color:var(--gold);" data-i18n="lang_selector">{{ __('shop_ui.welcome.lang_selector') }}</span>
                 <div class="lang-switcher" role="radiogroup" aria-label="{{ __('shop_ui.header.language_selector') }}">
@@ -543,35 +526,7 @@
         <div class="footer-brand"><a class="brand brand-horizontal" href="{{ route('home') }}"><x-brand-mark /></a><p data-i18n="footer_motto">{{ __('shop_ui.footer.motto') }}</p></div>
         <div class="footer-links"><h3 data-i18n="footer_col_collection">{{ __('shop_ui.welcome.footer_col_collection') }}</h3><a href="#new-arrivals" data-i18n="footer_women">{{ __('shop_ui.welcome.footer_women') }}</a><a href="#new-arrivals" data-i18n="footer_men">{{ __('shop_ui.welcome.footer_men') }}</a><a href="#new-arrivals" data-i18n="footer_bags">{{ __('shop_ui.welcome.footer_bags') }}</a><a href="#new-arrivals" data-i18n="footer_accessories">{{ __('shop_ui.welcome.footer_accessories') }}</a></div>
         <div class="footer-links"><h3 data-i18n="footer_col_maison">{{ __('shop_ui.welcome.footer_col_maison') }}</h3><a href="#maison" data-i18n="footer_story">{{ __('shop_ui.welcome.footer_story') }}</a><a href="#atelier" data-i18n="footer_atelier_z">{{ __('shop_ui.welcome.footer_atelier_z') }}</a><a href="#services" data-i18n="footer_services">{{ __('shop_ui.welcome.footer_services') }}</a><a href="#returns-policy">{{ __('shop_ui.footer.shipping_returns') }}</a><button type="button" data-open-concierge lang="fr" data-i18n="footer_rendezvous">{{ __('shop_ui.welcome.footer_rendezvous') }}</button></div>
-        <!-- Canonical Luxury Footer International Preferences Bar (Hermès & Chanel ATM) -->
-        <div class="footer-preferences-bar">
-            <div class="footer-pref-item">
-                <label class="footer-pref-label" for="welcome-footer-lang-select" data-i18n="footer_lang_label">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                    <span data-i18n="footer_lang_label">{{ __('shop_ui.welcome.footer_lang_label') }}</span>
-                </label>
-                <select id="welcome-footer-lang-select" class="zafira-lang-select" aria-label="{{ __('shop_ui.header.language_selector') }}" data-i18n-aria-label="lang_selector">
-                    <option value="id">Indonesia · Bahasa Indonesia (IDR Rp)</option>
-                    <option value="en">International · English</option>
-                    <option value="fr">France · Français</option>
-                    <option value="it">Italia · Italiano</option>
-                    <option value="zh">中国 · 中文</option>
-                </select>
-            </div>
-            <div class="footer-pref-item">
-                <label class="footer-pref-label" for="welcome-footer-theme-select" data-i18n="footer_theme_label">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-                    <span data-i18n="footer_theme_label">{{ __('shop_ui.welcome.footer_theme_label') }}</span>
-                </label>
-                <select id="welcome-footer-theme-select" class="zafira-theme-select" aria-label="{{ __('shop_ui.welcome.theme_selector') }}">
-                    <option value="light" data-i18n="theme_light">{{ __('shop_ui.welcome.theme_light') }}</option>
-                    <option value="dark" data-i18n="theme_dark">{{ __('shop_ui.welcome.theme_dark') }}</option>
-                    <option value="system" data-i18n="theme_system">{{ __('shop_ui.welcome.theme_system') }}</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="footer-bottom"><span data-i18n="footer_legal_rights">© {{ date('Y') }} ZAFIRA Maison. {{ __('shop_ui.footer.rights') }}</span><div><button type="button" class="text-link" data-open-shortcuts style="background:none; border:none; color:inherit; font:inherit; cursor:pointer; text-transform:uppercase; letter-spacing:0.12em; font-size:11px;" aria-label="{{ __('shop_ui.welcome.shortcuts_open') }}" title="{{ __('shop_ui.welcome.shortcuts_hint') }}"><span data-i18n="shortcuts_trigger">{{ __('shop_ui.welcome.shortcuts_trigger') }}</span></button><a href="#services" data-i18n="footer_terms">{{ __('shop_ui.welcome.footer_terms') }}</a><a href="#main-content">{{ __('shop_ui.welcome.region_badge') }}</a><a href="#main-content" aria-label="Instagram ZAFIRA"><svg aria-hidden="true"><use href="#icon-instagram"/></svg></a></div></div>
+        <div class="footer-bottom"><span data-i18n="footer_legal_rights">© {{ date('Y') }} ZAFIRA Maison. {{ __('shop_ui.footer.rights') }}</span><div><button type="button" class="text-link" data-open-shortcuts style="background:none; border:none; color:inherit; font:inherit; cursor:pointer; text-transform:uppercase; letter-spacing:0.12em; font-size:11px;" aria-label="{{ __('shop_ui.welcome.shortcuts_open') }}" title="{{ __('shop_ui.welcome.shortcuts_hint') }}"><span data-i18n="shortcuts_trigger">{{ __('shop_ui.welcome.shortcuts_trigger') }}</span></button><a href="#services" data-i18n="footer_terms">{{ __('shop_ui.welcome.footer_terms') }}</a><button type="button" class="text-link" data-open-profile style="background:none; border:none; color:inherit; font:inherit; cursor:pointer; text-transform:uppercase; letter-spacing:0.12em; font-size:11px;">{{ __('shop_ui.welcome.region_badge') }}</button><a href="#main-content" aria-label="Instagram ZAFIRA"><svg aria-hidden="true"><use href="#icon-instagram"/></svg></a></div></div>
     </footer>
 
     <div class="overlay" data-overlay></div>

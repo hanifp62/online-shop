@@ -38,7 +38,7 @@ class UnifiedPurchaseCartTest extends TestCase
             ->assertSee('data-cart-items', false);
         $this->get('/produk/sac-seraphine')->assertOk()
             ->assertSee('data-product-id="'.$product->product_id.'"', false)
-            ->assertSee('Ukuran dan monogram hanya melalui concierge', false)
+            ->assertSee('Ukuran dan inisial monogram yang Anda pilih tersimpan langsung di Tas Belanja', false)
             ->assertSee('data-open-concierge', false);
     }
 
@@ -57,13 +57,18 @@ class UnifiedPurchaseCartTest extends TestCase
         $this->get('/belanja')->assertOk()->assertSee('Tas Belanja', false);
     }
 
-    public function test_personalization_is_rejected_at_server_purchase_boundary(): void
+    public function test_valid_variants_are_accepted_while_invalid_variants_are_rejected_at_server_boundary(): void
     {
         $product = $this->product();
-        $this->postJson('/cart/items', ['product_id' => $product->product_id, 'quantity' => 1, 'size' => 'FR 38'])
+        $this->postJson('/cart/items', ['product_id' => $product->product_id, 'quantity' => 1, 'size' => 'XXL-INVALID'])
             ->assertUnprocessable()->assertJsonValidationErrors('size');
-        $this->postJson('/cart/items', ['product_id' => $product->product_id, 'quantity' => 1, 'monogram' => 'ZA'])
+        $this->postJson('/cart/items', ['product_id' => $product->product_id, 'quantity' => 1, 'monogram' => '1234'])
             ->assertUnprocessable()->assertJsonValidationErrors('monogram');
         $this->getJson('/cart')->assertJsonCount(0, 'items');
+
+        $this->postJson('/cart/items', ['product_id' => $product->product_id, 'quantity' => 1, 'size' => 'FR 38', 'monogram' => 'ZA'])
+            ->assertOk()
+            ->assertJsonPath('items.0.size', 'FR 38')
+            ->assertJsonPath('items.0.monogram', 'ZA');
     }
 }

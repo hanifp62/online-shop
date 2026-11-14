@@ -21,8 +21,9 @@ class TrackingCsrfTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        // Keep the track limiter from masking CSRF results.
+        // Keep the track limiter from masking CSRF results and allow legacy guest order seeding.
         Cache::flush();
+        config(['services.shop.require_auth_checkout' => false]);
     }
 
     /** Laravel skips CSRF under unit tests; re-enable only that bypass. */

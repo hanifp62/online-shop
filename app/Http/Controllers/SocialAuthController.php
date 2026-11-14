@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\SocialAccount;
 use App\Models\User;
+use App\Support\IntendedRedirect;
+use App\Support\WindowsCaBundle;
+use GuzzleHttp\Client;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,10 +27,21 @@ class SocialAuthController extends Controller
         return filled(config("services.$provider.client_id")) && filled(config("services.$provider.redirect"));
     }
 
-    public function redirect(string $provider): SymfonyRedirect
+    public static function visible(string $provider): bool
     {
+        return self::enabled($provider)
+            || ($provider === 'google' && (bool) config('services.google.always_visible', false));
+    }
+
+    public function redirect(Request $request, string $provider): SymfonyRedirect
+    {
+        IntendedRedirect::capture($request);
         if (! self::enabled($provider)) {
-            return $this->fail(__('customer_messages.social.unavailable', ['provider' => ucfirst($provider)]));
+            $message = ($provider === 'google' && app()->isLocal())
+                ? 'Login Google siap diaktifkan: isi GOOGLE_CLIENT_ID dan GOOGLE_CLIENT_SECRET dari Google Cloud Console pada file .env server lokal.'
+                : __('customer_messages.social.unavailable', ['provider' => ucfirst($provider)]);
+
+            return $this->fail($message);
         }
 
         return $this->driver($provider)->redirect();
@@ -172,6 +186,11 @@ class SocialAuthController extends Controller
     private function driver(string $provider)
     {
         $driver = Socialite::driver($provider);
+
+        $caBundle = ! app()->runningUnitTests() ? WindowsCaBundle::resolve() : null;
+        if ($caBundle !== null && method_exists($driver, 'setHttpClient')) {
+            $driver->setHttpClient(new Client(['verify' => $caBundle]));
+        }
 
         // Apple mengirim callback via POST lintas situs; cookie sesi SameSite=lax tidak ikut,
         // jadi nonce dibawa cookie terenkripsi khusus (lihat README provider).

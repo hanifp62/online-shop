@@ -7,8 +7,9 @@
 
 
     @if (auth('admin')->user()->getRawOriginal('totp_secret') === null)
-        <div class="auth-errors" role="status">
-            <a class="button button-sapphire" href="{{ route('admin.totp.enrol') }}">{{ __('admin_ui.dashboard.enable_totp') }}</a>
+        <div class="admin-totp-callout" role="status">
+            <p class="admin-totp-copy">{{ __('admin_ui.dashboard.totp_prompt') }}</p>
+            <a class="button button-sapphire admin-totp-cta" href="{{ route('admin.totp.enrol') }}">{{ __('admin_ui.dashboard.enable_totp') }}</a>
         </div>
     @endif
 
@@ -17,17 +18,19 @@
     @endif
 
     <div class="admin-overview">
-        <dl class="stat-grid">
-            <div class="stat-card" data-dashboard-metric="orders"><dt><a href="#panel-pesanan">{{ __('admin_ui.common.order') }}</a></dt><dd>{{ $stats['orders'] }}</dd></div>
-            <div class="stat-card" data-dashboard-metric="products"><dt><a href="#panel-produk">{{ __('admin_ui.common.product') }}</a></dt><dd>{{ $stats['products'] }}</dd></div>
-            <div class="stat-card" data-dashboard-metric="concierge"><dt><a href="#panel-concierge">{{ __('admin_ui.common.concierge') }}</a></dt><dd>{{ $stats['concierge'] }}</dd></div>
-            <div class="stat-card" data-dashboard-metric="users"><dt><a href="#panel-user">{{ __('admin_ui.common.user') }}</a></dt><dd>{{ $stats['users'] }}</dd></div>
-        </dl>
-        <dl class="stat-secondary">
-            <div data-dashboard-metric="categories"><dt><a href="#panel-kategori">{{ __('admin_ui.common.category') }}</a></dt><dd>{{ $stats['categories'] }}</dd></div>
-            <div data-dashboard-metric="backups"><dt><a href="#panel-audit">{{ __('admin_ui.common.audit') }}</a></dt><dd>{{ $stats['backups'] }}</dd></div>
-            <div data-dashboard-metric="subscribers"><dt><a href="#panel-subscriber">{{ __('admin_ui.common.subscriber') }}</a></dt><dd>{{ $stats['subscribers'] }}</dd></div>
-        </dl>
+        <div class="admin-module-ledger">
+            <dl class="stat-grid">
+                <div class="stat-card" data-dashboard-metric="orders"><dt><a href="#panel-pesanan">{{ __('admin_ui.common.order') }}</a></dt><dd>{{ $stats['orders'] }}</dd></div>
+                <div class="stat-card" data-dashboard-metric="products"><dt><a href="#panel-produk">{{ __('admin_ui.common.product') }}</a></dt><dd>{{ $stats['products'] }}</dd></div>
+                <div class="stat-card" data-dashboard-metric="concierge"><dt><a href="#panel-concierge">{{ __('admin_ui.common.concierge') }}</a></dt><dd>{{ $stats['concierge'] }}</dd></div>
+                <div class="stat-card" data-dashboard-metric="users"><dt><a href="#panel-user">{{ __('admin_ui.common.user') }}</a></dt><dd>{{ $stats['users'] }}</dd></div>
+            </dl>
+            <dl class="stat-secondary">
+                <div class="stat-secondary-card" data-dashboard-metric="categories"><dt><a href="#panel-kategori">{{ __('admin_ui.common.category') }}</a></dt><dd>{{ $stats['categories'] }}</dd></div>
+                <div class="stat-secondary-card" data-dashboard-metric="backups"><dt><a href="#panel-audit">{{ __('admin_ui.common.audit') }}</a></dt><dd>{{ $stats['backups'] }}</dd></div>
+                <div class="stat-secondary-card" data-dashboard-metric="subscribers"><dt><a href="#panel-subscriber">{{ __('admin_ui.common.subscriber') }}</a></dt><dd>{{ $stats['subscribers'] }}</dd></div>
+            </dl>
+        </div>
     </div>
 
     <nav class="admin-nav" aria-label="{{ __('admin_ui.dashboard.navigation') }}">

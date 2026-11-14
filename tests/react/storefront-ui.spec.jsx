@@ -63,10 +63,17 @@ it('slash focuses the actual catalog search; monogram and foil have one native o
     expect(host.querySelector('button[aria-label="Perak"]').getAttribute('aria-pressed')).toBe('true');
     expect(calls.filter(call => call.method !== 'GET')).toHaveLength(0);
 });
-it('PDP personalisation submits an atelier inquiry, never a cart mutation', async () => {
+it('PDP size pills and monogram add directly to server/guest cart, while bespoke inquiry opens Atelier concierge', async () => {
     await mount(Show);
+    await click(host.querySelector('[data-size-pill="M"]'));
+    expect(host.querySelector('[data-size-pill="M"]').getAttribute('aria-pressed')).toBe('true');
     await input(host.querySelector('#pdp-monogram-input'), 'ab2c');
     await click(button(copy.pdp.add));
+    expect(calls.find(call => call.url.endsWith('/delta')).body).toEqual({ delta: 1, size: 'M', monogram: 'ABC' });
+    expect(host.querySelector('.cart-drawer')).not.toBeNull();
+    await click(host.querySelector('[data-sf-cart-close]'));
+
+    await click(host.querySelector('#pdp-bespoke-inquiry'));
     expect(host.querySelector('.concierge-order-summary').textContent).toContain('ABC');
     expect(host.querySelector('[name="service"]').value).toBe('atelier');
     expect(host.querySelector('[name="order_items"]').value).toBe('');
@@ -77,7 +84,6 @@ it('PDP personalisation submits an atelier inquiry, never a cart mutation', asyn
     await flush();
     const submitted = calls.find(call => call.url === '/concierge');
     expect(submitted.body.notes).toContain('ABC'); expect(submitted.body.order_items).toBe('');
-    expect(calls.some(call => call.url.includes('/delta'))).toBe(false);
 });
 it('catalog PDP add uses only numeric delta, opens cart, and undo restores server quantity', async () => {
     await mount(Show);
@@ -165,11 +171,14 @@ it('cart refreshes on return to the tab, never while hidden', async () => {
     await act(async () => document.dispatchEvent(new Event('visibilitychange'))); await flush(); expect(calls).toHaveLength(initial + 1);
 });
 it('theme controls synchronize without a DOM translation observer and honor system changes', async () => {
-    await mount(); const select = host.querySelector('.zafira-theme-select');
-    await act(async () => { select.value = 'dark'; select.dispatchEvent(new Event('change', { bubbles: true })); });
-    expect(document.documentElement.dataset.theme).toBe('dark'); expect(localStorage.getItem('zafira_theme')).toBe('dark');
+    await mount();
+    expect(host.querySelector('.announcement-bar .theme-switcher')).toBeNull();
+    expect(host.querySelector('.footer-preferences-bar')).toBeNull();
     await click(host.querySelector(`button[aria-label="${copy.header.login_aria}"]`));
-    expect(host.querySelector(`button[aria-label="${copy.welcome.theme_dark}"][class*="theme-seg"]`).getAttribute('aria-pressed')).toBe('true');
+    const darkBtn = host.querySelector(`button[aria-label="${copy.welcome.theme_dark}"][class*="theme-seg"]`);
+    await click(darkBtn);
+    expect(document.documentElement.dataset.theme).toBe('dark'); expect(localStorage.getItem('zafira_theme')).toBe('dark');
+    expect(darkBtn.getAttribute('aria-pressed')).toBe('true');
 });
 it.each(['id', 'en', 'fr', 'it', 'zh'])('native home and PDP use server copy for locale %s', async locale => {
     const translated = translatedCopy(locale);
@@ -186,8 +195,8 @@ it('system theme follows OS changes but an explicit preference does not', async 
     await mount(); expect(document.documentElement.dataset.theme).toBe('dark');
     await act(async () => { media.matches = false; listeners.forEach(fn => fn()); });
     expect(document.documentElement.dataset.theme).toBe('light');
-    const select = host.querySelector('.zafira-theme-select');
-    await act(async () => { select.value = 'dark'; select.dispatchEvent(new Event('change', { bubbles: true })); });
+    await click(host.querySelector(`button[aria-label="${copy.header.login_aria}"]`));
+    await click(host.querySelector(`button[aria-label="${copy.welcome.theme_dark}"][class*="theme-seg"]`));
     await act(async () => listeners.forEach(fn => fn()));
     expect(document.documentElement.dataset.theme).toBe('dark');
 });
@@ -246,7 +255,7 @@ it('R6-7 closing concierge retains its draft, an inquiry does not overwrite it, 
     expect(host.querySelector('[name="name"]').value).toBe('Nama draft');
     expect(host.querySelector('[name="notes"]').value).toBe('Catatan pribadi');
     await click(host.querySelector('.concierge-modal .modal-close'));
-    await input(host.querySelector('#pdp-monogram-input'), 'ZA'); await click(button(copy.pdp.add));
+    await input(host.querySelector('#pdp-monogram-input'), 'ZA'); await click(host.querySelector('#pdp-bespoke-inquiry'));
     expect(host.querySelector('[name="notes"]').value).toContain('ZA');
     await input(host.querySelector('[name="notes"]'), 'Draft inquiry ZA diedit');
     await click(host.querySelector('.concierge-modal .modal-close')); await click(button(copy.pdp.consult));
@@ -255,7 +264,7 @@ it('R6-7 closing concierge retains its draft, an inquiry does not overwrite it, 
     await act(async () => host.querySelector('.concierge-form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }))); await flush();
     await click(button(copy.pdp.consult)); expect(host.querySelector('[name="notes"]').value).toBe('');
     expect(host.querySelector('[name="name"]').value).toBe('');
-    await click(host.querySelector('.concierge-modal .modal-close')); await click(button(copy.pdp.add));
+    await click(host.querySelector('.concierge-modal .modal-close')); await click(host.querySelector('#pdp-bespoke-inquiry'));
     expect(host.querySelector('[name="notes"]').value).toBe('Draft inquiry ZA diedit');
 });
 it('R6-6/8 computed drawer structure and focus selector keep layout and the established contrast token', async () => {
@@ -265,7 +274,7 @@ it('R6-6/8 computed drawer structure and focus selector keep layout and the esta
     expect(getComputedStyle(host.querySelector('.profile-drawer .drawer-header')).display).not.toBe('contents');
     expect(getComputedStyle(host.querySelector('.profile-drawer .drawer-body')).display).not.toBe('contents');
     expect(css).not.toMatch(/\.sf-native \.drawer>div\s*\{display:contents\}/);
-    expect(css.match(/\.sf-native :is\(button,a,input,select,textarea\):focus-visible\{([^}]+)\}/)[1]).toContain('var(--focus-ring)');
+    expect(css.match(/\.sf-native\s+:is\(\s*button,\s*a,\s*input,\s*select,\s*textarea\s*\):focus-visible\s*\{([^}]+)\}/)[1]).toContain('var(--focus-ring)');
     await click(host.querySelector('.profile-drawer .icon-button'));
     await mount(Show); await click(button(copy.pdp.size_guide_open));
     expect(getComputedStyle(host.querySelector('.size-guide-drawer .drawer-header')).display).not.toBe('contents');
@@ -295,7 +304,7 @@ it('R6-P2 pending generic request survives inquiry remount and cannot submit twi
     const submit = async () => { await act(async () => host.querySelector('.concierge-form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }))); await flush(); };
     await submit(); expect(submissions).toHaveLength(1);
     await click(host.querySelector('.concierge-modal .modal-close'));
-    await input(host.querySelector('#pdp-monogram-input'), 'ZA'); await click(button(copy.pdp.add));
+    await input(host.querySelector('#pdp-monogram-input'), 'ZA'); await click(host.querySelector('#pdp-bespoke-inquiry'));
     expect(host.querySelector('.concierge-form button[type="submit"]').disabled).toBe(false);
     await click(host.querySelector('.concierge-modal .modal-close')); await click(button(copy.pdp.consult));
     expect(host.querySelector('.concierge-form button[type="submit"]').disabled).toBe(true);
@@ -338,4 +347,120 @@ it('all cross-group navigation remains full-document links including checkout', 
     await click(host.querySelector(`button[aria-label="${copy.header.cart_open}"]`));
     expect(host.querySelector('.cart-footer a').getAttribute('href')).toBe('/belanja');
     expect(host.querySelector('[data-catalog-link]')).toBeNull();
+});
+it('hero scroll cue scopes decorative line to first span and keeps text span readable off center CTA', async () => {
+    await mount();
+    const cue = host.querySelector('.hero-scroll');
+    expect(cue).not.toBeNull();
+    const spans = cue.querySelectorAll('span');
+    expect(spans).toHaveLength(2);
+    expect(spans[1].textContent).toBe(copy.welcome.hero_scroll);
+    for (const file of ['resources/views/welcome.blade.php', 'resources/css/app.css', 'resources/css/storefront-react.css']) {
+        const source = readFileSync(file, 'utf8');
+        expect(source).not.toMatch(/\.hero-scroll\s+span\s*\{/);
+    }
+});
+it('announcement utility bar aligns three balanced zones without redundant theme toggles', async () => {
+    const css = readFileSync('resources/css/storefront-react.css', 'utf8');
+    expect(css).not.toMatch(/\.sf-native\s+\.theme-btn\s*\{\s*min-height:\s*44px/);
+    await mount();
+    const bar = host.querySelector('.announcement-bar');
+    expect(bar.querySelector('.announcement-start .lang-switcher')).not.toBeNull();
+    expect(bar.querySelector('.announcement-center .announcement-copy').textContent).toBe(copy.welcome.announcement);
+    expect(bar.querySelector('#locale-status').getAttribute('aria-atomic')).toBe('true');
+    expect(bar.querySelector('.theme-switcher')).toBeNull();
+    expect(host.querySelector('.footer-preferences-bar')).toBeNull();
+    expect(bar.querySelector('.announcement-end .announcement-cta').textContent).toBe(copy.welcome.rendezvous_btn);
+});
+it('site-header stays sticky from the top bar boundary and never hides or clips while scrolling down', async () => {
+    const baseCss = readFileSync('resources/css/app.css', 'utf8');
+    expect(baseCss).toMatch(/\.site-header\s*\{\s*position:\s*sticky;\s*z-index:\s*50;\s*top:\s*0;/);
+    expect(baseCss).not.toContain('.site-header.is-hidden');
+    await mount();
+    const header = host.querySelector('#site-header');
+    expect(header.classList.contains('is-fixed')).toBe(false);
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 42 });
+    await act(async () => window.dispatchEvent(new Event('scroll')));
+    expect(header.classList.contains('is-fixed')).toBe(true);
+    expect(header.classList.contains('is-hidden')).toBe(false);
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 640 });
+    await act(async () => window.dispatchEvent(new Event('scroll')));
+    expect(header.classList.contains('is-fixed')).toBe(true);
+    expect(header.classList.contains('is-hidden')).toBe(false);
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 0 });
+});
+it('home scroll-reveal shares a single IntersectionObserver instance, unobserves once revealed, and honors reduced motion', async () => {
+    const previousObserver = globalThis.IntersectionObserver;
+    const previousMatchMedia = window.matchMedia;
+    const instances = [];
+    class MockIntersectionObserver {
+        constructor(callback) {
+            this.callback = callback;
+            this.observed = new Set();
+            this.unobserved = [];
+            this.disconnected = false;
+            instances.push(this);
+        }
+        observe(node) { this.observed.add(node); }
+        unobserve(node) { this.observed.delete(node); this.unobserved.push(node); }
+        disconnect() { this.observed.clear(); this.disconnected = true; }
+    }
+    try {
+        globalThis.IntersectionObserver = MockIntersectionObserver;
+        window.matchMedia = vi.fn().mockReturnValue({ matches: false, addEventListener() {}, removeEventListener() {} });
+        await mount();
+        expect(instances).toHaveLength(1);
+        expect(host.querySelector('.hero-content').classList.contains('reveal')).toBe(false);
+        const categoryCard = host.querySelector('.category-card');
+        expect(categoryCard.classList.contains('reveal')).toBe(true);
+        expect(categoryCard.classList.contains('is-visible')).toBe(false);
+        await act(async () => {
+            instances[0].callback([{ target: categoryCard, isIntersecting: true, intersectionRatio: 0.25 }]);
+        });
+        expect(categoryCard.classList.contains('is-visible')).toBe(true);
+        expect(instances[0].unobserved).toContain(categoryCard);
+
+        instances.length = 0;
+        window.matchMedia = vi.fn().mockReturnValue({ matches: true, addEventListener() {}, removeEventListener() {} });
+        await mount();
+        expect(instances).toHaveLength(0);
+        expect(host.querySelector('.category-card').classList.contains('is-visible')).toBe(true);
+    } finally {
+        globalThis.IntersectionObserver = previousObserver;
+        window.matchMedia = previousMatchMedia;
+    }
+});
+it('top-docked search curtain and mobile atelier drawer keep couture proportions and dark-mode contrast', async () => {
+    const themeCss = readFileSync('resources/css/theme.css', 'utf8');
+    const css = readFileSync('resources/css/storefront-react.css', 'utf8');
+    const style = document.createElement('style');
+    style.textContent = `${themeCss}\n${css}`;
+    document.head.appendChild(style);
+    document.documentElement.dataset.theme = 'dark';
+
+    await mount();
+    await click(host.querySelector(`button[aria-label="${copy.header.search}"]`));
+    const panel = host.querySelector('.search-panel');
+    expect(getComputedStyle(panel).minHeight).toBe('0px');
+    expect(['0', '0px']).toContain(getComputedStyle(panel).borderRadius);
+    expect(panel.querySelector('.search-top .brand')).not.toBeNull();
+    expect(panel.querySelector('.search-clear-btn')).toBeNull();
+    await input(panel.querySelector('#sf-search-input'), 'Saphir');
+    expect(panel.querySelector('.search-clear-btn')).not.toBeNull();
+    await click(panel.querySelector('.search-clear-btn'));
+    expect(panel.querySelector('#sf-search-input').value).toBe('');
+    expect(document.activeElement.id).toBe('sf-search-input');
+    await click(panel.querySelector('.search-close-btn'));
+
+    await click(host.querySelector('.mobile-menu-button'));
+    const menu = host.querySelector('.mobile-menu');
+    expect(menu.querySelector('.mobile-menu-close')).not.toBeNull();
+    expect(getComputedStyle(menu.querySelector('nav a')).fontSize).toBe('19px');
+    expect(getComputedStyle(menu.querySelector('nav a')).color).toBe('rgb(247, 243, 235)');
+    expect(getComputedStyle(menu.querySelector('.brand-name')).color).toBe('rgb(247, 243, 235)');
+    expect(getComputedStyle(menu.querySelector('.storefront-preferences select')).color).toBe('rgb(247, 243, 235)');
+    document.documentElement.dataset.theme = 'light';
+    expect(getComputedStyle(menu.querySelector('nav a')).color).toBe('rgb(247, 243, 235)');
+    expect(getComputedStyle(menu.querySelector('.storefront-preferences select')).color).toBe('rgb(247, 243, 235)');
+    expect(menu.querySelector('.mobile-menu-footer .storefront-preferences')).not.toBeNull();
 });

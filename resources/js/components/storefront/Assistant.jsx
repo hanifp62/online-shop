@@ -4,22 +4,20 @@ import { acceptSearchResult, clearTranscript, conciergeAvailability, conciergeNo
 import { CloseButton, Dialog, Icon } from './Primitives.jsx';
 import { useStorefront } from './StorefrontProvider.jsx';
 
-// FR-401/FR-402: one help door and a guided, rule-based assistant. It never calls a model or a vendor.
 const session = () => { try { return globalThis.sessionStorage; } catch { return null; } };
 let sequence = 0;
 const entry = (from, kind, params = {}) => ({ id: `${Date.now().toString(36)}-${++sequence}`, from, kind, params, at: Date.now() });
 const HANDOFF = ['appointment', 'human', 'issue'];
 const SERVICE = { appointment: 'private-styling', human: 'virtual-consultation', issue: 'virtual-consultation', fallback: 'virtual-consultation', gift: 'gifting', personalize: 'atelier' };
 const ICONS = { product: 'sparkle', search: 'search', size: 'ruler', delivery: 'truck', order: 'package', care: 'drop', gift: 'gift', personalize: 'pen', payment: 'card', appointment: 'chat' };
-// CB-03: two or three next steps that follow from the answer just given.
-const FOLLOW = { product: ['care', 'size', 'personalize'], results: ['delivery', 'gift'], results_empty: ['appointment'], size: ['appointment', 'delivery'], delivery: ['order', 'payment'], order: ['delivery', 'payment'], care: ['product', 'appointment'], gift: ['personalize', 'appointment'], personalize: ['gift', 'appointment'], payment: ['order', 'delivery'], feedback_no: ['appointment'] };
-const FEEDBACK = ['product', 'results', 'size', 'delivery', 'order', 'care', 'gift', 'personalize', 'payment'];
-// Intents that a pending product search must not swallow.
+const FOLLOW = { ai_reply: ['size', 'delivery', 'appointment'], product: ['care', 'size', 'personalize'], results: ['delivery', 'gift'], results_empty: ['appointment'], size: ['appointment', 'delivery'], delivery: ['order', 'payment'], order: ['delivery', 'payment'], care: ['product', 'appointment'], gift: ['personalize', 'appointment'], personalize: ['gift', 'appointment'], payment: ['order', 'delivery'], feedback_no: ['appointment'] };
+const FEEDBACK = ['ai_reply', 'product', 'results', 'size', 'delivery', 'order', 'care', 'gift', 'personalize', 'payment'];
 const DIRECT = ['issue', 'human', 'order', 'payment', 'appointment'];
 
 export function AssistantLauncher() {
-    const { copy: { assistant: a }, open } = useStorefront();
-    return <button type="button" className="sf-assistant-launcher" aria-haspopup="dialog" aria-keyshortcuts="H" onClick={() => open('assistant')}><Icon name="chat" /><span>{a.launcher}</span></button>;
+    const { copy: { assistant: a }, dialog, open } = useStorefront();
+    const hidden = dialog?.type === 'assistant';
+    return <button type="button" className={`sf-assistant-launcher${hidden ? ' is-open-behind' : ''}`} aria-haspopup="dialog" aria-keyshortcuts="H" aria-label={a.launcher} title={a.launcher} onClick={() => open('assistant')}><Icon name="chat" /><span className="sf-assistant-dot" aria-hidden="true" /><span className="sr-only">{a.launcher}</span></button>;
 }
 
 function Card({ item, a, p, f, onAdd }) {
@@ -30,6 +28,18 @@ function Card({ item, a, p, f, onAdd }) {
             <div className="sf-assistant-card-actions">{item.available && !item.hasSizes && <button type="button" onClick={() => onAdd(item)}>{a.add_to_bag}</button>}{item.hasSizes && <a href={item.href}>{a.choose_size}</a>}{!item.available && <a href={item.href}>{a.view_product}</a>}</div>
         </div>
     </li>;
+}
+
+function sanitizeAiCards(items) {
+    if (!Array.isArray(items)) return [];
+    return items.filter(item => item && typeof item.name === 'string' && typeof item.href === 'string' && Number.isInteger(item.productId))
+        .slice(0, 4)
+        .map(item => ({
+            id: String(item.id), productId: item.productId, name: item.name,
+            category: String(item.category ?? ''), priceLabel: String(item.priceLabel ?? ''),
+            available: item.available === true, image: typeof item.image === 'string' ? item.image : null,
+            alt: String(item.alt ?? item.name), href: item.href, hasSizes: item.hasSizes === true,
+        }));
 }
 
 export function Assistant() {
@@ -64,13 +74,11 @@ export function Assistant() {
             append([entry('bot', 'sent', { reference })], { failures: 0, resolve: true });
             return;
         }
-        // A conversation carried over from another page says which product is now in view.
         const lastContext = [...stateRef.current.entries].reverse().find(item => item.kind === 'context' || item.kind === 'greeting');
         if (product && lastContext?.params?.href !== product.href) append([entry('bot', 'context', { name: product.name, href: product.href })]);
     }, [active, loaded, dialog]);
     useLayoutEffect(() => {
         const log = logRef.current; const target = scrollTo.current && log?.querySelector(`[data-entry="${scrollTo.current}"]`);
-        // CB-12: show the start of the new exchange instead of jumping past a long answer.
         if (target) log.scrollTop = Math.max(0, target.offsetTop - 8);
         scrollTo.current = null;
     }, [state.entries, active]);
@@ -117,10 +125,53 @@ export function Assistant() {
             if (data.items.length) { append([entry('bot', 'results', { query: question.slice(0, 80), ...data })], { failures: 0, mode: null }); return; }
             if (!countsAsMiss) { append([entry('bot', 'results_empty', { query: question.slice(0, 80), catalog: data.catalog })], { mode: null }); return; }
             const failures = stateRef.current.failures + 1;
-            // CB-04: after two misses the assistant stops guessing and offers a person.
             append([entry('bot', 'fallback', { text: question.slice(0, 80) }), ...(failures >= 2 ? [handoff('fallback')] : [])], { failures: failures >= 2 ? 0 : failures, resolve: true, mode: null });
         } catch {
             if (seq === searchSeq.current) append([entry('bot', 'results_error')], { mode: null });
+        } finally {
+            if (seq === searchSeq.current) setBusy(false);
+        }
+    };
+    const askAi = async question => {
+        const seq = ++searchSeq.current; setBusy(true);
+        const history = stateRef.current.entries
+            .filter(item => (item.from === 'user' && item.kind === 'text') || (item.from === 'bot' && item.kind === 'ai_reply'))
+            .slice(-6)
+            .map(item => ({ role: item.from, text: String(item.params?.text || item.params?.reply || '') }))
+            .filter(turn => turn.text !== '');
+        try {
+            const data = await storefrontRequest(links.assistantChat, 'POST', {
+                message: question,
+                product_slug: product?.id || null,
+                history,
+            }, { timeout: 20000 });
+            if (seq !== searchSeq.current) return;
+            const replyText = typeof data?.reply === 'string' ? data.reply.trim() : '';
+            if (!replyText) throw new Error('empty_ai');
+            const items = sanitizeAiCards(data.items);
+            const botEntries = [entry('bot', 'ai_reply', {
+                reply: replyText,
+                items,
+                mode: data.mode === 'ai' ? 'ai' : 'fallback',
+                catalog: typeof data.catalog_url === 'string' ? data.catalog_url : links.catalog,
+            })];
+            if (data.escalate_concierge === true) {
+                const reason = matchIntent(question) === 'issue' ? 'issue' : 'human';
+                botEntries.push(handoff(reason, [question]));
+            }
+            append(botEntries, { failures: 0, mode: null });
+        } catch {
+            if (seq !== searchSeq.current) return;
+            const intent = matchIntent(question);
+            if (intent && intent !== 'search' && !(intent === 'product' && !product)) {
+                const answer = reply(intent, question);
+                append([answer], { failures: 0, mode: answer.kind === 'search_prompt' ? 'search' : null });
+                setBusy(false);
+                return;
+            }
+            setBusy(false);
+            await search(question, !intent);
+            return;
         } finally {
             if (seq === searchSeq.current) setBusy(false);
         }
@@ -132,10 +183,15 @@ export function Assistant() {
         setText('');
         const intent = matchIntent(question);
         const asked = entry('user', 'text', { text: question });
-        const wantsSearch = (stateRef.current.mode === 'search' && !DIRECT.includes(intent)) || intent === 'search' || (intent === 'product' && !product);
+        if (stateRef.current.mode === 'search' && !DIRECT.includes(intent)) {
+            append([asked], { resolve: true }); void search(question, false); return;
+        }
+        if (links.assistantChat) {
+            append([asked], { resolve: true }); void askAi(question); return;
+        }
+        const wantsSearch = intent === 'search' || (intent === 'product' && !product);
         if (wantsSearch) { append([asked], { resolve: true }); void search(question, false); return; }
         if (intent) { const answer = reply(intent, question); append([asked, answer], { failures: 0, resolve: true, mode: answer.kind === 'search_prompt' ? 'search' : null }); return; }
-        // Unknown words may still be a product name ("kebaya", "songket").
         append([asked], { resolve: true }); void search(question, true);
     };
     const proceed = item => {
@@ -172,9 +228,11 @@ export function Assistant() {
         const params = item.params || {};
         if (item.from === 'user') return <p>{item.kind === 'topic' ? label(params.topic) : params.text}</p>;
         switch (item.kind) {
-        case 'greeting': return <><p>{user ? formatCopy(a.greeting_named, { name: user.name.split(/\s+/)[0] }) : a.greeting}</p><p className="sf-assistant-muted">{a.limits}</p>{tiles}<p className="sf-assistant-muted">{a.privacy}</p></>;
-        case 'menu': return <><p>{a.menu_intro}</p>{tiles}</>;
+        case 'greeting': return <p>{user ? formatCopy(a.greeting_named, { name: user.name.split(/\s+/)[0] }) : a.greeting}</p>;
+        case 'menu': return <p>{a.menu_intro}</p>;
         case 'context': return <p>{formatCopy(a.context, { name: params.name })}</p>;
+        case 'ai_reply': return <>{params.mode === 'ai' && a.ai_badge && <span className="sf-assistant-ai-badge">{a.ai_badge}</span>}<p>{params.reply}</p>
+            {Array.isArray(params.items) && params.items.length > 0 && <><ul className="sf-assistant-cards">{params.items.map(card => <Card key={card.id} item={card} a={a} p={p} f={f} onAdd={confirmAdd} />)}</ul><p className="sf-assistant-muted">{a.results_source}</p></>}</>;
         case 'product': return <><div className="sf-assistant-product">{params.image && <img src={params.image} alt="" width="72" height="90" loading="lazy" decoding="async" />}<div><p><strong>{params.name}</strong></p>{facts([[a.price, params.price], [f.quick_availability, params.available ? f.quick_available : p.sold_out], [p.color, params.color], [p.material, params.material], [p.composition, params.composition], [p.origin, params.origin]])}</div></div><p className="sf-assistant-muted">{a.product_source}</p>{link(params.href, a.product_open)}</>;
         case 'search_prompt': return <p>{a.search_prompt}</p>;
         case 'results': return <><p>{params.partial ? formatCopy(a.results_partial, { query: params.query }) : formatCopy(a.results_intro, { count: params.total, query: params.query })}</p>
@@ -217,25 +275,42 @@ export function Assistant() {
     };
 
     return <Dialog type="assistant" title={a.title} className="drawer sf-assistant">
-        <div className="drawer-header"><div className="sf-assistant-heading"><span className="sf-assistant-avatar" aria-hidden="true">Z</span><div><span className="eyebrow">{a.eyebrow}</span><h3>{a.title}</h3>
-            <p className={`sf-assistant-status${availability.open ? ' is-open' : ''}`}><i aria-hidden="true" />{availability.open ? a.status_open : a[`status_next_${availability.next}`]}</p></div></div>
-            <CloseButton className="icon-button" label={a.close} /></div>
-        <p className="sf-assistant-disclosure">{a.disclosure}</p>
+        <div className="drawer-header">
+            <div className="sf-assistant-heading">
+                <div>
+                    {a.eyebrow && <span className="sf-assistant-eyebrow">{a.eyebrow}</span>}
+                    <h3>{a.title}</h3>
+                    <p className={`sf-assistant-status${availability.open ? ' is-open' : ''}`}>
+                        <i className="sf-assistant-live-dot" aria-hidden="true" />
+                        <span>{availability.open ? a.status_open : a[`status_next_${availability.next}`]}</span>
+                    </p>
+                </div>
+            </div>
+            <div className="sf-assistant-head-tools">
+                <button type="button" className="icon-button sf-assistant-reset" title={a.restart} aria-label={a.restart} onClick={restart}><Icon name="refresh" /><span className="sr-only">{a.restart}</span></button>
+                <CloseButton className="icon-button" label={a.close} />
+            </div>
+        </div>
         <div className="sf-assistant-log" ref={logRef} role="log" aria-label={a.log_label} tabIndex={0}>
             {state.entries.map(item => <div key={item.id} data-entry={item.id} className={`sf-assistant-row is-${item.from}`}>
-                {item.from === 'bot' && <span className="sf-assistant-avatar is-small" aria-hidden="true">Z</span>}
-                <div className={`sf-assistant-entry is-${item.from}`}><span className="sr-only">{item.from === 'user' ? a.you : a.bot}: </span>{body(item)}{after(item)}
-                    {item.at && <time className="sf-assistant-time" dateTime={new Date(item.at).toISOString()}>{time(item.at)}</time>}</div>
+                <div className="sf-assistant-col">
+                    <div className={`sf-assistant-entry is-${item.from}`}><span className="sr-only">{item.from === 'user' ? a.you : a.bot}: </span>{body(item)}
+                        {item.at && <time className="sf-assistant-time" dateTime={new Date(item.at).toISOString()}>{time(item.at)}</time>}</div>
+                    {(item.kind === 'greeting' || item.kind === 'menu') && tiles}
+                    {after(item)}
+                </div>
             </div>)}
         </div>
-        <p className="sf-assistant-busy" role="status">{busy ? a.searching : ''}</p>
+        <p className={`sf-assistant-busy${busy ? '' : ' is-idle'}`} role="status">{busy ? a.searching : ''}</p>
         <div className="sf-assistant-actions">
-            <form className="sf-assistant-form" onSubmit={ask}><label htmlFor="sf-assistant-input">{state.mode === 'search' ? a.search_label : a.input_label}</label><div>
+            <form className="sf-assistant-form" onSubmit={ask}><label htmlFor="sf-assistant-input" className="sr-only">{state.mode === 'search' ? a.search_label : a.input_label}</label><div className="sf-assistant-bar">
                 <button type="button" className="sf-assistant-menu" aria-label={a.menu} title={a.menu} onClick={() => append([entry('bot', 'menu')], { resolve: true, mode: null })}><Icon name="grid" /></button>
-                <input id="sf-assistant-input" ref={inputRef} type="text" maxLength={200} autoComplete="off" enterKeyHint="send" value={text} placeholder={state.mode === 'search' ? a.search_placeholder : a.input_placeholder} onChange={event => setText(event.target.value)} />
-                <button type="submit" disabled={!text.trim() || busy}>{a.send}</button></div></form>
-            <button type="button" className="button button-sapphire sf-assistant-human" onClick={() => append([entry('user', 'topic', { topic: 'human' }), handoff('human')], { failures: 0, resolve: true, mode: null })}>{a.human}<Icon name="arrow" /></button>
-            <div className="sf-assistant-footer"><p>{a.privacy_short}</p><button type="button" className="text-link" onClick={restart}>{a.restart}</button></div>
+                <input id="sf-assistant-input" data-initial-focus ref={inputRef} type="text" maxLength={200} autoComplete="off" enterKeyHint="send" value={text} placeholder={state.mode === 'search' ? a.search_placeholder : a.input_placeholder} onChange={event => setText(event.target.value)} />
+                <button type="submit" className="sf-assistant-send" disabled={!text.trim() || busy} aria-label={a.send} title={a.send}><Icon name="send" /><span className="sr-only">{a.send}</span></button></div></form>
+            <div className="sf-assistant-footer">
+                <button type="button" className="sf-assistant-human" onClick={() => append([entry('user', 'topic', { topic: 'human' }), handoff('human')], { failures: 0, resolve: true, mode: null })}><span>{a.human}</span><Icon name="arrow" /></button>
+                <p className="sf-assistant-meta"><span className="sf-assistant-disclosure">{a.disclosure}</span> <span>{a.privacy_short}</span></p>
+            </div>
         </div>
     </Dialog>;
 }

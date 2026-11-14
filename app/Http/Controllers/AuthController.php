@@ -8,6 +8,7 @@ use App\Services\CartStore;
 use App\Services\CheckoutService;
 use App\Support\AuthPageProps;
 use App\Support\FrontendPage;
+use App\Support\IntendedRedirect;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,13 +16,16 @@ use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
-    public function showRegister()
+    public function showRegister(Request $request)
     {
-        return FrontendPage::render('Auth/Register', 'auth.register', [], AuthPageProps::register(request()));
+        IntendedRedirect::capture($request);
+
+        return FrontendPage::render('Auth/Register', 'auth.register', [], AuthPageProps::register($request));
     }
 
     public function register(Request $request)
     {
+        IntendedRedirect::capture($request);
         $this->normalizeEmail($request);
 
         $validated = $request->validate([
@@ -57,17 +61,20 @@ class AuthController extends Controller
         $request->attributes->set('cart_allow_merge', true);
         CheckoutService::cart($request);
 
-        return redirect('/')
+        return redirect(IntendedRedirect::pullOrDefault($request, '/'))
             ->with('success', __('customer_messages.auth.registered', ['email' => $user->email]));
     }
 
-    public function showLogin()
+    public function showLogin(Request $request)
     {
-        return FrontendPage::render('Auth/Login', 'auth.login', [], AuthPageProps::login(request()));
+        IntendedRedirect::capture($request);
+
+        return FrontendPage::render('Auth/Login', 'auth.login', [], AuthPageProps::login($request));
     }
 
     public function login(Request $request)
     {
+        IntendedRedirect::capture($request);
         $this->normalizeEmail($request);
 
         $validated = $request->validate([

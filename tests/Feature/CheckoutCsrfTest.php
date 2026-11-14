@@ -23,8 +23,9 @@ class CheckoutCsrfTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        // Keep 422/429 from the checkout limiter from masking CSRF results.
+        // Keep 422/429 from the checkout limiter from masking CSRF results and exercise CSRF on guest checkout too.
         Cache::flush();
+        config(['services.shop.require_auth_checkout' => false]);
     }
 
     /** Laravel skips CSRF under unit tests; re-enable only that bypass. */

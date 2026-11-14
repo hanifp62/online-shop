@@ -52,11 +52,20 @@ class SocialLoginTest extends TestCase
 
     public function test_disabled_provider_is_hidden_and_redirect_fails_closed(): void
     {
-        config(['services.google.client_id' => null]);
+        config(['services.google.client_id' => null, 'services.google.always_visible' => false]);
 
         $this->get('/login')->assertOk()->assertDontSee('Lanjutkan dengan Google');
         $this->get('/auth/google/redirect')->assertRedirect(route('login'))->assertSessionHasErrors('email');
         $this->get('/auth/facebook/redirect')->assertNotFound();
+    }
+
+    public function test_always_visible_flag_renders_google_cta_while_redirect_still_fails_closed_without_client_id(): void
+    {
+        config(['services.google.client_id' => null, 'services.google.always_visible' => true]);
+
+        $this->get('/login')->assertOk()->assertSee('Lanjutkan dengan Google');
+        $this->get('/register')->assertOk()->assertSee('Lanjutkan dengan Google');
+        $this->get('/auth/google/redirect')->assertRedirect(route('login'))->assertSessionHasErrors('email');
     }
 
     public function test_redirect_sends_user_to_google_with_state(): void

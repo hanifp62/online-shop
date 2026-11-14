@@ -16,5 +16,9 @@ export function MarkedCopy({ children, href }) {
         : part);
 }
 export function OrderDetails({ order, text, statuses, money }) {
-    return <><h3>{text('order_title', { id: order.id })}</h3><p>{text('order_line', { status: statuses[order.status] ?? statuses.unknown, amount: money(order.total) })}</p>{order.items.map((item, index) => <p key={index}>{item.product_title} × {item.quantity} · {money(item.subtotal)}</p>)}</>;
+    const suffix = item => {
+        const parts = [item.size, item.monogram].filter(Boolean);
+        return parts.length ? ` (${parts.join(' · ')})` : '';
+    };
+    return <><h3>{text('order_title', { id: order.id })}</h3><p>{text('order_line', { status: statuses[order.status] ?? statuses.unknown, amount: money(order.total) })}</p>{order.items.map((item, index) => <p key={index}>{item.product_title}{suffix(item)} × {item.quantity} · {money(item.subtotal)}</p>)}</>;
 }

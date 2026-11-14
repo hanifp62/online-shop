@@ -16,6 +16,12 @@ class GuestCheckoutTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        config(['services.shop.require_auth_checkout' => false]);
+    }
+
     protected function product(int $stock = 5): Product
     {
         $category = Category::create(['cat_title' => 'Guest']);

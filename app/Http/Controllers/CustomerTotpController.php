@@ -8,6 +8,7 @@ use App\Services\CheckoutService;
 use App\Services\TotpService;
 use App\Support\AuthSecurityPageProps;
 use App\Support\FrontendPage;
+use App\Support\IntendedRedirect;
 use App\Support\TotpEnrolPageProps;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -59,7 +60,7 @@ class CustomerTotpController extends Controller
         $request->attributes->set('cart_allow_merge', true);
         CheckoutService::cart($request);
 
-        return redirect('/')->with('success', __('customer_messages.customer_totp.login'));
+        return redirect(IntendedRedirect::pullOrDefault($request, '/'))->with('success', __('customer_messages.customer_totp.login'));
     }
 
     public function challenge(Request $request): View|\Inertia\Response|RedirectResponse
@@ -119,7 +120,7 @@ class CustomerTotpController extends Controller
         $remaining = $user->totpRecoveryCodes()->count();
         $message = $useRecovery ? __('customer_messages.customer_totp.remaining', ['count' => $remaining]) : __('customer_messages.customer_totp.login');
 
-        return redirect('/')->with('success', $message);
+        return redirect(IntendedRedirect::pullOrDefault($request, '/'))->with('success', $message);
     }
 
     public function showEnrol(Request $request): Response|RedirectResponse

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'zafira-cache-v2';
+const CACHE_NAME = 'zafira-cache-v16';
 const CORE_ASSETS = [
     '/favicon.svg',
     '/manifest.webmanifest',

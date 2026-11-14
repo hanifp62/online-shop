@@ -99,9 +99,14 @@ class CartDeltaTest extends TestCase
         foreach ([0, 100, -100, 'x', null, 1.5] as $bad) {
             $this->delta($product, $bad)->assertUnprocessable()->assertJsonValidationErrors('delta');
         }
-        $this->delta($product, 1, ['size' => 'FR 38'])->assertUnprocessable()->assertJsonValidationErrors('size');
-        $this->delta($product, 1, ['monogram' => 'ZA'])->assertUnprocessable()->assertJsonValidationErrors('monogram');
+        $this->delta($product, 1, ['size' => 'SIZE-INVALID'])->assertUnprocessable()->assertJsonValidationErrors('size');
+        $this->delta($product, 1, ['monogram' => 'ZAFIRA99'])->assertUnprocessable()->assertJsonValidationErrors('monogram');
         $this->getJson('/cart')->assertJsonCount(0, 'items');
+
+        $this->delta($product, 1, ['size' => 'FR 38', 'monogram' => 'ZA'])
+            ->assertOk()
+            ->assertJsonPath('items.0.size', 'FR 38')
+            ->assertJsonPath('items.0.monogram', 'ZA');
     }
 
     public function test_unknown_or_non_numeric_product_is_not_found(): void

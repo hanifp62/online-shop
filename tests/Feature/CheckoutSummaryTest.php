@@ -12,6 +12,14 @@ class CheckoutSummaryTest extends TestCase
 
     public function test_guest_shop_page_keeps_summary_before_two_compact_form_groups(): void
     {
+        $authWallHtml = $this->get('/belanja')->assertOk()->getContent();
+        $this->assertLessThan(
+            strpos($authWallHtml, 'id="checkout-auth-wall"'),
+            strpos($authWallHtml, 'id="checkout-summary"'),
+            'summary must render before the lazy auth wall so order context stays visible'
+        );
+
+        config(['services.shop.require_auth_checkout' => false]);
         $response = $this->get('/belanja')->assertOk();
 
         $response->assertSee('id="checkout-summary"', false)

@@ -11,6 +11,29 @@ use Illuminate\Validation\ValidationException;
 
 class CartController extends Controller
 {
+    /** @return array{0: string, 1: string} */
+    private function validatedVariants(Request $request): array
+    {
+        $rawSize = $request->input('size');
+        $rawMonogram = $request->input('monogram');
+
+        $size = CartStore::normalizeSize($rawSize);
+        if ($size === '__INVALID__') {
+            throw ValidationException::withMessages([
+                'size' => __('validation.in', ['attribute' => 'size']),
+            ]);
+        }
+
+        $monogram = CartStore::normalizeMonogram($rawMonogram);
+        if ($monogram === '__INVALID__') {
+            throw ValidationException::withMessages([
+                'monogram' => __('validation.regex', ['attribute' => 'monogram']),
+            ]);
+        }
+
+        return [$size, $monogram];
+    }
+
     public function show(Request $request): JsonResponse
     {
         $priced = CheckoutService::priced(CheckoutService::cart($request));
@@ -23,20 +46,39 @@ class CartController extends Controller
         $validated = $request->validate([
             'product_id' => ['required', 'integer', 'exists:products,product_id'],
             'quantity' => ['required', 'integer', 'min:1', 'max:'.CheckoutService::MAX_QUANTITY],
-            'size' => ['prohibited'],
-            'monogram' => ['prohibited'],
+            'mode' => ['nullable', 'string', 'in:set,add'],
         ]);
+        [$size, $monogram] = $this->validatedVariants($request);
+        $productId = (int) $validated['product_id'];
+        $requestedQty = (int) $validated['quantity'];
+        $mode = $validated['mode'] ?? 'set';
 
-        $product = Product::findOrFail($validated['product_id']);
-        if (! $product->is_active || (int) $product->stock < $validated['quantity']) {
+        $product = Product::findOrFail($productId);
+        if (! $product->is_active || (int) $product->stock < $requestedQty) {
             return response()->json(['message' => __('customer_messages.cart.stock')], 422);
         }
 
-        $cart = CartStore::locked($request, function (int $id) use ($validated) {
-            CartStore::set($id, (int) $validated['product_id'], (int) $validated['quantity']);
+        try {
+            $cart = CartStore::locked($request, function (int $id, array $items) use ($product, $productId, $requestedQty, $size, $monogram, $mode) {
+                $targetKey = CartStore::lineKey($productId, $size, $monogram);
+                $currentLineQty = (int) ($items[$targetKey] ?? 0);
+                $nextLineQty = $mode === 'add' ? $currentLineQty + $requestedQty : $requestedQty;
+                $otherVariantsQty = CartStore::totalQuantityForProduct($items, $productId, (string) $targetKey);
 
-            return CartStore::items($id);
-        }, create: true);
+                if (! $product->is_active || $nextLineQty > CheckoutService::MAX_QUANTITY || ($otherVariantsQty + $nextLineQty) > (int) $product->stock) {
+                    throw ValidationException::withMessages(['cart_stock' => __('customer_messages.cart.stock')]);
+                }
+
+                CartStore::set($id, $productId, $nextLineQty, $size, $monogram);
+
+                return CartStore::items($id);
+            }, create: true);
+        } catch (ValidationException $e) {
+            if ($e->errors()['cart_stock'] ?? null) {
+                return response()->json(['message' => __('customer_messages.cart.stock')], 422);
+            }
+            throw $e;
+        }
 
         $priced = CheckoutService::priced($cart);
 
@@ -47,23 +89,26 @@ class CartController extends Controller
     {
         $validated = $request->validate([
             'delta' => ['required', 'integer', 'not_in:0', 'between:-99,99'],
-            'size' => ['prohibited'],
-            'monogram' => ['prohibited'],
         ]);
+        [$size, $monogram] = $this->validatedVariants($request);
         $delta = (int) $validated['delta'];
-        $cart = CartStore::locked($request, function (?int $id, array $items) use ($productId, $delta) {
+
+        $cart = CartStore::locked($request, function (?int $id, array $items) use ($productId, $delta, $size, $monogram) {
             $product = Product::findOrFail($productId);
-            $quantity = max(0, ($items[$productId] ?? 0) + $delta);
-            if ($delta > 0 && (! $product->is_active || $quantity > (int) $product->stock || $quantity > CheckoutService::MAX_QUANTITY)) {
+            $targetKey = CartStore::lineKey($productId, $size, $monogram);
+            $quantity = max(0, (int) ($items[$targetKey] ?? 0) + $delta);
+            $otherVariantsQty = CartStore::totalQuantityForProduct($items, $productId, (string) $targetKey);
+
+            if ($delta > 0 && (! $product->is_active || ($otherVariantsQty + $quantity) > (int) $product->stock || $quantity > CheckoutService::MAX_QUANTITY)) {
                 throw ValidationException::withMessages([
                     'delta' => __('customer_messages.cart.adjust_stock'),
                 ]);
             }
             if ($id !== null) {
                 if ($quantity === 0) {
-                    CartStore::remove($id, $productId);
+                    CartStore::remove($id, $productId, $size, $monogram);
                 } else {
-                    CartStore::set($id, $productId, $quantity);
+                    CartStore::set($id, $productId, $quantity, $size, $monogram);
                 }
             }
 
@@ -77,13 +122,25 @@ class CartController extends Controller
 
     public function destroy(Request $request, int $productId): JsonResponse
     {
-        [$cart, $removedQuantity] = CartStore::locked($request, function (?int $id, array $items) use ($productId) {
+        $hasSpecificVariant = $request->has('size') || $request->has('monogram');
+        [$size, $monogram] = $hasSpecificVariant ? $this->validatedVariants($request) : [null, null];
+
+        [$cart, $removedQuantity] = CartStore::locked($request, function (?int $id, array $items) use ($productId, $hasSpecificVariant, $size, $monogram) {
             if ($id === null) {
                 return [[], 0];
             }
+            if ($hasSpecificVariant) {
+                $targetKey = CartStore::lineKey($productId, (string) $size, (string) $monogram);
+                $removed = (int) ($items[$targetKey] ?? 0);
+                CartStore::remove($id, $productId, (string) $size, (string) $monogram);
+
+                return [CartStore::items($id), $removed];
+            }
+
+            $removed = CartStore::totalQuantityForProduct($items, $productId);
             CartStore::remove($id, $productId);
 
-            return [CartStore::items($id), $items[$productId] ?? 0];
+            return [CartStore::items($id), $removed];
         });
 
         $priced = CheckoutService::priced($cart);

@@ -270,3 +270,29 @@ it('every locale ships the same assistant keys and the shortcut list names H', a
     await act(async () => document.dispatchEvent(new KeyboardEvent('keydown', { key: '?', bubbles: true }))); await flush();
     expect(host.querySelector('.sf-shortcuts').textContent).toContain(a.shortcut);
 });
+
+it('uses real-time Gemini AI Client Advisor endpoint when assistantChat link is active, rendering cards and concierge escalation', async () => {
+    const baseFetch = fetch.getMockImplementation();
+    fetch.mockImplementation(async (url, options = {}) => {
+        if (url === '/bantuan/chat') {
+            calls.push({ url, method: options.method || 'POST', body: JSON.parse(options.body) });
+            return new Response(JSON.stringify({
+                reply: 'Untuk acara malam, Minaudière Saphir berbahan sutra Lyon sangat anggun.',
+                items: [hits[0]],
+                escalate_concierge: true,
+                mode: 'ai',
+                catalog_url: '/koleksi',
+            }));
+        }
+        return baseFetch(url, options);
+    });
+    await mount(Show, { product, links: { ...props.links, assistantChat: '/bantuan/chat' } });
+    await click(launcher());
+    await ask('Rekomendasi tas malam dan saya ingin fitting privat');
+    const aiCall = calls.find(call => call.url === '/bantuan/chat');
+    expect(aiCall.body).toMatchObject({ message: 'Rekomendasi tas malam dan saya ingin fitting privat', product_slug: 'sac-seraphine' });
+    expect(log().textContent).toContain('Minaudière Saphir berbahan sutra Lyon');
+    expect(log().querySelector('.sf-assistant-ai-badge')).not.toBeNull();
+    expect(log().querySelectorAll('.sf-assistant-card')).toHaveLength(1);
+    expect(button(a.handoff_continue)).toBeTruthy();
+});

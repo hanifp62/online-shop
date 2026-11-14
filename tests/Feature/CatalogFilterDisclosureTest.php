@@ -45,7 +45,7 @@ class CatalogFilterDisclosureTest extends TestCase
     {
         $this->get('/koleksi')->assertOk()
             ->assertDontSee('Tas di halaman ini tersimpan di server.')
-            ->assertSee('Untuk personalisasi, ajukan permintaan concierge dari')
-            ->assertSee('jangan lanjutkan checkout.');
+            ->assertSee('ukuran, atau monogram langsung ke Tas Belanja')
+            ->assertSee('menyinkronkan keranjang otomatis');
     }
 }

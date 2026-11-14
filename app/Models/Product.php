@@ -79,8 +79,11 @@ class Product extends Model
 
         return match (true) {
             str_contains($color, 'noir') || str_contains($color, 'black') || str_contains($color, 'ebene') || str_contains($color, 'ébène') => '#1c1b1a',
+            str_contains($color, 'cognac') => '#9a5b32',
+            str_contains($color, 'terracotta') => '#a8563b',
+            str_contains($color, 'travertine') || str_contains($color, 'ivoire') => '#dcd2c2',
             str_contains($color, 'crème') || str_contains($color, 'creme') || str_contains($color, 'sand') || str_contains($color, 'gold') || str_contains($color, 'or') => '#c9bba8',
-            str_contains($color, 'sapphire') || str_contains($color, 'saphir') || str_contains($color, 'bleu') || str_contains($color, 'blue') => '#263a5d',
+            str_contains($color, 'sapphire') || str_contains($color, 'saphir') || str_contains($color, 'bleu') || str_contains($color, 'blue') || str_contains($color, 'indigo') || str_contains($color, 'midnight') => '#263a5d',
             str_contains($color, 'espresso') || str_contains($color, 'tobacco') || str_contains($color, 'brown') || str_contains($color, 'brun') => '#72513c',
             default => '#4a5568',
         };

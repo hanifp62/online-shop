@@ -203,3 +203,27 @@ it('saved address create/default/delete and voucher quote use captured native fi
     expect(calls.find(call => call.url === urls.quote).body).toEqual({ voucher_code: 'SAVE' });
     expect(host.querySelector('#checkout-summary').textContent).toContain('Estimated Rp140');
 });
+
+it('renders Lazy Authentication Wall with 1-click Google OAuth and login/register tabs while preserving guest variant cart', async () => {
+    cartValue = { items: [{ ...item, line_key: '7:M:ZF', size: 'M', monogram: 'ZF' }], subtotal: 100 };
+    await act(async () => root.render(<Shop
+        loggedIn={false}
+        requireAuthCheckout={true}
+        googleEnabled={true}
+        copy={{ ...copy, auth_wall_eyebrow: 'Lazy Sign-In', auth_wall_title: 'Satu langkah lagi', auth_wall_lead: 'Keranjang aman', auth_wall_bag_safe: 'Sinkron otomatis', auth_wall_google: 'Lanjutkan dengan Google', auth_wall_or: 'atau', auth_wall_tab_login: 'Masuk Akun', auth_wall_tab_register: 'Daftar Cepat', auth_wall_password: 'Password', auth_wall_password_confirm: 'Konfirmasi', auth_wall_login_btn: 'Masuk & Checkout', auth_wall_register_btn: 'Daftar & Sinkron', variant_size: 'Ukuran :size', variant_monogram: 'Monogram :monogram' }}
+        urls={{ ...urls, googleCheckout: '/auth/google/redirect?intended=%2Fbelanja%23checkout', loginSubmit: '/login?intended=%2Fbelanja%23checkout', registerSubmit: '/register?intended=%2Fbelanja%23checkout' }}
+        requestCopy={{ generic: 'Failure' }}
+        statuses={{ pending: 'Pending', unknown: 'Unknown' }}
+        year="2026"
+        request={async (url, method = 'GET', body) => { calls.push({ url, method, body }); if (url === urls.cart) return cartValue; return {}; }}
+    />));
+    await flush();
+    expect(host.querySelector('#checkout-auth-wall')).not.toBeNull();
+    expect(host.querySelector('#guest-checkout-form')).toBeNull();
+    expect(host.querySelector('#google-checkout-login').getAttribute('href')).toBe('/auth/google/redirect?intended=%2Fbelanja%23checkout');
+    expect(host.querySelector('#checkout-login-form').getAttribute('action')).toBe('/login?intended=%2Fbelanja%23checkout');
+    expect(host.querySelector('#tas').textContent).toContain('Ukuran M');
+    expect(host.querySelector('#tas').textContent).toContain('Monogram ZF');
+    await click([...host.querySelectorAll('[role="tab"]')].find(node => node.textContent === 'Daftar Cepat'));
+    expect(host.querySelector('#checkout-register-form').getAttribute('action')).toBe('/register?intended=%2Fbelanja%23checkout');
+});

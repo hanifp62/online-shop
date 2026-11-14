@@ -27,6 +27,7 @@ class InertiaShopTest extends TestCase
         $response = $this->get('/belanja')->assertOk();
         $response->assertInertia(fn (Assert $page) => $page->component('Shop/Index')
             ->where('loggedIn', false)
+            ->where('requireAuthCheckout', true)
             ->where('urls.checkout', route('checkout.store'))
             ->where('urls.track', route('orders.track'))
             ->where('copy.heading', __('shop_ui.shop.heading'))
@@ -34,7 +35,8 @@ class InertiaShopTest extends TestCase
             ->missing('user')->missing('csrfToken')->missing('session'));
         $response->assertSee('data-react-fallback', false)
             ->assertSee('data-page="app"', false)
-            ->assertSee('id="guest-checkout-form"', false)
+            ->assertSee('id="checkout-auth-wall"', false)
+            ->assertSee('id="google-checkout-login"', false)
             ->assertSee('id="guest-track-form"', false)
             ->assertSee('zafira:react-claim', false)
             ->assertSee('zafira:private-leave', false)
@@ -51,7 +53,8 @@ class InertiaShopTest extends TestCase
             ->missing('user')->missing('addresses')->missing('orders')->missing('favorites'));
         $response->assertSee('id="checkout-form"', false)
             ->assertSee('id="address-form"', false)
-            ->assertDontSee('id="guest-checkout-form"', false);
+            ->assertDontSee('id="guest-checkout-form"', false)
+            ->assertDontSee('id="checkout-auth-wall"', false);
         $this->assertStringNotContainsString($user->email, $response->getContent());
     }
 
@@ -62,7 +65,7 @@ class InertiaShopTest extends TestCase
             $response = $this->get('/belanja'.($mode === 'request' ? '?frontend=blade' : ''))->assertOk();
             $response->assertDontSee('data-page="app"', false)
                 ->assertDontSee('data-react-fallback', false)
-                ->assertSee('id="guest-checkout-form"', false)
+                ->assertSee('id="checkout-auth-wall"', false)
                 ->assertSee('window.shopRequest', false)
                 ->assertSee('function shopFallback()', false);
         }

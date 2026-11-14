@@ -32,7 +32,7 @@ function Frame({ home, children }) {
         return () => document.removeEventListener('keydown', keydown);
     }, [home, dialog]);
     return <div className="sf-native"><div inert={dialog ? true : undefined} aria-hidden={dialog ? 'true' : undefined}><a className="skip-link" href="#main-content">{copy.pdp.skip}</a><Header home={home} /><main id="main-content">{children}</main><Footer home={home} /><AssistantLauncher /></div>
-        {dialog && <div className="overlay open" onClick={close} aria-hidden="true" />}
+        {dialog && <div className={`overlay open${dialog.type === 'assistant' ? ' is-assistant-backdrop' : ''}`} onClick={close} aria-hidden="true" />}
         <MobileMenu home={home} /><CartDrawer /><Search /><Concierge /><Assistant /><QuickView /><SizeGuide />{home && <><Profile /><Shortcuts /></>}{dialog?.type !== 'cart' && <Toast />}
     </div>;
 }

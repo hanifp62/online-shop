@@ -24,6 +24,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderReturnController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PrototypeAssetController;
 use App\Http\Controllers\RefundController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ShopController;
@@ -33,6 +34,7 @@ use App\Http\Middleware\EnsureAdminTotp;
 use App\Http\Middleware\NoStore;
 use App\Services\AuthEventRecorder;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
@@ -117,13 +119,20 @@ Route::post('/pengingat-keranjang/berhenti/{user}', [ProfileController::class, '
     ->whereNumber('user')->middleware(['signed', 'throttle:6,1'])->name('cart-reminder.unsubscribe.store');
 Route::post('/locale', [ProfileController::class, 'updateLocale'])->middleware('throttle:20,1')->name('locale.update');
 Route::get('/belanja', [ShopController::class, 'index'])->name('shop.index');
-Route::get('/prototype', fn () => redirect('/prototype/'))->name('prototype');
+Route::get('/prototype', function (Request $request) {
+    if (! is_dir(public_path('prototype')) && str_starts_with((string) $request->server('REQUEST_URI'), '/prototype/')) {
+        return app(PrototypeAssetController::class)($request, 'index.html');
+    }
+
+    return redirect('/prototype/');
+})->name('prototype');
 Route::get('/produk/{product:product_slug}', [StorefrontController::class, 'show'])->name('products.show');
 Route::get('/sitemap.xml', [StorefrontController::class, 'sitemap'])->name('sitemap');
 Route::post('/concierge', [StorefrontController::class, 'bookConcierge'])
     ->middleware('throttle:concierge')
     ->name('concierge.store');
 Route::get('/bantuan/produk', [AssistantController::class, 'products'])->middleware([NoStore::class, 'throttle:30,1'])->name('assistant.products');
+Route::post('/bantuan/chat', [AssistantController::class, 'chat'])->middleware([NoStore::class, 'throttle:30,1'])->name('assistant.chat');
 Route::post('/bantuan/umpan-balik', [AssistantController::class, 'feedback'])->middleware('throttle:20,1')->name('assistant.feedback');
 Route::post('/newsletter', [StorefrontController::class, 'subscribe'])
     ->middleware('throttle:newsletter')
